@@ -1,24 +1,50 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import AppNavigator from './src/AppNavigator';
+import { View } from 'react-native';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { Provider, connect } from 'react-redux';
+import { test } from "./src/redux/test.reducer";
+import { createStackNavigator } from 'react-navigation';
+import {Home} from "./src/views/home";
+import {Login} from "./src/views/login";
+import { createNavigationReducer, createReactNavigationReduxMiddleware, reduxifyNavigator } from 'react-navigation-redux-helpers';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View>
-        <Text>
-        salope
-        </Text>
-        </View>
-    );
-  }
-}
+const AppNavigator = createStackNavigator(
+    {
+        Home: {
+            screen: Home
+        },
+        Login: {
+            screen: Login
+        }
+    },
+    {
+        initialRouteName: 'Home'
+    });
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+const navReducer = createNavigationReducer(AppNavigator);
+
+const reducer = combineReducers({
+    test: test,
+    nav: navReducer
 });
+
+const middleware = createReactNavigationReduxMiddleware("root", state => state.nav);
+
+const App = reduxifyNavigator(AppNavigator, "root");
+const mapStateToProps = (state) => ({
+    state: state.nav
+});
+
+const AppWithNavigationState = connect(mapStateToProps)(App);
+
+const Store = createStore(reducer, applyMiddleware(middleware));
+
+export default class Root extends React.Component {
+    render() {
+        return (
+            <Provider store={Store}>
+                <AppWithNavigationState/>
+            </Provider>
+        );
+    }
+}
