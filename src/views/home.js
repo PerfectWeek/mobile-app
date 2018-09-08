@@ -1,28 +1,48 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
-import {withNavigation} from 'react-navigation';
-import {connect} from 'react-redux';
+import {Container, Text, Header, Content, Footer, FooterTab, Button, Icon} from 'native-base';
+import {Profile} from './Profile';
+import {News} from './News';
+
+const TabScreens = [
+    Profile,
+    News
+]
 
 export class Home extends React.Component {
-    navSecond(){
-        this.props.navigator.push({
-          id: 'Login'
-        })
-    }
     constructor(props) {
         super(props);
+        this.state = {
+            tabIdx: 0
+        }
     }
 
     render() {
+        const TabScreen = TabScreens[this.state.tabIdx];
         return (
-            <View>
-                <Text>Home</Text>
-                <Button title="Hey" rounded bordered info small onPress={() => {
-                                                this.props.navigation.navigate('Login');
-                                            }}>
-                                                <Text>Setup</Text>
-                </Button>
-            </View>
+            <Container>
+                <Header/>
+                <TabScreen>
+                </TabScreen>
+                <Content/>
+                <Footer>
+                    <FooterTab>
+                        <Button active={this.state.tabIdx === 0} onPress={() => {
+                            this.setState({
+                                tabIdx: 0
+                            })
+                        }}>
+                            <Icon name="person"/>
+                        </Button>
+                        <Button active={this.state.tabIdx === 1} onPress={() => {
+                            this.setState({
+                                tabIdx: 1
+                            })
+                        }}>
+                            <Icon name="apps"/>
+                        </Button>
+                    </FooterTab>
+                </Footer>
+            </Container>
         )
     }
 }
@@ -33,4 +53,4 @@ const mapStateToProps = (state, ownProps) => {
     }
 };
 
-export const Welcome = withNavigation(connect(mapStateToProps)(Home));
+//export const Welcome = withNavigation(connect(mapStateToProps)(Home));

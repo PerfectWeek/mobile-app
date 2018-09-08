@@ -18,7 +18,7 @@ const AppNavigator = createStackNavigator(
         }
     },
     {
-        initialRouteName: 'Home'
+        initialRouteName: 'Login'
     });
 
 const navReducer = createNavigationReducer(AppNavigator);
