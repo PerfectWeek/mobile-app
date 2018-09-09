@@ -16,6 +16,8 @@ import {
 //     Text
 // } from 'native-base'
 import MyButton from './../../CustomsComponents/MyButton';
+import {axiosPost} from "../../Networking/Requests";
+
 
 export default class SignInView extends Component {
     constructor(props) {
@@ -32,14 +34,14 @@ export default class SignInView extends Component {
     }
 
     _signInAsync = async () => {
-        //GET CATS LISTE
-        // if (response === null)
-        //     return;
-        if (this.state.password !== 'tim123') {
-            Alert.alert("Sorry !", "Incorrect login or password");
-            return;
-        }
-        this.props.navigation.navigate('DashboardView')
+        const resp = await axiosPost('auth/login', {
+            email: this.state.email,
+            password: this.state.password
+        });
+        if (resp.status === 200)
+            this.props.navigation.navigate('DashboardView');
+        else
+            Alert.alert('Bad user or password');
     };
 
     onfocus(type) {

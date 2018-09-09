@@ -15,6 +15,7 @@ import {
 //     Text
 // } from 'native-base'
 import MyButton from './../../CustomsComponents/MyButton';
+import {axiosPost} from "../../Networking/Requests";
 
 export default class RegisterView extends Component {
     constructor(props) {
@@ -32,17 +33,40 @@ export default class RegisterView extends Component {
             borderColorPassword2: '#e87eb0',
             blurColorLogin2: '#d2d2d2',
             blurColorPassword2: '#d2d2d2',
-            marginBot: 10
+            marginBot: 10,
+            validation: false
         };
     }
 
-    _signInAsync = async () => {
-        //GET CATS LISTE
-        // if (response === null)
-        //     return;
-        // if (this.state.password !== 'tim123') {
-            Alert.alert("New account created !");
-        //     return;
+    async  _signInAsync()  {
+        if (this.state.validation === false) {
+            Alert.alert('Some fields are invalide');
+            return ;
+        }
+        else if (!this.state.pseudo || !this.state.email || !this.state.password || !this.state.password2) {
+            Alert.alert('You have to specify all fields');
+            return ;
+        }
+        else if (this.state.password !== this.state.password2) {
+            Alert.alert('Passwords don\'t match ');
+            return ;
+        }
+        // try {
+            const resp = await axiosPost('users', {
+                email: this.state.email,
+                pseudo: this.state.pseudo,
+                password: this.state.password
+            });
+            if (resp.status === 201)
+                Alert.alert('Account created !');
+            else
+                Alert.alert('Something went wrong');
+        // }
+        // catch (e) {
+        //     console.log(e);
+        //     console.log('tim'
+        //     );
+        //     Alert.alert('tim')
         // }
         this.props.navigation.goBack()
     };
@@ -63,13 +87,28 @@ export default class RegisterView extends Component {
             marginBot: 10
         });
     }
+
+    hasUpperCase(str) {
+        return (/[a-z]/.test(str));
+    }
+
+    isMail() {
+        return (/(?:\w+\.)*\w+@(?:\w+\.)+\w+/.test(this.state.email));
+    }
+
     onBlur(type) {
-        if (type === 'log')
-            this.setState({borderColorLogin: '#e87eb0',
-                blurColorLogin: '#d2d2d2'});
-        else if (type === 'pwd')
-            this.setState({borderColorPassword: '#e87eb0',
-                blurColorPassword: '#d2d2d2'});
+        if (type === 'log') {
+            if (this.isMail())
+                this.setState({borderColorLogin: '#e87eb0', blurColorLogin: '#d2d2d2', validation: true});
+            else
+                this.setState({borderColorLogin: 'red', blurColorLogin: 'red', validation: false});
+        }
+        else if (type === 'pwd') {
+            if (this.hasUpperCase(this.state.password) && this.state.password.length < 7)
+                this.setState({borderColorPassword: 'red', blurColorPassword: 'red', validation: false});
+            else
+                this.setState({borderColorPassword: '#e87eb0', blurColorPassword: '#d2d2d2', validation: true});
+        }
         if (type === 'log2')
             this.setState({borderColorLogin2: '#e87eb0',
                 blurColorLogin2: '#d2d2d2'});
@@ -129,7 +168,7 @@ export default class RegisterView extends Component {
                     </View>
                 </View>
                 <View style={{alignItems: 'center'}}>
-                    <MyButton style={styles.login} textStyle={{fontSize: 20}} title="VALIDATE" onPress={this._signInAsync}></MyButton>
+                    <MyButton style={styles.login} textStyle={{fontSize: 20}} title="VALIDATE" onPress={this._signInAsync.bind(this)}></MyButton>
                 </View>
             </View>
         )
