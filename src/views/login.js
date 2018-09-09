@@ -2,10 +2,13 @@ import React from 'react';
 import {View, Text, Button} from 'react-native';
 import {Container, Header, Content, Form, Item, Input} from 'native-base';
 import {StackActions, NavigationActions} from 'react-navigation';
+import {withNavigation} from "react-navigation";
+import {connect} from "react-redux";
 
-export class Login extends React.Component {
+class _Login extends React.Component {
     constructor(props) {
         super(props);
+        console.log(this.store);
     }
 
     render() {
@@ -37,3 +40,12 @@ export class Login extends React.Component {
         )
     }
 }
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        ...ownProps,
+///        ...state
+    }
+};
+
+export const Login = withNavigation(connect(mapStateToProps)(_Login));
