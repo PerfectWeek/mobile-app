@@ -4,6 +4,7 @@ import {Container, Header, Content, Form, Item, Input} from 'native-base';
 import {StackActions, NavigationActions} from 'react-navigation';
 import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
+import {Test} from "../redux/test.actions";
 
 class _Login extends React.Component {
     constructor(props) {
@@ -17,6 +18,7 @@ class _Login extends React.Component {
                 <Header/>
                 <Content>
                     <Form>
+                        <Text>{this.props.test.name}</Text>
                         <Item>
                             <Input placeholder="Username"/>
                         </Item>
@@ -25,14 +27,16 @@ class _Login extends React.Component {
                         </Item>
                         <Button title="Login" rounded bordered info small onPress={() => {
 //                            this.props.navigation.navigate('Home');
+                            console.log(this.props.test.name);
+                            this.props.callTest();
+                            console.log(this.props.test.name);
                             // TODO Login
-                            const moveToLogin = StackActions.reset({
+                            /*const moveToLogin = StackActions.reset({
                                 index: 0,
                                 actions: [NavigationActions.navigate({routeName: 'Home'})],
                             });
-                            this.props.navigation.dispatch(moveToLogin);
+                            this.props.navigation.dispatch(moveToLogin);*/
                         }}>
-                            <Text>Setup</Text>
                         </Button>
                     </Form>
                 </Content>
@@ -41,11 +45,19 @@ class _Login extends React.Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-///        ...state
+        callTest: () => dispatch(Test())
     }
 };
 
-export const Login = withNavigation(connect(mapStateToProps)(_Login));
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        ...ownProps,
+        test: state.test
+    }
+};
+
+export const Login = withNavigation(connect(mapStateToProps, mapDispatchToProps)(_Login));
