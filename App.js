@@ -2,22 +2,23 @@ import React from 'react';
 import { View } from 'react-native';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider, connect } from 'react-redux';
-import { test } from "./src/redux/test.reducer";
+import { test } from "./src/redux/Test/test.reducer";
+import {LoginReducer} from "./src/redux/Login/login.reducer";
 import { createStackNavigator } from 'react-navigation';
 import {Home} from "./src/views/home";
-import {Login} from "./src/views/login";
+import {LoginScreen} from "./src/views/login";
 import { createNavigationReducer, createReactNavigationReduxMiddleware, reduxifyNavigator } from 'react-navigation-redux-helpers';
-import {testSagas} from "./src/redux/test.sagas";
+import {LoginSagas} from "./src/redux/Login/login.sagas";
 import {fork, all} from "redux-saga/effects";
 import createSagaMiddleware from 'redux-saga';
 
 const AppNavigator = createStackNavigator(
     {
+        Login: {
+            screen: LoginScreen
+        },
         Home: {
             screen: Home
-        },
-        Login: {
-            screen: Login
         }
     },
     {
@@ -27,6 +28,7 @@ const AppNavigator = createStackNavigator(
 const navReducer = createNavigationReducer(AppNavigator);
 
 const reducer = combineReducers({
+    login: LoginReducer,
     test: test,
     nav: navReducer
 });
@@ -44,7 +46,7 @@ const sagaMiddleware = createSagaMiddleware();
 // Creating Saga Combination of Application Sagas
 function* sagas() {
     yield all([
-        fork(testSagas),
+        fork(LoginSagas),
     ]);
 }
 

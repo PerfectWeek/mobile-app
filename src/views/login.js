@@ -4,9 +4,10 @@ import {Container, Header, Content, Form, Item, Input} from 'native-base';
 import {StackActions, NavigationActions} from 'react-navigation';
 import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
-import {Test} from "../redux/test.actions";
+import {LoginActionsType, Login} from "../redux/Login/login.actions";
+import {Test} from "../redux/Test/test.actions";
 
-class _Login extends React.Component {
+class _LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         console.log(this.store);
@@ -18,7 +19,7 @@ class _Login extends React.Component {
                 <Header/>
                 <Content>
                     <Form>
-                        <Text>{this.props.test.name}</Text>
+                        <Text>{this.props.login.status}</Text>
                         <Item>
                             <Input placeholder="Username"/>
                         </Item>
@@ -26,11 +27,11 @@ class _Login extends React.Component {
                             <Input placeholder="Password"/>
                         </Item>
                         <Button title="Login" rounded bordered info small onPress={() => {
-//                            this.props.navigation.navigate('Home');
-                            console.log(this.props.test.name);
-                            this.props.callTest();
-                            console.log(this.props.test.name);
-                            // TODO Login
+                            console.log(this.props.login.status);
+                            this.props.Login('jean.valjean@epitech.eu', 'AmazingPassword42');
+                            this.props.navigation.navigate('Home');
+
+                            console.log(this.props.login.status);
                             /*const moveToLogin = StackActions.reset({
                                 index: 0,
                                 actions: [NavigationActions.navigate({routeName: 'Home'})],
@@ -48,7 +49,7 @@ class _Login extends React.Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        callTest: () => dispatch(Test())
+        Login: (email, password) => dispatch(Login(email, password))
     }
 };
 
@@ -56,8 +57,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
-        test: state.test
+        login: state.login
     }
 };
 
-export const Login = withNavigation(connect(mapStateToProps, mapDispatchToProps)(_Login));
+export const LoginScreen = withNavigation(connect(mapStateToProps, mapDispatchToProps)(_LoginScreen));

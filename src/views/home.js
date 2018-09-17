@@ -1,14 +1,16 @@
 import React from 'react';
-import {Container, Text, Header, Content, Footer, FooterTab, Button, Icon} from 'native-base';
+import {Container, Text, Header, Content, Footer, FooterTab, Button, Icon, Form} from 'native-base';
 import {Profile} from './Profile';
 import {News} from './News';
+import {withNavigation} from "react-navigation";
+import connect from "react-redux/es/connect/connect";
 
 const TabScreens = [
     Profile,
     News
 ]
 
-export class Home extends React.Component {
+export class _Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,6 +25,8 @@ export class Home extends React.Component {
                 <Header/>
                 <TabScreen>
                 </TabScreen>
+                <Text>{this.props.login.status}</Text>
+
                 <Content/>
                 <Footer>
                     <FooterTab>
@@ -49,8 +53,10 @@ export class Home extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        ...ownProps
+        ...ownProps,
+        login: state.login
     }
 };
 
-//export const Welcome = withNavigation(connect(mapStateToProps)(Home));
+export const Home = withNavigation(connect(mapStateToProps)(_Home));
+
