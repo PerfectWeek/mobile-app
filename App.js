@@ -6,9 +6,12 @@ import { test } from "./src/redux/Test/test.reducer";
 import {LoginReducer} from "./src/redux/Login/login.reducer";
 import { createStackNavigator } from 'react-navigation';
 import {Home} from "./src/views/home";
+import { RegisterScreen} from "./src/views/register";
 import {LoginScreen} from "./src/views/login";
 import { createNavigationReducer, createReactNavigationReduxMiddleware, reduxifyNavigator } from 'react-navigation-redux-helpers';
 import {LoginSagas} from "./src/redux/Login/login.sagas";
+import {RegisterReducer} from "./src/redux/Register/register.reducer";
+import {RegisterSagas} from "./src/redux/Register/register.sagas";
 import {fork, all} from "redux-saga/effects";
 import createSagaMiddleware from 'redux-saga';
 
@@ -19,6 +22,9 @@ const AppNavigator = createStackNavigator(
         },
         Home: {
             screen: Home
+        },
+        Register: {
+            screen: RegisterScreen
         }
     },
     {
@@ -29,6 +35,7 @@ const navReducer = createNavigationReducer(AppNavigator);
 
 const reducer = combineReducers({
     login: LoginReducer,
+    register: RegisterReducer,
     test: test,
     nav: navReducer
 });
@@ -47,6 +54,7 @@ const sagaMiddleware = createSagaMiddleware();
 function* sagas() {
     yield all([
         fork(LoginSagas),
+        fork(RegisterSagas),
     ]);
 }
 

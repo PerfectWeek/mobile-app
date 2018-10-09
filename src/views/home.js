@@ -4,6 +4,7 @@ import {Profile} from './Profile';
 import {News} from './News';
 import {withNavigation} from "react-navigation";
 import connect from "react-redux/es/connect/connect";
+import { NavigationActions, StackActions } from 'react-navigation'
 
 const TabScreens = [
     Profile,
@@ -15,7 +16,7 @@ export class _Home extends React.Component {
         super(props);
         this.state = {
             tabIdx: 0
-        }
+        };
     }
 
     render() {

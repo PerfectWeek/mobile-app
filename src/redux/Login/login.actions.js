@@ -16,11 +16,13 @@ export const LoginSuccess = (access_token) => {
     return {
         type: LoginActionsType.LoginSuccess,
         access_token,
+        error_message: null
     }
 };
 
-export const LoginFail= () => {
+export const LoginFail= (error_message) => {
     return {
-        type: LoginActionsType.LoginFail
+        type: LoginActionsType.LoginFail,
+        error_message: error_message
     }
 };

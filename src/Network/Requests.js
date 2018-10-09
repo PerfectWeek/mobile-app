@@ -1,5 +1,5 @@
 import axios from 'react-native-axios'
-axios.defaults.baseURL = 'http://192.168.0.184:3000';
+axios.defaults.baseURL = 'http://192.168.1.7:3000';
 //axios.defaults.baseURL = 'http://127.0.0.1:3000';
 
 export async function Get(route) {
@@ -21,6 +21,6 @@ export async function Post(route, body) {
         return resp;
     }
     catch (e) {
-        return e.response
+        return e.response;
     }
 }

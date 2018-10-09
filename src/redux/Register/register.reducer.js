@@ -1,24 +1,24 @@
-import {LoginActionsType} from "./login.actions";
+import {RegisterActionsType} from "./register.actions";
 
-export const LoginReducer = (state = {
+export const RegisterReducer = (state = {
     status: 'NONE'
 }, action) => {
     switch (action.type) {
-        case LoginActionsType.Login:
+        case RegisterActionsType.Register:
             return {
                 ...state,
-                status: 'LOGIN'
+                status: 'REGISTER'
             };
-        case LoginActionsType.LoginSuccess:
+        case RegisterActionsType.RegisterSuccess:
             return {
                 ...state,
-                status: 'LOGGED',
+                status: 'REGISTER_SUCCESS',
                 access_token: action.access_token
             };
-        case LoginActionsType.LoginFail:
+        case RegisterActionsType.RegisterFail:
             return {
                 ...state,
-                status: 'LOGIN_FAIL',
+                status: 'REGISTER_FAIL',
                 error_message: action.error_message
             };
         default:
