@@ -2,20 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ff2a721b-fefd-4503-bb4d-8aef95d73715" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Network/Requests.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Network/Requests.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/Login/login.actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/Login/login.actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/Login/login.reducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/Login/login.reducer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/Login/login.sagas.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/Login/login.sagas.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/Register/register.reducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/Register/register.reducer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/register.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/register.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -94,7 +82,7 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="LICENSE" value="13" />
-          <entry key="js" value="5489" />
+          <entry key="js" value="5543" />
           <entry key="json" value="31" />
           <entry key="md" value="94" />
         </counts>
@@ -102,7 +90,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JSON" value="31" />
-          <entry key="JavaScript" value="5490" />
+          <entry key="JavaScript" value="5544" />
           <entry key="Markdown" value="93" />
           <entry key="PLAIN_TEXT" value="13" />
         </counts>
@@ -129,14 +117,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/views/Profile.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="17" column="36" lean-forward="true" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
-              <folding>
-                <element signature="e#0#26#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="115">
+              <caret line="5" column="67" selection-start-line="5" selection-start-column="67" selection-end-line="5" selection-end-column="67" />
             </state>
           </provider>
         </entry>
@@ -191,11 +176,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Network/Requests.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="790">
-              <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
+            <state relative-caret-position="506">
+              <caret line="22" column="21" lean-forward="true" selection-start-line="22" selection-start-column="21" selection-end-line="22" selection-end-column="21" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -248,11 +233,11 @@
         <option value="$PROJECT_DIR$/src/redux/Login/login.reducer.js" />
         <option value="$PROJECT_DIR$/src/redux/Login/login.actions.js" />
         <option value="$PROJECT_DIR$/App.js" />
-        <option value="$PROJECT_DIR$/src/views/Profile.js" />
         <option value="$PROJECT_DIR$/src/redux/User/user.reducer.js" />
         <option value="$PROJECT_DIR$/src/redux/User/user.actions.js" />
         <option value="$PROJECT_DIR$/src/redux/User/user.sagas.js" />
         <option value="$PROJECT_DIR$/src/Network/Requests.js" />
+        <option value="$PROJECT_DIR$/src/views/Profile.js" />
       </list>
     </option>
   </component>
@@ -398,7 +383,7 @@
       <workItem from="1539298553291" duration="1416000" />
       <workItem from="1539366275700" duration="2988000" />
       <workItem from="1539400572851" duration="10619000" />
-      <workItem from="1539568688893" duration="4863000" />
+      <workItem from="1539568688893" duration="6043000" />
     </task>
     <task id="LOCAL-00001" summary="-basic fake login&#10;-basic tab navigator">
       <created>1536424774076</created>
@@ -418,7 +403,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="65588000" />
+    <option name="totallyTimeSpent" value="66768000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="27" width="1853" height="1053" extended-state="6" />
@@ -599,16 +584,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/Profile.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="17" column="36" lean-forward="true" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/redux/User/user.actions.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -631,11 +606,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Network/Requests.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="790">
-          <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
+        <state relative-caret-position="506">
+          <caret line="22" column="21" lean-forward="true" selection-start-line="22" selection-start-column="21" selection-end-line="22" selection-end-column="21" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/Profile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="5" column="67" selection-start-line="5" selection-start-column="67" selection-end-line="5" selection-end-column="67" />
         </state>
       </provider>
     </entry>

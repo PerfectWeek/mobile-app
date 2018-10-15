@@ -4,6 +4,7 @@ import connect from "react-redux/es/connect/connect";
 import {_Home} from "../views/home";
 
 axios.defaults.baseURL = 'http://192.168.1.6:3000';
+// axios.defaults.baseURL = 'http://172.31.39.138:3000';
 
 //axios.defaults.baseURL = 'http://127.0.0.1:3000';
 

@@ -3,13 +3,14 @@ import {Container, Text, Header, Content, Footer, FooterTab, Button, Icon} from 
 import connect from "react-redux/es/connect/connect";
 import {Login} from "../redux/Login/login.actions";
 import {View} from "react-native";
-import {GetInfo} from "../redux/User/user.actions";
+import {GetInfo, UserActionsType} from "../redux/User/user.actions";
 
 
 export class _Profile extends React.Component {
     constructor(props) {
         super(props);
-        this.props.GetInfo(this.props.login.login_info.pseudo);
+        if (this.props.user.status !== UserActionsType.GetInfoSuccess)
+            this.props.GetInfo(this.props.login.login_info.pseudo);
     }
 
     render() {
