@@ -10,6 +10,7 @@ export class News extends React.Component {
     render() {
         return (
             <Container>
+
                 <Text>News</Text>
             </Container>
         )

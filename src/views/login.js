@@ -11,14 +11,21 @@ import LottieView from 'lottie-react-native';
 class _LoginScreen extends React.Component {
     constructor(props) {
         super(props);
-        console.log(this.store);
         this.state = {username: 'jean.valjean@epitech.eu', password: 'AmazingPassword42'};
+    }
+
+    async componentWillMount() {
+        await Expo.Font.loadAsync({
+            Roboto: require("native-base/Fonts/Roboto.ttf"),
+            Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+            Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf")
+        });
+        this.setState({isReady: true});
     }
 
     render() {
         return (
             <Container>
-                <Header/>
                 <Content>
                     <Form>
                         <Text>{this.props.login.status}</Text>
@@ -30,19 +37,21 @@ class _LoginScreen extends React.Component {
                             <Input placeholder="Password" value={this.state.password}
                                    onChangeText={(text) => this.setState({password: text})} secureTextEntry={true}/>
                         </Item>
-                        <Button title="Login" disabled={this.props.login.status === LoginActionsType.Login} onPress={() => {
-                            this.props.Login(this.state.username, this.state.password);
-                            /*const moveToLogin = StackActions.reset({
-                                index: 0,
-                                actions: [NavigationActions.navigate({routeName: 'Home'})],
-                            });
-                            this.props.navigation.dispatch(moveToLogin);*/
-                        }}>
+                        <Button title="Login" disabled={this.props.login.status === LoginActionsType.Login}
+                                onPress={() => {
+                                    this.props.Login(this.state.username, this.state.password);
+                                    /*const moveToLogin = StackActions.reset({
+                                        index: 0,
+                                        actions: [NavigationActions.navigate({routeName: 'Home'})],
+                                    });
+                                    this.props.navigation.dispatch(moveToLogin);*/
+                                }}>
                         </Button>
                         <Text style={{color: 'red', textAlign: 'center'}}>{this.props.login.error_message}</Text>
-                        <Button title={"Or register"} disabled={this.props.login.status === LoginActionsType.Login} onPress={() => {
-                            this.props.navigation.navigate('Register');
-                        }}>
+                        <Button title={"Or register"} disabled={this.props.login.status === LoginActionsType.Login}
+                                onPress={() => {
+                                    this.props.navigation.navigate('Register');
+                                }}>
                         </Button>
                     </Form>
 
@@ -56,12 +65,12 @@ class _LoginScreen extends React.Component {
                         }}>
                             {
                                 (this.props.login.status === LoginActionsType.Login) ?
-                                <LottieView style={{ }}
-                                    loop
-                                    source={require('../../Resources/Lottie/loading.json')}
-                                    autoPlay
-                                />
-                                : null
+                                    <LottieView style={{}}
+                                                loop
+                                                source={require('../../Resources/Lottie/loading.json')}
+                                                autoPlay
+                                    />
+                                    : null
                             }
                         </View>
                     </View>

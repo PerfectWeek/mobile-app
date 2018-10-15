@@ -14,7 +14,8 @@ export const LoginReducer = (state = {
                 ...state,
                 status: LoginActionsType.LoginSuccess,
                 access_token: action.access_token,
-                login_info: action.login_info,
+                pseudo: action.pseudo,
+                email: action.email,
                 error_message: action.error_message
             };
         case LoginActionsType.LoginFail:
@@ -22,6 +23,13 @@ export const LoginReducer = (state = {
                 ...state,
                 status: LoginActionsType.LoginFail,
                 error_message: action.error_message
+            };
+        case LoginActionsType.UpdateUserInfo:
+            return {
+                ...state,
+                status: LoginActionsType.UpdateUserInfo,
+                pseudo: action.pseudo,
+                email: action.email
             };
         default:
             return state;

@@ -4,8 +4,9 @@ import {Profile} from './Profile';
 import {News} from './News';
 import {withNavigation} from "react-navigation";
 import connect from "react-redux/es/connect/connect";
-import { NavigationActions, StackActions } from 'react-navigation'
+import {NavigationActions, StackActions} from 'react-navigation'
 import {Network, Post} from "../Network/Requests";
+import {UserActionsType} from "../redux/User/user.actions";
 
 const TabScreens = [
     Profile,
@@ -24,13 +25,11 @@ export class _Home extends React.Component {
         const TabScreen = TabScreens[this.state.tabIdx];
         return (
             <Container>
-                <Header/>
-                <TabScreen>
-                </TabScreen>
-                <Text>{this.props.login.status}</Text>
-                <Text>{this.props.login.access_token}</Text>
+                <Content>
+                    <TabScreen>
+                    </TabScreen>
+                </Content>
 
-                <Content/>
                 <Footer>
                     <FooterTab>
                         <Button active={this.state.tabIdx === 0} onPress={() => {

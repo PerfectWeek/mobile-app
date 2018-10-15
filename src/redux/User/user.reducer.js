@@ -22,6 +22,24 @@ export const UserReducer = (state = {
                 status: UserActionsType.GetInfoFail,
                 error_message: action.error_message
             };
+        case UserActionsType.UpdateInfo:
+            return {
+                ...state,
+                status: UserActionsType.UpdateInfo
+            };
+        case UserActionsType.UpdateInfoSuccess:
+            return {
+                ...state,
+                status: UserActionsType.UpdateInfoSuccess,
+                error_message: action.error_message,
+                user_info: action.user_info
+            };
+        case UserActionsType.UpdateInfoFail:
+            return {
+                ...state,
+                status: UserActionsType.UpdateInfoFail,
+                error_message: action.error_message
+            };
         default:
             return state;
     }

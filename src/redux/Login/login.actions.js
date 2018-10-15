@@ -1,7 +1,8 @@
 export const LoginActionsType = {
     Login: 'LOGIN',
     LoginSuccess: 'LOGIN_SUCCESS',
-    LoginFail: 'LOGIN_FAIL'
+    LoginFail: 'LOGIN_FAIL',
+    UpdateUserInfo: 'UPDATE_USER_INFO'
 };
 
 export const Login = (email, password) => {
@@ -12,18 +13,27 @@ export const Login = (email, password) => {
     }
 };
 
-export const LoginSuccess = (access_token, login_info) => {
+export const LoginSuccess = (access_token, pseudo, email) => {
     return {
         type: LoginActionsType.LoginSuccess,
         access_token,
-        login_info : login_info,
+        pseudo,
+        email,
         error_message: null
     }
 };
 
-export const LoginFail= (error_message) => {
+export const LoginFail = (error_message) => {
     return {
         type: LoginActionsType.LoginFail,
         error_message: error_message
+    }
+};
+
+export const UpdateUserInfo = (pseudo, email) => {
+    return {
+        type: LoginActionsType.UpdateUserInfo,
+        pseudo,
+        email,
     }
 };
