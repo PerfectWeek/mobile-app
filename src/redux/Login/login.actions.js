@@ -12,10 +12,11 @@ export const Login = (email, password) => {
     }
 };
 
-export const LoginSuccess = (access_token) => {
+export const LoginSuccess = (access_token, login_info) => {
     return {
         type: LoginActionsType.LoginSuccess,
         access_token,
+        login_info : login_info,
         error_message: null
     }
 };

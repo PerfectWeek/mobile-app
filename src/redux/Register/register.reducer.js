@@ -7,18 +7,18 @@ export const RegisterReducer = (state = {
         case RegisterActionsType.Register:
             return {
                 ...state,
-                status: 'REGISTER'
+                status: RegisterActionsType.Register
             };
         case RegisterActionsType.RegisterSuccess:
             return {
                 ...state,
-                status: 'REGISTER_SUCCESS',
+                status: RegisterActionsType.RegisterSuccess,
                 access_token: action.access_token
             };
         case RegisterActionsType.RegisterFail:
             return {
                 ...state,
-                status: 'REGISTER_FAIL',
+                status: RegisterActionsType.RegisterFail,
                 error_message: action.error_message
             };
         default:

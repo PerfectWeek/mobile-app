@@ -1,11 +1,12 @@
 import React from 'react';
-import {View, Text, Button} from 'react-native';
+import {View, Text, Button, Animated} from 'react-native';
 import {Container, Header, Content, Form, Item, Input} from 'native-base';
 import {StackActions, NavigationActions} from 'react-navigation';
 import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
 import {LoginActionsType, Login} from "../redux/Login/login.actions";
 import {Test} from "../redux/Test/test.actions";
+import LottieView from 'lottie-react-native';
 
 class _LoginScreen extends React.Component {
     constructor(props) {
@@ -22,19 +23,15 @@ class _LoginScreen extends React.Component {
                     <Form>
                         <Text>{this.props.login.status}</Text>
                         <Item>
-                            <Input placeholder="Username" value={this.state.username} onChangeText={(text) => this.setState({username: text})}/>
+                            <Input placeholder="Username" value={this.state.username}
+                                   onChangeText={(text) => this.setState({username: text})}/>
                         </Item>
                         <Item last>
-                            <Input placeholder="Password" value={this.state.password} onChangeText={(text) => this.setState({password: text})} secureTextEntry={true}/>
+                            <Input placeholder="Password" value={this.state.password}
+                                   onChangeText={(text) => this.setState({password: text})} secureTextEntry={true}/>
                         </Item>
-                        <Button title="Login" rounded bordered info small onPress={() => {
-                            // console.log(this.props.login.status);
-                            // this.props.Login('jean.valjean@epitech.eu', 'AmazingPassword42');
+                        <Button title="Login" disabled={this.props.login.status === LoginActionsType.Login} onPress={() => {
                             this.props.Login(this.state.username, this.state.password);
-                            // console.log(this.props.login.status);
-                            // this.props.navigation.navigate('Home');
-
-
                             /*const moveToLogin = StackActions.reset({
                                 index: 0,
                                 actions: [NavigationActions.navigate({routeName: 'Home'})],
@@ -43,12 +40,32 @@ class _LoginScreen extends React.Component {
                         }}>
                         </Button>
                         <Text style={{color: 'red', textAlign: 'center'}}>{this.props.login.error_message}</Text>
-                        <Button title={"Or register"} onPress={() => {
+                        <Button title={"Or register"} disabled={this.props.login.status === LoginActionsType.Login} onPress={() => {
                             this.props.navigation.navigate('Register');
                         }}>
-
                         </Button>
                     </Form>
+
+                    <View style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                    }}>
+                        <View style={{
+                            marginTop: 20, width: 80, height: 80
+                        }}>
+                            {
+                                (this.props.login.status === LoginActionsType.Login) ?
+                                <LottieView style={{ }}
+                                    loop
+                                    source={require('../../Resources/Lottie/loading.json')}
+                                    autoPlay
+                                />
+                                : null
+                            }
+                        </View>
+                    </View>
+
                 </Content>
             </Container>
         )

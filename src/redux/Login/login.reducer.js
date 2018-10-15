@@ -7,18 +7,20 @@ export const LoginReducer = (state = {
         case LoginActionsType.Login:
             return {
                 ...state,
-                status: 'LOGIN'
+                status: LoginActionsType.Login
             };
         case LoginActionsType.LoginSuccess:
             return {
                 ...state,
-                status: 'LOGGED',
-                access_token: action.access_token
+                status: LoginActionsType.LoginSuccess,
+                access_token: action.access_token,
+                login_info: action.login_info,
+                error_message: action.error_message
             };
         case LoginActionsType.LoginFail:
             return {
                 ...state,
-                status: 'LOGIN_FAIL',
+                status: LoginActionsType.LoginFail,
                 error_message: action.error_message
             };
         default:

@@ -5,6 +5,7 @@ import {News} from './News';
 import {withNavigation} from "react-navigation";
 import connect from "react-redux/es/connect/connect";
 import { NavigationActions, StackActions } from 'react-navigation'
+import {Network, Post} from "../Network/Requests";
 
 const TabScreens = [
     Profile,
@@ -27,6 +28,7 @@ export class _Home extends React.Component {
                 <TabScreen>
                 </TabScreen>
                 <Text>{this.props.login.status}</Text>
+                <Text>{this.props.login.access_token}</Text>
 
                 <Content/>
                 <Footer>
