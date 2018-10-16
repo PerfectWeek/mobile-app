@@ -9,30 +9,28 @@ export class _Groups extends React.Component {
     constructor(props) {
         super(props);
         this.props.GetGroup(1);
-        console.log('123', this.props)
     }
 
-    // componentWillMOunt() {
-    //
-    // }
-
     render() {
+        const groupInfo = this.props.groups.groups;
         return (
             <View>
                 <Text>Groupes</Text>
-                <Text>{this.props.groups.status}</Text>
-                {this.props.groups !== undefined ?
+                {groupInfo !== undefined ?
                     <View>
-                        <Text>Groupes</Text>
-                        <Text>{this.props.groups.id}</Text>
+                        <Text>Groupe name : {groupInfo.name}</Text>
+                        <Text>Group members : </Text>
+                        {groupInfo.members.map((data, idx) => {
+                            console.log('data', data.pseudo);
+                            return (
+                                <View key={idx}>
+                                    <Text>Pseudo : {data.pseudo}</Text>
+                                </View>
+                            );
+                        })}
                     </View>
                     : null
                 }
-                <Button onPress={() => {
-                    console.log(this.props.groups);
-                }}>
-                    <Text>Debug Groups</Text>
-                </Button>
             </View>
         )
     }
