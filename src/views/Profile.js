@@ -2,8 +2,8 @@ import React from 'react';
 import {Container, Text, Header, Content, Footer, FooterTab, Button, Icon, Form, Item, Input} from 'native-base';
 import connect from "react-redux/es/connect/connect";
 import {Login} from "../redux/Login/login.actions";
-import {View} from "react-native";
-import {GetInfo, UpdateInfo, UserActionsType} from "../redux/User/user.actions";
+import {View, Alert} from "react-native";
+import {DeleteUser, GetInfo, UpdateInfo, UserActionsType} from "../redux/User/user.actions";
 import {RegisterActionsType} from "../redux/Register/register.actions";
 import LottieView from "lottie-react-native";
 
@@ -36,7 +36,7 @@ export class _Profile extends React.Component {
                                     <Input disabled={true} label="Email" value={this.props.user.user_info.email}/>
                                 </Item>
                                 <Button
-                                    disabled={this.props.user.status === UserActionsType.UpdateInfo}
+                                    disabled={this.props.user.status === UserActionsType.UpdateInfo || this.props.user.status === UserActionsType.DeleteUser}
                                     onPress={() => {
                                         if (this.state.pseudo === "" || this.state.pseudo === null)
                                             this.state.error = "Invalid pseudo";
@@ -44,6 +44,29 @@ export class _Profile extends React.Component {
                                             this.props.UpdateInfo(this.props.user.user_info.pseudo, this.state.pseudo);
                                     }}>
                                     <Text>Update</Text>
+                                </Button>
+                                <Button
+                                    disabled={this.props.user.status === UserActionsType.UpdateInfo || this.props.user.status === UserActionsType.DeleteUser}
+                                    onPress={() => {
+                                        Alert.alert(
+                                            'Delete account ?',
+                                            '',
+                                            [
+                                                {
+                                                    text: 'Yes', onPress: () => {
+                                                        console.log("mangetesmorts");
+                                                        this.props.DeleteUser(this.props.user.user_info.pseudo);
+                                                    }
+                                                },
+                                                {
+                                                    text: 'Cancel', onPress: () => {
+                                                    }, style: 'cancel'
+                                                },
+                                            ],
+                                            {cancelable: false}
+                                        )
+                                    }}>
+                                    <Text>Delete account</Text>
 
                                 </Button>
                                 <Text style={{
@@ -86,7 +109,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
         GetInfo: (pseudo) => dispatch(GetInfo(pseudo)),
-        UpdateInfo: (pseudo, new_pseudo) => dispatch(UpdateInfo(pseudo, new_pseudo))
+        UpdateInfo: (pseudo, new_pseudo) => dispatch(UpdateInfo(pseudo, new_pseudo)),
+        DeleteUser: (pseudo) => dispatch(DeleteUser(pseudo))
     }
 };
 

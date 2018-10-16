@@ -40,6 +40,24 @@ export const UserReducer = (state = {
                 status: UserActionsType.UpdateInfoFail,
                 error_message: action.error_message
             };
+        case UserActionsType.DeleteUser:
+            return {
+                ...state,
+                pseudo: action.pseudo ,
+                status: UserActionsType.DeleteUser
+            };
+        case UserActionsType.DeleteUserSuccess:
+            return {
+                ...state,
+                status: UserActionsType.DeleteUserSuccess,
+                error_message: action.error_message,
+            };
+        case UserActionsType.DeleteUserFail:
+            return {
+                ...state,
+                status: UserActionsType.DeleteUserFail,
+                error_message: action.error_message
+            };
         default:
             return state;
     }

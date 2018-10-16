@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import {Register, RegisterActionsType} from "../redux/Register/register.actions";
 import {LoginActionsType} from "../redux/Login/login.actions";
 import LottieView from "lottie-react-native";
+import {validateEmail, validateNotEmpty, validatePassword} from "../Utils/utils";
 
 class _RegisterScreen extends React.Component {
     constructor(props) {
@@ -20,21 +21,32 @@ class _RegisterScreen extends React.Component {
                 <Content>
                     <Form>
                         <Text>{this.props.register.status} {this.props.register.status === RegisterActionsType.Register}</Text>
-                        <Item>
-                            <Input placeholder="Username" value={this.state.username} onChangeText={(text) => this.setState({username: text})}/>
+                        <Item error={!validateNotEmpty(this.state.username)}>
+                            <Input placeholder="Username"
+                                   value={this.state.username}
+                                   onChangeText={(text) => this.setState({username: text})}/>
                         </Item>
-                        <Item>
-                            <Input placeholder="Email" value={this.state.mail} onChangeText={(text) => this.setState({mail: text})}/>
+                        <Item error={!validateEmail(this.state.mail)}>
+                            <Input placeholder="Email" value={this.state.mail}
+                                   onChangeText={(text) => this.setState({mail: text})}/>
                         </Item>
-                        <Item last>
-                            <Input placeholder="Password" value={this.state.password} onChangeText={(text) => this.setState({password: text})} secureTextEntry={true}/>
+                        <Item error={!validatePassword(this.state.password)} last>
+                            <Input placeholder="Password"
+                                   value={this.state.password} onChangeText={(text) => this.setState({password: text})}
+                                   secureTextEntry={true}/>
                         </Item>
-                        <Button title="Register" disabled={this.props.register.status === RegisterActionsType.Register} onPress={() => {
-                            this.props.Register(this.state.username, this.state.mail, this.state.password);
-                        }}>
+                        <Button title="Register" disabled={this.props.register.status === RegisterActionsType.Register}
+                                onPress={() => {
+                                    if (!validateNotEmpty(this.state.username) || !validateEmail(this.state.mail) || !validatePassword(this.state.password))
+                                        return;
+                                    this.props.Register(this.state.username, this.state.mail, this.state.password);
+                                }}>
                         </Button>
                         <Text style={{color: 'red', textAlign: 'center'}}>{this.props.register.error_message}</Text>
-                        <Text style={{color: 'green', textAlign: 'center'}}>{this.props.register.status === "REGISTER_SUCCESS" ? "User created" : null}</Text>
+                        <Text style={{
+                            color: 'green',
+                            textAlign: 'center'
+                        }}>{this.props.register.status === "REGISTER_SUCCESS" ? "User created" : null}</Text>
                     </Form>
                     <View style={{
                         flex: 1,
@@ -46,7 +58,7 @@ class _RegisterScreen extends React.Component {
                         }}>
                             {
                                 (this.props.register.status === RegisterActionsType.Register) ?
-                                    <LottieView style={{ }}
+                                    <LottieView style={{}}
                                                 loop
                                                 source={require('../../Resources/Lottie/loading.json')}
                                                 autoPlay
