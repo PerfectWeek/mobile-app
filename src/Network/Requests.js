@@ -2,6 +2,7 @@ import axios from 'react-native-axios'
 import {withNavigation} from "react-navigation";
 import connect from "react-redux/es/connect/connect";
 import {_Home} from "../views/home";
+import {Alert} from 'react-native';
 
 // axios.defaults.baseURL = 'http://192.168.1.6:3000';
 axios.defaults.baseURL = 'https://api.kalastud.io';
@@ -18,6 +19,7 @@ export class Network {
                 return await axios.get(route);
         }
         catch (e) {
+            Alert.alert('Something went wrong !');
             return e;
         }
     }
@@ -34,6 +36,7 @@ export class Network {
                 return await axios.post(route, body);
         }
         catch (e) {
+            Alert.alert('Something went wrong !');
             return e.response;
         }
     }
