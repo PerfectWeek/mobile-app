@@ -9,7 +9,7 @@ export class _Groups extends React.Component {
     constructor(props) {
         super(props);
         this.props.GetGroup(1);
-        console.log('123',this.props)
+        console.log('123', this.props)
     }
 
     // componentWillMOunt() {
@@ -20,14 +20,19 @@ export class _Groups extends React.Component {
         return (
             <View>
                 <Text>Groupes</Text>
-                {/*<Text>{this.props.groups.status}</Text>*/}
-                {/*{this.props.groups !== undefined ?*/}
-                {/*<View>*/}
-                    {/*<Text>Groupes</Text>*/}
-                    {/*<Text>{this.props.groups.id}</Text>*/}
-                {/*</View>*/}
-                {/*: null*/}
-            {/*}*/}
+                <Text>{this.props.groups.status}</Text>
+                {this.props.groups !== undefined ?
+                    <View>
+                        <Text>Groupes</Text>
+                        <Text>{this.props.groups.id}</Text>
+                    </View>
+                    : null
+                }
+                <Button onPress={() => {
+                    console.log(this.props.groups);
+                }}>
+                    <Text>Debug Groups</Text>
+                </Button>
             </View>
         )
     }
