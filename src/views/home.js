@@ -1,7 +1,7 @@
 import React from 'react';
 import {Container, Text, Header, Content, Footer, FooterTab, Button, Icon, Form} from 'native-base';
 import {Profile} from './Profile';
-import {News} from './News';
+import {Groups} from './Groups';
 import {withNavigation} from "react-navigation";
 import connect from "react-redux/es/connect/connect";
 import {NavigationActions, StackActions} from 'react-navigation'
@@ -10,8 +10,8 @@ import {UserActionsType} from "../redux/User/user.actions";
 
 const TabScreens = [
     Profile,
-    News
-]
+    Groups
+];
 
 export class _Home extends React.Component {
     constructor(props) {

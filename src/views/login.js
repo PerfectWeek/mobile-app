@@ -11,7 +11,7 @@ import LottieView from 'lottie-react-native';
 class _LoginScreen extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {username: 'jean.valjean@epitech.eu', password: 'AmazingPassword42'};
+        this.state = {username: 'benoit@theinbox.eu', password: '456benoit456'};
     }
 
     async componentWillMount() {

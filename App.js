@@ -21,6 +21,9 @@ import {RegisterSagas} from "./src/redux/Register/register.sagas";
 import {UserReducer} from "./src/redux/User/user.reducer";
 import {UserSagas} from "./src/redux/User/user.sagas";
 
+import {GroupReducer} from "./src/redux/Groups/groups.reducer";
+import {GroupSaga} from "./src/redux/Groups/groups.saga";
+
 import {fork, all} from "redux-saga/effects";
 import createSagaMiddleware from 'redux-saga';
 
@@ -46,6 +49,7 @@ const reducer = combineReducers({
     login: LoginReducer,
     register: RegisterReducer,
     user: UserReducer,
+    group: GroupReducer,
     test: test,
     nav: navReducer
 });
@@ -66,6 +70,7 @@ function* sagas() {
         fork(LoginSagas),
         fork(RegisterSagas),
         fork(UserSagas),
+        fork(GroupSaga)
     ]);
 }
 
