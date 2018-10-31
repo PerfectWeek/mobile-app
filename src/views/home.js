@@ -7,8 +7,10 @@ import connect from "react-redux/es/connect/connect";
 import {NavigationActions, StackActions} from 'react-navigation'
 import {Network, Post} from "../Network/Requests";
 import {UserActionsType} from "../redux/User/user.actions";
+import {Dashboard} from "./dashboard";
 
 const TabScreens = [
+    Dashboard,
     Profile,
     Groups
 ];
@@ -37,11 +39,18 @@ export class _Home extends React.Component {
                                 tabIdx: 0
                             })
                         }}>
-                            <Icon name="person"/>
+                            <Icon name="home"/>
                         </Button>
                         <Button active={this.state.tabIdx === 1} onPress={() => {
                             this.setState({
                                 tabIdx: 1
+                            })
+                        }}>
+                            <Icon name="person"/>
+                        </Button>
+                        <Button active={this.state.tabIdx === 2} onPress={() => {
+                            this.setState({
+                                tabIdx: 2
                             })
                         }}>
                             <Icon name="apps"/>

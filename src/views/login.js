@@ -7,11 +7,13 @@ import {connect} from "react-redux";
 import {LoginActionsType, Login} from "../redux/Login/login.actions";
 import {Test} from "../redux/Test/test.actions";
 import LottieView from 'lottie-react-native';
+import {validateEmail} from "../Utils/utils.js";
+import {validateNotEmpty} from "../Utils/utils";
 
 class _LoginScreen extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {username: 'benoit@theinbox.eu', password: '456benoit456'};
+        this.state = {username: 'jean.valjean@epitech.eu', password: 'AmazingPassword42'};
     }
 
     async componentWillMount() {
@@ -29,16 +31,19 @@ class _LoginScreen extends React.Component {
                 <Content>
                     <Form>
                         <Text>{this.props.login.status}</Text>
-                        <Item>
+                        <Item error={!validateEmail(this.state.username)}>
                             <Input placeholder="Username" value={this.state.username}
                                    onChangeText={(text) => this.setState({username: text})}/>
                         </Item>
-                        <Item last>
+                        <Item error={!validateNotEmpty(this.state.password)} last>
                             <Input placeholder="Password" value={this.state.password}
                                    onChangeText={(text) => this.setState({password: text})} secureTextEntry={true}/>
                         </Item>
                         <Button title="Login" disabled={this.props.login.status === LoginActionsType.Login}
                                 onPress={() => {
+                                    if (!validateEmail(this.state.username) || !validateNotEmpty(this.state.password)) {
+                                        return;
+                                    }
                                     this.props.Login(this.state.username, this.state.password);
                                     /*const moveToLogin = StackActions.reset({
                                         index: 0,
@@ -47,12 +52,12 @@ class _LoginScreen extends React.Component {
                                     this.props.navigation.dispatch(moveToLogin);*/
                                 }}>
                         </Button>
-                        <Text style={{color: 'red', textAlign: 'center'}}>{this.props.login.error_message}</Text>
                         <Button title={"Or register"} disabled={this.props.login.status === LoginActionsType.Login}
                                 onPress={() => {
                                     this.props.navigation.navigate('Register');
                                 }}>
                         </Button>
+                        <Text style={{color: 'red', textAlign: 'center'}}>{this.props.login.error_message}</Text>
                     </Form>
 
                     <View style={{

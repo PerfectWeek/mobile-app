@@ -5,7 +5,9 @@ export const UserActionsType = {
     UpdateInfo: 'UPDATE_INFO',
     UpdateInfoSuccess: 'UPDATE_INFO_SUCCESS',
     UpdateInfoFail: 'UPDATE_INFO_FAIL',
-
+    DeleteUser: 'DELETE_USER',
+    DeleteUserSuccess: 'DELETE_USER_SUCCESS',
+    DeleteUserFail: 'DELETE_USER_FAIL',
 };
 
 export const GetInfo = (pseudo) => {
@@ -49,6 +51,27 @@ export const UpdateInfoSuccess = (user_info) => {
 export const UpdateInfoFail= (error_message) => {
     return {
         type: UserActionsType.UpdateInfoFail,
+        error_message: error_message
+    }
+};
+
+export const DeleteUser = (pseudo) => {
+    return {
+        type: UserActionsType.DeleteUser,
+        pseudo: pseudo
+    }
+};
+
+export const DeleteUserSuccess = () => {
+    return {
+        type: UserActionsType.DeleteUserSuccess,
+        error_message: null
+    }
+};
+
+export const DeleteUserFail= (error_message) => {
+    return {
+        type: UserActionsType.DeleteUserFail,
         error_message: error_message
     }
 };
