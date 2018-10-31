@@ -2,10 +2,9 @@ import React from 'react';
 import {View} from 'react-native';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider, connect} from 'react-redux';
-import {test} from "./src/redux/Test/test.reducer";
 import {LoginReducer} from "./src/redux/Login/login.reducer";
 import {createStackNavigator} from 'react-navigation';
-import {Home} from "./src/views/home";
+import Home from "./src/views/home";
 import {RegisterScreen} from "./src/views/register";
 import {LoginScreen} from "./src/views/login";
 import {
@@ -50,7 +49,6 @@ const reducer = combineReducers({
     register: RegisterReducer,
     user: UserReducer,
     group: GroupReducer,
-    test: test,
     nav: navReducer
 });
 
