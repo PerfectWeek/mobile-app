@@ -1,78 +1,92 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
-import React, { Component } from 'react';
+import React from 'react';
+import {View} from 'react-native';
+import {createStore, combineReducers, applyMiddleware} from 'redux';
+import {Provider, connect} from 'react-redux';
+import {test} from "./src/redux/Test/test.reducer";
+import {LoginReducer} from "./src/redux/Login/login.reducer";
+import {createStackNavigator} from 'react-navigation';
+import {Home} from "./src/views/home";
+import {RegisterScreen} from "./src/views/register";
+import {LoginScreen} from "./src/views/login";
 import {
-  Platform,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+    createNavigationReducer,
+    createReactNavigationReduxMiddleware,
+    reduxifyNavigator
+} from 'react-navigation-redux-helpers';
+import {LoginSagas} from "./src/redux/Login/login.sagas";
 
-import {
-    StackNavigator
-} from 'react-navigation'
-//Views
-import SignInView from "./Screens/SignOrRegisterViews/SignInView";
-import RegisterView from './Screens/SignOrRegisterViews/RegisterView'
-import LoadingView from './Screens/LoadingViews/LoadingView';
-import DashboardView from "./Screens/Dashboard/DashboardView";
+import {RegisterReducer} from "./src/redux/Register/register.reducer";
+import {RegisterSagas} from "./src/redux/Register/register.sagas";
 
+import {UserReducer} from "./src/redux/User/user.reducer";
+import {UserSagas} from "./src/redux/User/user.sagas";
 
-export default StackNavigator({
-    LoadingView: LoadingView,
-    SignInView: SignInView,
-    RegisterView: RegisterView,
-    DashboardView: DashboardView
-}, {
-    initialRouteName: 'LoadingView',
-    headerMode: 'none'
+import {GroupReducer} from "./src/redux/Groups/groups.reducer";
+import {GroupSaga} from "./src/redux/Groups/groups.saga";
+
+import {fork, all} from "redux-saga/effects";
+import createSagaMiddleware from 'redux-saga';
+
+const AppNavigator = createStackNavigator(
+    {
+        Login: {
+            screen: LoginScreen
+        },
+        Home: {
+            screen: Home
+        },
+        Register: {
+            screen: RegisterScreen
+        }
+    },
+    {
+        initialRouteName: 'Login'
+    });
+
+const navReducer = createNavigationReducer(AppNavigator);
+
+const reducer = combineReducers({
+    login: LoginReducer,
+    register: RegisterReducer,
+    user: UserReducer,
+    group: GroupReducer,
+    test: test,
+    nav: navReducer
 });
 
-// const instructions = Platform.select({
-//   ios: 'Press Cmd+R to reload,\n' +
-//     'Cmd+D or shake for dev menu',
-//   android: 'Double tap R on your keyboard to reload,\n' +
-//     'Shake or press menu button for dev menu',
-// });
+const middleware = createReactNavigationReduxMiddleware("root", state => state.nav);
 
-// type Props = {};
-// export default class App extends Component<Props> {
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <Text style={styles.welcome}>
-//           Welcome to React Native!
-//         </Text>
-//         <Text style={styles.instructions}>
-//           To get started, edit App.js
-//         </Text>
-//         <Text style={styles.instructions}>
-//           {instructions}
-//         </Text>
-//       </View>
-//     );
-//   }
-// }
-//
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: '#F5FCFF',
-//   },
-//   welcome: {
-//     fontSize: 20,
-//     textAlign: 'center',
-//     margin: 10,
-//   },
-//   instructions: {
-//     textAlign: 'center',
-//     color: '#333333',
-//     marginBottom: 5,
-//   },
-// });
+const App = reduxifyNavigator(AppNavigator, "root");
+const mapStateToProps = (state) => ({
+    state: state.nav
+});
+
+// Creating Saga Middleware instance
+const sagaMiddleware = createSagaMiddleware();
+
+// Creating Saga Combination of Application Sagas
+function* sagas() {
+    yield all([
+        fork(LoginSagas),
+        fork(RegisterSagas),
+        fork(UserSagas),
+        fork(GroupSaga)
+    ]);
+}
+
+const AppWithNavigationState = connect(mapStateToProps)(App);
+
+const Store = createStore(reducer, applyMiddleware(middleware, sagaMiddleware));
+
+// Run Saga Middleware
+sagaMiddleware.run(sagas);
+
+export default class Root extends React.Component {
+    render() {
+        return (
+            <Provider store={Store}>
+                <AppWithNavigationState/>
+            </Provider>
+        );
+    }
+}
