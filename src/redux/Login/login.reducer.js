@@ -31,6 +31,15 @@ export const LoginReducer = (state = {
                 pseudo: action.pseudo,
                 email: action.email
             };
+        case LoginActionsType.Logout:
+            return {
+                ...state,
+                status: 'NONE',
+                access_token: null,
+                pseudo: null,
+                email: null,
+                error_message: null
+            };
         default:
             return state;
     }

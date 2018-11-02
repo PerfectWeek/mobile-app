@@ -2,7 +2,8 @@ export const LoginActionsType = {
     Login: 'LOGIN',
     LoginSuccess: 'LOGIN_SUCCESS',
     LoginFail: 'LOGIN_FAIL',
-    UpdateUserInfo: 'UPDATE_USER_INFO'
+    UpdateUserInfo: 'UPDATE_USER_INFO',
+    Logout: 'LOGOUT'
 };
 
 export const Login = (email, password) => {
@@ -35,5 +36,11 @@ export const UpdateUserInfo = (pseudo, email) => {
         type: LoginActionsType.UpdateUserInfo,
         pseudo,
         email,
+    }
+};
+
+export const Logout = () => {
+    return {
+        type: LoginActionsType.Logout
     }
 };

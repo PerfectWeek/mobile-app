@@ -4,6 +4,8 @@ import {Profile} from './Profile';
 import {Groups} from './Groups';
 import {createBottomTabNavigator} from "react-navigation";
 import {Dashboard} from "./dashboard";
+import { Platform } from 'react-native';
+// import Icon from 'react-native-vector-icons';
 
 export default createBottomTabNavigator(
     {
@@ -43,6 +45,7 @@ export default createBottomTabNavigator(
             },
             style: {
                 backgroundColor: '#e0e0e0',
+                paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
             },
         }
     }

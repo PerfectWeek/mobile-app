@@ -1,9 +1,9 @@
 import React from 'react';
-import {View} from 'react-native';
+import {View, Platform} from 'react-native';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider, connect} from 'react-redux';
 import {LoginReducer} from "./src/redux/Login/login.reducer";
-import {createStackNavigator} from 'react-navigation';
+import {createSwitchNavigator} from 'react-navigation';
 import Home from "./src/views/home";
 import {RegisterScreen} from "./src/views/register";
 import {LoginScreen} from "./src/views/login";
@@ -26,20 +26,21 @@ import {GroupSaga} from "./src/redux/Groups/groups.saga";
 import {fork, all} from "redux-saga/effects";
 import createSagaMiddleware from 'redux-saga';
 
-const AppNavigator = createStackNavigator(
+const AppNavigator = createSwitchNavigator(
     {
         Login: {
             screen: LoginScreen
         },
-        Home: {
-            screen: Home
-        },
         Register: {
             screen: RegisterScreen
+        },
+        Home: {
+            screen: Home
         }
     },
+
     {
-        initialRouteName: 'Login'
+        initialRouteName: 'Login',
     });
 
 const navReducer = createNavigationReducer(AppNavigator);
@@ -80,10 +81,17 @@ const Store = createStore(reducer, applyMiddleware(middleware, sagaMiddleware));
 sagaMiddleware.run(sagas);
 
 export default class Root extends React.Component {
+    async componentWillMount() {
+        await Expo.Font.loadAsync({
+            FontAwesome: require("expo/node_modules/@expo/vector-icons/fonts/FontAwesome.ttf")
+        });
+        this.setState({isReady: true});
+    }
+
     render() {
         return (
             <Provider store={Store}>
-                <AppWithNavigationState/>
+                    <AppWithNavigationState/>
             </Provider>
         );
     }
