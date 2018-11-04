@@ -1,11 +1,9 @@
 import React from 'react';
 import {View, Text, Button, Animated} from 'react-native';
 import {Container, Header, Content, Form, Item, Input} from 'native-base';
-import {StackActions, NavigationActions} from 'react-navigation';
 import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
 import {LoginActionsType, Login} from "../redux/Login/login.actions";
-import {Test} from "../redux/Test/test.actions";
 import LottieView from 'lottie-react-native';
 import {validateEmail} from "../Utils/utils.js";
 import {validateNotEmpty} from "../Utils/utils";
@@ -16,18 +14,9 @@ class _LoginScreen extends React.Component {
         this.state = {username: 'jean.valjean@epitech.eu', password: 'AmazingPassword42'};
     }
 
-    async componentWillMount() {
-        await Expo.Font.loadAsync({
-            Roboto: require("native-base/Fonts/Roboto.ttf"),
-            Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
-            Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf")
-        });
-        this.setState({isReady: true});
-    }
-
     render() {
         return (
-            <Container>
+            <Container style={{paddingTop: Expo.Constants.statusBarHeight}}>
                 <Content>
                     <Form>
                         <Text>{this.props.login.status}</Text>
@@ -45,11 +34,6 @@ class _LoginScreen extends React.Component {
                                         return;
                                     }
                                     this.props.Login(this.state.username, this.state.password);
-                                    /*const moveToLogin = StackActions.reset({
-                                        index: 0,
-                                        actions: [NavigationActions.navigate({routeName: 'Home'})],
-                                    });
-                                    this.props.navigation.dispatch(moveToLogin);*/
                                 }}>
                         </Button>
                         <Button title={"Or register"} disabled={this.props.login.status === LoginActionsType.Login}

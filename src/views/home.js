@@ -1,73 +1,51 @@
 import React from 'react';
-import {Container, Text, Header, Content, Footer, FooterTab, Button, Icon, Form} from 'native-base';
+import {Icon} from 'native-base';
 import {Profile} from './Profile';
 import {Groups} from './Groups';
-import {withNavigation} from "react-navigation";
-import connect from "react-redux/es/connect/connect";
-import {NavigationActions, StackActions} from 'react-navigation'
-import {Network, Post} from "../Network/Requests";
-import {UserActionsType} from "../redux/User/user.actions";
+import {createBottomTabNavigator} from "react-navigation";
 import {Dashboard} from "./dashboard";
+import { Platform } from 'react-native';
+// import Icon from 'react-native-vector-icons';
 
-const TabScreens = [
-    Dashboard,
-    Profile,
-    Groups
-];
-
-export class _Home extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            tabIdx: 0
-        };
+export default createBottomTabNavigator(
+    {
+        Dashboard: {
+            screen: Dashboard,
+            navigationOptions: {
+                tabBarIcon: ({tintColor}) => <Icon
+                    name='home'
+                    type='FontAwesome'
+                    style={{color: tintColor}}/>
+            }
+        },
+        Profile: {
+            screen: Profile,
+            navigationOptions: {
+                tabBarIcon: ({focused, tintColor}) => <Icon
+                    name='user'
+                    type='FontAwesome'
+                    style={{color: tintColor}}/>
+            }
+        },
+        Groups: {
+            screen: Groups, navigationOptions: {
+                tabBarIcon: ({focused, tintColor}) => <Icon
+                    name='users'
+                    type='FontAwesome'
+                    style={{color: tintColor}}/>
+            }
+        }
+    },
+    {
+        tabBarOptions: {
+            activeTintColor: '#2477d6',
+            inactiveTintColor: 'grey',
+            labelStyle: {
+                fontSize: 12,
+            },
+            style: {
+                backgroundColor: '#e0e0e0'
+            },
+        }
     }
-
-    render() {
-        const TabScreen = TabScreens[this.state.tabIdx];
-        return (
-            <Container>
-                <Content>
-                    <TabScreen>
-                    </TabScreen>
-                </Content>
-
-                <Footer>
-                    <FooterTab>
-                        <Button active={this.state.tabIdx === 0} onPress={() => {
-                            this.setState({
-                                tabIdx: 0
-                            })
-                        }}>
-                            <Icon name="home"/>
-                        </Button>
-                        <Button active={this.state.tabIdx === 1} onPress={() => {
-                            this.setState({
-                                tabIdx: 1
-                            })
-                        }}>
-                            <Icon name="person"/>
-                        </Button>
-                        <Button active={this.state.tabIdx === 2} onPress={() => {
-                            this.setState({
-                                tabIdx: 2
-                            })
-                        }}>
-                            <Icon name="apps"/>
-                        </Button>
-                    </FooterTab>
-                </Footer>
-            </Container>
-        )
-    }
-}
-
-const mapStateToProps = (state, ownProps) => {
-    return {
-        ...ownProps,
-        login: state.login
-    }
-};
-
-export const Home = withNavigation(connect(mapStateToProps)(_Home));
-
+);
