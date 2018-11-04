@@ -44,8 +44,7 @@ export default createBottomTabNavigator(
                 fontSize: 12,
             },
             style: {
-                backgroundColor: '#e0e0e0',
-                paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
+                backgroundColor: '#e0e0e0'
             },
         }
     }

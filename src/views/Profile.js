@@ -2,7 +2,7 @@ import React from 'react';
 import {Container, Text, Header, Content, Footer, FooterTab, Button, Icon, Form, Item, Input} from 'native-base';
 import connect from "react-redux/es/connect/connect";
 import {Login} from "../redux/Login/login.actions";
-import {View, Alert} from "react-native";
+import {View, Alert, Platform} from "react-native";
 import {DeleteUser, GetInfo, UpdateInfo, UserActionsType} from "../redux/User/user.actions";
 import {RegisterActionsType} from "../redux/Register/register.actions";
 import LottieView from "lottie-react-native";
@@ -21,7 +21,9 @@ export class _Profile extends React.Component {
             this.state = {pseudo: this.props.user.user_info.pseudo};
         }
         return (
-            <View>
+            <View style={{
+                paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
+            }}>
                 <Text h1>Profile</Text>
                 <Text>{this.props.user.status}</Text>
                 {

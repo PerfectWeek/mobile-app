@@ -13,10 +13,10 @@ class _LoginScreen extends React.Component {
         super(props);
         this.state = {username: 'jean.valjean@epitech.eu', password: 'AmazingPassword42'};
     }
-    // style={{paddingTop: Expo.Constants.statusBarHeight}}
+
     render() {
         return (
-            <Container >
+            <Container style={{paddingTop: Expo.Constants.statusBarHeight}}>
                 <Content>
                     <Form>
                         <Text>{this.props.login.status}</Text>
@@ -34,11 +34,6 @@ class _LoginScreen extends React.Component {
                                         return;
                                     }
                                     this.props.Login(this.state.username, this.state.password);
-                                    /*const moveToLogin = StackActions.reset({
-                                        index: 0,
-                                        actions: [NavigationActions.navigate({routeName: 'Home'})],
-                                    });
-                                    this.props.navigation.dispatch(moveToLogin);*/
                                 }}>
                         </Button>
                         <Button title={"Or register"} disabled={this.props.login.status === LoginActionsType.Login}

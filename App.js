@@ -83,7 +83,8 @@ sagaMiddleware.run(sagas);
 export default class Root extends React.Component {
     async componentWillMount() {
         await Expo.Font.loadAsync({
-            FontAwesome: require("expo/node_modules/@expo/vector-icons/fonts/FontAwesome.ttf")
+            FontAwesome: require("expo/node_modules/@expo/vector-icons/fonts/FontAwesome.ttf"),
+            Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
         });
         this.setState({isReady: true});
     }
@@ -91,7 +92,7 @@ export default class Root extends React.Component {
     render() {
         return (
             <Provider store={Store}>
-                    <AppWithNavigationState/>
+                <AppWithNavigationState/>
             </Provider>
         );
     }

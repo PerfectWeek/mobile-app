@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+import {Platform, View} from 'react-native';
 import {Container, Text, Header, Content, Footer, FooterTab, Button, Icon} from 'native-base';
 import connect from "react-redux/es/connect/connect";
 import {GetGroup, GroupsActionType} from "../redux/Groups/groups.actions";
@@ -14,7 +14,9 @@ export class _Groups extends React.Component {
     render() {
         const groupInfo = this.props.groups.groups;
         return (
-            <View>
+            <View style={{
+                paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
+            }}>
                 <Text>Groupes</Text>
                 {groupInfo !== undefined ?
                     <View>

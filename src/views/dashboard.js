@@ -1,7 +1,7 @@
 import React from 'react';
 import {Container, Text, Header, Content, Footer, FooterTab, Button, Icon, Form, Item, Input} from 'native-base';
 import connect from "react-redux/es/connect/connect";
-import {View, Alert} from "react-native";
+import {View, Alert, Platform} from "react-native";
 import {Logout} from "../redux/Login/login.actions";
 
 export class _Dasboard extends React.Component {
@@ -15,6 +15,7 @@ export class _Dasboard extends React.Component {
                 flex: 1,
                 flexDirection: 'row',
                 justifyContent: 'center',
+                paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
             }}>
                 <Text>Welcome <Text style={{fontWeight: 'bold'}}> {this.props.login.pseudo}</Text> !</Text>
             </Container>
