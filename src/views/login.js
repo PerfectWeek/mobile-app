@@ -1,14 +1,18 @@
 import React from 'react';
-import {View, Text, Button, Animated} from 'react-native';
-import {Container, Header, Content, Form, Item, Input} from 'native-base';
+import Image from 'react-native';
+import {Icon, View, Text, Button, Container, Content, Form, Item, Input} from 'native-base';
 import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
 import {LoginActionsType, Login} from "../redux/Login/login.actions";
 import LottieView from 'lottie-react-native';
 import {validateEmail} from "../Utils/utils.js";
-import {validateNotEmpty} from "../Utils/utils";
+import {validateNotEmpty, validatePassword} from "../Utils/utils";
 
 class _LoginScreen extends React.Component {
+    static navigationOptions = {
+        title: 'Login'
+    };
+
     constructor(props) {
         super(props);
         this.state = {username: 'jean.valjean@epitech.eu', password: 'AmazingPassword42'};
@@ -18,30 +22,49 @@ class _LoginScreen extends React.Component {
         return (
             <Container style={{paddingTop: Expo.Constants.statusBarHeight}}>
                 <Content>
+                    <Image source={{uri: '../../Resources/Image/logo_pw.png'}}/>
                     <Form>
-                        <Text>{this.props.login.status}</Text>
-                        <Item error={!validateEmail(this.state.username)}>
+                        <Item style={{marginTop: 0}} error={!validateEmail(this.state.username)}>
+                            <Icon active name='person'/>
                             <Input placeholder="Username" value={this.state.username}
                                    onChangeText={(text) => this.setState({username: text})}/>
                         </Item>
-                        <Item error={!validateNotEmpty(this.state.password)} last>
+                        <Item style={{marginTop: 10}} error={!validateNotEmpty(this.state.password)} last>
+                            <Icon active name='lock'/>
                             <Input placeholder="Password" value={this.state.password}
                                    onChangeText={(text) => this.setState({password: text})} secureTextEntry={true}/>
                         </Item>
-                        <Button title="Login" disabled={this.props.login.status === LoginActionsType.Login}
-                                onPress={() => {
-                                    if (!validateEmail(this.state.username) || !validateNotEmpty(this.state.password)) {
-                                        return;
-                                    }
-                                    this.props.Login(this.state.username, this.state.password);
-                                }}>
-                        </Button>
-                        <Button title={"Or register"} disabled={this.props.login.status === LoginActionsType.Login}
-                                onPress={() => {
-                                    this.props.navigation.navigate('Register');
-                                }}>
-                        </Button>
-                        <Text style={{color: 'red', textAlign: 'center'}}>{this.props.login.error_message}</Text>
+                        <View style={{
+                            marginTop: 10,
+                            flex: 1,
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                        }}>
+                            <Button rounded disabled={this.props.login.status === LoginActionsType.Login ||
+                            !validatePassword(this.state.password) || !validateNotEmpty(this.state.username)}
+                                    onPress={() => {
+                                        if (!validateEmail(this.state.username) || !validateNotEmpty(this.state.password)) {
+                                            return;
+                                        }
+                                        this.props.Login(this.state.username, this.state.password);
+                                    }}>
+                                <Text>Login</Text>
+                            </Button>
+                            <Button rounded style={{marginLeft: 10}}
+                                    disabled={this.props.login.status === LoginActionsType.Login}
+                                    onPress={() => {
+                                        this.props.navigation.navigate('Register');
+                                    }}>
+                                <Text>
+                                    Or Register
+                                </Text>
+                            </Button>
+                        </View>
+                        <Text style={{
+                            marginTop: 10,
+                            color: 'red',
+                            textAlign: 'center'
+                        }}>{this.props.login.error_message}</Text>
                     </Form>
 
                     <View style={{
