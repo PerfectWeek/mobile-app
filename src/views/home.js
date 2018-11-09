@@ -4,8 +4,6 @@ import {Profile} from './Profile';
 import {Groups} from './Groups';
 import {createBottomTabNavigator} from "react-navigation";
 import {Dashboard} from "./dashboard";
-import { Platform } from 'react-native';
-// import Icon from 'react-native-vector-icons';
 
 export default createBottomTabNavigator(
     {
@@ -38,13 +36,13 @@ export default createBottomTabNavigator(
     },
     {
         tabBarOptions: {
-            activeTintColor: '#2477d6',
-            inactiveTintColor: 'grey',
+            activeTintColor: '#24d683',
+            inactiveTintColor: 'white',
             labelStyle: {
                 fontSize: 12,
             },
             style: {
-                backgroundColor: '#e0e0e0'
+                backgroundColor: '#2477d6'
             },
         }
     }

@@ -1,11 +1,10 @@
 import React from 'react';
-import {Container, Text, Header, Content, Footer, FooterTab, Button, Icon, Form, Item, Input} from 'native-base';
+import {Button, Header, Title, Body, Form, Icon, Input, Item, Text, View} from 'native-base';
 import connect from "react-redux/es/connect/connect";
-import {Login} from "../redux/Login/login.actions";
-import {View, Alert, Platform} from "react-native";
+import {Alert, Platform} from "react-native";
 import {DeleteUser, GetInfo, UpdateInfo, UserActionsType} from "../redux/User/user.actions";
-import {RegisterActionsType} from "../redux/Register/register.actions";
 import LottieView from "lottie-react-native";
+import {validateNotEmpty} from "../Utils/utils";
 
 
 export class _Profile extends React.Component {
@@ -24,59 +23,71 @@ export class _Profile extends React.Component {
             <View style={{
                 paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
             }}>
-                <Text h1>Profile</Text>
-                <Text>{this.props.user.status}</Text>
+
+                <Header androidStatusBarColor="#34495e" style={{backgroundColor: '#2477d6'}}>
+                    <Body>
+                    <Title>Profile</Title>
+                    </Body>
+                </Header>
                 {
                     this.props.user.user_info !== undefined ?
                         <View>
                             <Form>
-                                <Item>
+                                <Item error={!validateNotEmpty(this.state.pseudo)}>
+                                    <Icon active name='person'/>
                                     <Input label="Username" value={this.state.pseudo}
                                            onChangeText={(text) => this.setState({pseudo: text})}/>
                                 </Item>
                                 <Item>
-                                    <Input disabled={true} label="Email" value={this.props.user.user_info.email}/>
+                                    <Icon active name='mail'/>
+                                    <Input disabled label="Email" value={this.props.user.user_info.email}/>
                                 </Item>
-                                <Button
-                                    disabled={this.props.user.status === UserActionsType.UpdateInfo || this.props.user.status === UserActionsType.DeleteUser}
-                                    onPress={() => {
-                                        if (this.state.pseudo === "" || this.state.pseudo === null)
-                                            this.state.error = "Invalid pseudo";
-                                        else
-                                            this.props.UpdateInfo(this.props.user.user_info.pseudo, this.state.pseudo);
-                                    }}>
-                                    <Text>Update</Text>
-                                </Button>
-                                <Button
-                                    disabled={this.props.user.status === UserActionsType.UpdateInfo || this.props.user.status === UserActionsType.DeleteUser}
-                                    onPress={() => {
-                                        Alert.alert(
-                                            'Delete account ?',
-                                            '',
-                                            [
-                                                {
-                                                    text: 'Yes', onPress: () => {
-                                                        console.log("mangetesmorts");
-                                                        this.props.DeleteUser(this.props.user.user_info.pseudo);
-                                                    }
-                                                },
-                                                {
-                                                    text: 'Cancel', onPress: () => {
-                                                    }, style: 'cancel'
-                                                },
-                                            ],
-                                            {cancelable: false}
-                                        )
-                                    }}>
-                                    <Text>Delete account</Text>
 
-                                </Button>
+                                <View style={{
+                                    marginTop: 20,
+                                    flex: 1,
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                }}>
+                                    <Button
+                                        disabled={this.props.user.status === UserActionsType.UpdateInfo || this.props.user.status === UserActionsType.DeleteUser ||
+                                        !validateNotEmpty(this.state.pseudo)}
+                                        onPress={() => {
+                                            if (this.state.pseudo === "" || this.state.pseudo === null)
+                                                this.state.error = "Invalid pseudo";
+                                            else
+                                                this.props.UpdateInfo(this.props.user.user_info.pseudo, this.state.pseudo);
+                                        }}>
+                                        <Text>Update</Text>
+                                    </Button>
+                                    <Button style={{marginLeft: 10}} danger
+                                            disabled={this.props.user.status === UserActionsType.UpdateInfo || this.props.user.status === UserActionsType.DeleteUser}
+                                            onPress={() => {
+                                                Alert.alert(
+                                                    'Delete account ?',
+                                                    '',
+                                                    [
+                                                        {
+                                                            text: 'Yes', onPress: () => {
+                                                                this.props.DeleteUser(this.props.user.user_info.pseudo);
+                                                            }
+                                                        },
+                                                        {
+                                                            text: 'Cancel', onPress: () => {
+                                                            }, style: 'cancel'
+                                                        },
+                                                    ],
+                                                    {cancelable: false}
+                                                )
+                                            }}>
+                                        <Icon active name='trash'/>
+                                        <Text>Delete account</Text>
+                                    </Button>
+                                </View>
                                 <Text style={{
                                     color: 'red',
                                     textAlign: 'center'
                                 }}>{this.state.error !== null ? this.state.error : null}</Text>
-                                {/*<Text style={{color: 'red', textAlign: 'center'}}>{this.props.register.error_message}</Text>*/}
-                                {/*<Text style={{color: 'green', textAlign: 'center'}}>{this.props.register.status === "REGISTER_SUCCESS" ? "User created" : null}</Text>*/}
                             </Form>
                         </View>
 

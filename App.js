@@ -1,12 +1,10 @@
 import React from 'react';
-import {View, Platform} from 'react-native';
+import { StyleProvider } from 'native-base';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider, connect} from 'react-redux';
 import {LoginReducer} from "./src/redux/Login/login.reducer";
 import {createSwitchNavigator} from 'react-navigation';
 import Home from "./src/views/home";
-import {RegisterScreen} from "./src/views/register";
-import {LoginScreen} from "./src/views/login";
 import {
     createNavigationReducer,
     createReactNavigationReduxMiddleware,
@@ -25,14 +23,14 @@ import {GroupSaga} from "./src/redux/Groups/groups.saga";
 
 import {fork, all} from "redux-saga/effects";
 import createSagaMiddleware from 'redux-saga';
+import LoginNavigator from "./src/views/LoginNavigator";
+import getTheme from './native-base-theme/components';
+import platform from "./native-base-theme/variables/platform";
 
 const AppNavigator = createSwitchNavigator(
     {
         Login: {
-            screen: LoginScreen
-        },
-        Register: {
-            screen: RegisterScreen
+            screen: LoginNavigator
         },
         Home: {
             screen: Home
@@ -81,18 +79,29 @@ const Store = createStore(reducer, applyMiddleware(middleware, sagaMiddleware));
 sagaMiddleware.run(sagas);
 
 export default class Root extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {isReady: false};
+    }
+
     async componentWillMount() {
         await Expo.Font.loadAsync({
             FontAwesome: require("expo/node_modules/@expo/vector-icons/fonts/FontAwesome.ttf"),
-            Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
+            Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+            Ionicons: require("native-base/Fonts/Ionicons.ttf")
         });
         this.setState({isReady: true});
     }
 
     render() {
+        if (!this.state.isReady) {
+            return <Expo.AppLoading/>;
+        }
         return (
             <Provider store={Store}>
-                <AppWithNavigationState/>
+                <StyleProvider style={getTheme(platform)}>
+                    <AppWithNavigationState/>
+                </StyleProvider>
             </Provider>
         );
     }
