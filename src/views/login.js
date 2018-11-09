@@ -1,5 +1,5 @@
 import React from 'react';
-import Image from 'react-native';
+import {Image} from 'react-native';
 import {Icon, View, Text, Button, Container, Content, Form, Item, Input} from 'native-base';
 import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
@@ -15,14 +15,20 @@ class _LoginScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {username: 'jean.valjean@epitech.eu', password: 'AmazingPassword42'};
+        this.state = {username: 'jean.valjean3@epitech.eu', password: 'AmazingPassword42'};
     }
 
     render() {
         return (
             <Container style={{paddingTop: Expo.Constants.statusBarHeight}}>
                 <Content>
-                    <Image source={{uri: '../../Resources/Image/logo_pw.png'}}/>
+                    <View style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                        <Image source={require('../../Resources/Image/logo_pw.png')} style={{width: 400, height: 150}}/>
+                    </View>
+
                     <Form>
                         <Item style={{marginTop: 0}} error={!validateEmail(this.state.username)}>
                             <Icon active name='person'/>

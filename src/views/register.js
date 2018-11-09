@@ -13,7 +13,7 @@ class _RegisterScreen extends React.Component {
     };
     constructor(props) {
         super(props);
-        this.state = {username: 'jean', mail: 'jean.valjean@epitech.eu', password: 'AmazingPassword42'};
+        this.state = {username: 'pierresaid', mail: 'pierre.said@epitech.eu', password: 'AmazingPassword42'};
     }
 
     render() {

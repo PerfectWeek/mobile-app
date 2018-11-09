@@ -1,6 +1,6 @@
 import React from 'react';
 import {Platform, View} from 'react-native';
-import {Container, Text, Header, Content, Footer, FooterTab, Button, Icon} from 'native-base';
+import {Container, Text, Header, Content, Footer, FooterTab, Button, Icon, Body, Title} from 'native-base';
 import connect from "react-redux/es/connect/connect";
 import {GetGroup, GroupsActionType} from "../redux/Groups/groups.actions";
 
@@ -17,10 +17,14 @@ export class _Groups extends React.Component {
             <View style={{
                 paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
             }}>
-                <Text>Groupes</Text>
+                <Header androidStatusBarColor="#34495e" style={{backgroundColor: '#2477d6'}}>
+                    <Body>
+                    <Title>Groups</Title>
+                    </Body>
+                </Header>
                 {groupInfo !== undefined ?
                     <View>
-                        <Text>Groupe name : {groupInfo.name}</Text>
+                        <Text>Group name : {groupInfo.name}</Text>
                         <Text>Group members : </Text>
                         {groupInfo.members.map((data, idx) => {
                             console.log('data', data.pseudo);
