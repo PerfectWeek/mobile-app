@@ -1,8 +1,8 @@
 import React from 'react';
-import {Platform, View} from 'react-native';
-import {Container, Text, Header, Content, Footer, FooterTab, Button, Icon, Body, Title} from 'native-base';
+import {Dimensions, Platform, View, ScrollView} from 'react-native';
+import {Text, Header, Body, Title, List, ListItem, Card, CardItem} from 'native-base';
 import connect from "react-redux/es/connect/connect";
-import {GetGroup, GroupsActionType} from "../redux/Groups/groups.actions";
+import {GetGroup} from "../redux/Groups/groups.actions";
 
 
 export class _Groups extends React.Component {
@@ -23,18 +23,27 @@ export class _Groups extends React.Component {
                     </Body>
                 </Header>
                 {groupInfo !== undefined ?
-                    <View>
-                        <Text>Group name : {groupInfo.name}</Text>
-                        <Text>Group members : </Text>
-                        {groupInfo.members.map((data, idx) => {
-                            console.log('data', data.pseudo);
-                            return (
-                                <View key={idx}>
-                                    <Text>Pseudo : {data.pseudo}</Text>
-                                </View>
-                            );
-                        })}
-                    </View>
+                    <ScrollView style={{height: Dimensions.get('window').height}}>
+                        <Title>Group list</Title>
+                        <Card>
+                            <CardItem header>
+                                <Title>Group : {groupInfo.name}</Title>
+                            </CardItem>
+                            <CardItem>
+                                <Body>
+                                <Title>Group members</Title>
+                                <List style={{width: Dimensions.get('window').width}}
+                                    dataArray={groupInfo.members}
+                                    renderRow={(item) =>
+                                        <ListItem>
+                                            <Text>{item.pseudo}</Text>
+                                        </ListItem>
+                                    }>
+                                    </List>
+                                </Body>
+                            </CardItem>
+                        </Card>
+                    </ScrollView>
                     : null
                 }
             </View>
