@@ -24,7 +24,7 @@ export class _Groups extends React.Component {
                 </Header>
                 {groupInfo !== undefined ?
                     <ScrollView style={{height: Dimensions.get('window').height}}>
-                        <Title>Group list</Title>
+                        <Title>Groups list</Title>
                         <Card>
                             <CardItem header>
                                 <Title>Group : {groupInfo.name}</Title>
