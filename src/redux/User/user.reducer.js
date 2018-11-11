@@ -4,6 +4,13 @@ export const UserReducer = (state = {
     status: 'NONE'
 }, action) => {
     switch (action.type) {
+        case UserActionsType.UserReset:
+            return {
+                ...state,
+                status: 'NONE',
+                error_message: null,
+                user_info: null
+            };
         case UserActionsType.GetInfo:
             return {
                 ...state,
@@ -43,7 +50,7 @@ export const UserReducer = (state = {
         case UserActionsType.DeleteUser:
             return {
                 ...state,
-                pseudo: action.pseudo ,
+                pseudo: action.pseudo,
                 status: UserActionsType.DeleteUser
             };
         case UserActionsType.DeleteUserSuccess:

@@ -6,11 +6,13 @@ import {connect} from "react-redux";
 import {Register, RegisterActionsType} from "../redux/Register/register.actions";
 import LottieView from "lottie-react-native";
 import {validateEmail, validateNotEmpty, validatePassword} from "../Utils/utils";
+import {Platform} from "react-native";
 
 class _RegisterScreen extends React.Component {
     static navigationOptions = {
         title: 'Register'
     };
+
     constructor(props) {
         super(props);
         this.state = {username: 'pierresaid', mail: 'pierre.said@epitech.eu', password: 'AmazingPassword42'};
@@ -18,7 +20,7 @@ class _RegisterScreen extends React.Component {
 
     render() {
         return (
-            <Container style={{paddingTop: 10}}>
+            <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight}}>
                 <Content>
                     <Form>
                         <Item error={!validateNotEmpty(this.state.username)}>
@@ -62,7 +64,7 @@ class _RegisterScreen extends React.Component {
                             marginTop: 10,
                             color: 'green',
                             textAlign: 'center'
-                        }}>{this.props.register.status === "REGISTER_SUCCESS" ? "User created" : null}</Text>
+                        }}>{this.props.register.status === "REGISTER_SUCCESS" ? "User created. We sent you an email for confirmation." : null}</Text>
                     </Form>
                     <View style={{
                         flex: 1,

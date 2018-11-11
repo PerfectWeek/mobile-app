@@ -1,4 +1,7 @@
+import {LoginActionsType} from "../Login/login.actions";
+
 export const UserActionsType = {
+    UserReset: 'RESET',
     GetInfo: 'GET_INFO',
     GetInfoSuccess: 'GET_INFO_SUCCESS',
     GetInfoFail: 'GET_INFO_FAIL',
@@ -73,5 +76,11 @@ export const DeleteUserFail= (error_message) => {
     return {
         type: UserActionsType.DeleteUserFail,
         error_message: error_message
+    }
+};
+
+export const UserReset = () => {
+    return {
+        type: UserActionsType.UserReset
     }
 };
