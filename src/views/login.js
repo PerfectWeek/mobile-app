@@ -15,7 +15,7 @@ class _LoginScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {username: 'jean.valjean3@epitech.eu', password: 'AmazingPassword42'};
+        this.state = {username: 'timour.almazov@epitech.eu', password: 'Tim12345'};
     }
 
     render() {
