@@ -1,7 +1,7 @@
 import {put, takeEvery} from "redux-saga/effects";
-import {LoginActionsType, LoginFail, LoginSuccess, UpdateUserInfo} from "./login.actions";
+import {LoginActionsType, LoginFail, LoginSuccess} from "./login.actions";
 import {Network} from "../../Network/Requests";
-import {NavigationActions, StackActions} from 'react-navigation'
+import {NavigationActions} from 'react-navigation'
 import {UserReset} from "../User/user.actions";
 
 function _login(email, password) {

@@ -1,4 +1,3 @@
-import {LoginActionsType} from "../Login/login.actions";
 
 export const UserActionsType = {
     UserReset: 'RESET',

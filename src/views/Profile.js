@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Right, Header, Title, Body, Form, Icon, Input, Item, Text, View} from 'native-base';
 import connect from "react-redux/es/connect/connect";
 import {Alert, Platform} from "react-native";
-import {DeleteUser, GetInfo, UpdateInfo, UpdateInfoSuccess, UserActionsType} from "../redux/User/user.actions";
+import {DeleteUser, GetInfo, UpdateInfo, UserActionsType} from "../redux/User/user.actions";
 import LottieView from "lottie-react-native";
 import {validateNotEmpty} from "../Utils/utils";
 import {Logout} from "../redux/Login/login.actions";
