@@ -7,7 +7,7 @@ import {
     Title
 } from 'native-base';
 import connect from "react-redux/es/connect/connect";
-import {Platform} from "react-native";
+import {Image, Platform} from "react-native";
 import {Logout} from "../redux/Login/login.actions";
 
 export class _Dasboard extends React.Component {
@@ -26,9 +26,10 @@ export class _Dasboard extends React.Component {
                     <Title>Dashboard</Title>
                     </Body>
                 </Header>
+                <Image source={require('../../Resources/Image/logo_pw.png')} style={{width: 350, height: 150}}/>
 
-                <Text style={{textAlign: 'center'}}>Welcome
-                    <Text style={{fontWeight: 'bold'}}> {this.props.login.pseudo} </Text> <Text> !</Text>
+                <Text style={{fontSize: 20,  marginTop: 20, textAlign: 'center'}}>Welcome
+                    <Text style={{fontSize: 20, fontWeight: 'bold'}}> {this.props.login.pseudo} </Text> <Text style={{fontSize: 20}}> !</Text>
                 </Text>
 
             </View>

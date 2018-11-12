@@ -2,6 +2,7 @@ import {put, takeEvery} from "redux-saga/effects";
 import {LoginActionsType, LoginFail, LoginSuccess, UpdateUserInfo} from "./login.actions";
 import {Network} from "../../Network/Requests";
 import {NavigationActions, StackActions} from 'react-navigation'
+import {UserReset} from "../User/user.actions";
 
 function _login(email, password) {
     return Network.Post("/auth/login", {
@@ -26,12 +27,13 @@ function* Login(action) {
             yield put(LoginFail("Connection error"));
     }
 }
-//
-// function* _UpdateUserInfo(action) {
-//     yield put(UpdateUserInfo(action.pseudo, action.email));
-// }
+
+function* Logout(action) {
+    yield put(NavigationActions.navigate({routeName: 'Login'}));
+    yield put(UserReset());
+}
 
 export function* LoginSagas() {
     yield takeEvery(LoginActionsType.Login, Login);
-    // yield takeEvery(LoginActionsType.UpdateUserInfo, _UpdateUserInfo);
+    yield takeEvery(LoginActionsType.Logout, Logout);
 }

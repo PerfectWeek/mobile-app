@@ -1,10 +1,11 @@
 import React from 'react';
-import {Button, Header, Title, Body, Form, Icon, Input, Item, Text, View} from 'native-base';
+import {Button, Right, Header, Title, Body, Form, Icon, Input, Item, Text, View} from 'native-base';
 import connect from "react-redux/es/connect/connect";
 import {Alert, Platform} from "react-native";
-import {DeleteUser, GetInfo, UpdateInfo, UserActionsType} from "../redux/User/user.actions";
+import {DeleteUser, GetInfo, UpdateInfo, UpdateInfoSuccess, UserActionsType} from "../redux/User/user.actions";
 import LottieView from "lottie-react-native";
 import {validateNotEmpty} from "../Utils/utils";
+import {Logout} from "../redux/Login/login.actions";
 
 
 export class _Profile extends React.Component {
@@ -28,9 +29,23 @@ export class _Profile extends React.Component {
                     <Body>
                     <Title>Profile</Title>
                     </Body>
+                    <Right>
+                        <Button transparent onPress={() => {
+                            Alert.alert('Logout ?', '', [{
+                                text: 'Yes', onPress: () => {
+                                    this.props.Logout();
+                                }
+                            }, {
+                                text: 'Cancel', onPress: () => {
+                                }, style: 'cancel'
+                            }], {cancelable: false})
+                        }}>
+                            <Icon type={"FontAwesome"} name='power-off'/>
+                        </Button>
+                    </Right>
                 </Header>
                 {
-                    this.props.user.user_info !== undefined ?
+                    this.props.user.user_info !== undefined && this.props.user.user_info !== null ?
                         <View>
                             <Form>
                                 <Item error={!validateNotEmpty(this.state.pseudo)}>
@@ -38,8 +53,8 @@ export class _Profile extends React.Component {
                                     <Input label="Username" value={this.state.pseudo}
                                            onChangeText={(text) => this.setState({pseudo: text})}/>
                                 </Item>
-                                <Item>
-                                    <Icon active name='mail'/>
+                                <Item disabled>
+                                    <Icon disabled name='mail'/>
                                     <Input disabled label="Email" value={this.props.user.user_info.email}/>
                                 </Item>
 
@@ -58,36 +73,40 @@ export class _Profile extends React.Component {
                                             else
                                                 this.props.UpdateInfo(this.props.user.user_info.pseudo, this.state.pseudo);
                                         }}>
+                                        <Icon name='refresh'/>
                                         <Text>Update</Text>
                                     </Button>
                                     <Button style={{marginLeft: 10}} danger
                                             disabled={this.props.user.status === UserActionsType.UpdateInfo || this.props.user.status === UserActionsType.DeleteUser}
                                             onPress={() => {
-                                                Alert.alert(
-                                                    'Delete account ?',
-                                                    '',
-                                                    [
-                                                        {
-                                                            text: 'Yes', onPress: () => {
-                                                                this.props.DeleteUser(this.props.user.user_info.pseudo);
-                                                            }
-                                                        },
-                                                        {
-                                                            text: 'Cancel', onPress: () => {
-                                                            }, style: 'cancel'
-                                                        },
-                                                    ],
-                                                    {cancelable: false}
-                                                )
+                                                Alert.alert('Delete account ?', '', [{
+                                                    text: 'Yes', onPress: () => {
+                                                        this.props.DeleteUser(this.props.user.user_info.pseudo);
+                                                    }
+                                                }, {
+                                                    text: 'Cancel', onPress: () => {
+                                                    }, style: 'cancel'
+                                                }], {cancelable: false})
                                             }}>
                                         <Icon active name='trash'/>
                                         <Text>Delete account</Text>
                                     </Button>
                                 </View>
-                                <Text style={{
-                                    color: 'red',
-                                    textAlign: 'center'
-                                }}>{this.state.error !== null ? this.state.error : null}</Text>
+                                <View style={{
+                                    marginTop: 40
+                                }}>
+                                    <Text style={{
+                                        marginTop: 10,
+                                        color: 'red',
+                                        textAlign: 'center'
+                                    }}>
+                                        {this.state.error !== null ? this.state.error : null}</Text>
+                                    <Text style={{
+                                        marginTop: 10,
+                                        color: 'green',
+                                        textAlign: 'center'
+                                    }}>{this.props.user.status === UserActionsType.UpdateInfoSuccess ? "Update successful." : null}</Text>
+                                </View>
                             </Form>
                         </View>
 
@@ -123,7 +142,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         ...ownProps,
         GetInfo: (pseudo) => dispatch(GetInfo(pseudo)),
         UpdateInfo: (pseudo, new_pseudo) => dispatch(UpdateInfo(pseudo, new_pseudo)),
-        DeleteUser: (pseudo) => dispatch(DeleteUser(pseudo))
+        DeleteUser: (pseudo) => dispatch(DeleteUser(pseudo)),
+        Logout: () => dispatch(Logout())
     }
 };
 

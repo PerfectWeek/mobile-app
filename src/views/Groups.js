@@ -24,22 +24,28 @@ export class _Groups extends React.Component {
                 </Header>
                 {groupInfo !== undefined ?
                     <ScrollView style={{height: Dimensions.get('window').height}}>
-                        <Title>Groups list</Title>
+                        <Text style={{fontSize: 20, marginTop: 20}}>
+                            Groups list
+                        </Text>
                         <Card>
                             <CardItem header>
-                                <Title>Group : {groupInfo.name}</Title>
+                                <Text style={{fontSize: 20, marginTop: 20}}>
+                                    Group : {groupInfo.name}
+                                </Text>
                             </CardItem>
                             <CardItem>
                                 <Body>
-                                <Title>Group members</Title>
+                                <Text style={{fontSize: 20, marginTop: 20}}>
+                                    Group members
+                                </Text>
                                 <List style={{width: Dimensions.get('window').width}}
-                                    dataArray={groupInfo.members}
-                                    renderRow={(item) =>
-                                        <ListItem>
-                                            <Text>{item.pseudo}</Text>
-                                        </ListItem>
-                                    }>
-                                    </List>
+                                      dataArray={groupInfo.members}
+                                      renderRow={(item) =>
+                                          <ListItem>
+                                              <Text>{item.pseudo}</Text>
+                                          </ListItem>
+                                      }>
+                                </List>
                                 </Body>
                             </CardItem>
                         </Card>

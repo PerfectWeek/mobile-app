@@ -26,7 +26,7 @@ class _LoginScreen extends React.Component {
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}>
-                        <Image source={require('../../Resources/Image/logo_pw.png')} style={{width: 400, height: 150}}/>
+                        <Image source={require('../../Resources/Image/logo_pw.png')} style={{width: 350, height: 150}}/>
                     </View>
 
                     <Form>
