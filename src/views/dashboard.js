@@ -4,8 +4,11 @@ import {
     Header,
     View,
     Body,
-    Title
+    Title,
+    Card,
+    CardItem
 } from 'native-base';
+import {LinearGradient} from 'expo';
 import connect from "react-redux/es/connect/connect";
 import {Image, Platform} from "react-native";
 import {Logout} from "../redux/Login/login.actions";
@@ -34,7 +37,8 @@ export class _Dasboard extends React.Component {
                     marginLeft: 10,
                     marginRight: 10
                 }}>
-                    <Image source={require('../../Resources/Image/logo_pw.png')} style={{width: 200, height: 200}}/>
+
+                    {/*<Image source={require('../../Resources/Image/logo_pw.png')} style={{width: 200, height: 200}}/>*/}
 
                 </View>
 
@@ -42,7 +46,30 @@ export class _Dasboard extends React.Component {
                     <Text style={{fontSize: 20, fontWeight: 'bold'}}> {this.props.login.pseudo} </Text> <Text
                         style={{fontSize: 20}}> !</Text>
                 </Text>
-
+                <LinearGradient
+                    colors={['#7F7FD5', '#86A8E7', '#91EAE4']}
+                    style={{margin: 30, padding: 15, alignItems: 'center', borderRadius: 5}}>
+                    <Title style={{}}>Events</Title>
+                    <Text style={{color:'white'}}>
+                        5 new event in 2 different groups
+                    </Text>
+                </LinearGradient>
+                <LinearGradient
+                    colors={['#00c6ff', '#0072ff']}
+                    style={{margin: 30, padding: 15, alignItems: 'center', borderRadius: 5}}>
+                    <Title style={{}}>Rescheduling</Title>
+                    <Text style={{color:'white'}}>
+                        1 new demand of rescheduling
+                    </Text>
+                </LinearGradient>
+                <LinearGradient
+                    colors={['#1D976C', '#93F9B9']}
+                    style={{margin: 30, padding: 15, alignItems: 'center', borderRadius: 5}}>
+                    <Title style={{}}>Placeholder</Title>
+                    <Text style={{color:'white'}}>
+                        1 new demand of placeholder
+                    </Text>
+                </LinearGradient>
             </View>
 
         )

@@ -24,7 +24,11 @@ export class _Groups extends React.Component {
                     </Body>
                 </Header>
                 <ScrollView style={{marginLeft: 10, marginRight: 10, height: Dimensions.get('window').height}}>
-                    {groups === undefined ? null : groups.map((group) => {
+                    {groups === undefined ? null : (groups.length === 0) ?
+                        <Text style={{marginTop: 20, textAlign:'center', fontSize: 22}}>
+                            You are not in any groups
+                        </Text>
+                        : groups.map((group) => {
                         return (
                             <Animatable.View key={group.id} animation="fadeInUp">
                                 <List>
