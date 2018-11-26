@@ -22,7 +22,7 @@ class _RegisterScreen extends React.Component {
         return (
             <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight}}>
                 <Content>
-                    <Form>
+                    <Form style={{marginLeft: 10, marginRight: 30}}>
                         <Item error={!validateNotEmpty(this.state.username)}>
                             <Icon active name='person'/>
                             <Input placeholder="Username"

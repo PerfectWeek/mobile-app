@@ -88,7 +88,8 @@ export default class Root extends React.Component {
         await Expo.Font.loadAsync({
             FontAwesome: require("expo/node_modules/@expo/vector-icons/fonts/FontAwesome.ttf"),
             Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
-            Ionicons: require("native-base/Fonts/Ionicons.ttf")
+            Ionicons: require("native-base/Fonts/Ionicons.ttf"),
+            Lato_Bold: require("./Resources/Font/Lato-Bold.ttf"),
         });
         this.setState({isReady: true});
     }

@@ -6,6 +6,7 @@ import {DeleteUser, GetInfo, UpdateInfo, UserActionsType} from "../redux/User/us
 import LottieView from "lottie-react-native";
 import {validateNotEmpty} from "../Utils/utils";
 import {Logout} from "../redux/Login/login.actions";
+import {HeaderBackgroundColor} from "../../Style/Constant";
 
 
 export class _Profile extends React.Component {
@@ -25,7 +26,7 @@ export class _Profile extends React.Component {
                 paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
             }}>
 
-                <Header androidStatusBarColor="#34495e" style={{backgroundColor: '#2477d6'}}>
+                <Header androidStatusBarColor="#00AE93" style={{backgroundColor: HeaderBackgroundColor}}>
                     <Body>
                     <Title>Profile</Title>
                     </Body>

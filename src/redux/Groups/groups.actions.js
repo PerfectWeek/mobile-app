@@ -1,19 +1,17 @@
 export const GroupsActionType = {
-    GetGroup: 'GET_GROUP',
-    GetGroupSuccess: 'GET_GROUPINFO_SUCCESS',
-    GetGroupFail: 'GET_GROUPINFO_FAIL',
-    // UpdateGroup: 'UPDATE_INFO'
+    GetGroups: 'GET_GROUPS',
+    GetGroupSuccess: 'GET_GROUPS_SUCCESS',
+    GetGroupFail: 'GET_GROUPS_FAIL',
 };
 
-export const GetGroup = (groupId) => {
+export const GetGroups = (pseudo) => {
     return {
-        type: GroupsActionType.GetGroup,
-        groupId: groupId
+        type: GroupsActionType.GetGroups,
+        pseudo: pseudo
     }
 };
 
 export const GetGroupSuccess = (groups) => {
-    // console.log('hehre', groups)
     return {
         type: GroupsActionType.GetGroupSuccess,
         groups: groups,

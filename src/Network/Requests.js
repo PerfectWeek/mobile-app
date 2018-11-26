@@ -5,8 +5,8 @@ import {_Home} from "../views/home";
 import {Alert} from 'react-native';
 
 // axios.defaults.baseURL = 'http://192.168.1.6:3000';
-axios.defaults.baseURL = 'http://api.perfectweek.benard.pl';
-// axios.defaults.baseURL = 'https://api.kalastud.io';
+// axios.defaults.baseURL = 'http://api.perfectweek.benard.pl';
+axios.defaults.baseURL = 'https://api.kalastud.io';
 // axios.defaults.baseURL = 'https://kalastud.io:3000';
 
 export class Network {

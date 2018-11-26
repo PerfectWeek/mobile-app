@@ -4,24 +4,26 @@ import {Network} from "../../Network/Requests";
 import {Alert} from 'react-native'
 
 
-function* GetGroup(action) {
-    const resp = yield Network.Get('/groups/' + action.groupId + '/');
+function* GetGroups(action) {
+    const resp = yield Network.Get('/users/' + action.pseudo + '/groups');
     if (resp.status === 200) {
-        console.log(resp.data.group);
-        yield put(GetGroupSuccess(resp.data.group))
+        console.log(resp.data.groups);
+        yield put(GetGroupSuccess(resp.data.groups))
     }
     else {
         if (resp.data !== undefined && resp.data.message !== undefined) {
-            Alert.alert('Something went wrong !');
+            console.log(resp);
+            Alert.alert('Something went wrongo !');
             yield put(GetGroupFail(resp.data.message));
         }
         else {
-            Alert.alert('Something went wrong !');
+            console.log(resp);
+            Alert.alert('Something went wrongu !');
             yield put(GetGroupFail("Connection error"));
         }
     }
 }
 
 export function* GroupSaga() {
-    yield takeEvery(GroupsActionType.GetGroup, GetGroup)
+    yield takeEvery(GroupsActionType.GetGroups, GetGroups)
 }

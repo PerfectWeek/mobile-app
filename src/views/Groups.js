@@ -1,57 +1,54 @@
 import React from 'react';
-import {Dimensions, Platform, View, ScrollView} from 'react-native';
-import {Text, Header, Body, Title, List, ListItem, Card, CardItem} from 'native-base';
+import {Dimensions, Platform, View, ScrollView, Alert} from 'react-native';
+import {Text, Header, Body, Title, List, ListItem, Card, CardItem, Thumbnail, Left, Right, Content} from 'native-base';
 import connect from "react-redux/es/connect/connect";
-import {GetGroup} from "../redux/Groups/groups.actions";
-
+import {GetGroups} from "../redux/Groups/groups.actions";
+import * as Animatable from 'react-native-animatable';
+import {HeaderBackgroundColor} from "../../Style/Constant";
 
 export class _Groups extends React.Component {
     constructor(props) {
         super(props);
-        this.props.GetGroup(1);
+        this.props.GetGroups(this.props.login.pseudo);
     }
 
     render() {
-        const groupInfo = this.props.groups.groups;
+        const groups = this.props.groups.groups;
         return (
             <View style={{
                 paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
             }}>
-                <Header androidStatusBarColor="#34495e" style={{backgroundColor: '#2477d6'}}>
+                <Header androidStatusBarColor="#00AE93" style={{backgroundColor: HeaderBackgroundColor}}>
                     <Body>
                     <Title>Groups</Title>
                     </Body>
                 </Header>
-                {groupInfo !== undefined ?
-                    <ScrollView style={{height: Dimensions.get('window').height}}>
-                        <Text style={{fontSize: 20, marginTop: 20}}>
-                            Groups list
-                        </Text>
-                        <Card>
-                            <CardItem header>
-                                <Text style={{fontSize: 20, marginTop: 20}}>
-                                    Group : {groupInfo.name}
-                                </Text>
-                            </CardItem>
-                            <CardItem>
-                                <Body>
-                                <Text style={{fontSize: 20, marginTop: 20}}>
-                                    Group members
-                                </Text>
-                                <List style={{width: Dimensions.get('window').width}}
-                                      dataArray={groupInfo.members}
-                                      renderRow={(item) =>
-                                          <ListItem>
-                                              <Text>{item.pseudo}</Text>
-                                          </ListItem>
-                                      }>
+                <ScrollView style={{marginLeft: 10, marginRight: 10, height: Dimensions.get('window').height}}>
+                    {groups === undefined ? null : groups.map((group) => {
+                        return (
+                            <Animatable.View key={group.id} animation="fadeInUp">
+                                <List>
+                                    <ListItem onPress={() => {
+                                        Alert.alert('You tapped the button!');
+                                    }} avatar>
+                                        <Left>
+                                            <Thumbnail
+                                                source={{uri: 'https://picsum.photos/200/300/?random'}}/>
+                                        </Left>
+                                        <Body>
+                                        <Text style={{fontSize: 18, fontWeight: 'bold'}}>{group.name}</Text>
+                                        <Text>3 New event</Text>
+                                        </Body>
+                                        <Right>
+                                            <Text note>11 users</Text>
+                                        </Right>
+                                    </ListItem>
+
                                 </List>
-                                </Body>
-                            </CardItem>
-                        </Card>
-                    </ScrollView>
-                    : null
-                }
+                            </Animatable.View>
+                        );
+                    })}
+                </ScrollView>
             </View>
         )
     }
@@ -60,14 +57,15 @@ export class _Groups extends React.Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        GetGroup: (groupId) => dispatch(GetGroup(groupId))
+        GetGroups: (pseudo) => dispatch(GetGroups(pseudo))
     }
 };
 
 const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
-        groups: state.group
+        groups: state.group,
+        login: state.login
     }
 };
 

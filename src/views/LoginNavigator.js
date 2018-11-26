@@ -2,6 +2,7 @@ import React from 'react';
 import {createStackNavigator} from "react-navigation";
 import {LoginScreen} from "./login";
 import {RegisterScreen} from "./register";
+import {HeaderBackgroundColor} from "../../Style/Constant";
 
 export default createStackNavigator(
     {
@@ -16,7 +17,7 @@ export default createStackNavigator(
         initialRouteName: 'Login',
         navigationOptions: {
             headerStyle: {
-                backgroundColor: '#2477d6',
+                backgroundColor: HeaderBackgroundColor,
             },
             headerTintColor: '#fff',
             headerTitleStyle: {

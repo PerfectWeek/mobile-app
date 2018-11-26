@@ -2,10 +2,10 @@ import {GroupsActionType} from "./groups.actions";
 
 export const GroupReducer = (state = { status: 'NONE'}, action) => {
     switch (action.type) {
-        case GroupsActionType.GetGroup:
+        case GroupsActionType.GetGroups:
             return {
                 ...state,
-                status: GroupsActionType.GetGroup
+                status: GroupsActionType.GetGroups
             };
         case GroupsActionType.GetGroupSuccess:
             return {

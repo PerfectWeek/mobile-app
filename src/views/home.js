@@ -4,6 +4,7 @@ import {Profile} from './Profile';
 import {Groups} from './Groups';
 import {createBottomTabNavigator} from "react-navigation";
 import {Dashboard} from "./dashboard";
+import {HeaderBackgroundColor, Secondary} from "../../Style/Constant";
 
 export default createBottomTabNavigator(
     {
@@ -36,13 +37,13 @@ export default createBottomTabNavigator(
     },
     {
         tabBarOptions: {
-            activeTintColor: '#24d683',
+            activeTintColor: "#F3EDAF",
             inactiveTintColor: 'white',
             labelStyle: {
-                fontSize: 12,
+                fontSize: 14,
             },
             style: {
-                backgroundColor: '#2477d6'
+                backgroundColor: HeaderBackgroundColor
             },
         }
     }
