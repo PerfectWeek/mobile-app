@@ -1,6 +1,6 @@
 import React from 'react';
-import {Image} from 'react-native';
-import {Icon, View, Text, Button, Container, Content, Form, Item, Input} from 'native-base';
+import {Image, Dimensions, Animated, Easing} from 'react-native';
+import {Icon, View, Text, Button, Container, Form, Item, Input} from 'native-base';
 import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
 import {LoginActionsType, Login} from "../redux/Login/login.actions";
@@ -17,20 +17,65 @@ class _LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {username: 'timour.almazov@epitech.eu', password: 'Tim12345'};
+        this.spinValue = new Animated.Value(0);
+
+    }
+
+    componentDidMount(){
+        this.runAnimation();
+    }
+
+    runAnimation() {
+        this.spinValue.setValue(0);
+        Animated.timing(
+            this.spinValue,
+            {
+                toValue: 1,
+                duration: 400000,
+                easing: Easing.linear
+            }
+        ).start(() => this.runAnimation());
     }
 
     render() {
+        const spin = this.spinValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: ['0deg', '360deg']
+        });
+        const spinimgwidth = Dimensions.get('window').width+100;
         return (
             <Container style={{paddingTop: Expo.Constants.statusBarHeight}}>
-                <Content>
+                {/*<Content>*/}
                     <View style={{
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}>
-                        <Image source={require('../../Resources/Image/logo_pw.png')} style={{width: 350, height: 150}}/>
+                        <Image source={require('../../Resources/Image/pwlogo.png')} resizeMode={'contain'} style={{width: 350, height: 150}}/>
                     </View>
 
-                    <Form>
+                    {/*<Image source={require('../../Resources/Image/logo.png')} resizeMode={'contain'} style={{width: spinimgwidth, height: spinimgwidth,*/}
+                    {/*position: 'relative',*/}
+                    {/*left: -100,*/}
+                    {/*}}/>*/}
+                    <Animated.Image
+                        style={{transform: [{rotate: spin}],
+                            width: spinimgwidth,
+                            height: spinimgwidth,
+                            position: 'absolute',
+                            left: -spinimgwidth*0.60,
+                            top : Dimensions.get('window').height/2 - spinimgwidth/3,
+                            // backgroundColor: 'red'
+                        }}
+                        resizeMode={'contain'}
+                        source={require('../../Resources/Image/logo.png')}
+                        useNativeDriver={true}
+                    />
+
+                    <Form style={{backgroundColor: 'red',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: 300}}
+                    >
                         <Item style={{marginTop: 0}} error={!validateEmail(this.state.username)}>
                             <Icon active name='person'/>
                             <Input placeholder="Username" value={this.state.username}
@@ -94,7 +139,7 @@ class _LoginScreen extends React.Component {
                         </View>
                     </View>
 
-                </Content>
+                {/*</Content>*/}
             </Container>
         )
     }
