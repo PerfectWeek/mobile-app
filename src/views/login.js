@@ -10,7 +10,8 @@ import {validateNotEmpty, validatePassword} from "../Utils/utils";
 
 class _LoginScreen extends React.Component {
     static navigationOptions = {
-        title: 'Login'
+        title: 'Login',
+        header: null
     };
 
     constructor(props) {
