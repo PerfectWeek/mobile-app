@@ -90,6 +90,7 @@ export default class Root extends React.Component {
             Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
             Ionicons: require("native-base/Fonts/Ionicons.ttf"),
             Lato_Bold: require("./Resources/Font/Lato-Bold.ttf"),
+            SimpleLineIcons: require("native-base/Fonts/SimpleLineIcons.ttf"),
         });
         this.setState({isReady: true});
     }

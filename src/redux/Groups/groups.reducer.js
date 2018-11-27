@@ -20,11 +20,25 @@ export const GroupReducer = (state = { status: 'NONE'}, action) => {
                 status: GroupsActionType.GetGroupFail,
                 error_message: action.error_message
             };
-        // case GroupsActionType.UpdateGroup:
-        //     return {
-        //         ...state,
-        //         status: GroupsActionType.UpdateGroup
-        //     };
+        case GroupsActionType.GetGroupMembers:
+            return {
+                ...state,
+                status: GroupsActionType.GetGroupMembers
+            };
+        case GroupsActionType.GetGroupMembersSuccess:
+            const groupIndex = state.groups.findIndex((g) => {return (g.id === action.groupId)});
+            state.groups[groupIndex].members = action.members;
+            return {
+                ...state,
+                status: GroupsActionType.GetGroupMembersSuccess,
+                error_message: action.error
+            };
+        case GroupsActionType.GetGroupMembersFail:
+            return {
+                ...state,
+                status: GroupsActionType.GetGroupMembersFail,
+                error_message: action.error_message
+            };
         default:
             return state;
     }
