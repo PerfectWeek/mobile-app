@@ -56,15 +56,6 @@ class _RegisterScreen extends React.Component {
                                 <Text>Register</Text>
                             </Button>
                         </View>
-                        <Text style={{
-                            marginTop: 10,
-                            color: 'red', textAlign: 'center'
-                        }}>{this.props.register.error_message}</Text>
-                        <Text style={{
-                            marginTop: 10,
-                            color: 'green',
-                            textAlign: 'center'
-                        }}>{this.props.register.status === "REGISTER_SUCCESS" ? "User created. We sent you an email for confirmation." : null}</Text>
                     </Form>
                     <View style={{
                         flex: 1,

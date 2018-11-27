@@ -3,6 +3,7 @@ import {LoginActionsType, LoginFail, LoginSuccess} from "./login.actions";
 import {Network} from "../../Network/Requests";
 import {NavigationActions} from 'react-navigation'
 import {UserReset} from "../User/user.actions";
+import {Toast} from "native-base";
 
 function _login(email, password) {
     return Network.Post("/auth/login", {
@@ -21,10 +22,18 @@ function* Login(action) {
     }
     else {
         console.log(response);
+        let err;
         if (response.data !== undefined && response.data.message !== undefined)
-            yield put(LoginFail(response.data.message));
+            err = response.data.message;
         else
-            yield put(LoginFail("Connection error"));
+            err = "Connection error";
+        yield put(LoginFail(err));
+        Toast.show({
+            text: err,
+            type: "danger",
+            buttonText: "Okay",
+            duration: 5000
+        });
     }
 }
 

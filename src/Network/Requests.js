@@ -20,7 +20,6 @@ export class Network {
                 return await axios.get(route);
         }
         catch (e) {
-            Alert.alert('Something went wrong !');
             return e;
         }
     }
@@ -37,7 +36,6 @@ export class Network {
                 return await axios.post(route, body);
         }
         catch (e) {
-            Alert.alert('Something went wrong !');
             return e.response;
         }
     }

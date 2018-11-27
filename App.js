@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProvider } from 'native-base';
+import {StyleProvider, Root as RootNativeBase} from 'native-base';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider, connect} from 'react-redux';
 import {LoginReducer} from "./src/redux/Login/login.reducer";
@@ -102,7 +102,9 @@ export default class Root extends React.Component {
         return (
             <Provider store={Store}>
                 <StyleProvider style={getTheme(platform)}>
-                    <AppWithNavigationState/>
+                    <RootNativeBase>
+                        <AppWithNavigationState/>
+                    </RootNativeBase>
                 </StyleProvider>
             </Provider>
         );

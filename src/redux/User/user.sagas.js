@@ -11,6 +11,7 @@ import {
 import {Network} from "../../Network/Requests";
 import {UpdateUserInfo} from "../Login/login.actions";
 import {NavigationActions} from "react-navigation";
+import {Toast} from "native-base";
 
 function _get_user_info(pseudo) {
     return Network.Get('/users/' + pseudo);
@@ -37,12 +38,26 @@ function* UpdateInfo(action) {
     if (response.status === 200) {
         yield put(UpdateUserInfo(response.data.user.pseudo, response.data.user.email));
         yield put(UpdateInfoSuccess(response.data.user));
+        yield Toast.show({
+            text: "Update successful.",
+            type: "success",
+            buttonText: "Okay",
+            duration: 10000
+        });
     }
     else {
+        let err;
         if (response.data !== undefined && response.data.message !== undefined)
-            yield put(UpdateInfoFail(response.data.message));
+            err = response.data.message;
         else
-            yield put(UpdateInfoFail("Connection error"));
+            err = "Connection error";
+        yield put(UpdateInfoFail(err));
+        yield Toast.show({
+            text: err,
+            type: "danger",
+            buttonText: "Okay",
+            duration: 5000
+        });
     }
 }
 
