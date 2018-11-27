@@ -6,7 +6,7 @@ import {GetGroups} from "../redux/Groups/groups.actions";
 import * as Animatable from 'react-native-animatable';
 import {HeaderBackgroundColor} from "../../Style/Constant";
 
-export class _Groups extends React.Component {
+export class _GroupsScreen extends React.Component {
     constructor(props) {
         super(props);
         this.props.GetGroups(this.props.login.pseudo);
@@ -15,14 +15,12 @@ export class _Groups extends React.Component {
     render() {
         const groups = this.props.groups.groups;
         return (
-            <View style={{
-                paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
-            }}>
-                <Header androidStatusBarColor="#00AE93" style={{backgroundColor: HeaderBackgroundColor}}>
-                    <Body>
-                    <Title>Groups</Title>
-                    </Body>
-                </Header>
+            <View>
+                {/*<Header androidStatusBarColor="#00AE93" style={{backgroundColor: HeaderBackgroundColor}}>*/}
+                    {/*<Body>*/}
+                    {/*<Title>Groups</Title>*/}
+                    {/*</Body>*/}
+                {/*</Header>*/}
                 <ScrollView style={{marginLeft: 10, marginRight: 10, height: Dimensions.get('window').height}}>
                     {groups === undefined ? null : (groups.length === 0) ?
                         <Text style={{marginTop: 20, textAlign:'center', fontSize: 22}}>
@@ -33,7 +31,7 @@ export class _Groups extends React.Component {
                             <Animatable.View key={group.id} animation="fadeInUp">
                                 <List>
                                     <ListItem onPress={() => {
-                                        Alert.alert('You tapped the button!');
+                                        this.props.navigation.navigate('Detail', { group: group });
                                     }} avatar>
                                         <Left>
                                             <Thumbnail
@@ -73,4 +71,4 @@ const mapStateToProps = (state, ownProps) => {
     }
 };
 
-export const Groups = connect(mapStateToProps, mapDispatchToProps)(_Groups);
+export const GroupsScreen = connect(mapStateToProps, mapDispatchToProps)(_GroupsScreen);

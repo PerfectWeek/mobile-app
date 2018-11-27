@@ -1,10 +1,11 @@
 import React from 'react';
 import {Icon} from 'native-base';
 import {Profile} from './Profile';
-import {Groups} from './Groups';
+import {GroupsScreen} from './GroupsScreen';
 import {createBottomTabNavigator} from "react-navigation";
 import {Dashboard} from "./dashboard";
 import {HeaderBackgroundColor, Secondary} from "../../Style/Constant";
+import {GroupsNavigator} from "./GroupsNavigator";
 
 export default createBottomTabNavigator(
     {
@@ -27,7 +28,7 @@ export default createBottomTabNavigator(
             }
         },
         Groups: {
-            screen: Groups, navigationOptions: {
+            screen: GroupsNavigator, navigationOptions: {
                 tabBarIcon: ({focused, tintColor}) => <Icon
                     name='users'
                     type='FontAwesome'
