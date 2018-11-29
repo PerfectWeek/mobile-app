@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Button, Container, Content, Form, Item, Input} from 'native-base';
+import {View, Text, Container} from 'native-base';
 import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
 import {Register, RegisterActionsType} from "../redux/Register/register.actions";
@@ -9,7 +9,6 @@ import {Animated, Dimensions, Easing, Platform, StyleSheet} from "react-native";
 
 import CustomInput from '../Utils/CustomComponents/CustomInput'
 import CustomButton from '../Utils/CustomComponents/CustomButton'
-import {LoginActionsType} from "../redux/Login/login.actions";
 
 class _RegisterScreen extends React.Component {
     static navigationOptions = {
@@ -94,7 +93,6 @@ class _RegisterScreen extends React.Component {
                                       !validateEmail(this.state.mail) || !validateNotEmpty(this.state.mail) ||
                                       !validateNotEmpty(this.state.username)
                                       }
-                                      // || !validateEmail(this.state.mail) || !validateNotEmpty(this.state.username)
                                       onPress={() => {this.props.Register(this.state.username, this.state.mail, this.state.password);}}
                         />
                         <Text style={{
