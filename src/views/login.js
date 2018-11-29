@@ -70,7 +70,7 @@ class _LoginScreen extends React.Component {
                     useNativeDriver={true}
                 />
                 <View style={styles.form}>
-                    <CustomInput iconName={'person'}
+                    <CustomInput iconName={'mail'}
                                  onChangeText={(text) => this.setState({username: text})}
                                  error={!validateEmail(this.state.username)}
                     />

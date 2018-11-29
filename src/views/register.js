@@ -1,71 +1,115 @@
 import React from 'react';
 import {View, Text, Button, Container, Content, Form, Item, Input} from 'native-base';
-import {Icon} from 'native-base';
 import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
 import {Register, RegisterActionsType} from "../redux/Register/register.actions";
 import LottieView from "lottie-react-native";
-import {validateEmail, validateNotEmpty, validatePassword} from "../Utils/utils";
-import {Platform} from "react-native";
+import {validateEmail, validateNotEmpty, validatePassword, comparePasswords} from "../Utils/utils";
+import {Animated, Dimensions, Easing, Platform, StyleSheet} from "react-native";
+
+import CustomInput from '../Utils/CustomComponents/CustomInput'
+import CustomButton from '../Utils/CustomComponents/CustomButton'
+import {LoginActionsType} from "../redux/Login/login.actions";
 
 class _RegisterScreen extends React.Component {
     static navigationOptions = {
-        title: 'Register'
+        title: 'Register',
+        headerTitleStyle: {
+            color: '#064c96',
+            backgroundColor: '#fff'
+        }
+        ,
+        headerStyle: {
+            backgroundColor: '#fff'
+        },
+        headerTintColor: {
+        }
     };
 
     constructor(props) {
         super(props);
-        this.state = {username: 'pierresaid', mail: 'pierre.said@epitech.eu', password: 'AmazingPassword42'};
+        this.state = {username: '', mail: '', password: '', password2: ''};
+        this.spinValue = new Animated.Value(0);
+
+    }
+
+    componentDidMount(){
+        this.runAnimation();
+    }
+
+    runAnimation() {
+        this.spinValue.setValue(0);
+        Animated.timing(
+            this.spinValue,
+            {
+                toValue: 1,
+                duration: 400000,
+                easing: Easing.linear
+            }
+        ).start(() => this.runAnimation());
     }
 
     render() {
+        const spin = this.spinValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: ['360deg', '0deg']
+        });
+        const spinimgwidth = Dimensions.get('window').width+100;
         return (
             <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight}}>
-                <Content>
-                    <Form>
-                        <Item error={!validateNotEmpty(this.state.username)}>
-                            <Icon active name='person'/>
-                            <Input placeholder="Username"
-                                   value={this.state.username}
-                                   onChangeText={(text) => this.setState({username: text})}/>
-                        </Item>
-                        <Item error={!validateEmail(this.state.mail)}>
-                            <Icon active name='mail'/>
-                            <Input placeholder="Email" value={this.state.mail}
-                                   onChangeText={(text) => this.setState({mail: text})}/>
-                        </Item>
-                        <Item error={!validatePassword(this.state.password)} last>
-                            <Icon active name='lock'/>
-                            <Input placeholder="Password"
-                                   value={this.state.password} onChangeText={(text) => this.setState({password: text})}
-                                   secureTextEntry={true}/>
-                        </Item>
-                        <View style={{
-                            marginTop: 10,
-                            flex: 1,
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                        }}>
-                            <Button rounded disabled={this.props.register.status === RegisterActionsType.Register ||
-                            !validatePassword(this.state.password) || !validateEmail(this.state.mail) || !validateNotEmpty(this.state.username)}
-                                    onPress={() => {
-                                        if (!validateNotEmpty(this.state.username) || !validateEmail(this.state.mail) || !validatePassword(this.state.password))
-                                            return;
-                                        this.props.Register(this.state.username, this.state.mail, this.state.password);
-                                    }}>
-                                <Text>Register</Text>
-                            </Button>
-                        </View>
+                <Animated.Image
+                    style={{transform: [{rotate: spin}],
+                        width: spinimgwidth,
+                        height: spinimgwidth,
+                        position: 'absolute',
+                        right: -spinimgwidth*0.60,
+                        top : Dimensions.get('window').height/2 - spinimgwidth/3 - 50,
+                        zIndex: 0
+                    }}
+                    resizeMode={'contain'}
+                    source={require('../../Resources/Image/logo.png')}
+                    useNativeDriver={true}
+                />
+                    <View style={cstyles.form}>
+                        <CustomInput iconName={'person'}
+                                     onChangeText={(text) => this.setState({username: text})}
+                                     error={!validateNotEmpty(this.state.username)}
+                        />
+                        <CustomInput iconName={'mail'} style={{marginTop: 30}}
+                                     onChangeText={(text) => this.setState({mail: text})}
+                                     error={!validateEmail(this.state.mail)}
+                        />
+                        <CustomInput iconName={'lock'} secureTextEntry={true} style={{marginTop: 30}}
+                                     onChangeText={(text) => this.setState({password: text})}
+                                     error={!comparePasswords(this.state.password, this.state.password2) || !validatePassword(this.state.password)}
+                        />
+                        <CustomInput iconName={'lock'} secureTextEntry={true} style={{marginTop: 30}}
+                                     onChangeText={(text) => this.setState({password2: text})}
+                                     error={!comparePasswords(this.state.password, this.state.password2) || !validatePassword(this.state.password2)}
+                        />
+                        <CustomButton style={{marginTop: 30}}
+                                      disabled={this.props.register.status === RegisterActionsType.Register ||
+                                      !comparePasswords(this.state.password, this.state.password2) ||
+                                      !validatePassword(this.state.password) || this.state.password === '' ||
+                                      !validateEmail(this.state.mail) || !validateNotEmpty(this.state.mail) ||
+                                      !validateNotEmpty(this.state.username)
+                                      }
+                                      // || !validateEmail(this.state.mail) || !validateNotEmpty(this.state.username)
+                                      onPress={() => {this.props.Register(this.state.username, this.state.mail, this.state.password);}}
+                        />
                         <Text style={{
                             marginTop: 10,
-                            color: 'red', textAlign: 'center'
+                            height: 20,
+                            color: 'red', textAlign: 'center',
+                            backgroundColor: 'rgba(0,0,0,0.5)',
+                            borderRadius: 10
                         }}>{this.props.register.error_message}</Text>
                         <Text style={{
                             marginTop: 10,
                             color: 'green',
                             textAlign: 'center'
                         }}>{this.props.register.status === "REGISTER_SUCCESS" ? "User created. We sent you an email for confirmation." : null}</Text>
-                    </Form>
+                    </View>
                     <View style={{
                         flex: 1,
                         flexDirection: 'row',
@@ -85,11 +129,18 @@ class _RegisterScreen extends React.Component {
                             }
                         </View>
                     </View>
-                </Content>
             </Container>
         )
     }
 }
+
+const cstyles = StyleSheet.create({
+    form: {
+        marginTop: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
+})
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {

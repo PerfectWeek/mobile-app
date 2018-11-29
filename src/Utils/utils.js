@@ -18,3 +18,7 @@ export function validatePassword(psw) {
     var re = /^[a-zA-Z0-9_-]{2,31}$/;
     return re.test(String(psw).toLowerCase());
 }
+
+export function comparePasswords(pwd1, pwd2) {
+    return pwd1 === pwd2;
+}
