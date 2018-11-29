@@ -48,29 +48,27 @@ class _LoginScreen extends React.Component {
         const spinimgwidth = Dimensions.get('window').width+100;
         return (
             <Container style={{paddingTop: Expo.Constants.statusBarHeight+50}}>
-                {/*<Content>*/}
-                    <View style={styles.logo}>
-                        <Image source={require('../../Resources/Image/pwlogo.png')} resizeMode={'contain'} style={{width: 350, height: 150}}/>
-                    </View>
+                <View style={styles.logo}>
+                    <Image source={require('../../Resources/Image/pwlogo.png')} resizeMode={'contain'} style={{width: 350, height: 150}}/>
+                </View>
 
-                    {/*<Image source={require('../../Resources/Image/logo.png')} resizeMode={'contain'} style={{width: spinimgwidth, height: spinimgwidth,*/}
-                    {/*position: 'relative',*/}
-                    {/*left: -100,*/}
-                    {/*}}/>*/}
-                    <Animated.Image
-                        style={{transform: [{rotate: spin}],
-                            width: spinimgwidth,
-                            height: spinimgwidth,
-                            position: 'absolute',
-                            left: -spinimgwidth*0.60,
-                            top : Dimensions.get('window').height/2 - spinimgwidth/3,
-                            zIndex: 0
-                            // backgroundColor: 'red'
-                        }}
-                        resizeMode={'contain'}
-                        source={require('../../Resources/Image/logo.png')}
-                        useNativeDriver={true}
-                    />
+                {/*<Image source={require('../../Resources/Image/logo.png')} resizeMode={'contain'} style={{width: spinimgwidth, height: spinimgwidth,*/}
+                {/*position: 'relative',*/}
+                {/*left: -100,*/}
+                {/*}}/>*/}
+                <Animated.Image
+                    style={{transform: [{rotate: spin}],
+                        width: spinimgwidth,
+                        height: spinimgwidth,
+                        position: 'absolute',
+                        left: -spinimgwidth*0.60,
+                        top : Dimensions.get('window').height/2 - spinimgwidth/3,
+                        zIndex: 0
+                    }}
+                    resizeMode={'contain'}
+                    source={require('../../Resources/Image/logo.png')}
+                    useNativeDriver={true}
+                />
                 <View style={styles.form}>
                     <CustomInput iconName={'person'}
                                  onChangeText={(text) => this.setState({username: text})}
@@ -86,7 +84,7 @@ class _LoginScreen extends React.Component {
                                   !validatePassword(this.state.password) || !validateNotEmpty(this.state.username)}
                                   onPress={() => {this.props.Login(this.state.username, this.state.password);}}
                     />
-                    <TouchableHighlight
+                    <TouchableHighlight style={{marginTop: 10}}
                         onPress={() => this.props.navigation.navigate('Register')}
                         underlayColor={'rgba(0, 0, 0, 0)'}
                     >
@@ -94,67 +92,25 @@ class _LoginScreen extends React.Component {
                     </TouchableHighlight>
 
                 </View>
-                        {/*<Item style={{width: 300, backgroundColor: '#ff85f2', border: '1'}} error={!validateEmail(this.state.username)}>*/}
-                            {/*<Icon active name='person'/>*/}
-                            {/*<Input placeholder="Username" value={this.state.username}*/}
-                                   {/*onChangeText={(text) => this.setState({username: text})}/>*/}
-                        {/*</Item>*/}
-                        {/*<Item style={{marginTop: 10}} error={!validateNotEmpty(this.state.password)} last>*/}
-                            {/*<Icon active name='lock'/>*/}
-                            {/*<Input placeholder="Password" value={this.state.password}*/}
-                                   {/*onChangeText={(text) => this.setState({password: text})} secureTextEntry={true}/>*/}
-                        {/*</Item>*/}
-                        {/*<View style={{*/}
-                            {/*marginTop: 10,*/}
-                            {/*flex: 1,*/}
-                            {/*flexDirection: 'row',*/}
-                            {/*justifyContent: 'center',*/}
-                        {/*}}>*/}
-                            {/*<Button disabled={this.props.login.status === LoginActionsType.Login ||*/}
-                            {/*!validatePassword(this.state.password) || !validateNotEmpty(this.state.username)}*/}
-                                    {/*onPress={() => {*/}
-                                        {/*if (!validateEmail(this.state.username) || !validateNotEmpty(this.state.password)) {*/}
-                                            {/*return;*/}
-                                        {/*}*/}
-                                        {/*this.props.Login(this.state.username, this.state.password);*/}
-                                    {/*}}>*/}
-                                {/*<Text>Login</Text>*/}
-                            {/*</Button>*/}
-                            {/*/!*<Button rounded style={{marginLeft: 10}}*!/*/}
-                                    {/*/!*disabled={this.props.login.status === LoginActionsType.Login}*!/*/}
-                                    {/*/!*onPress={() => {*!/*/}
-                                        {/*/!*this.props.navigation.navigate('Register');*!/*/}
-                                    {/*/!*}}>*!/*/}
-                                {/*/!*<Text>*!/*/}
-                                    {/*/!*Or Register*!/*/}
-                                {/*/!*</Text>*!/*/}
-                            {/*/!*</Button>*!/*/}
-                        {/*</View>*/}
-                        {/*<Text style={{*/}
-                            {/*marginTop: 10,*/}
-                            {/*color: 'red',*/}
-                            {/*textAlign: 'center'*/}
-                        {/*}}>{this.props.login.error_message}</Text>*/}
-
+                <View style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                }}>
                     <View style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        justifyContent: 'center',
+                        marginTop: 20, width: 80, height: 80
                     }}>
-                        <View style={{
-                            marginTop: 20, width: 80, height: 80
-                        }}>
-                            {
-                                (this.props.login.status === LoginActionsType.Login) ?
-                                    <LottieView style={{}}
-                                                loop
-                                                source={require('../../Resources/Lottie/loading.json')}
-                                                autoPlay
-                                    />
-                                    : null
-                            }
-                        </View>
+                        {
+                            (this.props.login.status === LoginActionsType.Login) ?
+                                <LottieView style={{}}
+                                            loop
+                                            source={require('../../Resources/Lottie/loading.json')}
+                                            autoPlay
+                                />
+                                : null
+                        }
                     </View>
+                </View>
             </Container>
         )
     }
