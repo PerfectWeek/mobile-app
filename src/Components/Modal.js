@@ -4,6 +4,7 @@ import {
     Dimensions,
     TouchableWithoutFeedback,
     TouchableHighlight,
+    TouchableOpacity,
     Modal as ReactModal
 } from 'react-native';
 import {
@@ -17,7 +18,9 @@ class Modal extends Component {
         title: PropTypes.string.isRequired,
         actionButtonTitle: PropTypes.string.isRequired,
         validateCallback: PropTypes.func,
-        children: PropTypes.node
+        children: PropTypes.node,
+        canValidate: PropTypes.bool,
+        canClose: PropTypes.bool
     };
 
     constructor(props) {
@@ -34,11 +37,13 @@ class Modal extends Component {
     }
 
     toggle() {
-        this.setState({...this.state, modalVisible: !this.state.modalVisible});
+        const {canClose} = this.props;
+        if (canClose === undefined || canClose === true)
+            this.setState({...this.state, modalVisible: !this.state.modalVisible});
     }
 
     render() {
-        const {title, actionButtonTitle, validateCallback, children} = this.props;
+        const {title, actionButtonTitle, validateCallback, children, canValidate, canClose} = this.props;
 
         return (
             <ReactModal animationType={"slide"} transparent={true}
@@ -46,11 +51,14 @@ class Modal extends Component {
                         onRequestClose={() => {
                             this.setState({...this.state, modalVisible: !this.state.modalVisible});
                         }}>
-                <TouchableHighlight
-                    style={{height: Dimensions.get('window').height, width: Dimensions.get('window').width}}
-                    onPress={() => {
-                        this.setState({...this.state, modalVisible: !this.state.modalVisible});
-                    }}>
+                <TouchableOpacity activeOpacity={1}
+                                  style={{
+                                      height: Dimensions.get('window').height,
+                                      width: Dimensions.get('window').width
+                                  }}
+                                  onPress={() => {
+                                      this.toggle();
+                                  }}>
 
                     <View style={{
                         borderStyle: 'solid',
@@ -83,18 +91,17 @@ class Modal extends Component {
                                     flexDirection: 'row',
                                     justifyContent: 'space-between',
                                 }}>
-                                    <Button success rounded style={{marginTop: 30}}
+                                    <Button success disabled={(canValidate !== undefined && canValidate === false)}
+                                            rounded style={{marginTop: 30}}
                                             onPress={validateCallback}>
                                         <Text>
                                             {actionButtonTitle}
                                         </Text>
                                     </Button>
-                                    <Button rounded style={{marginTop: 30, backgroundColor: '#7e7e7e'}}
+                                    <Button rounded disabled={(canClose !== undefined && canClose === false)}
+                                            style={{marginTop: 30, backgroundColor: '#7e7e7e'}}
                                             onPress={() => {
-                                                this.setState({
-                                                    ...this.state,
-                                                    modalVisible: !this.state.modalVisible
-                                                });
+                                                this.toggle();
                                             }}>
                                         <Text>
                                             Close
@@ -104,7 +111,7 @@ class Modal extends Component {
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
-                </TouchableHighlight>
+                </TouchableOpacity>
             </ReactModal>
         );
     }

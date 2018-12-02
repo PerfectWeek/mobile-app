@@ -8,6 +8,9 @@ export const GroupsActionType = {
     UpdateMemberRole: 'UPDATE_MEMBER_ROLE',
     UpdateMemberRoleSuccess: 'UPDATE_MEMBER_ROLE_SUCCESS',
     UpdateMemberRoleFail: 'UPDATE_MEMBER_ROLE_FAIL',
+    AddGroupMembers: 'ADD_GROUP_MEMBERS',
+    AddGroupMembersSuccess: 'ADD_GROUP_MEMBERS_SUCCESS',
+    AddGroupMembersFail: 'ADD_GROUP_MEMBERS_FAIL',
 
 };
 
@@ -77,6 +80,30 @@ export const UpdateMemberRoleSuccess = (groupId, member) => {
 export const UpdateMemberRoleFail = (error_message) => {
     return {
         type : GroupsActionType.UpdateMemberRoleFail,
+        error_message: error_message
+    }
+};
+
+export const AddGroupMembers = (groupId, members) => {
+    return {
+        type: GroupsActionType.AddGroupMembers,
+        groupId,
+        members,
+    }
+};
+
+export const AddGroupMembersSuccess = (groupId, members) => {
+    return {
+        type: GroupsActionType.AddGroupMembersSuccess,
+        error_message: null,
+        groupId,
+        members
+    }
+};
+
+export const AddGroupMembersFail = (error_message) => {
+    return {
+        type : GroupsActionType.AddGroupMembersFail,
         error_message: error_message
     }
 };

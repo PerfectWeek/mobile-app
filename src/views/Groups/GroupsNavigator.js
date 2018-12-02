@@ -1,6 +1,6 @@
 import React from 'react';
 import {createStackNavigator} from "react-navigation";
-import {HeaderBackgroundColor} from "../../Style/Constant";
+import {HeaderBackgroundColor} from "../../../Style/Constant";
 import {GroupsScreen} from "./GroupsScreen";
 import {GroupDetailScreen} from "./GroupDetailScreen";
 
