@@ -68,6 +68,29 @@ export const GroupReducer = (state = {status: 'NONE'}, action) => {
                 status: GroupsActionType.UpdateMemberRoleFail,
                 error_message: action.error_message
             };
+        case GroupsActionType.AddGroupMembers:
+            return {
+                ...state,
+                status: GroupsActionType.AddGroupMembers
+            };
+        case GroupsActionType.AddGroupMembersSuccess: {
+
+            const groupIndex = state.groups.findIndex((g) => {
+                return (g.id === action.groupId)
+            });
+            state.groups[groupIndex].members = action.members;
+            return {
+                ...state,
+                status: GroupsActionType.AddGroupMembersSuccess,
+                error_message: action.error_message
+            };
+        }
+        case GroupsActionType.AddGroupMembersFail:
+            return {
+                ...state,
+                status: GroupsActionType.AddGroupMembersFail,
+                error_message: action.error_message
+            };
         default:
             return state;
     }

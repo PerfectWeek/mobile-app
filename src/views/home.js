@@ -1,11 +1,11 @@
 import React from 'react';
 import {Icon} from 'native-base';
 import {Profile} from './Profile';
-import {GroupsScreen} from './GroupsScreen';
+import {GroupsScreen} from './Groups/GroupsScreen';
 import {createBottomTabNavigator} from "react-navigation";
 import {Dashboard} from "./dashboard";
 import {HeaderBackgroundColor, Secondary} from "../../Style/Constant";
-import {GroupsNavigator} from "./GroupsNavigator";
+import {GroupsNavigator} from "./Groups/GroupsNavigator";
 
 export default createBottomTabNavigator(
     {

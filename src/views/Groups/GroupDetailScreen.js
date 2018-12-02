@@ -23,14 +23,17 @@ import {
     Content,
     Button,
     Icon,
-    ActionSheet
+    ActionSheet, Item, Input, Form
 } from 'native-base';
 import connect from "react-redux/es/connect/connect";
-import {GetGroupMembers, GetGroupMembersSuccess, GetGroups, UpdateMemberRole} from "../redux/Groups/groups.actions";
+import {GetGroupMembers, GetGroupMembersSuccess, GetGroups, UpdateMemberRole} from "../../redux/Groups/groups.actions";
 import * as Animatable from 'react-native-animatable';
-import {HeaderBackgroundColor} from "../../Style/Constant";
-import {LoginActionsType} from "../redux/Login/login.actions";
-import Modal from "../Components/Modal";
+import {HeaderBackgroundColor} from "../../../Style/Constant";
+import {LoginActionsType} from "../../redux/Login/login.actions";
+// import Modal from "../../Components/Modal";
+import {validateEmail} from "../../Utils/utils";
+import {AddUsers} from "./AddUsers";
+// import AddUsers from "./AddUsers";
 
 export class _GroupDetailScreen extends React.Component {
 
@@ -63,7 +66,8 @@ export class _GroupDetailScreen extends React.Component {
                     }}>Members:</Title>
                     <List>
                         <ListItem onPress={() => {
-                            this.modal.toggle();
+                            // console.log(this.addUsers);
+                            this.addUsers.openModal();
                         }}>
                             <Body style={{
                                 flexDirection: 'row',
@@ -114,15 +118,10 @@ export class _GroupDetailScreen extends React.Component {
                     </List>
                 </View>
 
-                <Modal onRef={ref => (this.modal = ref)} title='Add members'
-                       actionButtonTitle='Add' validateCallback={() => {
-                Alert.alert("Yeet !")
-            }}>
-                <Text>Wsh alors ?</Text>
-            </Modal>
+                <AddUsers groupId={group.id} onRef={ref => (this.addUsers = ref)}/>
 
-    </ScrollView>
-    )
+            </ScrollView>
+        )
     }
 
     ChangeRoleClicked(groupId, member) {

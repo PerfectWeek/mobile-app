@@ -4,7 +4,7 @@ import {
     GetGroupFail,
     GroupsActionType,
     GetGroupMembersSuccess,
-    GetGroupMembersFail, UpdateMemberRoleFail, UpdateMemberRoleSuccess
+    GetGroupMembersFail, UpdateMemberRoleFail, UpdateMemberRoleSuccess, AddGroupMembersSuccess, AddGroupMembersFail
 } from "./groups.actions";
 import {Network} from "../../Network/Requests";
 import {NavigationActions} from "react-navigation";
@@ -73,8 +73,36 @@ function* UpdateMemberRole(action) {
     }
 }
 
+function* AddGroupMembers(action) {
+    const resp = yield Network.Post('/groups/' + action.groupId + '/add-members', action.members);
+    if (resp.status === 200) {
+        yield put(AddGroupMembersSuccess(action.groupId, resp.data.members));
+        yield Toast.show({
+            text: "Update successful.",
+            type: "success",
+            buttonText: "Okay",
+            duration: 10000
+        });
+    }
+    else {
+        let err;
+        if (resp.data !== undefined && resp.data.message !== undefined)
+            err = resp.data.message;
+        else
+            err = "Connection error";
+        yield Toast.show({
+            text: err,
+            type: "danger",
+            buttonText: "Okay",
+            duration: 5000
+        });
+        yield put(AddGroupMembersFail(err));
+    }
+}
+
 export function* GroupSaga() {
     yield takeEvery(GroupsActionType.GetGroups, GetGroups);
     yield takeEvery(GroupsActionType.GetGroupMembers, GetGroupMembers);
     yield takeEvery(GroupsActionType.UpdateMemberRole, UpdateMemberRole);
+    yield takeEvery(GroupsActionType.AddGroupMembers, AddGroupMembers);
 }

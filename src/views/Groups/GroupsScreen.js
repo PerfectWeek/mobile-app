@@ -2,9 +2,8 @@ import React from 'react';
 import {Dimensions, Platform, View, ScrollView, Alert} from 'react-native';
 import {Text, Header, Body, Title, List, ListItem, Card, CardItem, Thumbnail, Left, Right, Content} from 'native-base';
 import connect from "react-redux/es/connect/connect";
-import {GetGroups} from "../redux/Groups/groups.actions";
+import {GetGroups} from "../../redux/Groups/groups.actions";
 import * as Animatable from 'react-native-animatable';
-import {HeaderBackgroundColor} from "../../Style/Constant";
 
 export class _GroupsScreen extends React.Component {
     constructor(props) {
