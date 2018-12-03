@@ -1,6 +1,5 @@
 import axios from 'react-native-axios'
 import {_Home} from "../views/home";
-import {Alert} from 'react-native';
 
 // axios.defaults.baseURL = 'http://192.168.1.6:3000';
 // axios.defaults.baseURL = 'http://api.perfectweek.benard.pl';
@@ -17,7 +16,6 @@ export class Network {
                 return await axios.get(route);
         }
         catch (e) {
-            Alert.alert('Something went wrong !');
             return e;
         }
     }
@@ -34,7 +32,6 @@ export class Network {
                 return await axios.post(route, body);
         }
         catch (e) {
-            Alert.alert('Something went wrong !');
             return e.response;
         }
     }
@@ -58,7 +55,6 @@ export class Network {
     static async Delete(route) {
         try {
             if (this.access_token !== null) {
-console.log("access_token non null");
                 return await axios.delete(route, {
                     headers: {
                         'Authorization': 'Bearer ' + this.access_token
@@ -67,8 +63,6 @@ console.log("access_token non null");
             }
 
             else {
-
-                console.log("access_token null");
                 return await axios.delete(route);
             }
         }

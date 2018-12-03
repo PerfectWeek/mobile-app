@@ -94,18 +94,6 @@ class _RegisterScreen extends React.Component {
                                       }
                                       onPress={() => this.registerHandle()}
                         />
-                        {/*<Text style={{*/}
-                            {/*marginTop: 10,*/}
-                            {/*height: 20,*/}
-                            {/*color: 'red', textAlign: 'center',*/}
-                            {/*backgroundColor: 'rgba(0,0,0,0.5)',*/}
-                            {/*borderRadius: 10*/}
-                        {/*}}>{this.props.register.error_message}</Text>*/}
-                        {/*<Text style={{*/}
-                            {/*marginTop: 10,*/}
-                            {/*color: 'green',*/}
-                            {/*textAlign: 'center'*/}
-                        {/*}}>{this.props.register.status === "REGISTER_SUCCESS" ? "User created. We sent you an email for confirmation." : null}</Text>*/}
                     </View>
                     <View style={{
                         flex: 1,
