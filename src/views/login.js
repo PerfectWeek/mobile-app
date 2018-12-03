@@ -73,6 +73,7 @@ class _LoginScreen extends React.Component {
                     <CustomInput iconName={'mail'}
                                  onChangeText={(text) => this.setState({username: text})}
                                  error={!validateEmail(this.state.username)}
+                                 type={'email-address'}
                     />
                     <CustomInput iconName={'lock'} secureTextEntry={true} style={{marginTop: 30}}
                                  onChangeText={(text) => this.setState({password: text})}
