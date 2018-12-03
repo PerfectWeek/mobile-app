@@ -1,11 +1,10 @@
 import {put, takeEvery} from "redux-saga/effects";
 import {RegisterActionsType, RegisterFail, RegisterSuccess} from "./register.actions";
 import {Network} from "../../Network/Requests";
-import {NavigationActions, StackActions} from 'react-navigation'
 import {Toast} from "native-base";
 
 function _register(username, email, password) {
-    return Network.Post("/users/", {
+    return Network.Post("/users", {
         pseudo: username,
         email: email,
         password: password
