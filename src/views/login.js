@@ -3,7 +3,7 @@ import {Image, Dimensions, Animated, Easing, StyleSheet, TouchableHighlight} fro
 import {View, Text, Container} from 'native-base';
 import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
-import {LoginActionsType, Login} from "../redux/Login/login.actions";
+import {LoginActionsType, Login, CheckIfLogged} from "../redux/Login/login.actions";
 import LottieView from 'lottie-react-native';
 import {validateEmail} from "../Utils/utils.js";
 import {validateNotEmpty, validatePassword} from "../Utils/utils";
@@ -20,8 +20,8 @@ class _LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {username: '', password: ''};
+        this.props.CheckIfLogged();
         this.spinValue = new Animated.Value(0);
-
     }
 
     componentDidMount(){
@@ -40,8 +40,7 @@ class _LoginScreen extends React.Component {
         ).start(() => this.runAnimation());
     }
 
-    render() {
-        const spin = this.spinValue.interpolate({
+    render() {        const spin = this.spinValue.interpolate({
             inputRange: [0, 1],
             outputRange: ['0deg', '360deg']
         });
@@ -120,7 +119,8 @@ class _LoginScreen extends React.Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        Login: (email, password) => dispatch(Login(email, password))
+        Login: (email, password) => dispatch(Login(email, password)),
+        CheckIfLogged: () => dispatch(CheckIfLogged())
     }
 };
 

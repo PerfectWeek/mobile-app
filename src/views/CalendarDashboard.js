@@ -1,14 +1,19 @@
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {View, AsyncStorage} from 'react-native';
 import connect from "react-redux/es/connect/connect";
-import {Calendar} from 'react-native-general-calendars'
+import {Calendar} from 'react-native-general-calendars';
+import {Container} from "native-base";
 // import {} from "../redux/User/user.actions";
 // import {} from "../redux/Login/login.actions";
 
 export class _CalendarDashboard extends Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
-            <View>
+            <Container style={{paddingTop: Expo.Constants.statusBarHeight+50}}>
                 <Calendar
                     // Calendar type (gregorian, jalaali). Default = gregorian
                     type="gregorian"
@@ -46,7 +51,7 @@ export class _CalendarDashboard extends Component {
                     // Handler which gets executed when press arrow icon left. It receive a callback can go next month
                     onPressArrowRight={addMonth => addMonth()}
                 />
-            </View>
+            </Container>
         )
     }
 }

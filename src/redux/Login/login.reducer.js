@@ -40,6 +40,10 @@ export const LoginReducer = (state = {
                 email: null,
                 error_message: null
             };
+        case LoginActionsType.CheckIfLogged:
+            return {
+                ...state
+            };
         default:
             return state;
     }

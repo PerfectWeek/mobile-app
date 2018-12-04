@@ -1,4 +1,5 @@
 import axios from 'react-native-axios'
+import {AsyncStorage} from 'react-native';
 import {_Home} from "../views/home";
 
 // axios.defaults.baseURL = 'http://192.168.1.6:3000';
@@ -7,6 +8,40 @@ axios.defaults.baseURL = 'https://api.kalastud.io';
 
 export class Network {
     static access_token = null;
+    static storedTokenName = 'tokenAccess';
+
+    static async CheckToken() {
+        try {
+            const savedData = await AsyncStorage.getItem(this.storedTokenName);
+            console.log('check', savedData);
+            return JSON.parse(savedData);
+        }
+        catch (e) {
+            console.log("ERRRR");
+            return null;
+        }
+    }
+    static async SaveToken(email, name) {
+        try {
+            const jData = {
+                token: this.access_token,
+                email: email,
+                name: name
+            };
+            return await AsyncStorage.setItem(this.storedTokenName, JSON.stringify(jData));
+        }
+        catch (e) {
+            return null;
+        }
+    }
+    static async deleteToken() {
+        try {
+            return await AsyncStorage.removeItem(this.storedTokenName);
+        }
+        catch (e){
+            return null;
+        }
+    }
 
     static async Get(route) {
         try {

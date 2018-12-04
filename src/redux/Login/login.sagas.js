@@ -12,11 +12,23 @@ function _login(email, password) {
     });
 }
 
+function* CheckIsLogged(action) {
+    if (Network.access_token === undefined || Network.access_token === '' || Network.access_token === null) {
+        const savedToken = yield Network.CheckToken();
+        if (savedToken !== null) {
+            Network.access_token = savedToken.token;
+            yield put(LoginSuccess(savedToken.token, savedToken.name, savedToken.email));
+            yield put(NavigationActions.navigate({routeName: 'Home'}));
+        }
+    }
+}
+
 function* Login(action) {
     const response = yield _login(action.email, action.password);
     if (response.status === 200) {
         yield put(LoginSuccess(response.data.access_token, response.data.user.pseudo, response.data.user.email));
         Network.access_token = response.data.access_token;
+        yield Network.SaveToken(response.data.user.email, response.data.user.pseudo);
         yield put(NavigationActions.navigate({routeName: 'Home'}));
 
     }
@@ -38,11 +50,13 @@ function* Login(action) {
 }
 
 function* Logout(action) {
+    yield Network.deleteToken();
     yield put(NavigationActions.navigate({routeName: 'Login'}));
     yield put(UserReset());
 }
 
 export function* LoginSagas() {
+    yield takeEvery(LoginActionsType.CheckIfLogged, CheckIsLogged);
     yield takeEvery(LoginActionsType.Login, Login);
     yield takeEvery(LoginActionsType.Logout, Logout);
 }
