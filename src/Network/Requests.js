@@ -13,11 +13,9 @@ export class Network {
     static async CheckToken() {
         try {
             const savedData = await AsyncStorage.getItem(this.storedTokenName);
-            console.log('check', savedData);
             return JSON.parse(savedData);
         }
         catch (e) {
-            console.log("ERRRR");
             return null;
         }
     }
