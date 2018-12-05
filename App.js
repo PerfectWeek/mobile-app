@@ -90,14 +90,22 @@ export default class Root extends React.Component {
     }
 
     async componentWillMount() {
-        await Expo.Font.loadAsync({
+        let obj = {
             FontAwesome: require("expo/node_modules/@expo/vector-icons/fonts/FontAwesome.ttf"),
             Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
             Ionicons: require("native-base/Fonts/Ionicons.ttf"),
             Lato_Bold: require("./Resources/Font/Lato-Bold.ttf"),
-            // SimpleLineIcons: require("native-base/Fonts/SimpleLineIcons.ttf"),
             'simple-line-icons': require('native-base/Fonts/SimpleLineIcons.ttf')
-        });
+        };
+        if (Platform.OS !== 'ios')
+            obj = {
+                FontAwesome: require("expo/node_modules/@expo/vector-icons/fonts/FontAwesome.ttf"),
+                Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+                Ionicons: require("native-base/Fonts/Ionicons.ttf"),
+                Lato_Bold: require("./Resources/Font/Lato-Bold.ttf"),
+                SimpleLineIcons: require("native-base/Fonts/SimpleLineIcons.ttf"),
+            };
+        await Expo.Font.loadAsync(obj);
         this.setState({isReady: true});
     }
 
