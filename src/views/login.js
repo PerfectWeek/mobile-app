@@ -83,6 +83,7 @@ class _LoginScreen extends React.Component {
                                   this.state.password === '' || this.state.username === '' ||
                                   !validatePassword(this.state.password) || !validateNotEmpty(this.state.username)}
                                   onPress={() => {this.props.Login(this.state.username, this.state.password);}}
+                                  title={'Login'}
                     />
                     <TouchableHighlight style={{marginTop: 10}}
                         onPress={() => this.props.navigation.navigate('Register')}

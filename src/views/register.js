@@ -76,6 +76,7 @@ class _RegisterScreen extends React.Component {
                         <CustomInput iconName={'mail'} style={{marginTop: 30}}
                                      onChangeText={(text) => this.setState({mail: text})}
                                      error={!validateEmail(this.state.mail)}
+                                     type={'email-address'}
                         />
                         <CustomInput iconName={'lock'} secureTextEntry={true} style={{marginTop: 30}}
                                      onChangeText={(text) => this.setState({password: text})}
@@ -93,6 +94,7 @@ class _RegisterScreen extends React.Component {
                                       !validateNotEmpty(this.state.username)
                                       }
                                       onPress={() => this.registerHandle()}
+                                      title={'Register'}
                         />
                     </View>
                     <View style={{

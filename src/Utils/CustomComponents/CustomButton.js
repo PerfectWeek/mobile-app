@@ -15,9 +15,9 @@ export default class CustomButton extends Component {
                     style={{borderRadius: 20}}
                 >{
                     (this.props.disabled === undefined || !this.props.disabled) ?
-                    <Button color={"#fff"} title={'Login'} onPress={this.props.onPress}/>
+                    <Button color={"#fff"} title={this.props.title} onPress={this.props.onPress}/>
                         :
-                    <Button color={"#636363"} title={'Login'} onPress={() => {}}/>
+                    <Button color={"#636363"} title={this.props.title} onPress={() => {}}/>
                 }
                 </LinearGradient>
             </View>
