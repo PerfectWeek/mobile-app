@@ -3,6 +3,8 @@ import {View, StyleSheet, Text} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 import {Agenda} from 'react-native-calendars';
 import {Container} from "native-base";
+import {GetAllUsersEvents} from "../redux/Calendar/calendar.actions";
+
 // import {} from "../redux/User/user.actions";
 // import {} from "../redux/Login/login.actions";
 
@@ -12,6 +14,7 @@ export class _CalendarDashboard extends Component {
         this.state = {
             items: {}
         };
+        this.props.GetAllUsersEvents(this.props.login);
     }
 
     loadItems(day) {
@@ -113,12 +116,15 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
+        GetAllUsersEvents: (pseudo) => dispatch(GetAllUsersEvents(pseudo))
     }
 };
 
 const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
+        eventsList: state.eventsList,
+        login: state.login
     }
 };
 
