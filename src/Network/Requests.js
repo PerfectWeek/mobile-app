@@ -58,17 +58,13 @@ export class Network {
     static async Delete(route) {
         try {
             if (this.access_token !== null) {
-console.log("access_token non null");
                 return await axios.delete(route, {
                     headers: {
                         'Authorization': 'Bearer ' + this.access_token
                     }
                 });
             }
-
             else {
-
-                console.log("access_token null");
                 return await axios.delete(route);
             }
         }

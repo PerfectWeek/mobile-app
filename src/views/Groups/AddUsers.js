@@ -14,7 +14,7 @@ class _AddUsers extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {searchBar: '', usersToAdd: ['Priviet', 'hello']};
+        this.state = {searchBar: '', usersToAdd: []};
     }
 
     componentDidMount() {
@@ -108,5 +108,4 @@ const mapStateToProps = (state, ownProps) => {
     }
 };
 
-// export default AddUsers;
 export const AddUsers = connect(mapStateToProps, mapDispatchToProps)(_AddUsers);
