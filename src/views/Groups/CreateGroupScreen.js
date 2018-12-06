@@ -1,48 +1,62 @@
-import React, {Component} from 'react';
-import {Icon, Item, Input, Form, Button, Toast, Text, View} from 'native-base';
+import React from 'react';
+import {Dimensions, ScrollView, View} from 'react-native';
 import connect from "react-redux/es/connect/connect";
+import {Button, Form, Icon, Input, Item, Text, Title} from "native-base";
 import Modal from "../../Components/Modal";
 import {validateNotEmpty} from "../../Utils/utils";
-import PropTypes from 'prop-types';
-import {AddGroupMembers, GroupsActionType} from "../../redux/Groups/groups.actions";
-import Loader from "../../Components/Loader";
-import {Dimensions, ScrollView} from "react-native";
+import {CreateGroup, GroupsActionType} from "../../redux/Groups/groups.actions";
 
-class _AddUsers extends Component {
-    static propTypes = {
-        groupId: PropTypes.number.isRequired
+export class _CreateGroupScreen extends React.Component {
+    static navigationOptions = {
+        title: 'Create group'
     };
 
     constructor(props) {
         super(props);
         this.state = {
+            groupName: '',
             searchBar: '',
             usersToAdd: []
-        };
+        }
     }
 
-    componentDidMount() {
-        this.props.onRef(this)
+    componentWillMount() {
+        console.log("WillMount");
     }
 
-    componentWillUnmount() {
-        this.props.onRef(undefined)
+    componentDidUpdate() {
+        if (this.props.groups.status === GroupsActionType.CreateGroupSuccess)
+            this.props.navigation.navigate('Detail', {group: this.props.groups.createdGroup});
     }
 
     render() {
-        const {groupId} = this.props;
-
         return (
-            <Modal
-                canValidate={(this.state.usersToAdd.length > 0 && this.props.groups.status !== GroupsActionType.AddGroupMembers)}
-                canClose={(this.props.groups.status !== GroupsActionType.AddGroupMembers)}
-                onRef={ref => (this.modal = ref)} title='Add members'
-                actionButtonTitle='Add' validateCallback={() => {
-                this.props.AddGroupMembers(groupId, this.state.usersToAdd);
-                this.setState({usersToAdd: [], searchBar: ''});
-            }}>
+            <View>
                 <View style={{
-                    flexDirection: 'row', justifyContent: 'space-between'
+                    flexDirection: 'row', justifyContent: 'space-between', marginTop: 20
+                }}>
+                    <Form style={{
+                        marginLeft: 10, marginRight: 30, flexGrow: 3
+                    }}>
+                        <Item>
+                            <Input style={{textAlign: 'center', color: 'black', fontFamily: 'Lato_Bold', fontSize: 26}}
+                                   placeholder="Group name" value={this.state.groupName}
+                                   onChangeText={(text) => this.setState({groupName: text})}/>
+                        </Item>
+                        <Title style={{
+                            color: 'black',
+                            fontFamily: 'Lato_Bold',
+                            fontSize: 18,
+                            marginTop: 20,
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                        }}>Members:</Title>
+                    </Form>
+                </View>
+
+                <View style={{
+                    flexDirection: 'row', justifyContent: 'space-between',
+                    margin: 20
                 }}>
                     <Form style={{
                         marginLeft: 10, marginRight: 30, flexGrow: 3
@@ -67,7 +81,7 @@ class _AddUsers extends Component {
                     </Button>
                 </View>
                 <ScrollView style={{height: Dimensions.get('window').height / 3}}>
-                    <View style={{flexDirection: 'row', flexWrap: 'wrap', marginTop: 15}}>
+                    <View style={{margin: 20, flexDirection: 'row', flexWrap: 'wrap'}}>
                         {
                             this.state.usersToAdd.map((user, index) => {
                                 return (
@@ -86,32 +100,35 @@ class _AddUsers extends Component {
                         }
                     </View>
                 </ScrollView>
-                {
-                    (this.props.groups.status === GroupsActionType.AddGroupMembers) ?
-                        <Loader/>
-                        : null
-                }
-            </Modal>
+                <Button success disabled={this.state.groupName === ''}
+                        rounded style={{margin: 30}}
+                        onPress={() => {
+                            this.props.CreateGroup({name: this.state.groupName, members: this.state.usersToAdd})
+                        }}>
+                    <Text>
+                        Create Group
+                    </Text>
+                </Button>
+            </View>
         )
-    }
-
-    openModal() {
-        this.modal.toggle();
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        AddGroupMembers: (id, members) => dispatch(AddGroupMembers(id, members)),
+        CreateGroup: (group) => {
+            dispatch(CreateGroup(group))
+        }
     }
 };
 
 const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
-        groups: state.group
+        groups: state.group,
+        login: state.login
     }
 };
 
-export const AddUsers = connect(mapStateToProps, mapDispatchToProps)(_AddUsers);
+export const CreateGroupScreen = connect(mapStateToProps, mapDispatchToProps)(_CreateGroupScreen);

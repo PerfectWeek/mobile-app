@@ -9,7 +9,12 @@ import {
     UpdateMemberRoleSuccess,
     AddGroupMembersSuccess,
     AddGroupMembersFail,
-    RemoveGroupMemberSuccess, RemoveGroupMemberFail, EditGroupInfoFail, EditGroupInfoSuccess,
+    RemoveGroupMemberSuccess,
+    RemoveGroupMemberFail,
+    EditGroupInfoFail,
+    EditGroupInfoSuccess,
+    CreateGroupSuccess,
+    CreateGroupFail, DeleteGroupSuccess, DeleteGroupFail,
 } from "./groups.actions";
 import {Network} from "../../Network/Requests";
 import {Toast} from "native-base";
@@ -165,6 +170,60 @@ function* EditGroupInfo(action) {
     }
 }
 
+function* CreateGroup(action) {
+    const resp = yield Network.Post('/groups', {name: action.group.name, members: action.group.members});
+    if (resp.status === 201) {
+        yield put(CreateGroupSuccess(resp.data.group));
+        yield Toast.show({
+            text: "Creation successful.",
+            type: "success",
+            buttonText: "Okay",
+            duration: 10000
+        });
+    }
+    else {
+        let err;
+        if (resp.data !== undefined && resp.data.message !== undefined)
+            err = resp.data.message;
+        else
+            err = "Connection error";
+        yield Toast.show({
+            text: err,
+            type: "danger",
+            buttonText: "Okay",
+            duration: 5000
+        });
+        yield put(CreateGroupFail(err));
+    }
+}
+
+function* DeleteGroup(action) {
+    const resp = yield Network.Delete('/groups/' + action.groupId);
+    if (resp.status === 200) {
+        yield put(DeleteGroupSuccess(action.groupId));
+        yield Toast.show({
+            text: "Update successful.",
+            type: "success",
+            buttonText: "Okay",
+            duration: 10000
+        });
+    }
+    else {
+        let err;
+        if (resp.data !== undefined && resp.data.message !== undefined)
+            err = resp.data.message;
+        else
+            err = "Connection error";
+        yield Toast.show({
+            text: err,
+            type: "danger",
+            buttonText: "Okay",
+            duration: 5000
+        });
+        yield put(DeleteGroupFail(err));
+    }
+}
+
 export function* GroupSaga() {
     yield takeEvery(GroupsActionType.GetGroups, GetGroups);
     yield takeEvery(GroupsActionType.GetGroupMembers, GetGroupMembers);
@@ -172,4 +231,6 @@ export function* GroupSaga() {
     yield takeEvery(GroupsActionType.AddGroupMembers, AddGroupMembers);
     yield takeEvery(GroupsActionType.RemoveGroupMember, RemoveGroupMember);
     yield takeEvery(GroupsActionType.EditGroupInfo, EditGroupInfo);
+    yield takeEvery(GroupsActionType.CreateGroup, CreateGroup);
+    yield takeEvery(GroupsActionType.DeleteGroup, DeleteGroup);
 }

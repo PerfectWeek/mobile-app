@@ -135,6 +135,50 @@ export const GroupReducer = (state = {status: 'NONE'}, action) => {
                 status: GroupsActionType.EditGroupInfoFail,
                 error_message: action.error_message
             };
+
+        case GroupsActionType.CreateGroup:
+            return {
+                ...state,
+                status: GroupsActionType.CreateGroup
+            };
+        case GroupsActionType.CreateGroupSuccess: {
+            state.groups.push(action.group);
+            return {
+                ...state,
+                status: GroupsActionType.CreateGroupSuccess,
+                error_message: action.error_message,
+                createdGroup: action.group
+            };
+        }
+        case GroupsActionType.CreateGroupFail:
+            return {
+                ...state,
+                status: GroupsActionType.CreateGroupFail,
+                error_message: action.error_message
+            };
+
+        case GroupsActionType.DeleteGroup:
+            return {
+                ...state,
+                status: GroupsActionType.DeleteGroup
+            };
+        case GroupsActionType.DeleteGroupSuccess: {
+            const groupIndex = state.groups.findIndex((g) => {
+                return (g.id === action.groupId)
+            });
+            state.groups.splice(groupIndex, 1);
+            return {
+                ...state,
+                status: GroupsActionType.DeleteGroupSuccess,
+                error_message: action.error_message
+            };
+        }
+        case GroupsActionType.DeleteGroupFail:
+            return {
+                ...state,
+                status: GroupsActionType.DeleteGroupFail,
+                error_message: action.error_message
+            };
         default:
             return state;
     }
