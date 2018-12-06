@@ -122,11 +122,7 @@ export const GroupReducer = (state = {status: 'NONE'}, action) => {
             const groupIndex = state.groups.findIndex((g) => {
                 return (g.id === action.group.id)
             });
-            console.log("Before");
-            console.log(state.groups[groupIndex]);
-            state.groups[groupIndex] = { ...state.groups[groupIndex], ...action.group };
-            console.log("After");
-            console.log(state.groups[groupIndex]);
+            state.groups[groupIndex] = {...state.groups[groupIndex], ...action.group};
             return {
                 ...state,
                 status: GroupsActionType.EditGroupInfoSuccess,

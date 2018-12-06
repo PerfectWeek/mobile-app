@@ -1,4 +1,4 @@
-import {all, call, put, takeEvery} from "redux-saga/effects";
+import {put, takeEvery} from "redux-saga/effects";
 import {
     GetGroupSuccess,
     GetGroupFail,
@@ -9,12 +9,9 @@ import {
     UpdateMemberRoleSuccess,
     AddGroupMembersSuccess,
     AddGroupMembersFail,
-    RemoveGroupMemberSuccess, RemoveGroupMemberFail, EditGroupInfoFail, EditGroupInfoSuccess
+    RemoveGroupMemberSuccess, RemoveGroupMemberFail, EditGroupInfoFail, EditGroupInfoSuccess,
 } from "./groups.actions";
 import {Network} from "../../Network/Requests";
-import {NavigationActions} from "react-navigation";
-import * as selectors from '../selector';
-import {select} from 'redux-saga/effects';
 import {Toast} from "native-base";
 
 function* GetGroups(action) {
@@ -34,7 +31,7 @@ function* GetGroups(action) {
             buttonText: "Okay",
             duration: 5000
         });
-        yield put(RemoveGroupMemberFail(err));
+        yield put(GetGroupFail(err));
     }
 }
 
@@ -55,7 +52,7 @@ function* GetGroupMembers(action) {
             buttonText: "Okay",
             duration: 5000
         });
-        yield put(RemoveGroupMemberFail(err));
+        yield put(GetGroupMembersFail(err));
     }
 }
 
@@ -142,7 +139,7 @@ function* AddGroupMembers(action) {
 }
 
 function* EditGroupInfo(action) {
-    const resp = yield Network.Put('/groups/' + action.group.id, {name : action.group.name });
+    const resp = yield Network.Put('/groups/' + action.group.id, {name: action.group.name});
     if (resp.status === 200) {
         yield put(EditGroupInfoSuccess(resp.data.group));
         yield Toast.show({

@@ -108,5 +108,4 @@ const mapStateToProps = (state, ownProps) => {
     }
 };
 
-// export default AddUsers;
 export const AddUsers = connect(mapStateToProps, mapDispatchToProps)(_AddUsers);

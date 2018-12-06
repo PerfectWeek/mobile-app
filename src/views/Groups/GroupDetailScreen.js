@@ -14,7 +14,7 @@ import {
     Left,
     Right,
     Icon,
-    ActionSheet
+    ActionSheet, Item, Input, Form
 } from 'native-base';
 import connect from "react-redux/es/connect/connect";
 import {

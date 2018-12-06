@@ -36,7 +36,7 @@ export const GetGroupSuccess = (groups) => {
 
 export const GetGroupFail = (error_message) => {
     return {
-        type : GroupsActionType.GetGroupMembersFail,
+        type: GroupsActionType.GetGroupMembersFail,
         error_message: error_message
     }
 };
@@ -59,7 +59,7 @@ export const GetGroupMembersSuccess = (id, members) => {
 
 export const GetGroupMembersFail = (error_message) => {
     return {
-        type : GroupsActionType.GetGroupMembersFail,
+        type: GroupsActionType.GetGroupMembersFail,
         error_message: error_message
     }
 };
@@ -84,7 +84,7 @@ export const UpdateMemberRoleSuccess = (groupId, member) => {
 
 export const UpdateMemberRoleFail = (error_message) => {
     return {
-        type : GroupsActionType.UpdateMemberRoleFail,
+        type: GroupsActionType.UpdateMemberRoleFail,
         error_message: error_message
     }
 };
@@ -108,7 +108,7 @@ export const AddGroupMembersSuccess = (groupId, members) => {
 
 export const AddGroupMembersFail = (error_message) => {
     return {
-        type : GroupsActionType.AddGroupMembersFail,
+        type: GroupsActionType.AddGroupMembersFail,
         error_message: error_message
     }
 };
@@ -132,7 +132,7 @@ export const RemoveGroupMemberSuccess = (groupId, members) => {
 
 export const RemoveGroupMemberFail = (error_message) => {
     return {
-        type : GroupsActionType.RemoveGroupMemberFail,
+        type: GroupsActionType.RemoveGroupMemberFail,
         error_message: error_message
     }
 };
@@ -154,7 +154,7 @@ export const EditGroupInfoSuccess = (group) => {
 
 export const EditGroupInfoFail = (error_message) => {
     return {
-        type : GroupsActionType.EditGroupInfoFail,
+        type: GroupsActionType.EditGroupInfoFail,
         error_message: error_message
     }
 };
