@@ -91,6 +91,7 @@ export default class Root extends React.Component {
             Ionicons: require("native-base/Fonts/Ionicons.ttf"),
             Lato_Bold: require("./Resources/Font/Lato-Bold.ttf"),
             SimpleLineIcons: require("native-base/Fonts/SimpleLineIcons.ttf"),
+            MaterialIcons: require("native-base/Fonts/MaterialIcons.ttf"),
         });
         this.setState({isReady: true});
     }
