@@ -12,11 +12,10 @@ export const GetAllUsersEvents = (_pseudo) => {
   };
 };
 
-export const GetAllUsersEventsSuccess = (eventsList) => {
+export const GetAllUsersEventsSuccess = (calendars) => {
   return {
       type: CalendarActionType.GetAllUsersEventsSuccess,
-      eventsList,
-      error_message: null
+      calendars
   }
 };
 

@@ -8,9 +8,9 @@ function getEvents() {
 }
 
 function* GetAllUsersEvents(action) {
-   try {
+    try {
       let listEventsByCalendars = [];
-      const resp = yield Network.Get('/users/'+ action.pseudo +'/calendars');
+      const resp = yield Network.Get('/users/'+ action.pseudo.pseudo +'/calendars');
       if (resp.status !== 200)
          throw resp.data;
       const listCalendars = resp.data.calendars;

@@ -72,19 +72,23 @@ class _RegisterScreen extends React.Component {
                         <CustomInput iconName={'person'}
                                      onChangeText={(text) => this.setState({username: text})}
                                      error={!validateNotEmpty(this.state.username)}
+                                     placeholder={'Pseudo'}
                         />
                         <CustomInput iconName={'mail'} style={{marginTop: 30}}
                                      onChangeText={(text) => this.setState({mail: text})}
                                      error={!validateEmail(this.state.mail)}
                                      type={'email-address'}
+                                     placeholder={'Email'}
                         />
                         <CustomInput iconName={'lock'} secureTextEntry={true} style={{marginTop: 30}}
                                      onChangeText={(text) => this.setState({password: text})}
                                      error={!comparePasswords(this.state.password, this.state.password2) || !validatePassword(this.state.password)}
+                                     placeholder={'Password'}
                         />
                         <CustomInput iconName={'lock'} secureTextEntry={true} style={{marginTop: 30}}
                                      onChangeText={(text) => this.setState({password2: text})}
                                      error={!comparePasswords(this.state.password, this.state.password2) || !validatePassword(this.state.password2)}
+                                     placeholder={'Password again'}
                         />
                         <CustomButton style={{marginTop: 30}}
                                       disabled={this.props.register.status === RegisterActionsType.Register ||

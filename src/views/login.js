@@ -73,10 +73,12 @@ class _LoginScreen extends React.Component {
                                  onChangeText={(text) => this.setState({username: text})}
                                  error={!validateEmail(this.state.username)}
                                  type={'email-address'}
+                                 placeholder={'Email'}
                     />
                     <CustomInput iconName={'lock'} secureTextEntry={true} style={{marginTop: 30}}
                                  onChangeText={(text) => this.setState({password: text})}
                                  error={!validatePassword(this.state.password)}
+                                 placeholder={'Password'}
                     />
                     <CustomButton style={{marginTop: 30}}
                                   disabled={this.props.login.status === LoginActionsType.Login ||

@@ -12,7 +12,7 @@ export const CalendarReducer = (state = {status: 'NONE'}, action) => {
             return {
                 ...state,
                 status: CalendarActionType.GetAllUsersEventsSuccess,
-                eventsList: action.eventsList
+                calendars: action.calendars
             };
         case CalendarActionType.GetAllUsersEventsFail:
             return {

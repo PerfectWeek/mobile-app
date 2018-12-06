@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import connect from "react-redux/es/connect/connect";
-import {Agenda} from 'react-native-calendars';
+import {Agenda, Calendar} from 'react-native-calendars';
 import {Container} from "native-base";
-import {GetAllUsersEvents} from "../redux/Calendar/calendar.actions";
+import {GetAllUsersEvents, CalendarActionType} from "../redux/Calendar/calendar.actions";
 
 // import {} from "../redux/User/user.actions";
 // import {} from "../redux/Login/login.actions";
@@ -12,40 +12,86 @@ export class _CalendarDashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            items: {}
+            items: {},
+            filled: false
         };
         this.props.GetAllUsersEvents(this.props.login);
     }
 
     loadItems(day) {
-        setTimeout(() => {
-            for (let i = -15; i < 85; i++) {
+        if (this.props.calendar.status !== CalendarActionType.GetAllUsersEventsSuccess)
+            return ;
+
+        const listCalendars = this.props.calendar.calendars;
+
+        // setTimeout(() => {
+            for (let i = -150; i < 185; i++) {
                 const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-                const strTime = this.timeToString(time);
+                // const strTime = this.timeToString(time);
+                const date = new Date(time);
+                const strTime = date.toISOString().split('T')[0];
+                console.log(time, strTime)
                 if (!this.state.items[strTime]) {
                     this.state.items[strTime] = [];
-                    const numItems = Math.floor(Math.random() * 5);
-                    for (let j = 0; j < numItems; j++) {
-                        this.state.items[strTime].push({
-                            name: 'Item for ' + strTime,
-                            height: Math.max(50, Math.floor(Math.random() * 150))
-                        });
+                    // const numItems = Math.floor(Math.random() * 5);
+                    // for (let j = 0; j < numItems; j++) {
+                    //     this.state.items[strTime].push({
+                    //         name: 'Item for ' + strTime,
+                    //         height: Math.max(50, Math.floor(Math.random() * 150))
+                    //     });
+                    // }
+                }
+            }
+            // console.log(listCalendars)
+        //     let items = {}
+        if (this.state.filled === true)
+            return ;
+        this.setState({
+            filled: true})
+            for (let i = 0; i < listCalendars.length; ++i) {
+                const events = listCalendars[i].events;
+                for (let k = 0; k < events.length; ++k) {
+                    const event = events[k];
+                    let strTimeStart = new Date(event.start_time);
+                    const strTimee = new Date(event.end_time);
+                    const calcol = this.getRandomColor()
+                    while (strTimeStart.getTime() <= strTimee.getTime()) {
+                        isoDate = this.timeToString(strTimeStart)
+                        if (!this.state.items[isoDate]) {
+                            this.state.items[isoDate] = [];
+                        }
+                        this.state.items[isoDate].push({
+                            name: event.name,
+                            height: 5,
+                            color: calcol
+                        })
+                        strTimeStart.setDate(strTimeStart.getDate() + 1);
                     }
                 }
             }
-            //console.log(this.state.items);
-            const newItems = {};
-            Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
-            this.setState({
-                items: newItems
-            });
-        }, 1000);
+
+            console.log(this.state.items);
+            // const newItems = {};
+            // Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
+            // this.setState({
+            //     items: newItems
+            // });
+        // }, 1000);
         // console.log(`Load Items for ${day.year}-${day.month}`);
+    }
+
+    getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
     }
 
     renderItem(item) {
         return (
-            <View style={[styles.item, {height: item.height}]}><Text>{item.name}</Text></View>
+            <View style={[styles.item, {height: item.height, backgroundColor: item.color}]}><Text>{item.name}</Text></View>
         );
     }
 
@@ -60,11 +106,36 @@ export class _CalendarDashboard extends Component {
     }
 
     timeToString(time) {
-        const date = new Date(time);
-        return date.toISOString().split('T')[0];
+        // const date = new Date(time);
+        return time.toISOString().split('T')[0];
+    }
+
+    currentDate() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd = '0'+dd
+        }
+
+        if(mm<10) {
+            mm = '0'+mm
+        }
+
+        today = mm + '/' + dd + '/' + yyyy;
+        return today
     }
 
     render() {
+        console.log(this.props.calendar)
+        if (this.props.calendar && this.props.calendar.status !== CalendarActionType.GetAllUsersEventsSuccess)
+            return (
+                <Container/>
+            );
+        const current = new Date()
+        // console.log('cal', this.props.calendar)
         return (
             <Container
                 style={{paddingTop: Expo.Constants.statusBarHeight}}
@@ -72,10 +143,13 @@ export class _CalendarDashboard extends Component {
                 <Agenda
                     items={this.state.items}
                     loadItemsForMonth={this.loadItems.bind(this)}
-                    selected={'2017-05-16'}
+                    selected={this.currentDate()}
                     renderItem={this.renderItem.bind(this)}
-                    renderEmptyDate={this.renderEmptyDate.bind(this)}
+                    // renderEmptyDate={this.renderEmptyDate.bind(this)}
+                    renderEmptyDate={() => {return (<View style={{backgroundColor: 'red'}}/>);}}
                     rowHasChanged={this.rowHasChanged.bind(this)}
+                    minDate={'2015-01-01'}
+                    pastScrollRange={10}
                     // markingType={'period'}
                     // markedDates={{
                     //    '2017-05-08': {textColor: '#666'},
@@ -123,7 +197,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
-        eventsList: state.eventsList,
+        calendar: state.calendar,
         login: state.login
     }
 };
