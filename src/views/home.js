@@ -10,16 +10,16 @@ import {CalendarDashboard} from "./CalendarDashboard";
 
 export default createBottomTabNavigator(
     {
+        // Dashboard: {
+        //     screen: Dashboard,
+        //     navigationOptions: {
+        //         tabBarIcon: ({tintColor}) => <Icon
+        //             name='home'
+        //             type='FontAwesome'
+        //             style={{color: tintColor}}/>
+        //     }
+        // },
         Dashboard: {
-            screen: Dashboard,
-            navigationOptions: {
-                tabBarIcon: ({tintColor}) => <Icon
-                    name='home'
-                    type='FontAwesome'
-                    style={{color: tintColor}}/>
-            }
-        },
-        Calendar: {
             screen: CalendarDashboard,
             navigationOptions: {
                 tabBarIcon: ({tintColor}) => <Icon
@@ -48,8 +48,8 @@ export default createBottomTabNavigator(
     },
     {
         tabBarOptions: {
-            activeTintColor: "#F3EDAF",
-            inactiveTintColor: 'white',
+            activeTintColor: "#0686e3",
+            inactiveTintColor: '#141414',
             labelStyle: {
                 fontSize: 14,
             },
