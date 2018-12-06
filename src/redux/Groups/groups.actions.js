@@ -17,6 +17,12 @@ export const GroupsActionType = {
     EditGroupInfo: 'EDIT_GROUP_INFO',
     EditGroupInfoSuccess: 'EDIT_GROUP_INFO_SUCCESS',
     EditGroupInfoFail: 'EDIT_GROUP_INFO_FAIL',
+    CreateGroup: 'CREATE_GROUP',
+    CreateGroupSuccess: 'CREATE_GROUP_SUCCESS',
+    CreateGroupFail: 'CREATE_GROUP_FAIL',
+    DeleteGroup: 'DELETE_GROUP',
+    DeleteGroupSuccess: 'DELETE_GROUP_SUCCESS',
+    DeleteGroupFail: 'DELETE_GROUP_FAIL',
 };
 
 export const GetGroups = (pseudo) => {
@@ -155,6 +161,50 @@ export const EditGroupInfoSuccess = (group) => {
 export const EditGroupInfoFail = (error_message) => {
     return {
         type: GroupsActionType.EditGroupInfoFail,
+        error_message: error_message
+    }
+};
+
+export const CreateGroup = (group) => {
+    return {
+        type: GroupsActionType.CreateGroup,
+        group
+    }
+};
+
+export const CreateGroupSuccess = (group) => {
+    return {
+        type: GroupsActionType.CreateGroupSuccess,
+        error_message: null,
+        group
+    }
+};
+
+export const CreateGroupFail = (error_message) => {
+    return {
+        type: GroupsActionType.CreateGroupFail,
+        error_message: error_message
+    }
+};
+
+export const DeleteGroup = (groupId) => {
+    return {
+        type: GroupsActionType.DeleteGroup,
+        groupId
+    }
+};
+
+export const DeleteGroupSuccess = (groupId) => {
+    return {
+        type: GroupsActionType.DeleteGroupSuccess,
+        error_message: null,
+        groupId
+    }
+};
+
+export const DeleteGroupFail = (error_message) => {
+    return {
+        type: GroupsActionType.DeleteGroupFail,
         error_message: error_message
     }
 };
