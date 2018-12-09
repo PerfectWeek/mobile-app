@@ -1,19 +1,27 @@
 import React from 'react';
 import {Icon} from 'native-base';
 import {Profile} from './Profile';
-import {GroupsScreen} from './Groups/GroupsScreen';
 import {createBottomTabNavigator} from "react-navigation";
-import {Dashboard} from "./dashboard";
-import {HeaderBackgroundColor, Secondary} from "../../Style/Constant";
+import {HeaderBackgroundColor} from "../../Style/Constant";
 import {GroupsNavigator} from "./Groups/GroupsNavigator";
+import {CalendarDashboard} from "./CalendarDashboard";
 
 export default createBottomTabNavigator(
     {
+        // Dashboard: {
+        //     screen: Dashboard,
+        //     navigationOptions: {
+        //         tabBarIcon: ({tintColor}) => <Icon
+        //             name='home'
+        //             type='FontAwesome'
+        //             style={{color: tintColor}}/>
+        //     }
+        // },
         Dashboard: {
-            screen: Dashboard,
+            screen: CalendarDashboard,
             navigationOptions: {
                 tabBarIcon: ({tintColor}) => <Icon
-                    name='home'
+                    name='calendar'
                     type='FontAwesome'
                     style={{color: tintColor}}/>
             }
@@ -38,8 +46,8 @@ export default createBottomTabNavigator(
     },
     {
         tabBarOptions: {
-            activeTintColor: "#F3EDAF",
-            inactiveTintColor: 'white',
+            activeTintColor: "#0686e3",
+            inactiveTintColor: '#141414',
             labelStyle: {
                 fontSize: 14,
             },

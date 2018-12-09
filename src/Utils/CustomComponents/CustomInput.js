@@ -33,6 +33,7 @@ export default class CustomInput extends Component {
                     : null
                 }
                 <TextInput style={cstyles.textInput}
+                           keyboardType={(this.props.type === undefined) ? 'default' : this.props.type}
                            placeholder={this.props.placeholder ? this.props.placeholder : ''}
                            selectTextOnFocus={true}
                            secureTextEntry={this.props.secureTextEntry ? this.props.secureTextEntry : false}

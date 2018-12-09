@@ -1,4 +1,5 @@
 import React from 'react';
+import {Platform} from 'react-native';
 import {StyleProvider, Root as RootNativeBase} from 'native-base';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider, connect} from 'react-redux';
@@ -26,6 +27,9 @@ import createSagaMiddleware from 'redux-saga';
 import LoginNavigator from "./src/views/LoginNavigator";
 import getTheme from './native-base-theme/components';
 import platform from "./native-base-theme/variables/platform";
+import {CalendarSaga} from "./src/redux/Calendar/calendar.saga";
+import {CalendarReducer} from "./src/redux/Calendar/calendar.reducer";
+
 
 const AppNavigator = createSwitchNavigator(
     {
@@ -48,6 +52,7 @@ const reducer = combineReducers({
     register: RegisterReducer,
     user: UserReducer,
     group: GroupReducer,
+    calendar: CalendarReducer,
     nav: navReducer
 });
 
@@ -67,7 +72,8 @@ function* sagas() {
         fork(LoginSagas),
         fork(RegisterSagas),
         fork(UserSagas),
-        fork(GroupSaga)
+        fork(GroupSaga),
+        fork(CalendarSaga)
     ]);
 }
 
@@ -85,14 +91,25 @@ export default class Root extends React.Component {
     }
 
     async componentWillMount() {
-        await Expo.Font.loadAsync({
+        let obj = {
             FontAwesome: require("expo/node_modules/@expo/vector-icons/fonts/FontAwesome.ttf"),
             Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
             Ionicons: require("native-base/Fonts/Ionicons.ttf"),
             Lato_Bold: require("./Resources/Font/Lato-Bold.ttf"),
-            SimpleLineIcons: require("native-base/Fonts/SimpleLineIcons.ttf"),
-            MaterialIcons: require("native-base/Fonts/MaterialIcons.ttf"),
-        });
+            'simple-line-icons': require('native-base/Fonts/SimpleLineIcons.ttf'),
+            'Material Icons': require("native-base/Fonts/MaterialIcons.ttf")
+        };
+        if (Platform.OS !== 'ios')
+            obj = {
+                FontAwesome: require("expo/node_modules/@expo/vector-icons/fonts/FontAwesome.ttf"),
+                Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+                Ionicons: require("native-base/Fonts/Ionicons.ttf"),
+                Lato_Bold: require("./Resources/Font/Lato-Bold.ttf"),
+                SimpleLineIcons: require("native-base/Fonts/SimpleLineIcons.ttf"),
+                // MaterialIcons: require("native-base/Fonts/MaterialIcons.ttf")
+            };
+        await Expo.Font.loadAsync(obj);
+        await Expo.Font.loadAsync("Material Design Icons", require("native-base/Fonts//MaterialCommunityIcons.ttf"));
         this.setState({isReady: true});
     }
 

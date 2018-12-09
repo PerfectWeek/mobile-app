@@ -1,11 +1,11 @@
 import React from 'react';
-import {View, Text, Container} from 'native-base';
+import {Animated, Dimensions, Easing, Platform, StyleSheet, Keyboard} from "react-native";
+import {View, Container} from 'native-base';
 import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
 import {Register, RegisterActionsType} from "../redux/Register/register.actions";
 import LottieView from "lottie-react-native";
 import {validateEmail, validateNotEmpty, validatePassword, comparePasswords} from "../Utils/utils";
-import {Animated, Dimensions, Easing, Platform, StyleSheet} from "react-native";
 
 import CustomInput from '../Utils/CustomComponents/CustomInput'
 import CustomButton from '../Utils/CustomComponents/CustomButton'
@@ -42,6 +42,11 @@ class _RegisterScreen extends React.Component {
         ).start(() => this.runAnimation());
     }
 
+    registerHandle() {
+        Keyboard.dismiss();
+        this.props.Register(this.state.username, this.state.mail, this.state.password);
+    }
+
     render() {
         const spin = this.spinValue.interpolate({
             inputRange: [0, 1],
@@ -67,18 +72,23 @@ class _RegisterScreen extends React.Component {
                         <CustomInput iconName={'person'}
                                      onChangeText={(text) => this.setState({username: text})}
                                      error={!validateNotEmpty(this.state.username)}
+                                     placeholder={'Pseudo'}
                         />
                         <CustomInput iconName={'mail'} style={{marginTop: 30}}
                                      onChangeText={(text) => this.setState({mail: text})}
                                      error={!validateEmail(this.state.mail)}
+                                     type={'email-address'}
+                                     placeholder={'Email'}
                         />
                         <CustomInput iconName={'lock'} secureTextEntry={true} style={{marginTop: 30}}
                                      onChangeText={(text) => this.setState({password: text})}
                                      error={!comparePasswords(this.state.password, this.state.password2) || !validatePassword(this.state.password)}
+                                     placeholder={'Password'}
                         />
                         <CustomInput iconName={'lock'} secureTextEntry={true} style={{marginTop: 30}}
                                      onChangeText={(text) => this.setState({password2: text})}
                                      error={!comparePasswords(this.state.password, this.state.password2) || !validatePassword(this.state.password2)}
+                                     placeholder={'Password again'}
                         />
                         <CustomButton style={{marginTop: 30}}
                                       disabled={this.props.register.status === RegisterActionsType.Register ||
@@ -87,20 +97,9 @@ class _RegisterScreen extends React.Component {
                                       !validateEmail(this.state.mail) || !validateNotEmpty(this.state.mail) ||
                                       !validateNotEmpty(this.state.username)
                                       }
-                                      onPress={() => {this.props.Register(this.state.username, this.state.mail, this.state.password);}}
+                                      onPress={() => this.registerHandle()}
+                                      title={'Register'}
                         />
-                        <Text style={{
-                            marginTop: 10,
-                            height: 20,
-                            color: 'red', textAlign: 'center',
-                            backgroundColor: 'rgba(0,0,0,0.5)',
-                            borderRadius: 10
-                        }}>{this.props.register.error_message}</Text>
-                        <Text style={{
-                            marginTop: 10,
-                            color: 'green',
-                            textAlign: 'center'
-                        }}>{this.props.register.status === "REGISTER_SUCCESS" ? "User created. We sent you an email for confirmation." : null}</Text>
                     </View>
                     <View style={{
                         flex: 1,

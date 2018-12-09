@@ -1,6 +1,6 @@
 import axios from 'react-native-axios'
+import {AsyncStorage} from 'react-native';
 import {_Home} from "../views/home";
-import {Alert} from 'react-native';
 
 // axios.defaults.baseURL = 'http://192.168.1.6:3000';
 // axios.defaults.baseURL = 'http://api.perfectweek.benard.pl';
@@ -8,6 +8,38 @@ axios.defaults.baseURL = 'https://api.kalastud.io';
 
 export class Network {
     static access_token = null;
+    static storedTokenName = 'tokenAccess';
+
+    static async CheckToken() {
+        try {
+            const savedData = await AsyncStorage.getItem(this.storedTokenName);
+            return JSON.parse(savedData);
+        }
+        catch (e) {
+            return null;
+        }
+    }
+    static async SaveToken(email, name) {
+        try {
+            const jData = {
+                token: this.access_token,
+                email: email,
+                name: name
+            };
+            return await AsyncStorage.setItem(this.storedTokenName, JSON.stringify(jData));
+        }
+        catch (e) {
+            return null;
+        }
+    }
+    static async deleteToken() {
+        try {
+            return await AsyncStorage.removeItem(this.storedTokenName);
+        }
+        catch (e){
+            return null;
+        }
+    }
 
     static async Get(route) {
         try {
@@ -17,7 +49,6 @@ export class Network {
                 return await axios.get(route);
         }
         catch (e) {
-            Alert.alert('Something went wrong !');
             return e;
         }
     }
@@ -34,7 +65,6 @@ export class Network {
                 return await axios.post(route, body);
         }
         catch (e) {
-            Alert.alert('Something went wrong !');
             return e.response;
         }
     }

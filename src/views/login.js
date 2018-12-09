@@ -3,7 +3,7 @@ import {Image, Dimensions, Animated, Easing, StyleSheet, TouchableHighlight} fro
 import {View, Text, Container} from 'native-base';
 import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
-import {LoginActionsType, Login} from "../redux/Login/login.actions";
+import {LoginActionsType, Login, CheckIfLogged} from "../redux/Login/login.actions";
 import LottieView from 'lottie-react-native';
 import {validateEmail} from "../Utils/utils.js";
 import {validateNotEmpty, validatePassword} from "../Utils/utils";
@@ -20,8 +20,8 @@ class _LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {username: '', password: ''};
+        this.props.CheckIfLogged();
         this.spinValue = new Animated.Value(0);
-
     }
 
     componentDidMount(){
@@ -40,8 +40,7 @@ class _LoginScreen extends React.Component {
         ).start(() => this.runAnimation());
     }
 
-    render() {
-        const spin = this.spinValue.interpolate({
+    render() {        const spin = this.spinValue.interpolate({
             inputRange: [0, 1],
             outputRange: ['0deg', '360deg']
         });
@@ -73,16 +72,20 @@ class _LoginScreen extends React.Component {
                     <CustomInput iconName={'mail'}
                                  onChangeText={(text) => this.setState({username: text})}
                                  error={!validateEmail(this.state.username)}
+                                 type={'email-address'}
+                                 placeholder={'Email'}
                     />
                     <CustomInput iconName={'lock'} secureTextEntry={true} style={{marginTop: 30}}
                                  onChangeText={(text) => this.setState({password: text})}
                                  error={!validatePassword(this.state.password)}
+                                 placeholder={'Password'}
                     />
                     <CustomButton style={{marginTop: 30}}
                                   disabled={this.props.login.status === LoginActionsType.Login ||
                                   this.state.password === '' || this.state.username === '' ||
                                   !validatePassword(this.state.password) || !validateNotEmpty(this.state.username)}
                                   onPress={() => {this.props.Login(this.state.username, this.state.password);}}
+                                  title={'Login'}
                     />
                     <TouchableHighlight style={{marginTop: 10}}
                         onPress={() => this.props.navigation.navigate('Register')}
@@ -119,7 +122,8 @@ class _LoginScreen extends React.Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        Login: (email, password) => dispatch(Login(email, password))
+        Login: (email, password) => dispatch(Login(email, password)),
+        CheckIfLogged: () => dispatch(CheckIfLogged())
     }
 };
 

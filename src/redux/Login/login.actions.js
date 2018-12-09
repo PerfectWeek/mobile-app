@@ -3,7 +3,8 @@ export const LoginActionsType = {
     LoginSuccess: 'LOGIN_SUCCESS',
     LoginFail: 'LOGIN_FAIL',
     UpdateUserInfo: 'UPDATE_USER_INFO',
-    Logout: 'LOGOUT'
+    Logout: 'LOGOUT',
+    CheckIfLogged: "CHECK_IF_LOGGED"
 };
 
 export const Login = (email, password) => {
@@ -42,5 +43,11 @@ export const UpdateUserInfo = (pseudo, email) => {
 export const Logout = () => {
     return {
         type: LoginActionsType.Logout
+    }
+};
+
+export const CheckIfLogged = () => {
+    return {
+        type: LoginActionsType.CheckIfLogged
     }
 };
