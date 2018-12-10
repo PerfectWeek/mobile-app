@@ -51,7 +51,8 @@ export default class CustomInput extends Component {
 
 const cstyles = StyleSheet.create({
    textinputView: {
-      alignItems: 'center',
+       elevation: 3,
+       alignItems: 'center',
         paddingRight: 25,
         paddingLeft: 20,
         backgroundColor: 'white',
