@@ -24,7 +24,6 @@ class _RegisterScreen extends React.Component {
         super(props);
         this.state = {username: '', mail: '', password: '', password2: ''};
         this.spinValue = new Animated.Value(0);
-
     }
 
     componentDidMount(){
@@ -49,6 +48,8 @@ class _RegisterScreen extends React.Component {
     }
 
     render() {
+        if (this.props.register.status === RegisterActionsType.RegisterSuccess)
+            this.props.navigation.goBack();
         const spin = this.spinValue.interpolate({
             inputRange: [0, 1],
             outputRange: ['360deg', '0deg']

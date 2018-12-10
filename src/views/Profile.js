@@ -27,9 +27,12 @@ export class _Profile extends React.Component {
                 paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
             }}>
 
-                <Header androidStatusBarColor="#00AE93" style={{backgroundColor: HeaderBackgroundColor}}>
+                <Header
+                    androidStatusBarColor="#000"
+                        style={{backgroundColor: "#FFF"}}
+                >
                     <Body>
-                    <Title>Profile</Title>
+                    <Title style={{color: '#000000', textAlign: 'center'}}>Profile</Title>
                     </Body>
                     <Right>
                         <Button transparent onPress={() => {
@@ -42,7 +45,7 @@ export class _Profile extends React.Component {
                                 }, style: 'cancel'
                             }], {cancelable: false})
                         }}>
-                            <Icon type={"FontAwesome"} name='power-off'/>
+                            <Icon type={"FontAwesome"} name='power-off' style={{color: '#064C96'}}/>
                         </Button>
                     </Right>
                 </Header>

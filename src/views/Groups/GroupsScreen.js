@@ -40,13 +40,13 @@ export class _GroupsScreen extends React.Component {
             }}>
                 <Header androidStatusBarColor="#00AE93" style={{backgroundColor: HeaderBackgroundColor}}>
                     <Body>
-                    <Title>My groups</Title>
+                    <Title style={{color: 'black'}}>My groups</Title>
                     </Body>
                     <Right>
                         <Button transparent onPress={() => {
                             this.props.navigation.navigate({routeName: 'CreateGroup'});
                         }}>
-                            <Icon style={{fontSize: 28, fontWeight: 'bold'}} type={"MaterialIcons"} name='add'/>
+                            <Icon style={{fontSize: 28, fontWeight: 'bold', color: '#064C96'}} type={"MaterialIcons"} name='add'/>
                         </Button>
                     </Right>
                 </Header>

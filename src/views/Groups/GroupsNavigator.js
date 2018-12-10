@@ -1,6 +1,6 @@
 import React from 'react';
 import {createStackNavigator} from "react-navigation";
-import {HeaderBackgroundColor} from "../../../Style/Constant";
+import {HeaderBackgroundColor, HeaderTintColor} from "../../../Style/Constant";
 import {GroupsScreen} from "./GroupsScreen";
 import {GroupDetailScreen} from "./GroupDetailScreen";
 import {CreateGroupScreen} from "./CreateGroupScreen";
@@ -28,7 +28,7 @@ export const GroupsNavigator = createStackNavigator(
             headerStyle: {
                 backgroundColor: HeaderBackgroundColor,
             },
-            headerTintColor: '#fff',
+            headerTintColor: HeaderTintColor,
             headerTitleStyle: {
                 fontWeight: 'bold',
             },

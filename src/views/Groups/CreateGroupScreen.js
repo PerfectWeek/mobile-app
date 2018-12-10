@@ -11,6 +11,7 @@ export class _CreateGroupScreen extends React.Component {
         title: 'Create group'
     };
 
+
     constructor(props) {
         super(props);
         this.state = {
