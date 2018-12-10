@@ -46,8 +46,10 @@ export default createBottomTabNavigator(
     },
     {
         tabBarOptions: {
-            activeTintColor: "#0686e3",
-            inactiveTintColor: '#141414',
+            activeTintColor: "#F3EDAF",
+            // activeTintColor: "#0686e3",
+            // inactiveTintColor: '#141414',
+            inactiveTintColor: 'white',
             labelStyle: {
                 fontSize: 14,
             },

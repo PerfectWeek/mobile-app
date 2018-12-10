@@ -14,7 +14,7 @@ import {
     EditGroupInfoFail,
     EditGroupInfoSuccess,
     CreateGroupSuccess,
-    CreateGroupFail, DeleteGroupSuccess, DeleteGroupFail,
+    CreateGroupFail, DeleteGroupSuccess, DeleteGroupFail, GetGroupInfoSuccess,
 } from "./groups.actions";
 import {Network} from "../../Network/Requests";
 import {Toast} from "native-base";
@@ -40,6 +40,27 @@ function* GetGroups(action) {
     }
 }
 
+function* GetGroupInfo(action) {
+    const resp = yield Network.Get('/groups/' + action.id);
+    if (resp.status === 200) {
+        yield put(GetGroupInfoSuccess(resp.data.group))
+    }
+    else {
+        let err;
+        if (resp.data !== undefined && resp.data.message !== undefined)
+            err = resp.data.message;
+        else
+            err = "Connection error";
+        yield Toast.show({
+            text: err,
+            type: "danger",
+            buttonText: "Okay",
+            duration: 5000
+        });
+        yield put(GetGroupInfoSuccess(err));
+    }
+}
+
 function* GetGroupMembers(action) {
     const resp = yield Network.Get('/groups/' + action.id + '/members');
     if (resp.status === 200) {
@@ -62,9 +83,9 @@ function* GetGroupMembers(action) {
 }
 
 function* RemoveGroupMember(action) {
-    const resp = yield Network.Delete('/groups/' + action.groupId + '/members' + action.member.pseudo);
+    const resp = yield Network.Delete('/groups/' + action.groupId + '/members/' + action.member.pseudo);
     if (resp.status === 200) {
-        yield put(RemoveGroupMemberSuccess(action.id, resp.data.members));
+        yield put(RemoveGroupMemberSuccess(action.groupId, resp.data.members));
         yield Toast.show({
             text: "Update successful.",
             type: "success",
@@ -117,7 +138,7 @@ function* UpdateMemberRole(action) {
 }
 
 function* AddGroupMembers(action) {
-    const resp = yield Network.Post('/groups/' + action.groupId + '/add-members', action.members);
+    const resp = yield Network.Post('/groups/' + action.groupId + '/add-members', { users : action.members });
     if (resp.status === 200) {
         yield put(AddGroupMembersSuccess(action.groupId, resp.data.members));
         yield Toast.show({
@@ -144,7 +165,10 @@ function* AddGroupMembers(action) {
 }
 
 function* EditGroupInfo(action) {
-    const resp = yield Network.Put('/groups/' + action.group.id, {name: action.group.name});
+    const resp = yield Network.Put('/groups/' + action.group.id, {
+        name: action.group.name,
+        description: action.group.description
+    });
     if (resp.status === 200) {
         yield put(EditGroupInfoSuccess(resp.data.group));
         yield Toast.show({
@@ -171,7 +195,11 @@ function* EditGroupInfo(action) {
 }
 
 function* CreateGroup(action) {
-    const resp = yield Network.Post('/groups', {name: action.group.name, members: action.group.members});
+    const resp = yield Network.Post('/groups', {
+        name: action.group.name,
+        members: action.group.members,
+        description: action.group.description
+    });
     if (resp.status === 201) {
         yield put(CreateGroupSuccess(resp.data.group));
         yield Toast.show({
@@ -233,4 +261,5 @@ export function* GroupSaga() {
     yield takeEvery(GroupsActionType.EditGroupInfo, EditGroupInfo);
     yield takeEvery(GroupsActionType.CreateGroup, CreateGroup);
     yield takeEvery(GroupsActionType.DeleteGroup, DeleteGroup);
+    yield takeEvery(GroupsActionType.GetGroupInfo, GetGroupInfo);
 }

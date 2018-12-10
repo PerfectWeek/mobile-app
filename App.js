@@ -105,8 +105,9 @@ export default class Root extends React.Component {
                 Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
                 Ionicons: require("native-base/Fonts/Ionicons.ttf"),
                 Lato_Bold: require("./Resources/Font/Lato-Bold.ttf"),
+                Lato_Medium: require("./Resources/Font/Lato-Medium.ttf"),
                 SimpleLineIcons: require("native-base/Fonts/SimpleLineIcons.ttf"),
-                // MaterialIcons: require("native-base/Fonts/MaterialIcons.ttf")
+                MaterialIcons: require("native-base/Fonts/MaterialIcons.ttf")
             };
         await Expo.Font.loadAsync(obj);
         await Expo.Font.loadAsync("Material Design Icons", require("native-base/Fonts//MaterialCommunityIcons.ttf"));

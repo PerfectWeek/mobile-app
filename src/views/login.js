@@ -10,6 +10,7 @@ import {validateNotEmpty, validatePassword} from "../Utils/utils";
 
 import CustomInput from '../Utils/CustomComponents/CustomInput'
 import CustomButton from '../Utils/CustomComponents/CustomButton'
+import Loader from "../Components/Loader";
 
 class _LoginScreen extends React.Component {
     static navigationOptions = {
@@ -105,11 +106,7 @@ class _LoginScreen extends React.Component {
                     }}>
                         {
                             (this.props.login.status === LoginActionsType.Login) ?
-                                <LottieView style={{}}
-                                            loop
-                                            source={require('../../Resources/Lottie/loading.json')}
-                                            autoPlay
-                                />
+                                <Loader/>
                                 : null
                         }
                     </View>

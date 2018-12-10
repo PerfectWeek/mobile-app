@@ -4,6 +4,7 @@ import connect from "react-redux/es/connect/connect";
 import {Agenda} from 'react-native-calendars';
 import {Container} from "native-base";
 import {GetAllUsersEvents, CalendarActionType} from "../redux/Calendar/calendar.actions";
+import Loader from "../Components/Loader";
 
 // import {} from "../redux/User/user.actions";
 // import {} from "../redux/Login/login.actions";
@@ -20,61 +21,61 @@ export class _CalendarDashboard extends Component {
 
     loadItems(day) {
         if (this.props.calendar.status !== CalendarActionType.GetAllUsersEventsSuccess)
-            return ;
+            return;
 
         const listCalendars = this.props.calendar.calendars;
 
         // setTimeout(() => {
-            for (let i = -150; i < 185; i++) {
-                const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-                // const strTime = this.timeToString(time);
-                const date = new Date(time);
-                const strTime = date.toISOString().split('T')[0];
-                // console.log(time, strTime)
-                if (!this.state.items[strTime]) {
-                    this.state.items[strTime] = [];
-                    // const numItems = Math.floor(Math.random() * 5);
-                    // for (let j = 0; j < numItems; j++) {
-                    //     this.state.items[strTime].push({
-                    //         name: 'Item for ' + strTime,
-                    //         height: Math.max(50, Math.floor(Math.random() * 150))
-                    //     });
-                    // }
-                }
+        for (let i = -150; i < 185; i++) {
+            const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+            // const strTime = this.timeToString(time);
+            const date = new Date(time);
+            const strTime = date.toISOString().split('T')[0];
+            // console.log(time, strTime)
+            if (!this.state.items[strTime]) {
+                this.state.items[strTime] = [];
+                // const numItems = Math.floor(Math.random() * 5);
+                // for (let j = 0; j < numItems; j++) {
+                //     this.state.items[strTime].push({
+                //         name: 'Item for ' + strTime,
+                //         height: Math.max(50, Math.floor(Math.random() * 150))
+                //     });
+                // }
             }
-            // console.log(listCalendars)
+        }
+        // console.log(listCalendars)
         //     let items = {}
         if (this.state.filled === true)
-            return ;
+            return;
         this.setState({filled: true});
-            for (let i = 0; i < listCalendars.length; ++i) {
-                const events = listCalendars[i].events;
-                for (let k = 0; k < events.length; ++k) {
-                    const event = events[k];
-                    let strTimeStart = new Date(event.start_time);
-                    const strTimee = new Date(event.end_time);
-                    const calcol = this.getRandomColor();
-                    while (strTimeStart.getTime() <= strTimee.getTime()) {
-                        let isoDate = this.timeToString(strTimeStart);
-                        if (!this.state.items[isoDate]) {
-                            this.state.items[isoDate] = [];
-                        }
-                        this.state.items[isoDate].push({
-                            name: event.name,
-                            height: 5,
-                            color: calcol
-                        });
-                        strTimeStart.setDate(strTimeStart.getDate() + 1);
+        for (let i = 0; i < listCalendars.length; ++i) {
+            const events = listCalendars[i].events;
+            for (let k = 0; k < events.length; ++k) {
+                const event = events[k];
+                let strTimeStart = new Date(event.start_time);
+                const strTimee = new Date(event.end_time);
+                const calcol = this.getRandomColor();
+                while (strTimeStart.getTime() <= strTimee.getTime()) {
+                    let isoDate = this.timeToString(strTimeStart);
+                    if (!this.state.items[isoDate]) {
+                        this.state.items[isoDate] = [];
                     }
+                    this.state.items[isoDate].push({
+                        name: event.name,
+                        height: 5,
+                        color: calcol
+                    });
+                    strTimeStart.setDate(strTimeStart.getDate() + 1);
                 }
             }
+        }
 
-            console.log(this.state.items);
-            // const newItems = {};
-            // Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
-            // this.setState({
-            //     items: newItems
-            // });
+        console.log(this.state.items);
+        // const newItems = {};
+        // Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
+        // this.setState({
+        //     items: newItems
+        // });
         // }, 1000);
         // console.log(`Load Items for ${day.year}-${day.month}`);
     }
@@ -90,7 +91,10 @@ export class _CalendarDashboard extends Component {
 
     renderItem(item) {
         return (
-            <View style={[styles.item, {height: item.height, backgroundColor: item.color}]}><Text>{item.name}</Text></View>
+            <View style={[styles.item, {
+                height: item.height,
+                backgroundColor: item.color
+            }]}><Text>{item.name}</Text></View>
         );
     }
 
@@ -112,15 +116,15 @@ export class _CalendarDashboard extends Component {
     currentDate() {
         var today = new Date();
         var dd = today.getDate();
-        var mm = today.getMonth()+1; //January is 0!
+        var mm = today.getMonth() + 1; //January is 0!
         var yyyy = today.getFullYear();
 
-        if(dd<10) {
-            dd = '0'+dd
+        if (dd < 10) {
+            dd = '0' + dd
         }
 
-        if(mm<10) {
-            mm = '0'+mm
+        if (mm < 10) {
+            mm = '0' + mm
         }
 
         today = mm + '/' + dd + '/' + yyyy;
@@ -131,7 +135,13 @@ export class _CalendarDashboard extends Component {
         // console.log(this.props.calendar)
         if (this.props.calendar && this.props.calendar.status !== CalendarActionType.GetAllUsersEventsSuccess)
             return (
-                <Container/>
+                <Container style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <Loader />
+                </Container>
             );
         // const current = new Date();
         // console.log('cal', this.props.calendar)
@@ -145,7 +155,9 @@ export class _CalendarDashboard extends Component {
                     selected={this.currentDate()}
                     renderItem={this.renderItem.bind(this)}
                     // renderEmptyDate={this.renderEmptyDate.bind(this)}
-                    renderEmptyDate={() => {return (<View style={{backgroundColor: 'red'}}/>);}}
+                    renderEmptyDate={() => {
+                        return (<View style={{backgroundColor: 'red'}}/>);
+                    }}
                     rowHasChanged={this.rowHasChanged.bind(this)}
                     minDate={'2015-01-01'}
                     pastScrollRange={10}
@@ -181,7 +193,7 @@ const styles = StyleSheet.create({
     },
     emptyDate: {
         height: 15,
-        flex:1,
+        flex: 1,
         paddingTop: 30
     }
 });

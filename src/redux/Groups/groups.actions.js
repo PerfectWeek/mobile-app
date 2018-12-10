@@ -2,6 +2,9 @@ export const GroupsActionType = {
     GetGroups: 'GET_GROUPS',
     GetGroupSuccess: 'GET_GROUPS_SUCCESS',
     GetGroupFail: 'GET_GROUPS_FAIL',
+    GetGroupInfo: 'GET_GROUP_INFO',
+    GetGroupInfoSuccess: 'GET_GROUP_INFO_SUCCESS',
+    GetGroupInfoFail: 'GET_GROUP_INFO_FAIL',
     GetGroupMembers: 'GET_GROUP_MEMBERS',
     GetGroupMembersSuccess: 'GET_GROUP_MEMBERS_SUCCESS',
     GetGroupMembersFail: 'GET_GROUP_MEMBERS_FAIL',
@@ -42,7 +45,29 @@ export const GetGroupSuccess = (groups) => {
 
 export const GetGroupFail = (error_message) => {
     return {
-        type: GroupsActionType.GetGroupMembersFail,
+        type: GroupsActionType.GetGroupFail,
+        error_message: error_message
+    }
+};
+
+export const GetGroupInfo = (id) => {
+    return {
+        type: GroupsActionType.GetGroupInfo,
+        id
+    }
+};
+
+export const GetGroupInfoSuccess = (group) => {
+    return {
+        type: GroupsActionType.GetGroupInfoSuccess,
+        group,
+        error_message: null
+    }
+};
+
+export const GetGroupInfoFail = (error_message) => {
+    return {
+        type: GroupsActionType.GetGroupInfoFail,
         error_message: error_message
     }
 };

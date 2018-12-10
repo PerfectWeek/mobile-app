@@ -14,10 +14,11 @@ import {
     Left,
     Right,
     Icon,
-    ActionSheet, Item, Input, Form
+    ActionSheet, Item, Input, Form, Container
 } from 'native-base';
 import connect from "react-redux/es/connect/connect";
 import {
+    GetGroupInfo,
     GetGroupMembers,
     RemoveGroupMember,
     UpdateMemberRole
@@ -25,12 +26,14 @@ import {
 import {HeaderBackgroundColor} from "../../../Style/Constant";
 import {AddUsers} from "./AddUsers";
 import {GroupDetailScreenGroupName} from "./GroupDetailScreenGroupName";
+import Loader from "../../Components/Loader";
 
 export class _GroupDetailScreen extends React.Component {
 
     constructor(props) {
         super(props);
         if (this.props.navigation.state.params.group.members === undefined) {
+            this.props.GetGroupInfo(this.props.navigation.state.params.group.id);
             this.props.GetGroupMembers(this.props.navigation.state.params.group.id);
         }
     }
@@ -39,19 +42,43 @@ export class _GroupDetailScreen extends React.Component {
         const group = this.props.groups.groups.find((g) => {
             return (g.id === this.props.navigation.state.params.group.id);
         });
-        if (group.members === undefined)
-            return null;
+        if (group.members === undefined || group.description === undefined)
+            return (
+                <Container style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <Loader/>
+                </Container>
+            );
         return (
             <ScrollView style={{marginLeft: 10, marginRight: 10, height: Dimensions.get('window').height}}>
                 <GroupDetailScreenGroupName group={group}/>
+                <Title style={{
+                    fontSize: 18,
+                    color: 'grey',
+                    fontFamily: 'Lato_Medium',
+                    marginTop: 20,
+                    textAlign: 'left',
+                    marginLeft: 5
+                }}>Description:</Title>
+                <Text style={{
+                    color: 'black',
+                    fontFamily: 'Lato_Medium',
+                    fontSize: 18,
+                    marginTop: 20,
+                    textAlign: 'left',
+                    marginLeft: 5
+                }}>{group.description}</Text>
                 <View>
                     <Title style={{
-                        color: 'black',
-                        fontFamily: 'Lato_Bold',
                         fontSize: 18,
+                        color: 'grey',
+                        fontFamily: 'Lato_Medium',
                         marginTop: 20,
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
+                        textAlign: 'left',
+                        marginLeft: 5
                     }}>Members:</Title>
                     <List>
                         <ListItem onPress={() => {
@@ -64,7 +91,7 @@ export class _GroupDetailScreen extends React.Component {
                             <Icon style={{marginLeft: 10, color: HeaderBackgroundColor, fontSize: 32}}
                                   type='MaterialIcons'
                                   name='group-add'/>
-                            <Text style={{marginBottom: 0, marginLeft: 30}}>Add Member</Text>
+                            <Text style={{marginBottom: 0, marginLeft: 30}}>Add Members</Text>
                             </Body>
                         </ListItem>
                         {group.members.map((member, index) => {
@@ -80,10 +107,9 @@ export class _GroupDetailScreen extends React.Component {
                                     </Body>
                                     <Right>
                                         <Icon type='SimpleLineIcons' name='options-vertical' onPress={() => {
-                                            const BUTTONS = ["View Profile", (member.role === 'Admin' ? "Remove as admin" : "Make admin"), "Remove from group", "Cancel"];
+                                            const BUTTONS = [(member.role === 'Admin' ? "Remove as admin" : "Make admin"), "Remove from group", "Cancel"];
                                             const CANCEL_INDEX = BUTTONS.length - 1;
                                             const ButtonsCallback = [() => {
-                                            }, () => {
                                                 this.ChangeRoleClicked(group.id, member);
                                             }, () => {
                                                 this.props.RemoveGroupMember(group.id, member);
@@ -122,6 +148,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
         GetGroupMembers: (id) => dispatch(GetGroupMembers(id)),
+        GetGroupInfo: (id) => dispatch(GetGroupInfo(id)),
         UpdateMemberRole: (groupId, member, newRole) => dispatch(UpdateMemberRole(groupId, member, newRole)),
         RemoveGroupMember: (groupId, member) => dispatch(RemoveGroupMember(groupId, member))
     }

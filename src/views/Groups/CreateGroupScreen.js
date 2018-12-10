@@ -15,6 +15,7 @@ export class _CreateGroupScreen extends React.Component {
         super(props);
         this.state = {
             groupName: '',
+            description: '',
             searchBar: '',
             usersToAdd: []
         }
@@ -42,6 +43,11 @@ export class _CreateGroupScreen extends React.Component {
                             <Input style={{textAlign: 'center', color: 'black', fontFamily: 'Lato_Bold', fontSize: 26}}
                                    placeholder="Group name" value={this.state.groupName}
                                    onChangeText={(text) => this.setState({groupName: text})}/>
+                        </Item>
+                        <Item>
+                            <Input style={{textAlign: 'center', color: 'black', fontFamily: 'Lato_Medium', fontSize: 16}}
+                                   placeholder="Description" value={this.state.description}
+                                   onChangeText={(text) => this.setState({description: text})}/>
                         </Item>
                         <Title style={{
                             color: 'black',
@@ -101,9 +107,9 @@ export class _CreateGroupScreen extends React.Component {
                     </View>
                 </ScrollView>
                 <Button success disabled={this.state.groupName === ''}
-                        rounded style={{margin: 30}}
+                        rounded style={{margin: 30, marginTop:20}}
                         onPress={() => {
-                            this.props.CreateGroup({name: this.state.groupName, members: this.state.usersToAdd})
+                            this.props.CreateGroup({name: this.state.groupName, description : this.state.description, members: this.state.usersToAdd})
                         }}>
                     <Text>
                         Create Group

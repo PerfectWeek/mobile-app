@@ -13,13 +13,14 @@ import {
     Left,
     Right,
     Content,
-    Button, Icon, ActionSheet
+    Button, Icon, ActionSheet, Container
 } from 'native-base';
 import connect from "react-redux/es/connect/connect";
 import {DeleteGroup, GetGroups} from "../../redux/Groups/groups.actions";
 import * as Animatable from 'react-native-animatable';
 import {HeaderBackgroundColor} from "../../../Style/Constant";
 import {NavigationActions} from "react-navigation";
+import Loader from "../../Components/Loader";
 
 export class _GroupsScreen extends React.Component {
     static navigationOptions = {
@@ -50,68 +51,77 @@ export class _GroupsScreen extends React.Component {
                     </Right>
                 </Header>
                 <ScrollView style={{marginLeft: 10, marginRight: 10, height: Dimensions.get('window').height}}>
-                    {groups === undefined ? null : (groups.length === 0) ?
-                        <View>
-                            <Text style={{marginTop: 20, textAlign: 'center', fontSize: 22}}>
-                                You are not in any groups
-                            </Text>
-                            <Button style={{alignSelf: 'center', margin: 30}} primary
-                                    onPress={() => {
-                                        this.props.navigation.navigate({routeName: 'CreateGroup'});
-                                    }}>
-                                <Text>
-                                    Create a Group
+                    {groups === undefined ?
+                        <Container style={{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <Loader/>
+                        </Container>
+                        : (groups.length === 0) ?
+                            <View>
+                                <Text style={{marginTop: 20, textAlign: 'center', fontSize: 22}}>
+                                    You are not in any groups
                                 </Text>
-                            </Button>
-                        </View>
-                        : groups.map((group) => {
-                            return (
-                                <Animatable.View key={group.id} animation="fadeInUp">
-                                    <List>
-                                        <ListItem onPress={() => {
-                                            this.props.navigation.navigate('Detail', {group: group});
-                                        }} avatar>
-                                            <Left>
-                                                <Thumbnail
-                                                    source={{uri: 'https://picsum.photos/200/300/?random'}}/>
-                                            </Left>
-                                            <Body>
-                                            <Text style={{fontSize: 18, fontWeight: 'bold'}}>{group.name}</Text>
-                                            <Text>11 users</Text>
-                                            </Body>
-                                            <Right>
-                                                <Icon type='SimpleLineIcons' name='options-vertical' onPress={() => {
-                                                    const BUTTONS = ["Delete Group", "Cancel"];
-                                                    const CANCEL_INDEX = BUTTONS.length - 1;
-                                                    const ButtonsCallback = [() => {
-                                                        Alert.alert('Delete group ?', '', [{
-                                                            text: 'Yes', onPress: () => {
-                                                                this.props.DeleteGroup(group.id);
-                                                            }
-                                                        }, {
-                                                            text: 'Cancel', onPress: () => {
-                                                            }, style: 'cancel'
-                                                        }], {cancelable: false})
-                                                    }, () => {
-                                                    }];
-                                                    ActionSheet.show(
-                                                        {
-                                                            options: BUTTONS,
-                                                            cancelButtonIndex: CANCEL_INDEX,
-                                                            title: "Manage group"
-                                                        },
-                                                        buttonIndex => {
-                                                            ButtonsCallback[buttonIndex]();
-                                                        })
+                                <Button style={{alignSelf: 'center', margin: 30}} primary
+                                        onPress={() => {
+                                            this.props.navigation.navigate({routeName: 'CreateGroup'});
+                                        }}>
+                                    <Text>
+                                        Create a Group
+                                    </Text>
+                                </Button>
+                            </View>
+                            : groups.map((group) => {
+                                return (
+                                    <Animatable.View key={group.id} animation="fadeInUp">
+                                        <List>
+                                            <ListItem onPress={() => {
+                                                this.props.navigation.navigate('Detail', {group: group});
+                                            }} avatar>
+                                                <Left>
+                                                    <Thumbnail
+                                                        source={{uri: 'https://picsum.photos/200/300/?random'}}/>
+                                                </Left>
+                                                <Body>
+                                                <Text style={{fontSize: 18, fontWeight: 'bold'}}>{group.name}</Text>
+                                                <Text>{group.nb_members} members</Text>
+                                                </Body>
+                                                <Right>
+                                                    <Icon type='SimpleLineIcons' name='options-vertical'
+                                                          onPress={() => {
+                                                              const BUTTONS = ["Delete Group", "Cancel"];
+                                                              const CANCEL_INDEX = BUTTONS.length - 1;
+                                                              const ButtonsCallback = [() => {
+                                                                  Alert.alert('Delete group ?', '', [{
+                                                                      text: 'Yes', onPress: () => {
+                                                                          this.props.DeleteGroup(group.id);
+                                                                      }
+                                                                  }, {
+                                                                      text: 'Cancel', onPress: () => {
+                                                                      }, style: 'cancel'
+                                                                  }], {cancelable: false})
+                                                              }, () => {
+                                                              }];
+                                                              ActionSheet.show(
+                                                                  {
+                                                                      options: BUTTONS,
+                                                                      cancelButtonIndex: CANCEL_INDEX,
+                                                                      title: "Manage group"
+                                                                  },
+                                                                  buttonIndex => {
+                                                                      ButtonsCallback[buttonIndex]();
+                                                                  })
 
-                                                }}/>
-                                            </Right>
-                                        </ListItem>
+                                                          }}/>
+                                                </Right>
+                                            </ListItem>
 
-                                    </List>
-                                </Animatable.View>
-                            );
-                        })}
+                                        </List>
+                                    </Animatable.View>
+                                );
+                            })}
                 </ScrollView>
             </View>
         )

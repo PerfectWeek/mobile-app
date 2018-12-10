@@ -12,6 +12,7 @@ import Modal from "../../Components/Modal";
 import {EditGroupInfo, GroupsActionType} from "../../redux/Groups/groups.actions";
 import {validateNotEmpty} from "../../Utils/utils";
 import Loader from "../../Components/Loader";
+import {Primary} from "../../../Style/Constant";
 
 export class _GroupDetailScreenGroupName extends React.Component {
     static propTypes = {
@@ -21,7 +22,8 @@ export class _GroupDetailScreenGroupName extends React.Component {
     constructor(props) {
         super(props);
         const {group} = this.props;
-        this.state = {groupName: group.name};
+        console.log(group);
+        this.state = {groupName: group.name, groupDescription: group.description};
     }
 
     render() {
@@ -36,7 +38,12 @@ export class _GroupDetailScreenGroupName extends React.Component {
                 <View>
                 </View>
                 <Title
-                    style={{color: 'black', fontFamily: 'Lato_Bold', fontSize: 26}}>{group.name}
+                    style={{
+                        borderBottomWidth: 2,
+                        borderColor: Primary,
+                        borderRadius: 1,
+                        color: 'black', fontFamily: 'Lato_Bold', fontSize: 26
+                    }}>{group.name}
                 </Title>
                 <Icon style={{
                     fontSize: 18,
@@ -49,9 +56,9 @@ export class _GroupDetailScreenGroupName extends React.Component {
                 <Modal
                     canValidate={(this.state.groupName !== '' && this.props.groups.status !== GroupsActionType.EditGroupInfo)}
                     canClose={(this.props.groups.status !== GroupsActionType.EditGroupInfo)}
-                    onRef={ref => (this.modal = ref)} title='Change group name'
+                    onRef={ref => (this.modal = ref)} title='Edit group info'
                     actionButtonTitle='Update' validateCallback={() => {
-                    this.props.EditGroupInfo({name: this.state.groupName})
+                    this.props.EditGroupInfo({name: this.state.groupName, description: this.state.groupDescription})
                 }}>
                     <View style={{
                         flexDirection: 'row', justifyContent: 'space-between'
@@ -62,6 +69,10 @@ export class _GroupDetailScreenGroupName extends React.Component {
                             <Item style={{marginTop: 0}}>
                                 <Input placeholder="Group name" value={this.state.groupName}
                                        onChangeText={(text) => this.setState({groupName: text})}/>
+                            </Item>
+                            <Item style={{marginTop: 0}}>
+                                <Input placeholder="Group description" value={this.state.groupDescription}
+                                       onChangeText={(text) => this.setState({groupDescription: text})}/>
                             </Item>
                         </Form>
                     </View>

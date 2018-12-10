@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Right, Header, Title, Body, Form, Icon, Input, Item, Text, View, Toast} from 'native-base';
+import {Button, Right, Header, Title, Body, Form, Icon, Input, Item, Text, View, Toast, Container} from 'native-base';
 import connect from "react-redux/es/connect/connect";
 import {Alert, Platform} from "react-native";
 import {DeleteUser, GetInfo, UpdateInfo, UserActionsType} from "../redux/User/user.actions";
@@ -7,6 +7,7 @@ import LottieView from "lottie-react-native";
 import {validateNotEmpty} from "../Utils/utils";
 import {Logout} from "../redux/Login/login.actions";
 import {HeaderBackgroundColor} from "../../Style/Constant";
+import Loader from "../Components/Loader";
 
 
 export class _Profile extends React.Component {
@@ -22,7 +23,7 @@ export class _Profile extends React.Component {
             this.state = {pseudo: this.props.user.user_info.pseudo};
         }
         return (
-            <View style={{
+            <Container style={{
                 paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
             }}>
 
@@ -101,7 +102,13 @@ export class _Profile extends React.Component {
                             </Form>
                         </View>
 
-                        : null
+                        : <Container style={{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <Loader />
+                        </Container>
                 }
 
                 <View style={{
@@ -123,7 +130,7 @@ export class _Profile extends React.Component {
                         }
                     </View>
                 </View>
-            </View>
+            </Container>
         )
     }
 }

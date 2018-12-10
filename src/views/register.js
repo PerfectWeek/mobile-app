@@ -9,14 +9,15 @@ import {validateEmail, validateNotEmpty, validatePassword, comparePasswords} fro
 
 import CustomInput from '../Utils/CustomComponents/CustomInput'
 import CustomButton from '../Utils/CustomComponents/CustomButton'
+import {HeaderBackgroundColor, HeaderTintColor} from "../../Style/Constant";
 
 class _RegisterScreen extends React.Component {
     static navigationOptions = {
         title: 'Register',
         headerStyle: {
-            backgroundColor: '#fff'
+            backgroundColor: HeaderBackgroundColor
         },
-        headerTintColor: '#064c96'
+        headerTintColor: HeaderTintColor
     };
 
     constructor(props) {
