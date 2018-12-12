@@ -106,7 +106,7 @@ export class _GroupDetailScreen extends React.Component {
                                           note>{member.role === 'Admin' ? 'Administrator' : null}</Text>
                                     </Body>
                                     <Right>
-                                        <Icon type='SimpleLineIcons' name='options-vertical' onPress={() => {
+                                        <Icon style={{marginTop:10, fontSize:28}} type='SimpleLineIcons' name='options-vertical' onPress={() => {
                                             // const BUTTONS = [(member.role === 'Admin' ? "Remove as admin" : "Make admin"), "Remove from group", "Cancel"];
                                             const BUTTONS = ["Remove from group", "Cancel"];
                                             const CANCEL_INDEX = BUTTONS.length - 1;

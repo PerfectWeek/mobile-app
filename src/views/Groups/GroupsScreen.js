@@ -89,7 +89,7 @@ export class _GroupsScreen extends React.Component {
                                                 <Text>{group.nb_members} members</Text>
                                                 </Body>
                                                 <Right>
-                                                    <Icon type='SimpleLineIcons' name='options-vertical'
+                                                    <Icon style={{marginTop:10, fontSize:28}} type='SimpleLineIcons' name='options-vertical'
                                                           onPress={() => {
                                                               const BUTTONS = ["Delete Group", "Cancel"];
                                                               const CANCEL_INDEX = BUTTONS.length - 1;
