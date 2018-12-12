@@ -87,7 +87,7 @@ export class _CreateGroupScreen extends React.Component {
                         <Icon name='add'/>
                     </Button>
                 </View>
-                <ScrollView style={{height: Dimensions.get('window').height / 3}}>
+                <ScrollView style={{height: Dimensions.get('window').height / 4}}>
                     <View style={{margin: 20, flexDirection: 'row', flexWrap: 'wrap'}}>
                         {
                             this.state.usersToAdd.map((user, index) => {
@@ -108,7 +108,7 @@ export class _CreateGroupScreen extends React.Component {
                     </View>
                 </ScrollView>
                 <Button success disabled={this.state.groupName === ''}
-                        rounded style={{margin: 30, marginTop:20}}
+                        rounded style={{margin: 30, marginTop:5}}
                         onPress={() => {
                             this.props.CreateGroup({name: this.state.groupName, description : this.state.description, members: this.state.usersToAdd})
                         }}>

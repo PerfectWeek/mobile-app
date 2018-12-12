@@ -58,7 +58,7 @@ export class _GroupDetailScreenGroupName extends React.Component {
                     canClose={(this.props.groups.status !== GroupsActionType.EditGroupInfo)}
                     onRef={ref => (this.modal = ref)} title='Edit group info'
                     actionButtonTitle='Update' validateCallback={() => {
-                    this.props.EditGroupInfo({name: this.state.groupName, description: this.state.groupDescription})
+                    this.props.EditGroupInfo({id: group.id, name: this.state.groupName, description: this.state.groupDescription})
                 }}>
                     <View style={{
                         flexDirection: 'row', justifyContent: 'space-between'

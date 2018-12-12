@@ -23,7 +23,7 @@ import {
     RemoveGroupMember,
     UpdateMemberRole
 } from "../../redux/Groups/groups.actions";
-import {HeaderBackgroundColor} from "../../../Style/Constant";
+import {HeaderBackgroundColor, Primary} from "../../../Style/Constant";
 import {AddUsers} from "./AddUsers";
 import {GroupDetailScreenGroupName} from "./GroupDetailScreenGroupName";
 import Loader from "../../Components/Loader";
@@ -88,7 +88,7 @@ export class _GroupDetailScreen extends React.Component {
                                 flexDirection: 'row',
                                 justifyContent: 'flex-start',
                             }}>
-                            <Icon style={{marginLeft: 10, color: HeaderBackgroundColor, fontSize: 32}}
+                            <Icon style={{marginLeft: 10, color: Primary, fontSize: 32}}
                                   type='MaterialIcons'
                                   name='group-add'/>
                             <Text style={{marginBottom: 0, marginLeft: 30}}>Add Members</Text>
@@ -107,11 +107,16 @@ export class _GroupDetailScreen extends React.Component {
                                     </Body>
                                     <Right>
                                         <Icon type='SimpleLineIcons' name='options-vertical' onPress={() => {
-                                            const BUTTONS = [(member.role === 'Admin' ? "Remove as admin" : "Make admin"), "Remove from group", "Cancel"];
+                                            // const BUTTONS = [(member.role === 'Admin' ? "Remove as admin" : "Make admin"), "Remove from group", "Cancel"];
+                                            const BUTTONS = ["Remove from group", "Cancel"];
                                             const CANCEL_INDEX = BUTTONS.length - 1;
+                                            // const ButtonsCallback = [() => {
+                                            //     this.ChangeRoleClicked(group.id, member);
+                                            // }, () => {
+                                            //     this.props.RemoveGroupMember(group.id, member);
+                                            // }, () => {
+                                            // }];
                                             const ButtonsCallback = [() => {
-                                                this.ChangeRoleClicked(group.id, member);
-                                            }, () => {
                                                 this.props.RemoveGroupMember(group.id, member);
                                             }, () => {
                                             }];

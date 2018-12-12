@@ -26,19 +26,19 @@ export default createBottomTabNavigator(
                     style={{color: tintColor}}/>
             }
         },
+        Groups: {
+            screen: GroupsNavigator, navigationOptions: {
+                tabBarIcon: ({focused, tintColor}) => <Icon
+                    name='users'
+                    type='FontAwesome'
+                    style={{color: tintColor}}/>
+            }
+        },
         Profile: {
             screen: Profile,
             navigationOptions: {
                 tabBarIcon: ({focused, tintColor}) => <Icon
                     name='user'
-                    type='FontAwesome'
-                    style={{color: tintColor}}/>
-            }
-        },
-        Groups: {
-            screen: GroupsNavigator, navigationOptions: {
-                tabBarIcon: ({focused, tintColor}) => <Icon
-                    name='users'
                     type='FontAwesome'
                     style={{color: tintColor}}/>
             }
