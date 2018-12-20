@@ -59,7 +59,7 @@ export class _GroupsScreen extends React.Component {
                         }}>
                             <Loader/>
                         </Container>
-                        : (groups.length === 0) ?
+                        : (Object.values(groups).length === 0) ?
                             <View>
                                 <Text style={{marginTop: 20, textAlign: 'center', fontSize: 22}}>
                                     You are not in any groups
@@ -73,7 +73,8 @@ export class _GroupsScreen extends React.Component {
                                     </Text>
                                 </Button>
                             </View>
-                            : groups.map((group) => {
+                            :
+                            Object.values(groups).map((group) => {
                                 return (
                                     <Animatable.View key={group.id} animation="fadeInUp">
                                         <List>

@@ -22,7 +22,6 @@ export class _GroupDetailScreenGroupName extends React.Component {
     constructor(props) {
         super(props);
         const {group} = this.props;
-        console.log(group);
         this.state = {groupName: group.name, groupDescription: group.description};
     }
 

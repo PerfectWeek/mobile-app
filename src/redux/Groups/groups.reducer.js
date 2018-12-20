@@ -26,10 +26,7 @@ export const GroupReducer = (state = {status: 'NONE'}, action) => {
                 status: GroupsActionType.GetGroupInfo
             };
         case GroupsActionType.GetGroupInfoSuccess:
-            const groupIndex = state.groups.findIndex((g) => {
-                return (g.id === action.group.id)
-            });
-            state.groups[groupIndex] = {...state.groups[groupIndex], ...action.group };
+            state.groups[action.group.id] = {...state.groups[action.group.id], ...action.group};
             return {
                 ...state,
                 status: GroupsActionType.GetGroupInfoSuccess,
@@ -47,10 +44,7 @@ export const GroupReducer = (state = {status: 'NONE'}, action) => {
                 status: GroupsActionType.GetGroupMembers
             };
         case GroupsActionType.GetGroupMembersSuccess: {
-            const groupIndex = state.groups.findIndex((g) => {
-                return (g.id === action.groupId)
-            });
-            state.groups[groupIndex].members = action.members;
+            state.groups[action.groupId].members = action.members;
             return {
                 ...state,
                 status: GroupsActionType.GetGroupMembersSuccess,
@@ -69,14 +63,10 @@ export const GroupReducer = (state = {status: 'NONE'}, action) => {
                 status: GroupsActionType.UpdateMemberRole
             };
         case GroupsActionType.UpdateMemberRoleSuccess: {
-
-            const groupIndex = state.groups.findIndex((g) => {
-                return (g.id === action.groupId)
-            });
-            const memberIndex = state.groups[groupIndex].members.findIndex(m => {
+            const memberIndex = state.groups[action.groupId].members.findIndex(m => {
                 return m.pseudo === action.member.pseudo
             });
-            state.groups[groupIndex].members[memberIndex] = action.member;
+            state.groups[action.groupId].members[memberIndex] = action.member;
             return {
                 ...state,
                 status: GroupsActionType.UpdateMemberRoleSuccess,
@@ -95,11 +85,8 @@ export const GroupReducer = (state = {status: 'NONE'}, action) => {
                 status: GroupsActionType.AddGroupMembers
             };
         case GroupsActionType.AddGroupMembersSuccess: {
-
-            const groupIndex = state.groups.findIndex((g) => {
-                return (g.id === action.groupId)
-            });
-            state.groups[groupIndex].members = action.members;
+            state.groups[action.groupId].members = action.members;
+            state.groups[action.groupId].nb_members = action.members.length;
             return {
                 ...state,
                 status: GroupsActionType.AddGroupMembersSuccess,
@@ -118,10 +105,12 @@ export const GroupReducer = (state = {status: 'NONE'}, action) => {
                 status: GroupsActionType.RemoveGroupMember
             };
         case GroupsActionType.RemoveGroupMemberSuccess: {
-            const groupIndex = state.groups.findIndex((g) => {
-                return (g.id === action.groupId)
-            });
-            state.groups[groupIndex].members = action.members;
+            if (action.selfKick)
+                delete state.groups[action.groupId];
+            else {
+                state.groups[action.groupId].members = action.members;
+                state.groups[action.groupId].nb_members = action.members.length;
+            }
             return {
                 ...state,
                 status: GroupsActionType.RemoveGroupMemberSuccess,
@@ -140,10 +129,7 @@ export const GroupReducer = (state = {status: 'NONE'}, action) => {
                 status: GroupsActionType.EditGroupInfo
             };
         case GroupsActionType.EditGroupInfoSuccess: {
-            const groupIndex = state.groups.findIndex((g) => {
-                return (g.id === action.group.id)
-            });
-            state.groups[groupIndex] = {...state.groups[groupIndex], ...action.group};
+            state.groups[action.group.id] = {...state.groups[action.group.id], ...action.group};
             return {
                 ...state,
                 status: GroupsActionType.EditGroupInfoSuccess,
@@ -163,7 +149,7 @@ export const GroupReducer = (state = {status: 'NONE'}, action) => {
                 status: GroupsActionType.CreateGroup
             };
         case GroupsActionType.CreateGroupSuccess: {
-            state.groups.push(action.group);
+            state.groups[action.group.id] = action.group;
             return {
                 ...state,
                 status: GroupsActionType.CreateGroupSuccess,
@@ -184,10 +170,7 @@ export const GroupReducer = (state = {status: 'NONE'}, action) => {
                 status: GroupsActionType.DeleteGroup
             };
         case GroupsActionType.DeleteGroupSuccess: {
-            const groupIndex = state.groups.findIndex((g) => {
-                return (g.id === action.groupId)
-            });
-            state.groups.splice(groupIndex, 1);
+            delete state.groups[action.groupId];
             return {
                 ...state,
                 status: GroupsActionType.DeleteGroupSuccess,
