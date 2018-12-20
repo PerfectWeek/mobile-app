@@ -19,7 +19,7 @@ import {
 import connect from "react-redux/es/connect/connect";
 import {
     GetGroupInfo,
-    GetGroupMembers,
+    GetGroupMembers, GroupsActionType,
     RemoveGroupMember,
     UpdateMemberRole
 } from "../../redux/Groups/groups.actions";
@@ -39,10 +39,8 @@ export class _GroupDetailScreen extends React.Component {
     }
 
     render() {
-        const group = this.props.groups.groups.find((g) => {
-            return (g.id === this.props.navigation.state.params.group.id);
-        });
-        if (group.members === undefined || group.description === undefined)
+        const group = this.props.groups.groups[this.props.navigation.state.params.group.id];
+        if (group === undefined || group.members === undefined || group.description === undefined)
             return (
                 <Container style={{
                     flexDirection: 'row',
@@ -106,7 +104,8 @@ export class _GroupDetailScreen extends React.Component {
                                           note>{member.role === 'Admin' ? 'Administrator' : null}</Text>
                                     </Body>
                                     <Right>
-                                        <Icon style={{marginTop:10, fontSize:28}} type='SimpleLineIcons' name='options-vertical' onPress={() => {
+                                        <Icon style={{marginTop: 10, fontSize: 28}} type='SimpleLineIcons'
+                                              name='options-vertical' onPress={() => {
                                             // const BUTTONS = [(member.role === 'Admin' ? "Remove as admin" : "Make admin"), "Remove from group", "Cancel"];
                                             const BUTTONS = ["Remove from group", "Cancel"];
                                             const CANCEL_INDEX = BUTTONS.length - 1;
@@ -117,7 +116,7 @@ export class _GroupDetailScreen extends React.Component {
                                             // }, () => {
                                             // }];
                                             const ButtonsCallback = [() => {
-                                                this.props.RemoveGroupMember(group.id, member);
+                                                this.props.RemoveGroupMember(group.id, member, this.props.login.pseudo);
                                             }, () => {
                                             }];
                                             ActionSheet.show(
@@ -155,7 +154,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         GetGroupMembers: (id) => dispatch(GetGroupMembers(id)),
         GetGroupInfo: (id) => dispatch(GetGroupInfo(id)),
         UpdateMemberRole: (groupId, member, newRole) => dispatch(UpdateMemberRole(groupId, member, newRole)),
-        RemoveGroupMember: (groupId, member) => dispatch(RemoveGroupMember(groupId, member))
+        RemoveGroupMember: (groupId, member, Selfpseudo) => dispatch(RemoveGroupMember(groupId, member, Selfpseudo))
     }
 };
 

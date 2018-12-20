@@ -18,11 +18,16 @@ import {
 } from "./groups.actions";
 import {Network} from "../../Network/Requests";
 import {Toast} from "native-base";
+import {NavigationActions} from "react-navigation";
 
 function* GetGroups(action) {
     const resp = yield Network.Get('/users/' + action.pseudo + '/groups');
     if (resp.status === 200) {
-        yield put(GetGroupSuccess(resp.data.groups))
+        const groupMap = resp.data.groups.reduce(function (map, obj) {
+            map[obj.id] = obj;
+            return map;
+        }, {});
+        yield put(GetGroupSuccess(groupMap))
     }
     else {
         let err;
@@ -85,7 +90,10 @@ function* GetGroupMembers(action) {
 function* RemoveGroupMember(action) {
     const resp = yield Network.Delete('/groups/' + action.groupId + '/members/' + action.member.pseudo);
     if (resp.status === 200) {
-        yield put(RemoveGroupMemberSuccess(action.groupId, resp.data.members));
+        const selfKick = action.Selfpseudo === action.member.pseudo;
+        yield put(RemoveGroupMemberSuccess(action.groupId, resp.data.members, selfKick));
+        if (selfKick)
+            yield put(NavigationActions.navigate({routeName: 'Master'}));
         yield Toast.show({
             text: "Update successful.",
             type: "success",
@@ -138,7 +146,7 @@ function* UpdateMemberRole(action) {
 }
 
 function* AddGroupMembers(action) {
-    const resp = yield Network.Post('/groups/' + action.groupId + '/add-members', { users : action.members });
+    const resp = yield Network.Post('/groups/' + action.groupId + '/add-members', {users: action.members});
     if (resp.status === 200) {
         yield put(AddGroupMembersSuccess(action.groupId, resp.data.members));
         yield Toast.show({

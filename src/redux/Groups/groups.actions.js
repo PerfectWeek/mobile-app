@@ -144,20 +144,22 @@ export const AddGroupMembersFail = (error_message) => {
     }
 };
 
-export const RemoveGroupMember = (groupId, member) => {
+export const RemoveGroupMember = (groupId, member, Selfpseudo) => {
     return {
         type: GroupsActionType.RemoveGroupMember,
         groupId,
         member,
+        Selfpseudo
     }
 };
 
-export const RemoveGroupMemberSuccess = (groupId, members) => {
+export const RemoveGroupMemberSuccess = (groupId, members, selfKick) => {
     return {
         type: GroupsActionType.RemoveGroupMemberSuccess,
         error_message: null,
         groupId,
-        members
+        members,
+        selfKick
     }
 };
 

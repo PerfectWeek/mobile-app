@@ -33,7 +33,6 @@ function* Login(action) {
 
     }
     else {
-        console.log(response);
         let err;
         if (response.data !== undefined && response.data.message !== undefined)
             err = response.data.message;

@@ -22,10 +22,6 @@ export class _CreateGroupScreen extends React.Component {
         }
     }
 
-    componentWillMount() {
-        console.log("WillMount");
-    }
-
     componentDidUpdate() {
         if (this.props.groups.status === GroupsActionType.CreateGroupSuccess)
             this.props.navigation.navigate('Detail', {group: this.props.groups.createdGroup});
