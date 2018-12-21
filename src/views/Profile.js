@@ -6,7 +6,7 @@ import {DeleteUser, GetInfo, UpdateInfo, UserActionsType} from "../redux/User/us
 import LottieView from "lottie-react-native";
 import {validateNotEmpty} from "../Utils/utils";
 import {Logout} from "../redux/Login/login.actions";
-import {HeaderBackgroundColor} from "../../Style/Constant";
+import {HeaderBackgroundColor, ScreenBackgroundColor} from "../../Style/Constant";
 import Loader from "../Components/Loader";
 
 
@@ -24,12 +24,13 @@ export class _Profile extends React.Component {
         }
         return (
             <Container style={{
-                paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
+                paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight,
+                backgroundColor: ScreenBackgroundColor
             }}>
 
                 <Header
                     androidStatusBarColor="#000"
-                        style={{backgroundColor: "#FFF"}}
+                    style={{backgroundColor: "#FFF"}}
                 >
                     <Body>
                     <Title style={{color: '#000000', textAlign: 'center'}}>Profile</Title>
@@ -106,11 +107,12 @@ export class _Profile extends React.Component {
                         </View>
 
                         : <Container style={{
+                            backgroundColor: ScreenBackgroundColor,
                             flexDirection: 'row',
                             justifyContent: 'center',
                             alignItems: 'center'
                         }}>
-                            <Loader />
+                            <Loader/>
                         </Container>
                 }
 
