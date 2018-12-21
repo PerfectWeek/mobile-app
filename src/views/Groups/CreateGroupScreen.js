@@ -1,10 +1,11 @@
 import React from 'react';
 import {Dimensions, ScrollView, View} from 'react-native';
 import connect from "react-redux/es/connect/connect";
-import {Button, Form, Icon, Input, Item, Text, Title} from "native-base";
+import {Button, Form, Icon, Input, Item, Text, Title, Container} from "native-base";
 import Modal from "../../Components/Modal";
 import {validateNotEmpty} from "../../Utils/utils";
 import {CreateGroup, GroupsActionType} from "../../redux/Groups/groups.actions";
+import {ScreenBackgroundColor} from "../../../Style/Constant";
 
 export class _CreateGroupScreen extends React.Component {
     static navigationOptions = {
@@ -29,7 +30,7 @@ export class _CreateGroupScreen extends React.Component {
 
     render() {
         return (
-            <View>
+            <Container style={{backgroundColor: ScreenBackgroundColor}}>
                 <View style={{
                     flexDirection: 'row', justifyContent: 'space-between', marginTop: 20
                 }}>
@@ -112,7 +113,7 @@ export class _CreateGroupScreen extends React.Component {
                         Create Group
                     </Text>
                 </Button>
-            </View>
+            </Container>
         )
     }
 }
