@@ -2,9 +2,10 @@ import React, {Component} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 import {Agenda} from 'react-native-calendars';
-import {Container} from "native-base";
-import {GetAllUsersEvents, CalendarActionType} from "../redux/Calendar/calendar.actions";
-import Loader from "../Components/Loader";
+import {Body, Button, Container, Header, Icon, Right, Title} from "native-base";
+import {GetAllUsersEvents, CalendarActionType} from "../../redux/Calendar/calendar.actions";
+import Loader from "../../Components/Loader";
+import {HeaderBackgroundColor} from "../../../Style/Constant";
 
 // import {} from "../redux/User/user.actions";
 // import {} from "../redux/Login/login.actions";
@@ -18,6 +19,10 @@ export class _CalendarDashboard extends Component {
         };
         this.props.GetAllUsersEvents(this.props.login);
     }
+
+    static navigationOptions = {
+        header: null
+    };
 
     loadItems(day) {
         if (this.props.calendar.status !== CalendarActionType.GetAllUsersEventsSuccess)
@@ -62,6 +67,7 @@ export class _CalendarDashboard extends Component {
                     }
                     this.state.items[isoDate].push({
                         name: event.name,
+                        item: [],
                         height: 5,
                         color: calcol
                     });
@@ -147,8 +153,19 @@ export class _CalendarDashboard extends Component {
         // console.log('cal', this.props.calendar)
         return (
             <Container
-                style={{paddingTop: Expo.Constants.statusBarHeight}}
             >
+                <Header androidStatusBarColor="#00AE93" style={{backgroundColor: HeaderBackgroundColor}}>
+                    <Body>
+                    <Title style={{color: 'black'}}>Calendar</Title>
+                    </Body>
+                    <Right>
+                        <Button transparent onPress={() => {
+                            this.props.navigation.navigate({routeName: 'CreateEvent'});
+                        }}>
+                            <Icon style={{fontSize: 28, fontWeight: 'bold', color: '#064C96'}} type={"MaterialIcons"} name='add'/>
+                        </Button>
+                    </Right>
+                </Header>
                 <Agenda
                     items={this.state.items}
                     loadItemsForMonth={this.loadItems.bind(this)}

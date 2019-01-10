@@ -4,7 +4,8 @@ import {Profile} from './Profile';
 import {createBottomTabNavigator} from "react-navigation";
 import {HeaderBackgroundColor} from "../../Style/Constant";
 import {GroupsNavigator} from "./Groups/GroupsNavigator";
-import {CalendarDashboard} from "./CalendarDashboard";
+import {CalendarDashboard} from "./Calendar/CalendarDashboard";
+import {CalendarNavigator} from "./Calendar/CalendarNavigator";
 
 export default createBottomTabNavigator(
     {
@@ -18,7 +19,7 @@ export default createBottomTabNavigator(
         //     }
         // },
         Dashboard: {
-            screen: CalendarDashboard,
+            screen: CalendarNavigator,
             navigationOptions: {
                 tabBarIcon: ({tintColor}) => <Icon
                     name='calendar'
