@@ -50,6 +50,10 @@ export class _GroupDetailScreen extends React.Component {
                     <Loader/>
                 </Container>
             );
+        let idx = group.members.findIndex((g) => {
+            return g.pseudo === this.props.login.pseudo
+        });
+        const isAdmin = group.members[idx].role === "Admin";
         return (
             <ScrollView style={{marginLeft: 10, marginRight: 10, height: Dimensions.get('window').height}}>
                 <GroupDetailScreenGroupName group={group}/>
@@ -106,19 +110,30 @@ export class _GroupDetailScreen extends React.Component {
                                     <Right>
                                         <Icon style={{marginTop: 10, fontSize: 28}} type='SimpleLineIcons'
                                               name='options-vertical' onPress={() => {
-                                            // const BUTTONS = [(member.role === 'Admin' ? "Remove as admin" : "Make admin"), "Remove from group", "Cancel"];
-                                            const BUTTONS = ["Remove from group", "Cancel"];
+                                            const BUTTONS = [];
+                                            const ButtonsCallback = [];
+                                            console.log(this.state);
+                                            console.log("GROUSSEPUTE");
+                                            if (isAdmin) {
+                                                BUTTONS.push((member.role === 'Admin' ? "Remove as admin" : "Make admin"));
+                                                BUTTONS.push(this.props.login.pseudo === member.pseudo ? "Quit group" : "Remove from group");
+                                                ButtonsCallback.push(() => {
+                                                    this.ChangeRoleClicked(group.id, member);
+                                                });
+                                                ButtonsCallback.push(() => {
+                                                    this.props.RemoveGroupMember(group.id, member, this.props.login.pseudo);
+                                                });
+                                            }
+                                            else if (this.props.login.pseudo === member.pseudo) {
+                                                BUTTONS.push("Quit group");
+                                                ButtonsCallback.push(() => {
+                                                    this.props.RemoveGroupMember(group.id, member, this.props.login.pseudo);
+                                                });
+                                            }
+                                            BUTTONS.push("Cancel");
+                                            ButtonsCallback.push(() => {
+                                            });
                                             const CANCEL_INDEX = BUTTONS.length - 1;
-                                            // const ButtonsCallback = [() => {
-                                            //     this.ChangeRoleClicked(group.id, member);
-                                            // }, () => {
-                                            //     this.props.RemoveGroupMember(group.id, member);
-                                            // }, () => {
-                                            // }];
-                                            const ButtonsCallback = [() => {
-                                                this.props.RemoveGroupMember(group.id, member, this.props.login.pseudo);
-                                            }, () => {
-                                            }];
                                             ActionSheet.show(
                                                 {
                                                     options: BUTTONS,
