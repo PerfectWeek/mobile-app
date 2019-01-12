@@ -5,7 +5,14 @@ export const CalendarActionType = {
     GetAllUsersEventsFail: "GETALLEVENTSFAIL",
     CreateNewEvent: "CREATENEWEVENT",
     CreateNewEventSuccess: "CREATENEWEVENTSUCCESS",
-    CreateNewEventFail: "CREATENEWEVENTFAIL"
+    CreateNewEventFail: "CREATENEWEVENTFAIL",
+    RefreshCalendar: "REFRESHCALENDAR"
+};
+
+export const RefreshCalendar = () => {
+    return {
+        type: CalendarActionType.RefreshCalendar
+    }
 };
 
 export const CreateNewEvent = (event) => {

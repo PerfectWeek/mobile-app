@@ -5,7 +5,7 @@ import {Button, Form, Icon, Input, Item, Text, Title, Container} from "native-ba
 import RNPickerSelect from 'react-native-picker-select';
 
 
-import {CalendarActionType, CreateNewEvent} from "../../redux/Calendar/calendar.actions";
+import {CalendarActionType, CreateNewEvent, RefreshCalendar} from "../../redux/Calendar/calendar.actions";
 import DatePicker from "react-native-datepicker";
 import Loader from "../../Components/Loader";
 
@@ -41,8 +41,8 @@ export class _CreateEvent extends React.Component {
     render() {
         if (this.props.calendar && this.props.calendar.status === CalendarActionType.CreateNewEventSuccess)
         {
-            console.log('timtim', this.props.calendar.status)
             this.props.navigation.goBack();
+            this.props.RefreshCalendar();
         }
         let listcal = [];
         this.props.calendar.calendars.map((it) => {
@@ -195,7 +195,8 @@ export class _CreateEvent extends React.Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        CreateNewEvent: (event) => dispatch(CreateNewEvent(event))
+        CreateNewEvent: (event) => dispatch(CreateNewEvent(event)),
+        RefreshCalendar: () => dispatch(RefreshCalendar())
     }
 };
 
