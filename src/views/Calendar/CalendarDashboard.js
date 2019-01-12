@@ -6,9 +6,8 @@ import {Body, Button, Container, Header, Icon, Right, Title} from "native-base";
 import {GetAllUsersEvents, CalendarActionType} from "../../redux/Calendar/calendar.actions";
 import Loader from "../../Components/Loader";
 import {HeaderBackgroundColor} from "../../../Style/Constant";
+import Swipeout from 'react-native-swipeout';
 
-// import {} from "../redux/User/user.actions";
-// import {} from "../redux/Login/login.actions";
 
 export class _CalendarDashboard extends Component {
     constructor(props) {
@@ -89,14 +88,29 @@ export class _CalendarDashboard extends Component {
     }
 
     renderItem(item) {
+        const swipeoutBtns = [
+            {
+                text: 'Delete',
+                color: 'white',
+                backgroundColor: 'red',
+                onPress : () => {console.log(item.name)}
+            },
+            {
+                text: 'Modify',
+                color: 'white',
+                backgroundColor: 'green',
+                onPress : () => {console.log('modif', item.name)}
+            }
+        ];
         return (
-            <TouchableHighlight onPress={()=>{}} underlayColor="white">
-                <View style={[styles.item, {
-                    height: item.height,
-                    backgroundColor: item.color
-                }]}><Text>{item.name}</Text></View>
-            </TouchableHighlight>
-        );
+            <View style={[styles.item, {backgroundColor: item.color,}]}>
+                <Swipeout right={swipeoutBtns} style={{backgroundColor: item.color, borderRadius: 5}}>
+                    <View style={{height: item.height}}>
+                        <Text>{item.name}</Text>
+                    </View>
+                </Swipeout>
+            </View>
+    )
     }
 
     renderEmptyDate() {
@@ -133,8 +147,12 @@ export class _CalendarDashboard extends Component {
     }
 
     render() {
-        if (this.props.calendar.status === CalendarActionType.RefreshCalendar)
+
+
+        if (this.props.calendar.status === CalendarActionType.RefreshCalendar) {
+            this.setState({new: true});
             this.props.GetAllUsersEvents(this.props.login);
+        }
         if (this.props.calendar && (this.props.calendar.status === CalendarActionType.GetAllUsersEvents
             || this.props.calendar.status === CalendarActionType.CreateNewEventSuccess)
         )
@@ -156,7 +174,7 @@ export class _CalendarDashboard extends Component {
                     </Body>
                     <Right>
                         <Button transparent onPress={() => {
-                            // this.setState({ref: true})
+                            // this.props.GetAllUsersEvents(this.props.login);
                             this.props.navigation.navigate({routeName: 'CreateEvent'});
                         }}>
                             <Icon style={{fontSize: 28, fontWeight: 'bold', color: '#064C96'}} type={"MaterialIcons"} name='add'/>
@@ -177,7 +195,7 @@ export class _CalendarDashboard extends Component {
                     pastScrollRange={10}
                     onRefresh={() => {
                         // console.log('refreshing...');
-                    // this.setState({new: true});
+                    this.setState({new: true});
                     this.props.GetAllUsersEvents(this.props.login);
                     // this.setState({ref: false})
                     }}
@@ -196,7 +214,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         flex: 1,
         borderRadius: 5,
-        padding: 10,
+        // padding: 10,
         marginRight: 10,
         marginTop: 17
     },
