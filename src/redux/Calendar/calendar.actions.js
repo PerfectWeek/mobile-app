@@ -2,7 +2,30 @@ export const CalendarActionType = {
     Nothing: 'NOTHING',
     GetAllUsersEvents: 'GETALLEVENTS',
     GetAllUsersEventsSuccess: "GETALLEVENTSSUCCESS",
-    GetAllUsersEventsFail: "GETALLEVENTSFAIL"
+    GetAllUsersEventsFail: "GETALLEVENTSFAIL",
+    CreateNewEvent: "CREATENEWEVENT",
+    CreateNewEventSuccess: "CREATENEWEVENTSUCCESS",
+    CreateNewEventFail: "CREATENEWEVENTFAIL"
+};
+
+export const CreateNewEvent = (event) => {
+    return {
+        type: CalendarActionType.CreateNewEvent,
+        event: event
+    }
+};
+
+export const CreateNewEventSuccess = () => {
+    return {
+        type: CalendarActionType.CreateNewEventSuccess
+    }
+};
+
+export const CreateNewEventFail = (error_message) => {
+    return {
+        type: CalendarActionType.CreateNewEventFail,
+        error_message: error_message
+    }
 };
 
 export const GetAllUsersEvents = (_pseudo) => {

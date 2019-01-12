@@ -1,12 +1,13 @@
 import React from 'react';
-import {Dimensions, ScrollView, View} from 'react-native';
+import {Dimensions, View, StyleSheet} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 import {Button, Form, Icon, Input, Item, Text, Title, Container} from "native-base";
-import DatePicker from 'react-native-datepicker'
+import RNPickerSelect from 'react-native-picker-select';
 
 
-import {ScreenBackgroundColor} from "../../../Style/Constant";
-import {GetAllUsersEvents} from "../../redux/Calendar/calendar.actions";
+import {CalendarActionType, CreateNewEvent} from "../../redux/Calendar/calendar.actions";
+import DatePicker from "react-native-datepicker";
+import Loader from "../../Components/Loader";
 
 export class _CreateEvent extends React.Component {
     static navigationOptions = {
@@ -19,17 +20,51 @@ export class _CreateEvent extends React.Component {
         this.state = {
             groupName: '',
             description: '',
-            searchBar: '',
+            localisation: '',
             dateBeginEvent : '',
             dateEndEvent : '',
             beginTime : '',
-            endTime : ''
+            endTime : '',
+            calendarId: -1,
+            calRef: 0
         }
     }
 
+    validator() {
+        return (this.state.groupName === '' || this.state.description === ''
+            || this.state.localisation === '' || this.state.dateBeginEvent === ''
+            || this.state.dateEndEvent === '' || this.state.beginTime === ''
+            || this.state.endTime === '' || this.state.calendarId === -1
+        )
+    }
+
     render() {
+        if (this.props.calendar && this.props.calendar.status === CalendarActionType.CreateNewEventSuccess)
+        {
+            console.log('timtim', this.props.calendar.status)
+            this.props.navigation.goBack();
+        }
+        let listcal = [];
+        this.props.calendar.calendars.map((it) => {
+            listcal.push({
+                label: it.calendarName,
+                value: it.calendarId,
+            })
+        });
+
+        if (this.props.calendar && this.props.calendar.status === CalendarActionType.CreateNewEvent)
+            return (
+                <Container style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <Loader />
+                </Container>
+            );
+
         return (
-            <Container style={{backgroundColor: ScreenBackgroundColor}}>
+            <Container>
                 <View style={{
                     flexDirection: 'row', justifyContent: 'space-between', marginTop: 20
                 }}>
@@ -46,7 +81,11 @@ export class _CreateEvent extends React.Component {
                                    placeholder="Description" value={this.state.description}
                                    onChangeText={(text) => this.setState({description: text})}/>
                         </Item>
-
+                        <Item>
+                            <Input style={{textAlign: 'center', color: 'black', fontFamily: 'Lato_Medium', fontSize: 16}}
+                                   placeholder="Localisation" value={this.state.localisation}
+                                   onChangeText={(text) => this.setState({localisation: text})}/>
+                        </Item>
                         <Title style={{
                             color: 'black',
                             fontFamily: 'Lato_Bold',
@@ -70,7 +109,7 @@ export class _CreateEvent extends React.Component {
                             />
                             <DatePicker
                                 style={{width: 200, height:50,  justifyContent: 'center',
-                                    alignItems: 'center', borderLeftColor: 'white'}}
+                                    alignItems: 'center'}}
                                 placeholder={this.state.dateBeginEvent === '' ? "Select date" : this.state.dateBeginEvent}
                                 format="YYYY-MM-DD"
                                 minDate="2018-01-01"
@@ -115,6 +154,37 @@ export class _CreateEvent extends React.Component {
                                 onDateChange={(date) => {this.setState({dateEndEvent: date})}}
                             />
                         </Item>
+                        <Item>
+                        <RNPickerSelect
+                            placeholder={{
+                                label: 'Select a calendar...',
+                                value: null,
+                                color: '#9EA0A4'
+                            }}
+                            style={{ ...pickerSelectStyles }}
+                            items={listcal}
+                            onValueChange={(value) => {
+                                this.setState({
+                                    calendarId: value,
+                                });
+                            }}
+                            value={this.state.calendarId}
+                            ref={(el) => {
+                                this.state.calref = el;
+                            }}
+                            useNativeAndroidPickerStyle={false}
+                            hideIcon={true}
+                        />
+                        </Item>
+                        <Button success disabled={this.validator()}
+                                rounded style={{margin: 30, marginTop:5}}
+                                onPress={() => {
+                                    this.props.CreateNewEvent(this.state)
+                                }}>
+                            <Text>
+                                Create event
+                            </Text>
+                        </Button>
                     </Form>
                 </View>
             </Container>
@@ -125,7 +195,7 @@ export class _CreateEvent extends React.Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        GetAllUsersEvents: (pseudo) => dispatch(GetAllUsersEvents(pseudo))
+        CreateNewEvent: (event) => dispatch(CreateNewEvent(event))
     }
 };
 
@@ -136,5 +206,33 @@ const mapStateToProps = (state, ownProps) => {
         login: state.login
     }
 };
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        fontSize: 16,
+        paddingTop: 13,
+        paddingHorizontal: 10,
+        paddingBottom: 12,
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 4,
+        backgroundColor: 'white',
+        color: 'black',
+        width: 250
+    },
+    inputAndroid: {
+        fontSize: 16,
+        paddingTop: 13,
+        paddingHorizontal: 10,
+        paddingBottom: 12,
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 4,
+        backgroundColor: 'white',
+        color: 'black',
+        width: 250
+    }
+});
+
 
 export const CreateEvent = connect(mapStateToProps, mapDispatchToProps)(_CreateEvent);

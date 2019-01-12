@@ -14,8 +14,10 @@ export class _CalendarDashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            ref: false,
             items: {},
-            filled: false
+            filled: false,
+            new: false
         };
         this.props.GetAllUsersEvents(this.props.login);
     }
@@ -25,34 +27,24 @@ export class _CalendarDashboard extends Component {
     };
 
     loadItems(day) {
+        if (this.state.new === true) {
+            this.setState({items: {}, new: false, filled: false})
+        }
         if (this.props.calendar.status !== CalendarActionType.GetAllUsersEventsSuccess)
             return;
 
         const listCalendars = this.props.calendar.calendars;
-
-        // setTimeout(() => {
         for (let i = -150; i < 185; i++) {
             const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-            // const strTime = this.timeToString(time);
             const date = new Date(time);
             const strTime = date.toISOString().split('T')[0];
-            // console.log(time, strTime)
             if (!this.state.items[strTime]) {
                 this.state.items[strTime] = [];
-                // const numItems = Math.floor(Math.random() * 5);
-                // for (let j = 0; j < numItems; j++) {
-                //     this.state.items[strTime].push({
-                //         name: 'Item for ' + strTime,
-                //         height: Math.max(50, Math.floor(Math.random() * 150))
-                //     });
-                // }
             }
         }
-        // console.log(listCalendars)
-        //     let items = {}
         if (this.state.filled === true)
             return;
-        this.setState({filled: true});
+        // console.log('FILLED')
         for (let i = 0; i < listCalendars.length; ++i) {
             const events = listCalendars[i].events;
             for (let k = 0; k < events.length; ++k) {
@@ -68,13 +60,14 @@ export class _CalendarDashboard extends Component {
                     this.state.items[isoDate].push({
                         name: event.name,
                         item: [],
-                        height: 5,
+                        height: 50,
                         color: calcol
                     });
                     strTimeStart.setDate(strTimeStart.getDate() + 1);
                 }
             }
         }
+        this.setState({filled: true});
 
         console.log(this.state.items);
         // const newItems = {};
@@ -138,8 +131,14 @@ export class _CalendarDashboard extends Component {
     }
 
     render() {
-        // console.log(this.props.calendar)
-        if (this.props.calendar && this.props.calendar.status !== CalendarActionType.GetAllUsersEventsSuccess)
+        // console.log(this.props.calendar.status);
+        // if (this.props.calendar.status === CalendarActionType.CreateNewEventSuccess)
+        // {
+        //     this.setState({ref: true})
+        //     // this.props.GetAllUsersEvents(this.props.login);
+        // }
+        if (this.props.calendar && this.props.calendar.status === CalendarActionType.GetAllUsersEvents
+       )
             return (
                 <Container style={{
                     flexDirection: 'row',
@@ -150,7 +149,7 @@ export class _CalendarDashboard extends Component {
                 </Container>
             );
         // const current = new Date();
-        // console.log('cal', this.props.calendar)
+        console.log('cal', this.state.items)
         return (
             <Container
             >
@@ -176,21 +175,15 @@ export class _CalendarDashboard extends Component {
                         return (<View style={{backgroundColor: 'red'}}/>);
                     }}
                     rowHasChanged={this.rowHasChanged.bind(this)}
-                    minDate={'2015-01-01'}
+                    minDate={'2019-01-01'}
                     pastScrollRange={10}
-                    // markingType={'period'}
-                    // markedDates={{
-                    //    '2017-05-08': {textColor: '#666'},
-                    //    '2017-05-09': {textColor: '#666'},
-                    //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-                    //    '2017-05-21': {startingDay: true, color: 'blue'},
-                    //    '2017-05-22': {endingDay: true, color: 'gray'},
-                    //    '2017-05-24': {startingDay: true, color: 'gray'},
-                    //    '2017-05-25': {color: 'gray'},
-                    //    '2017-05-26': {endingDay: true, color: 'gray'}}}
-                    // monthFormat={'yyyy'}
-                    // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-                    //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
+                    onRefresh={() => {console.log('refreshing...');
+                    this.setState({new: true});
+                    this.props.GetAllUsersEvents(this.props.login);
+                    // this.setState({ref: false})
+                    }}
+                    // Set this true while waiting for new data from a refresh
+                    refreshing={this.state.ref}
                 />
             </Container>
         )
