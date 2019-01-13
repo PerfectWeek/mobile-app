@@ -36,10 +36,9 @@ export const GetEventInfoFail = () => {
     }
 };
 
-export const ModifyEventSuccess = (event) => {
+export const ModifyEventSuccess = () => {
     return {
-        type: CalendarActionType.ModifyEventSuccess,
-        event: event
+        type: CalendarActionType.ModifyEventSuccess
     }
 };
 export const ModifyEventFail = () => {

@@ -4,7 +4,9 @@ import {CalendarActionType,
     CreateNewEventSuccess,
     RefreshCalendar,
     GetEventInfoSuccess,
-    GetEventInfoFail
+    GetEventInfoFail,
+    ModifyEventSuccess,
+    ModifyEventFail
 } from "../Calendar/calendar.actions";
 import {takeEvery, put} from "redux-saga/effects";
 import {Network} from "../../Network/Requests";
@@ -17,14 +19,41 @@ function getEvents() {
 function* GetTheEventInfo(action) {
     const response = yield Network.Get('/events/' + action.event);
 
+    if (response.status !== 200) {
+        let err;
+        if (response.status !== 500 && response.data !== undefined && response.data.message !== undefined)
+            err = response.data.message;
+        else
+            err = "Connection error";
+        yield Toast.show({
+            text: err,
+            type: "danger",
+            buttonText: "Okay",
+            duration: 5000
+        });
+        yield put(GetEventInfoFail());
+    }
+    yield put(GetEventInfoSuccess(response.data.event));
+}
+
+function* ModifyEvent(action) {
+    console.log('modify', action)
+    const response = yield Network.Put('/events/' + action.event.id, {
+        name: action.event.eventName,
+        description: action.event.description,
+        start_time: action.event.dateBeginEvent + "T" + action.event.beginTime,
+        end_time: action.event.dateEndEvent + "T" + action.event.endTime,
+        location: action.event.localisation
+    });
+
     if (response.status === 200) {
         yield Toast.show({
-            text: "Event Deleted.",
+            text: "Event Modified.",
             type: "success",
             buttonText: "Okay",
             duration: 10000
         });
-        yield put(GetEventInfoSuccess(response.data.event));
+        yield put(ModifyEventSuccess());
     }
     else {
         let err;
@@ -38,7 +67,8 @@ function* GetTheEventInfo(action) {
             buttonText: "Okay",
             duration: 5000
         });
-        yield put(GetEventInfoFail());
+        yield put(ModifyEventFail());
+
     }
 }
 
@@ -147,6 +177,7 @@ function* GetAllUsersEvents(action) {
 
 export function* CalendarSaga() {
    yield takeEvery(CalendarActionType.GetAllUsersEvents, GetAllUsersEvents);
+   yield takeEvery(CalendarActionType.ModifyEvent, ModifyEvent);
    yield takeEvery(CalendarActionType.GetEventInfo, GetTheEventInfo);
    yield takeEvery(CalendarActionType.CreateNewEvent, CreatNewEvent);
    yield takeEvery(CalendarActionType.DeleteEvent, DeleteEvent);

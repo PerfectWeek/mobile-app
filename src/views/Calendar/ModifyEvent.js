@@ -18,7 +18,7 @@ export class _ModifyEvent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            groupName: 'params.name',
+            eventName: 'params.name',
             description: '',
             localisation: '',
             dateBeginEvent : '',
@@ -31,7 +31,7 @@ export class _ModifyEvent extends React.Component {
     }
 
     validator() {
-        return (this.state.groupName === '' || this.state.description === ''
+        return (this.state.eventName === '' || this.state.description === ''
             || this.state.localisation === '' || this.state.dateBeginEvent === ''
             || this.state.dateEndEvent === '' || this.state.beginTime === ''
             || this.state.endTime === ''
@@ -40,14 +40,18 @@ export class _ModifyEvent extends React.Component {
 
     fillInfoEvent(event) {
         const beginTimeEvent = event.start_time.split('T');
+
         const endTimeEvent = event.end_time.split('T');
         console.log(beginTimeEvent)
         this.setState({
-            groupName: event.name,
+            id: event.id,
+            eventName: event.name,
             description: event.description,
             localisation: event.location,
             dateBeginEvent: beginTimeEvent[0],
+            beginTime: beginTimeEvent[0].substring(0, 5),
             dateEndEvent: endTimeEvent[0],
+            endTime: endTimeEvent[0].substring(0, 5),
             recievedEvent: true
         })
     }
@@ -83,8 +87,8 @@ export class _ModifyEvent extends React.Component {
                     }}>
                         <Item>
                             <Input style={{textAlign: 'center', color: 'black', fontFamily: 'Lato_Bold', fontSize: 26}}
-                                   placeholder="Group name" value={this.state.groupName}
-                                   onChangeText={(text) => this.setState({groupName: text})}/>
+                                   placeholder="Group name" value={this.state.eventName}
+                                   onChangeText={(text) => this.setState({eventName: text})}/>
                         </Item>
                         <Item>
                             <Input style={{textAlign: 'center', color: 'black', fontFamily: 'Lato_Medium', fontSize: 16}}
@@ -167,7 +171,7 @@ export class _ModifyEvent extends React.Component {
                         <Button success disabled={this.validator()}
                                 rounded style={{margin: 30, marginTop:5}}
                                 onPress={() => {
-                                    // this.props.ModifyTheEvent(this.state)
+                                    this.props.ModifyTheEvent(this.state)
                                 }}>
                             <Text>
                                 Modify event
@@ -184,7 +188,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
         GetEventInfo: (event) => dispatch(GetEventInfo(event)),
-        // ModifyTheEvent: (event) => dispatch(ModifyTheEvent(event)),
+        ModifyTheEvent: (event) => dispatch(ModifyTheEvent(event)),
         RefreshCalendar: () => dispatch(RefreshCalendar())
     }
 };

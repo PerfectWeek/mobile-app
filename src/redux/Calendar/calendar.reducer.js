@@ -17,8 +17,7 @@ export const CalendarReducer = (state = {status: 'NONE'}, action) => {
         case CalendarActionType.ModifyEventSuccess:
             return {
                 ...state,
-                status: CalendarActionType.ModifyEventSuccess,
-                event: action.event
+                status: CalendarActionType.ModifyEventSuccess
             };
         case CalendarActionType.ModifyEventFail:
             return {

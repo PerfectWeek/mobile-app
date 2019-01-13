@@ -53,11 +53,11 @@ export class _GroupDetailScreenGroupName extends React.Component {
                     this.modal.toggle();
                 }}/>
                 <Modal
-                    canValidate={(this.state.groupName !== '' && this.props.groups.status !== GroupsActionType.EditGroupInfo)}
+                    canValidate={(this.state.eventName !== '' && this.props.groups.status !== GroupsActionType.EditGroupInfo)}
                     canClose={(this.props.groups.status !== GroupsActionType.EditGroupInfo)}
                     onRef={ref => (this.modal = ref)} title='Edit group info'
                     actionButtonTitle='Update' validateCallback={() => {
-                    this.props.EditGroupInfo({id: group.id, name: this.state.groupName, description: this.state.groupDescription})
+                    this.props.EditGroupInfo({id: group.id, name: this.state.eventName, description: this.state.groupDescription})
                 }}>
                     <View style={{
                         flexDirection: 'row', justifyContent: 'space-between'
@@ -66,7 +66,7 @@ export class _GroupDetailScreenGroupName extends React.Component {
                             marginLeft: 10, marginRight: 30, flexGrow: 3
                         }}>
                             <Item style={{marginTop: 0}}>
-                                <Input placeholder="Group name" value={this.state.groupName}
+                                <Input placeholder="Group name" value={this.state.eventName}
                                        onChangeText={(text) => this.setState({EventTitle: text})}/>
                             </Item>
                             <Item style={{marginTop: 0}}>
