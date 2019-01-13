@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text, TouchableHighlight} from 'react-native';
+import {View, StyleSheet, Text, Alert} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 import {Agenda} from 'react-native-calendars';
 import {Body, Button, Container, Header, Icon, Right, Title} from "native-base";
-import {GetAllUsersEvents, CalendarActionType} from "../../redux/Calendar/calendar.actions";
+import {GetAllUsersEvents, CalendarActionType, DeleteEvent} from "../../redux/Calendar/calendar.actions";
 import Loader from "../../Components/Loader";
 import {HeaderBackgroundColor} from "../../../Style/Constant";
 import Swipeout from 'react-native-swipeout';
@@ -31,8 +31,8 @@ export class _CalendarDashboard extends Component {
         }
         if (this.props.calendar.status !== CalendarActionType.GetAllUsersEventsSuccess)
             return;
-
         const listCalendars = this.props.calendar.calendars;
+        // console.log(listCalendars)
         for (let i = -150; i < 185; i++) {
             const time = day.timestamp + i * 24 * 60 * 60 * 1000;
             const date = new Date(time);
@@ -43,7 +43,6 @@ export class _CalendarDashboard extends Component {
         }
         if (this.state.filled === true)
             return;
-        // console.log('FILLED')
         for (let i = 0; i < listCalendars.length; ++i) {
             const events = listCalendars[i].events;
             for (let k = 0; k < events.length; ++k) {
@@ -57,6 +56,7 @@ export class _CalendarDashboard extends Component {
                         this.state.items[isoDate] = [];
                     }
                     this.state.items[isoDate].push({
+                        id: event.id,
                         name: event.name,
                         item: [],
                         height: 50,
@@ -68,7 +68,7 @@ export class _CalendarDashboard extends Component {
         }
         this.setState({filled: true});
 
-        console.log(this.state.items);
+        // console.log(this.state.items);
         // const newItems = {};
         // Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
         // this.setState({
@@ -87,13 +87,26 @@ export class _CalendarDashboard extends Component {
         return color;
     }
 
+    removeEvent(event) {
+        console.log('event: ', event)
+        Alert.alert(
+            'Confimation',
+            'Delete ' + event.name + ' ?',
+            [
+                {text: 'Cancel', style: 'cancel'},
+                {text: 'Delete', onPress: () => this.props.DeleteEvent(event.id)},
+            ],
+            { cancelable: true }
+        )
+    }
+
     renderItem(item) {
         const swipeoutBtns = [
             {
                 text: 'Delete',
                 color: 'white',
                 backgroundColor: 'red',
-                onPress : () => {console.log(item.name)}
+                onPress : () => {this.removeEvent(item)}
             },
             {
                 text: 'Modify',
@@ -104,7 +117,7 @@ export class _CalendarDashboard extends Component {
         ];
         return (
             <View style={[styles.item, {backgroundColor: item.color,}]}>
-                <Swipeout right={swipeoutBtns} style={{backgroundColor: item.color, borderRadius: 5}}>
+                <Swipeout autoClose={true} right={swipeoutBtns} style={{backgroundColor: item.color, borderRadius: 5}}>
                     <View style={{height: item.height}}>
                         <Text>{item.name}</Text>
                     </View>
@@ -228,7 +241,8 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        GetAllUsersEvents: (pseudo) => dispatch(GetAllUsersEvents(pseudo))
+        GetAllUsersEvents: (pseudo) => dispatch(GetAllUsersEvents(pseudo)),
+        DeleteEvent: (event) => dispatch(DeleteEvent(event))
     }
 };
 
