@@ -6,7 +6,15 @@ export const CalendarActionType = {
     CreateNewEvent: "CREATENEWEVENT",
     CreateNewEventSuccess: "CREATENEWEVENTSUCCESS",
     CreateNewEventFail: "CREATENEWEVENTFAIL",
+    DeleteEvent: "DELETEEVENT",
     RefreshCalendar: "REFRESHCALENDAR"
+};
+
+export const DeleteEvent = (event) => {
+    return {
+        type: CalendarActionType.DeleteEvent,
+        event: event
+    }
 };
 
 export const RefreshCalendar = () => {

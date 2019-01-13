@@ -2,6 +2,12 @@ import {CalendarActionType} from "./calendar.actions";
 
 export const CalendarReducer = (state = {status: 'NONE'}, action) => {
     switch (action.type) {
+        case CalendarActionType.DeleteEvent:
+            return {
+                ...state,
+                status: CalendarActionType.DeleteEvent,
+                event: action.event
+            };
         case CalendarActionType.RefreshCalendar:
             return {
                 ...state,
