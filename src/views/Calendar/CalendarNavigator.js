@@ -3,6 +3,7 @@ import {CalendarDashboard} from "./CalendarDashboard";
 import {CreateEvent} from "./CreateEvent";
 import {HeaderBackgroundColor, HeaderTintColor} from "../../../Style/Constant";
 import {ModifyEvent} from "./ModifyEvent";
+import {ConsultEvent} from "./ConsultEvent";
 
 export const CalendarNavigator = createStackNavigator (
     {
@@ -14,6 +15,9 @@ export const CalendarNavigator = createStackNavigator (
         },
         ModifyEvent: {
             screen: ModifyEvent
+        },
+        ConsultEvent: {
+            screen: ConsultEvent
         }
     },
     {

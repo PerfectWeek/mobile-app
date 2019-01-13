@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text, Alert} from 'react-native';
+import {View, StyleSheet, Text, Alert, TouchableHighlight} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 import {Agenda} from 'react-native-calendars';
 import {Body, Button, Container, Header, Icon, Right, Title} from "native-base";
@@ -32,7 +32,6 @@ export class _CalendarDashboard extends Component {
         if (this.props.calendar.status !== CalendarActionType.GetAllUsersEventsSuccess)
             return;
         const listCalendars = this.props.calendar.calendars;
-        // console.log(listCalendars)
         for (let i = -150; i < 185; i++) {
             const time = day.timestamp + i * 24 * 60 * 60 * 1000;
             const date = new Date(time);
@@ -43,6 +42,7 @@ export class _CalendarDashboard extends Component {
         }
         if (this.state.filled === true)
             return;
+
         for (let i = 0; i < listCalendars.length; ++i) {
             const events = listCalendars[i].events;
             for (let k = 0; k < events.length; ++k) {
@@ -86,7 +86,6 @@ export class _CalendarDashboard extends Component {
     }
 
     removeEvent(event) {
-        console.log('event: ', event)
         Alert.alert(
             'Confimation',
             'Delete ' + event.name + ' ?',
@@ -114,11 +113,15 @@ export class _CalendarDashboard extends Component {
             }
         ];
         return (
-            <View style={[styles.item, {backgroundColor: item.color,}]}>
-                <Swipeout autoClose={true} right={swipeoutBtns} style={{backgroundColor: item.color, borderRadius: 5}}>
-                    <View style={{height: 50}}>
-                        <Text>{item.name}</Text>
-                    </View>
+            <View style={[styles.item, {backgroundColor: item.color}]}>
+
+                <Swipeout autoClose={true} right={swipeoutBtns} style={{backgroundColor: '#d6d6d6', borderRadius: 5}}>
+                    <TouchableHighlight onPress={()=>this.props.navigation.navigate('ConsultEvent', {eventId:item.id})}
+                                        underlayColor="rgba(52, 52, 52, 0.5)">
+                        <View style={{height: 50}}>
+                            <Text style={{fontSize: 15, paddingTop: 15, marginLeft: 15}}>{item.name}</Text>
+                        </View>
+                    </TouchableHighlight>
                 </Swipeout>
             </View>
     )
@@ -158,8 +161,6 @@ export class _CalendarDashboard extends Component {
     }
 
     render() {
-
-
         if (this.props.calendar.status === CalendarActionType.RefreshCalendar) {
             this.setState({new: true});
             this.props.GetAllUsersEvents(this.props.login);
@@ -232,7 +233,7 @@ const styles = StyleSheet.create({
     emptyDate: {
         height: 15,
         flex: 1,
-        paddingTop: 30
+        paddingTop: 17
     }
 });
 

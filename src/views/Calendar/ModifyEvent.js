@@ -18,7 +18,7 @@ export class _ModifyEvent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            eventName: 'params.name',
+            eventName: '',
             description: '',
             localisation: '',
             dateBeginEvent : '',
