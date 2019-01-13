@@ -42,7 +42,6 @@ export class _ModifyEvent extends React.Component {
         const beginTimeEvent = event.start_time.split('T');
 
         const endTimeEvent = event.end_time.split('T');
-        console.log(beginTimeEvent)
         this.setState({
             id: event.id,
             eventName: event.name,
