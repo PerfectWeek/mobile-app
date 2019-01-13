@@ -18,20 +18,20 @@ export class _CreateEvent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            groupName: '',
+            EventTitle: '',
             description: '',
             localisation: '',
-            dateBeginEvent : '',
-            dateEndEvent : '',
-            beginTime : '',
-            endTime : '',
+            dateBeginEvent: '',
+            dateEndEvent: '',
+            beginTime: new Date().toLocaleTimeString('en-US', {hour12: false, hour: "numeric", minute: "numeric"}),
+            endTime: '',
             calendarId: -1,
             calRef: 0
         }
     }
 
     validator() {
-        return (this.state.groupName === '' || this.state.description === ''
+        return (this.state.EventTitle === '' || this.state.description === ''
             || this.state.localisation === '' || this.state.dateBeginEvent === ''
             || this.state.dateEndEvent === '' || this.state.beginTime === ''
             || this.state.endTime === '' || this.state.calendarId === -1
@@ -39,8 +39,7 @@ export class _CreateEvent extends React.Component {
     }
 
     render() {
-        if (this.props.calendar && this.props.calendar.status === CalendarActionType.CreateNewEventSuccess)
-        {
+        if (this.props.calendar && this.props.calendar.status === CalendarActionType.CreateNewEventSuccess) {
             this.props.navigation.goBack();
             this.props.RefreshCalendar();
         }
@@ -59,7 +58,7 @@ export class _CreateEvent extends React.Component {
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}>
-                    <Loader />
+                    <Loader/>
                 </Container>
             );
 
@@ -72,112 +71,133 @@ export class _CreateEvent extends React.Component {
                         marginLeft: 10, marginRight: 30, flexGrow: 3
                     }}>
                         <Item>
-                            <Input style={{textAlign: 'center', color: 'black', fontFamily: 'Lato_Bold', fontSize: 26}}
-                                   placeholder="Group name" value={this.state.groupName}
-                                   onChangeText={(text) => this.setState({groupName: text})}/>
+                            <Input style={{color: 'black', fontFamily: 'Lato_Medium', fontSize: 26}}
+                                   placeholder="Event name" value={this.state.EventTitle}
+                                   onChangeText={(text) => this.setState({EventTitle: text})}/>
                         </Item>
                         <Item>
-                            <Input style={{textAlign: 'center', color: 'black', fontFamily: 'Lato_Medium', fontSize: 16}}
+                            <Icon type='SimpleLineIcons' active name='pencil'/>
+                            <Input style={{color: 'black', fontFamily: 'Lato_Medium', fontSize: 16}}
                                    placeholder="Description" value={this.state.description}
                                    onChangeText={(text) => this.setState({description: text})}/>
                         </Item>
                         <Item>
-                            <Input style={{textAlign: 'center', color: 'black', fontFamily: 'Lato_Medium', fontSize: 16}}
+                            <Icon type='SimpleLineIcons' active name='location-pin'/>
+                            <Input style={{color: 'black', fontFamily: 'Lato_Medium', fontSize: 16}}
                                    placeholder="Localisation" value={this.state.localisation}
                                    onChangeText={(text) => this.setState({localisation: text})}/>
                         </Item>
-                        <Title style={{
-                            color: 'black',
-                            fontFamily: 'Lato_Bold',
-                            fontSize: 18,
-                            marginTop: 20,
-                            flexDirection: 'row',
-                            justifyContent: 'flex-start',
-                        }}>End event</Title>
-                        <Item style={{ justifyContent: 'center',
-                            alignItems: 'center'}}>
-                            <DatePicker
-                                style={{width: 50}}
-                                date={this.state.beginTime}
-                                mode="time"
-                                format="HH:mm"
-                                confirmBtnText="Confirm"
-                                cancelBtnText="Cancel"
-                                minuteInterval={1}
-                                showIcon={false}
-                                onDateChange={(time) => {this.setState({beginTime: time});}}
-                            />
-                            <DatePicker
-                                style={{width: 200, height:50,  justifyContent: 'center',
-                                    alignItems: 'center'}}
-                                placeholder={this.state.dateBeginEvent === '' ? "Select date" : this.state.dateBeginEvent}
-                                format="YYYY-MM-DD"
-                                minDate="2018-01-01"
-                                maxDate="2022-01-01"
-                                confirmBtnText="Confirm"
-                                cancelBtnText="Cancel"
-                                showIcon={false}
-                                onDateChange={(date) => {this.setState({dateBeginEvent: date})}}
-                            />
-                        </Item>
-                        <Title style={{
-                        color: 'black',
-                        fontFamily: 'Lato_Bold',
-                        fontSize: 18,
-                        marginTop: 20,
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start'
-                    }}>Begin event</Title>
-                        <Item style={{ justifyContent: 'center',
-                            alignItems: 'center'}}>
-                            <DatePicker
-                                style={{width: 50}}
-                                date={this.state.endTime}
-                                mode="time"
-                                format="HH:mm"
-                                confirmBtnText="Confirm"
-                                cancelBtnText="Cancel"
-                                minuteInterval={1}
-                                showIcon={false}
-                                onDateChange={(time) => {this.setState({endTime: time});}}
-                            />
-                            <DatePicker
-                                style={{width: 200, height:50,  justifyContent: 'center',
-                                    alignItems: 'center', borderLeftColor: 'white'}}
-                                placeholder={this.state.dateEndEvent === '' ? "Select date" : this.state.dateEndEvent}
-                                format="YYYY-MM-DD"
-                                minDate="2018-01-01"
-                                maxDate="2022-01-01"
-                                confirmBtnText="Confirm"
-                                cancelBtnText="Cancel"
-                                showIcon={false}
-                                onDateChange={(date) => {this.setState({dateEndEvent: date})}}
-                            />
-                        </Item>
+
                         <Item>
-                        <RNPickerSelect
-                            placeholder={{
-                                label: 'Select a calendar...',
-                                value: null,
-                                color: '#9EA0A4'
-                            }}
-                            style={{ ...pickerSelectStyles }}
-                            items={listcal}
-                            onValueChange={(value) => {
-                                this.setState({
-                                    calendarId: value,
-                                });
-                            }}
-                            value={this.state.calendarId}
-                            ref={(el) => {
-                                this.state.calref = el;
-                            }}
-                            useNativeAndroidPickerStyle={false}
-                            hideIcon={true}
-                        />
+                            <Icon style={{alignSelf: 'flex-start', marginTop: 10}} type='SimpleLineIcons' active
+                                  name='clock'/>
+
+                            <View style={{flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center'}}>
+
+                                <View style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'flex-start',
+                                    alignItems: 'center'
+                                }}>
+                                    <DatePicker
+                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Lato_Medium'}}}
+                                        style={{
+                                            width: 200, height: 50, justifyContent: 'center',
+                                            alignItems: 'center'
+                                        }}
+                                        placeholder={this.state.dateBeginEvent === '' ? "Beginning" : this.state.dateBeginEvent}
+                                        format="YYYY-MM-DD"
+                                        minDate="2018-01-01"
+                                        maxDate={this.state.dateEndEvent === '' ? "2022-01-01" : this.state.dateEndEvent}
+                                        confirmBtnText="Confirm"
+                                        cancelBtnText="Cancel"
+                                        showIcon={false}
+                                        onDateChange={(date) => {
+                                            this.setState({dateBeginEvent: date})
+                                        }}
+                                    />
+                                    <DatePicker
+                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Lato_Medium'}}}
+                                        style={{width: 80}}
+                                        date={this.state.beginTime}
+                                        placeholder="End Time"
+                                        mode="time"
+                                        format="HH:mm"
+                                        confirmBtnText="Confirm"
+                                        cancelBtnText="Cancel"
+                                        minuteInterval={1}
+                                        showIcon={false}
+                                        onDateChange={(time) => {
+                                            this.setState({beginTime: time});
+                                        }}
+                                    />
+                                </View>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'flex-start',
+                                    alignItems: 'center'
+                                }}>
+                                    <DatePicker
+                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Lato_Medium'}}}
+                                        style={{
+                                            width: 200, height: 50, justifyContent: 'center',
+                                            alignItems: 'center', borderLeftColor: 'white'
+                                        }}
+                                        placeholder={this.state.dateEndEvent === '' ? "Ending" : this.state.dateEndEvent}
+                                        format="YYYY-MM-DD"
+                                        minDate={this.state.dateBeginEvent === '' ? "2018-01-01" : this.state.dateBeginEvent}
+                                        maxDate="2022-01-01"
+                                        confirmBtnText="Confirm"
+                                        cancelBtnText="Cancel"
+                                        showIcon={false}
+                                        onDateChange={(date) => {
+                                            this.setState({dateEndEvent: date})
+                                        }}
+                                    />
+                                    <DatePicker
+                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Lato_Medium'}}}
+                                        style={{width: 80}}
+                                        date={this.state.endTime}
+                                        placeholder="End Time"
+                                        mode="time"
+                                        format="HH:mm"
+                                        confirmBtnText="Confirm"
+                                        cancelBtnText="Cancel"
+                                        minuteInterval={1}
+                                        showIcon={false}
+                                        onDateChange={(time) => {
+                                            this.setState({endTime: time});
+                                        }}
+                                    />
+                                </View>
+                            </View>
+                        </Item>
+
+                        <Item last>
+                            <Icon type='SimpleLineIcons' active name='calendar'/>
+                            <RNPickerSelect
+                                placeholder={{
+                                    label: 'Select a calendar...',
+                                    value: null,
+                                    color: '#9EA0A4'
+                                }}
+                                style={{...pickerSelectStyles}}
+                                items={listcal}
+                                onValueChange={(value) => {
+                                    this.setState({
+                                        calendarId: value,
+                                    });
+                                }}
+                                value={this.state.calendarId}
+                                ref={(el) => {
+                                    this.state.calref = el;
+                                }}
+                                useNativeAndroidPickerStyle={false}
+                                hideIcon={true}
+                            />
                         </Item>
                         <Button success disabled={this.validator()}
-                                rounded style={{margin: 30, marginTop:5}}
+                                rounded style={{margin: 30, marginTop: 10}}
                                 onPress={() => {
                                     this.props.CreateNewEvent(this.state)
                                 }}>
@@ -214,9 +234,9 @@ const pickerSelectStyles = StyleSheet.create({
         paddingTop: 13,
         paddingHorizontal: 10,
         paddingBottom: 12,
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 4,
+        // borderWidth: 1,
+        // borderColor: 'gray',
+        // borderRadius: 4,
         backgroundColor: 'white',
         color: 'black',
         width: 250
@@ -226,9 +246,6 @@ const pickerSelectStyles = StyleSheet.create({
         paddingTop: 13,
         paddingHorizontal: 10,
         paddingBottom: 12,
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 4,
         backgroundColor: 'white',
         color: 'black',
         width: 250

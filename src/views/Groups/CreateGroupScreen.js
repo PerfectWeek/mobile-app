@@ -40,7 +40,7 @@ export class _CreateGroupScreen extends React.Component {
                         <Item>
                             <Input style={{textAlign: 'center', color: 'black', fontFamily: 'Lato_Bold', fontSize: 26}}
                                    placeholder="Group name" value={this.state.groupName}
-                                   onChangeText={(text) => this.setState({groupName: text})}/>
+                                   onChangeText={(text) => this.setState({EventTitle: text})}/>
                         </Item>
                         <Item>
                             <Input style={{textAlign: 'center', color: 'black', fontFamily: 'Lato_Medium', fontSize: 16}}
