@@ -58,8 +58,6 @@ export class _CalendarDashboard extends Component {
                     this.state.items[isoDate].push({
                         id: event.id,
                         name: event.name,
-                        item: [],
-                        height: 50,
                         color: calcol
                     });
                     strTimeStart.setDate(strTimeStart.getDate() + 1);
@@ -112,13 +110,13 @@ export class _CalendarDashboard extends Component {
                 text: 'Modify',
                 color: 'white',
                 backgroundColor: 'green',
-                onPress : () => {console.log('modif', item.name)}
+                onPress : () => { this.props.navigation.navigate('ModifyEvent', {eventId:item.id});}
             }
         ];
         return (
             <View style={[styles.item, {backgroundColor: item.color,}]}>
                 <Swipeout autoClose={true} right={swipeoutBtns} style={{backgroundColor: item.color, borderRadius: 5}}>
-                    <View style={{height: item.height}}>
+                    <View style={{height: 50}}>
                         <Text>{item.name}</Text>
                     </View>
                 </Swipeout>

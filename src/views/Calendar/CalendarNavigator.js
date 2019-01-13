@@ -2,6 +2,7 @@ import {createStackNavigator} from "react-navigation";
 import {CalendarDashboard} from "./CalendarDashboard";
 import {CreateEvent} from "./CreateEvent";
 import {HeaderBackgroundColor, HeaderTintColor} from "../../../Style/Constant";
+import {ModifyEvent} from "./ModifyEvent";
 
 export const CalendarNavigator = createStackNavigator (
     {
@@ -10,6 +11,9 @@ export const CalendarNavigator = createStackNavigator (
         },
         CreateEvent: {
             screen : CreateEvent
+        },
+        ModifyEvent: {
+            screen: ModifyEvent
         }
     },
     {

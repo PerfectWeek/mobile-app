@@ -6,8 +6,53 @@ export const CalendarActionType = {
     CreateNewEvent: "CREATENEWEVENT",
     CreateNewEventSuccess: "CREATENEWEVENTSUCCESS",
     CreateNewEventFail: "CREATENEWEVENTFAIL",
+    ModifyEvent: "MODIFYEVENT",
+    ModifyEventSuccess: "MODIFYEVENTSUCCESS",
+    ModifyEventFail: "MODIFYEVENTFAIL",
+    GetEventInfo: "GETEVENTINFO",
+    GetEventInfoSuccess: "GETEVENTINFOSUCCESS",
+    GetEventInfoFail: "GETEVENTINFOFAIL",
     DeleteEvent: "DELETEEVENT",
     RefreshCalendar: "REFRESHCALENDAR"
+};
+
+export const GetEventInfo = (event) => {
+    return {
+        type: CalendarActionType.GetEventInfo,
+        event: event
+    }
+};
+
+export const GetEventInfoSuccess = (event) => {
+    return {
+        type: CalendarActionType.GetEventInfoSuccess,
+        event: event
+    }
+};
+
+export const GetEventInfoFail = () => {
+    return {
+        type: CalendarActionType.GetEventInfoFail
+    }
+};
+
+export const ModifyEventSuccess = (event) => {
+    return {
+        type: CalendarActionType.ModifyEventSuccess,
+        event: event
+    }
+};
+export const ModifyEventFail = () => {
+    return {
+        type: CalendarActionType.ModifyEventFail
+    }
+};
+
+export const ModifyTheEvent = (event) => {
+    return {
+        type: CalendarActionType.ModifyEvent,
+        event: event
+    }
 };
 
 export const DeleteEvent = (event) => {
