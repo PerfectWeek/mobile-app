@@ -39,8 +39,8 @@ export class _CreateGroupScreen extends React.Component {
                     }}>
                         <Item>
                             <Input style={{textAlign: 'center', color: 'black', fontFamily: 'Lato_Bold', fontSize: 26}}
-                                   placeholder="Group name" value={this.state.eventName}
-                                   onChangeText={(text) => this.setState({EventTitle: text})}/>
+                                   placeholder="Group name" value={this.state.groupName}
+                                   onChangeText={(text) => this.setState({groupName: text})}/>
                         </Item>
                         <Item>
                             <Input style={{textAlign: 'center', color: 'black', fontFamily: 'Lato_Medium', fontSize: 16}}
@@ -104,10 +104,10 @@ export class _CreateGroupScreen extends React.Component {
                         }
                     </View>
                 </ScrollView>
-                <Button success disabled={this.state.eventName === ''}
+                <Button success disabled={this.state.groupName === ''}
                         rounded style={{margin: 30, marginTop:5}}
                         onPress={() => {
-                            this.props.CreateGroup({name: this.state.eventName, description : this.state.description, members: this.state.usersToAdd})
+                            this.props.CreateGroup({name: this.state.groupName, description : this.state.description, members: this.state.usersToAdd})
                         }}>
                     <Text>
                         Create Group

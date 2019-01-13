@@ -38,7 +38,7 @@ function* GetTheEventInfo(action) {
 
 function* ModifyEvent(action) {
     const response = yield Network.Put('/events/' + action.event.id, {
-        name: action.event.eventName,
+        name: action.event.EventTitle,
         description: action.event.description,
         start_time: action.event.dateBeginEvent + "T" + action.event.beginTime,
         end_time: action.event.dateEndEvent + "T" + action.event.endTime,

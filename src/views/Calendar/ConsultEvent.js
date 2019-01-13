@@ -18,7 +18,7 @@ export class _ConsultEvent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            eventName: '',
+            EventTitle: '',
             description: '',
             localisation: '',
             dateBeginEvent : '',
@@ -36,7 +36,7 @@ export class _ConsultEvent extends React.Component {
         const endTimeEvent = event.end_time.split('T');
         this.setState({
             id: event.id,
-            eventName: event.name,
+            EventTitle: event.name,
             description: event.description,
             localisation: event.location,
             dateBeginEvent: beginTimeEvent[0],
@@ -78,7 +78,7 @@ export class _ConsultEvent extends React.Component {
                     }}>
                         <Item>
                             <Text style={{textAlign: 'center', color: 'black', fontFamily: 'Lato_Bold', fontSize: 26}} >
-                                {this.state.eventName}
+                                {this.state.EventTitle}
                             </Text>
                         </Item>
                         <Item>
