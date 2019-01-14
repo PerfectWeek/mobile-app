@@ -4,7 +4,12 @@ import connect from "react-redux/es/connect/connect";
 import Modal from "../../Components/Modal";
 import Loader from "../../Components/Loader";
 import {Dimensions, ScrollView} from "react-native";
-import {GetAllUsersEvents, GetUsersEventsFiltered} from "../../redux/Calendar/calendar.actions";
+import {
+    GetAllUsersEvents,
+    GetUsersEventsFiltered,
+    RefreshCalendar,
+    SetFilters
+} from "../../redux/Calendar/calendar.actions";
 
 class _CalendarFilter extends Component {
 
@@ -34,8 +39,11 @@ class _CalendarFilter extends Component {
                 onRef={ref => (this.modal = ref)} title='Filter'
                 actionButtonTitle='Filter'
                 validateCallback={() => {
-                    this.props.GetUsersEventsFiltered(this.state.filters);
-            }}>
+                    this.props.SetFilters(this.state.filters);
+                    this.props.RefreshCalendar();
+                    // this.props.GetUsersEventsFiltered(this.state.filters);
+                    this.modal.toggle();
+                }}>
                 <View style={{
                     flexDirection: 'row', justifyContent: 'space-between'
                 }}>
@@ -71,7 +79,11 @@ class _CalendarFilter extends Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        GetUsersEventsFiltered: (filters) => dispatch(GetUsersEventsFiltered(filters)),
+        // GetUsersEventsFiltered: (filters) => dispatch(GetUsersEventsFiltered(filters)),
+        SetFilters: (filters) => dispatch(SetFilters(filters)),
+        RefreshCalendar: () => dispatch(RefreshCalendar()),
+
+
     }
 };
 

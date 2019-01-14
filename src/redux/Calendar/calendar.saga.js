@@ -178,6 +178,7 @@ function* GetAllUsersEvents(action) {
 }
 
 function* GetUsersEventsFiltered(action) {
+    console.log("KAKA");
     try {
         let listEventsByCalendars = [];
 

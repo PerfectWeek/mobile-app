@@ -3,7 +3,12 @@ import {View, StyleSheet, Text, Alert, TouchableHighlight, ScrollView} from 'rea
 import connect from "react-redux/es/connect/connect";
 import {Agenda} from 'react-native-calendars';
 import {Body, Button, Container, Header, Icon, Right, Title, Fab} from "native-base";
-import {GetAllUsersEvents, CalendarActionType, DeleteEvent} from "../../redux/Calendar/calendar.actions";
+import {
+    GetAllUsersEvents,
+    CalendarActionType,
+    DeleteEvent,
+    GetUsersEventsFiltered
+} from "../../redux/Calendar/calendar.actions";
 import Loader from "../../Components/Loader";
 import {HeaderBackgroundColor} from "../../../Style/Constant";
 import Swipeout from 'react-native-swipeout';
@@ -169,17 +174,17 @@ export class _CalendarDashboard extends Component {
     componentDidUpdate() {
         if (this.props.calendar.status === CalendarActionType.RefreshCalendar) {
             this.setState({new: true});
-            this.props.GetAllUsersEvents(this.props.login);
+            // console.log(this.props.calendar);
+            // console.log('salope de merde avs niquer ta merz la reine des grosse putes');
+            this.props.GetUsersEventsFiltered(this.props.calendar.calendarFilters);
         }
-        // if (this.props.calendar.status === CalendarActionType.GetUsersEventsFilteredSuccess) {
+        // if (this.props.calendar.status === CalendarActionType.GetUsersEventsFiltered && this.state.new === false) {
         //     this.setState({new: true});
         // }
     }
 
     render() {
-        // console.log(this.props.calendar);
-        // console.log('SALOEP');
-        if (this.props.calendar && (this.props.calendar.status === CalendarActionType.GetAllUsersEvents 
+        if (this.props.calendar && (this.props.calendar.status === CalendarActionType.GetAllUsersEvents
             || this.props.calendar.status === CalendarActionType.GetUsersEventsFiltered
             || this.props.calendar.status === CalendarActionType.CreateNewEventSuccess)
         )
@@ -268,6 +273,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
         GetAllUsersEvents: (pseudo) => dispatch(GetAllUsersEvents(pseudo)),
+        GetUsersEventsFiltered: (filters) => dispatch(GetUsersEventsFiltered(filters)),
         DeleteEvent: (event) => dispatch(DeleteEvent(event))
     }
 };

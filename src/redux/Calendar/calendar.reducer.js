@@ -95,6 +95,11 @@ export const CalendarReducer = (state = {status: 'NONE'}, action) => {
                 status: CalendarActionType.GetUsersEventsFilteredFail,
                 error_message: action.error_message
             };
+        case CalendarActionType.SetFilters:
+            return {
+                ...state,
+                SetFilters: action.filters
+            };
         default:
             return state;
     }

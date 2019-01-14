@@ -16,7 +16,8 @@ export const CalendarActionType = {
     GetEventInfoSuccess: "GETEVENTINFOSUCCESS",
     GetEventInfoFail: "GETEVENTINFOFAIL",
     DeleteEvent: "DELETEEVENT",
-    RefreshCalendar: "REFRESHCALENDAR"
+    RefreshCalendar: "REFRESHCALENDAR",
+    SetFilters: "SET_FILTERS"
 };
 
 export const GetEventInfo = (event) => {
@@ -131,5 +132,12 @@ export const GetUsersEventsFilteredFail = (error_message) => {
     return {
         type: CalendarActionType.GetUsersEventsFilteredFail,
         error_message: error_message
+    };
+};
+
+export const SetFilters = (filters) => {
+    return {
+        type: CalendarActionType.SetFilters,
+        filters: filters
     };
 };
