@@ -68,12 +68,31 @@ export const CalendarReducer = (state = {status: 'NONE'}, action) => {
             return {
                 ...state,
                 status: CalendarActionType.GetAllUsersEventsSuccess,
-                calendars: action.calendars
+                calendars: action.calendars,
+                calendarFilters: action.calendarFilters
             };
         case CalendarActionType.GetAllUsersEventsFail:
             return {
                 ...state,
                 status: CalendarActionType.GetAllUsersEventsFail,
+                error_message: action.error_message
+            };
+        case CalendarActionType.GetUsersEventsFiltered:
+            return {
+                ...state,
+                status: CalendarActionType.GetUsersEventsFiltered,
+                filters: action.filters
+            };
+        case CalendarActionType.GetUsersEventsFilteredSuccess:
+            return {
+                ...state,
+                status: CalendarActionType.GetUsersEventsFilteredSuccess,
+                calendars: action.calendars
+            };
+        case CalendarActionType.GetUsersEventsFilteredFail:
+            return {
+                ...state,
+                status: CalendarActionType.GetUsersEventsFilteredFail,
                 error_message: action.error_message
             };
         default:
