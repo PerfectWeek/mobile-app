@@ -14,7 +14,13 @@ import {
     EditGroupInfoFail,
     EditGroupInfoSuccess,
     CreateGroupSuccess,
-    CreateGroupFail, DeleteGroupSuccess, DeleteGroupFail, GetGroupInfoSuccess,
+    CreateGroupFail,
+    DeleteGroupSuccess,
+    DeleteGroupFail,
+    GetGroupInfoSuccess,
+    GetGroupsImage,
+    GetGroupsImageFail,
+    GetGroupsImageSuccess
 } from "./groups.actions";
 import {Network} from "../../Network/Requests";
 import {Toast} from "native-base";
@@ -27,7 +33,8 @@ function* GetGroups(action) {
             map[obj.id] = obj;
             return map;
         }, {});
-        yield put(GetGroupSuccess(groupMap))
+        yield put(GetGroupSuccess(groupMap));
+        yield put(GetGroupsImage(groupMap));
     }
     else {
         let err;
@@ -43,6 +50,32 @@ function* GetGroups(action) {
         });
         yield put(GetGroupFail(err));
     }
+}
+
+function* _GetGroupsImage(action) {
+    let groupsArray = Object.values(action.groups);
+    for (let idx = 0; idx < groupsArray.length; idx++) {
+        const resp = yield Network.Get('/groups/' + groupsArray[idx].id + '/image');
+        if (resp.status === 200) {
+            groupsArray[idx].image = resp.data.image;
+        }
+        else {
+            let err;
+            if (resp.data !== undefined && resp.data.message !== undefined)
+                err = resp.data.message;
+            else
+                err = "Connection error";
+            yield Toast.show({
+                text: err,
+                type: "danger",
+                buttonText: "Okay",
+                duration: 5000
+            });
+            yield put(GetGroupsImageFail(err));
+            return;
+        }
+    }
+    yield put(GetGroupsImageSuccess(action.groups));
 }
 
 function* GetGroupInfo(action) {
@@ -262,6 +295,7 @@ function* DeleteGroup(action) {
 
 export function* GroupSaga() {
     yield takeEvery(GroupsActionType.GetGroups, GetGroups);
+    yield takeEvery(GroupsActionType.GetGroupsImage, _GetGroupsImage);
     yield takeEvery(GroupsActionType.GetGroupMembers, GetGroupMembers);
     yield takeEvery(GroupsActionType.UpdateMemberRole, UpdateMemberRole);
     yield takeEvery(GroupsActionType.AddGroupMembers, AddGroupMembers);

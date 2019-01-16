@@ -84,7 +84,7 @@ export class _GroupsScreen extends React.Component {
                                             }} avatar>
                                                 <Left>
                                                     <Thumbnail
-                                                        source={{uri: 'https://picsum.photos/200/300/?random'}}/>
+                                                        source={{uri: group.image !== undefined ? group.image : null}}/>
                                                 </Left>
                                                 <Body>
                                                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>{group.name}</Text>

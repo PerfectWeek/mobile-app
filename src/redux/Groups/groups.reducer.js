@@ -20,6 +20,24 @@ export const GroupReducer = (state = {status: 'NONE'}, action) => {
                 status: GroupsActionType.GetGroupFail,
                 error_message: action.error_message
             };
+        case GroupsActionType.GetGroupsImage:
+            return {
+                ...state,
+                status: GroupsActionType.GetGroupsImage
+            };
+        case GroupsActionType.GetGroupsImageSuccess:
+            return {
+                ...state,
+                status: GroupsActionType.GetGroupsImageSuccess,
+                error_message: action.error,
+                groups: action.groups
+            };
+        case GroupsActionType.GetGroupsImageFail:
+            return {
+                ...state,
+                status: GroupsActionType.GetGroupsImageFail,
+                error_message: action.error_message
+            };
         case GroupsActionType.GetGroupInfo:
             return {
                 ...state,
