@@ -5,7 +5,7 @@ import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider, connect} from 'react-redux';
 import {LoginReducer} from "./src/redux/Login/login.reducer";
 import {createSwitchNavigator} from 'react-navigation';
-import Home from "./src/views/home";
+import { Home } from "./src/views/home";
 import {
     createNavigationReducer,
     createReactNavigationReduxMiddleware,
