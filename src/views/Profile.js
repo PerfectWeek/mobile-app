@@ -122,15 +122,11 @@ export class _Profile extends React.Component {
                     justifyContent: 'center',
                 }}>
                     <View style={{
-                        marginTop: 20, width: 80, height: 80
+                        marginTop: 80, width: 80, height: 80
                     }}>
                         {
                             (this.props.user.status === UserActionsType.UpdateInfo) ?
-                                <LottieView style={{}}
-                                            loop
-                                            source={require('../../Resources/Lottie/loading.json')}
-                                            autoPlay
-                                />
+                                <Loader/>
                                 : null
                         }
                     </View>

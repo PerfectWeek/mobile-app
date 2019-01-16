@@ -8,6 +8,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import {CalendarActionType, RefreshCalendar, GetEventInfo, ModifyTheEvent} from "../../redux/Calendar/calendar.actions";
 import DatePicker from "react-native-datepicker";
 import Loader from "../../Components/Loader";
+import moment from "moment";
 
 export class _ModifyEvent extends React.Component {
     static navigationOptions = {
@@ -35,6 +36,7 @@ export class _ModifyEvent extends React.Component {
             || this.state.localisation === '' || this.state.dateBeginEvent === ''
             || this.state.dateEndEvent === '' || this.state.beginTime === ''
             || this.state.endTime === ''
+            || this.state.dateBeginEvent === this.state.dateEndEvent && moment(this.state.endTime, "HH:mm") < moment(this.state.beginTime, "HH:mm")
         )
     }
 
