@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text, Alert, TouchableHighlight, ScrollView} from 'react-native';
+import {View, StyleSheet, Text, Alert, TouchableHighlight, ScrollView, Platform} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 import {Agenda} from 'react-native-calendars';
 import {Body, Button, Container, Header, Icon, Right, Title, Fab} from "native-base";
@@ -13,6 +13,7 @@ import Loader from "../../Components/Loader";
 import {HeaderBackgroundColor} from "../../../Style/Constant";
 import Swipeout from 'react-native-swipeout';
 import {CalendarFilter} from "./CalendarFilter";
+import moment from 'moment'
 
 export class _CalendarDashboard extends Component {
     constructor(props) {
@@ -31,20 +32,17 @@ export class _CalendarDashboard extends Component {
     loadItems(day) {
         if (day === undefined)
             return;
-        console.log("LoadItems");
         this.state.scrolledDay = day;
         this.state.items = {};
-            for (let i = -150; i < 185; i++) {
-                const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-                const date = new Date(time);
-                const strTime = date.toISOString().split('T')[0];
-                if (!this.state.items[strTime]) {
-                    this.state.items[strTime] = [];
-                }
+        for (let i = -150; i < 185; i++) {
+            const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+            const date = new Date(time);
+            const strTime = date.toISOString().split('T')[0];
+            if (!this.state.items[strTime]) {
+                this.state.items[strTime] = [];
             }
-        // console.log(Object.keys(this.state.items).length);
+        }
         this.reloadEvents();
-        console.log("finis");
         this.setState({...this.state, items: this.state.items});
     }
 
@@ -64,7 +62,9 @@ export class _CalendarDashboard extends Component {
                 // }
                 this.state.items[isoDate].push({
                     id: event.id,
-                    name: event.name
+                    name: event.name,
+                    end_time: event.end_time,
+                    start_time: events.start_time
                     // color: calcol
                 });
                 strTimeStart.setDate(strTimeStart.getDate() + 1);
@@ -108,12 +108,13 @@ export class _CalendarDashboard extends Component {
                 // {backgroundColor: item.color}
             ]}>
 
-                <Swipeout autoClose={true} right={swipeoutBtns} style={{backgroundColor: '#d6d6d6', borderRadius: 5}}>
+                <Swipeout autoClose={true} right={swipeoutBtns} style={{backgroundColor: '#e0e0e0', borderRadius: 5, padding:0, height:'100%'}}>
                     <TouchableHighlight
                         onPress={() => this.props.navigation.navigate('ConsultEvent', {eventId: item.id})}
                         underlayColor="rgba(52, 52, 52, 0.5)">
-                        <View style={{height: 50}}>
-                            <Text style={{fontSize: 15, paddingTop: 15, marginLeft: 15}}>{item.name}</Text>
+                        <View style={{height: 50, marginTop: 15, marginLeft: 15}}>
+                            <Text style={{fontSize: 18, fontFamily: 'Lato_Bold'}}>{item.name}</Text>
+                            <Text style={{fontSize: 14, fontFamily: 'Lato_Medium'}}>{moment(item.start_time).format('h:mm')} - {moment(item.end_time).format('h:mm')}</Text>
                         </View>
                     </TouchableHighlight>
                 </Swipeout>
@@ -153,11 +154,11 @@ export class _CalendarDashboard extends Component {
     }
 
     componentDidUpdate() {
-        console.log("WillUpdate");
-        console.log(this.props.calendar.status);
+        // console.log("WillUpdate");
+        // console.log(this.props.calendar.status);
         if (this.props.calendar.status === CalendarActionType.GetCalendarsSuccess) {
             this.props.GetEvents(this.props.calendar.calendars);
-            console.log("getting events");
+            // console.log("getting events");
         }
         if (this.props.calendar.status === CalendarActionType.GetEventsSuccess) {
             this.loadItems(this.state.scrolledDay);
@@ -168,7 +169,7 @@ export class _CalendarDashboard extends Component {
     }
 
     render() {
-        console.log("render");
+        // console.log("render");
         // console.log(this.props.calendar.status);
         // if (this.props.calendar.events)
         //     console.log(this.props.calendar.events);
@@ -183,7 +184,9 @@ export class _CalendarDashboard extends Component {
                 </Container>
             );
         return (
-            <Container>
+            <Container style={{
+                paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
+            }}>
                 <Container>
                     <Header androidStatusBarColor="#00AE93" style={{backgroundColor: HeaderBackgroundColor}}>
                         <Body>

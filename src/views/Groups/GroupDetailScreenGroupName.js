@@ -66,7 +66,7 @@ export class _GroupDetailScreenGroupName extends React.Component {
                             marginLeft: 10, marginRight: 30, flexGrow: 3
                         }}>
                             <Item style={{marginTop: 0}}>
-                                <Input placeholder="Group name" value={this.state.EventTitle}
+                                <Input placeholder="Group name" value={this.state.groupName}
                                        onChangeText={(text) => this.setState({EventTitle: text})}/>
                             </Item>
                             <Item style={{marginTop: 0}}>
