@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import {
     Title,
-    Icon, Form, Item, Input, Button, Text
+    Icon, Form, Item, Input, Button, Text, Thumbnail
 } from 'native-base';
 import connect from "react-redux/es/connect/connect";
 import PropTypes from "prop-types";
@@ -25,39 +25,38 @@ export class _GroupDetailScreenGroupName extends React.Component {
         this.state = {groupName: group.name, groupDescription: group.description};
     }
 
+    componentDidMount() {
+        this.props.onRef(this)
+    }
+
+    componentWillUnmount() {
+        this.props.onRef(undefined)
+    }
+
     render() {
         const {group} = this.props;
         return (
             <View style={{
                 marginTop: 20,
                 flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'space-evenly',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center'
             }}>
-                <View>
-                </View>
-                <Title
-                    style={{
-                        borderBottomWidth: 2,
-                        borderColor: Primary,
-                        borderRadius: 1,
-                        color: 'black', fontFamily: 'Lato_Bold', fontSize: 26
-                    }}>{group.name}
+                <Thumbnail large source={{uri: group.image !== undefined ? group.image : null}}/>
+                <Title style={{color: 'black', fontFamily: 'Lato_Bold', fontSize: 26}}>
+                    {group.name}
                 </Title>
-                <Icon style={{
-                    fontSize: 18,
-                    color: 'grey',
-                    marginTop: 5,
-                }}
-                      type='MaterialIcons' name='edit' onPress={() => {
-                    this.modal.toggle();
-                }}/>
                 <Modal
                     canValidate={(this.state.groupName !== '' && this.props.groups.status !== GroupsActionType.EditGroupInfo)}
                     canClose={(this.props.groups.status !== GroupsActionType.EditGroupInfo)}
                     onRef={ref => (this.modal = ref)} title='Edit group info'
                     actionButtonTitle='Update' validateCallback={() => {
-                    this.props.EditGroupInfo({id: group.id, name: this.state.groupName, description: this.state.groupDescription})
+                    this.props.EditGroupInfo({
+                        id: group.id,
+                        name: this.state.groupName,
+                        description: this.state.groupDescription
+                    })
                 }}>
                     <View style={{
                         flexDirection: 'row', justifyContent: 'space-between'
@@ -84,7 +83,12 @@ export class _GroupDetailScreenGroupName extends React.Component {
             </View>
         )
     }
+
+    openEditModal() {
+        this.modal.toggle();
+    }
 }
+
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
