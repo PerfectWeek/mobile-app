@@ -185,7 +185,6 @@ function* GetEvents(action) {
                 );
             }
         }
-        console.log(events);
         yield put(GetEventsSuccess(events));
     }
     catch (e) {

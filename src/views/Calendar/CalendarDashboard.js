@@ -64,12 +64,21 @@ export class _CalendarDashboard extends Component {
                     id: event.id,
                     name: event.name,
                     end_time: event.end_time,
-                    start_time: events.start_time
+                    start_time: events.start_time,
                     // color: calcol
                 });
                 strTimeStart.setDate(strTimeStart.getDate() + 1);
             }
         }
+    }
+
+    getRandomColor() {
+        var letters = 'BCDEF'.split('');
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * letters.length)];
+        }
+        return color;
     }
 
     removeEvent(event) {
@@ -105,16 +114,20 @@ export class _CalendarDashboard extends Component {
         ];
         return (
             <View style={[styles.item,
-                // {backgroundColor: item.color}
+                {backgroundColor: item.color}
             ]}>
 
-                <Swipeout autoClose={true} right={swipeoutBtns} style={{backgroundColor: '#e0e0e0', borderRadius: 5, padding:0, height:'100%'}}>
+                <Swipeout autoClose={true} right={swipeoutBtns}
+                          style={{backgroundColor: '#e0e0e0', borderRadius: 5, padding: 0, height: '100%'}}>
                     <TouchableHighlight
                         onPress={() => this.props.navigation.navigate('ConsultEvent', {eventId: item.id})}
                         underlayColor="rgba(52, 52, 52, 0.5)">
                         <View style={{height: 50, marginTop: 15, marginLeft: 15}}>
                             <Text style={{fontSize: 18, fontFamily: 'Lato_Bold'}}>{item.name}</Text>
-                            <Text style={{fontSize: 14, fontFamily: 'Lato_Medium'}}>{moment(item.start_time).format('h:mm')} - {moment(item.end_time).format('h:mm')}</Text>
+                            <Text style={{
+                                fontSize: 14,
+                                fontFamily: 'Lato_Medium'
+                            }}>{moment(item.start_time).format('h:mm')} - {moment(item.end_time).format('h:mm')}</Text>
                         </View>
                     </TouchableHighlight>
                 </Swipeout>
