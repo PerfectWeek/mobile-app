@@ -40,9 +40,9 @@ export class _ConsultEvent extends React.Component {
             description: event.description,
             localisation: event.location,
             dateBeginEvent: beginTimeEvent[0],
-            beginTime: beginTimeEvent[0].substring(0, 5),
+            beginTime: beginTimeEvent[1].substring(0, 5),
             dateEndEvent: endTimeEvent[0],
-            endTime: endTimeEvent[0].substring(0, 5),
+            endTime: endTimeEvent[1].substring(0, 5),
             recievedEvent: true
         })
     }

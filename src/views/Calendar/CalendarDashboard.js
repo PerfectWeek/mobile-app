@@ -64,7 +64,7 @@ export class _CalendarDashboard extends Component {
                     id: event.id,
                     name: event.name,
                     end_time: event.end_time,
-                    start_time: events.start_time,
+                    start_time: event.start_time,
                     // color: calcol
                 });
                 strTimeStart.setDate(strTimeStart.getDate() + 1);
@@ -127,7 +127,8 @@ export class _CalendarDashboard extends Component {
                             <Text style={{
                                 fontSize: 14,
                                 fontFamily: 'Lato_Medium'
-                            }}>{moment(item.start_time).format('h:mm')} - {moment(item.end_time).format('h:mm')}</Text>
+                            }}>{
+                                moment(item.start_time.split('T')[1].split('.')[0], "HH:mm:ss").format("HH:mm")} - {moment(item.end_time.split('T')[1].split('.')[0], "HH:mm:ss").format("HH:mm")}</Text>
                         </View>
                     </TouchableHighlight>
                 </Swipeout>

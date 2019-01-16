@@ -108,6 +108,7 @@ export class _CreateGroupScreen extends React.Component {
                         rounded style={{margin: 30, marginTop:5}}
                         onPress={() => {
                             this.props.CreateGroup({name: this.state.groupName, description : this.state.description, members: this.state.usersToAdd})
+                            // this.props.navigation.pop();
                         }}>
                     <Text>
                         Create Group

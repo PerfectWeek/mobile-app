@@ -104,22 +104,20 @@ export class _GroupDetailScreen extends React.Component {
                                     </Left>
                                     <Body>
                                     <Text>{member.pseudo}</Text>
-                                    <Text style={{color: '#ef3434'}}
-                                          note>{member.role === 'Admin' ? 'Administrator' : null}</Text>
+                                    {/*<Text style={{color: '#ef3434'}}*/}
+                                          {/*note>{member.role === 'Admin' ? 'Administrator' : null}</Text>*/}
                                     </Body>
                                     <Right>
                                         <Icon style={{marginTop: 10, fontSize: 28}} type='SimpleLineIcons'
                                               name='options-vertical' onPress={() => {
                                             const BUTTONS = [];
                                             const ButtonsCallback = [];
-                                            console.log(this.state);
-                                            console.log("GROUSSEPUTE");
                                             if (isAdmin) {
-                                                BUTTONS.push((member.role === 'Admin' ? "Remove as admin" : "Make admin"));
+                                                // BUTTONS.push((member.role === 'Admin' ? "Remove as admin" : "Make admin"));
                                                 BUTTONS.push(this.props.login.pseudo === member.pseudo ? "Quit group" : "Remove from group");
-                                                ButtonsCallback.push(() => {
-                                                    this.ChangeRoleClicked(group.id, member);
-                                                });
+                                                // ButtonsCallback.push(() => {
+                                                //     this.ChangeRoleClicked(group.id, member);
+                                                // });
                                                 ButtonsCallback.push(() => {
                                                     this.props.RemoveGroupMember(group.id, member, this.props.login.pseudo);
                                                 });

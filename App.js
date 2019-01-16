@@ -29,6 +29,7 @@ import getTheme from './native-base-theme/components';
 import platform from "./native-base-theme/variables/platform";
 import {CalendarSaga} from "./src/redux/Calendar/calendar.saga";
 import {CalendarReducer} from "./src/redux/Calendar/calendar.reducer";
+import HomeNavigator from "./src/views/HomeNavigator";
 
 
 const AppNavigator = createSwitchNavigator(
@@ -37,7 +38,8 @@ const AppNavigator = createSwitchNavigator(
             screen: LoginNavigator
         },
         Home: {
-            screen: Home
+            // screen: Home
+            screen: HomeNavigator
         }
     },
 
