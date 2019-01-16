@@ -1,12 +1,15 @@
 {
   "expo": {
     "sdkVersion": "27.0.0",
-    "name": "Perfect Week",
+    "name": "PerfectWeek",
     "description": "Plan a perfect week",
+    "icon": "/Users/tim/Desktop/logooo.png",
+    "version": "0.5",
+    "slug": "perfectweek",
+    "orientation": "portrait",
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.perfectweek.perfectweek"
     },
-
     "android": {
       "package": "com.perfectweek.perfectweek"
     }
