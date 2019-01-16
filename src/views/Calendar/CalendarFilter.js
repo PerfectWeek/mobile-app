@@ -27,21 +27,18 @@ class _CalendarFilter extends Component {
     }
 
     render() {
-        if (this.props.calendar.calendarFilters) {
-            var filters = this.props.calendar.calendarFilters.map(f => f);
+        if (this.props.calendar.calendars) {
+            var filters = this.props.calendar.calendars.map(f => f);
         }
         else
             var filters = [];
         return (
             <Modal
-                // canValidate={(this.state.usersToAdd.length > 0 && this.props.groups.status !== GroupsActionType.AddGroupMembers)}
-                // canClose={(this.props.groups.status !== GroupsActionType.AddGroupMembers)}
                 onRef={ref => (this.modal = ref)} title='Filter'
                 actionButtonTitle='Filter'
                 validateCallback={() => {
                     this.props.SetFilters(this.state.filters);
                     this.props.RefreshCalendar();
-                    // this.props.GetUsersEventsFiltered(this.state.filters);
                     this.modal.toggle();
                 }}>
                 <View style={{
@@ -79,8 +76,7 @@ class _CalendarFilter extends Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        // GetUsersEventsFiltered: (filters) => dispatch(GetUsersEventsFiltered(filters)),
-        SetFilters: (filters) => dispatch(SetFilters(filters)),
+        SetFilters: (calendars) => dispatch(SetFilters(calendars)),
         RefreshCalendar: () => dispatch(RefreshCalendar()),
 
 

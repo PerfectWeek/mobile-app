@@ -7,24 +7,21 @@ import {
     GetAllUsersEvents,
     CalendarActionType,
     DeleteEvent,
-    GetUsersEventsFiltered
+    GetUsersEventsFiltered, GetEvents, GetCalendars, ResetStatus
 } from "../../redux/Calendar/calendar.actions";
 import Loader from "../../Components/Loader";
 import {HeaderBackgroundColor} from "../../../Style/Constant";
 import Swipeout from 'react-native-swipeout';
 import {CalendarFilter} from "./CalendarFilter";
 
-
 export class _CalendarDashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            ref: false,
             items: {},
-            filled: false,
-            new: false
+            scrolledDay: this.currentDate()
         };
-        this.props.GetAllUsersEvents(this.props.login);
+        this.props.GetCalendars(this.props.login);
     }
 
     static navigationOptions = {
@@ -32,63 +29,47 @@ export class _CalendarDashboard extends Component {
     };
 
     loadItems(day) {
-        if (this.state.new === true) {
-            this.setState({items: {}, new: false, filled: false})
-        }
-        if (this.props.calendar.status !== CalendarActionType.GetAllUsersEventsSuccess && this.props.calendar.status !== CalendarActionType.GetUsersEventsFilteredSuccess)
+        if (day === undefined)
             return;
-        const listCalendars = this.props.calendar.calendars;
-        for (let i = -150; i < 185; i++) {
-            const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-            const date = new Date(time);
-            const strTime = date.toISOString().split('T')[0];
-            if (!this.state.items[strTime]) {
-                this.state.items[strTime] = [];
-            }
-        }
-        if (this.state.filled === true)
-            return;
-
-        for (let i = 0; i < listCalendars.length; ++i) {
-            const events = listCalendars[i].events;
-            for (let k = 0; k < events.length; ++k) {
-                const event = events[k];
-                let strTimeStart = new Date(event.start_time);
-                const strTimee = new Date(event.end_time);
-                const calcol = this.getRandomColor();
-                while (strTimeStart.getTime() <= strTimee.getTime()) {
-                    let isoDate = this.timeToString(strTimeStart);
-                    if (!this.state.items[isoDate]) {
-                        this.state.items[isoDate] = [];
-                    }
-                    this.state.items[isoDate].push({
-                        id: event.id,
-                        name: event.name,
-                        color: calcol
-                    });
-                    strTimeStart.setDate(strTimeStart.getDate() + 1);
+        console.log("LoadItems");
+        this.state.scrolledDay = day;
+        this.state.items = {};
+            for (let i = -150; i < 185; i++) {
+                const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+                const date = new Date(time);
+                const strTime = date.toISOString().split('T')[0];
+                if (!this.state.items[strTime]) {
+                    this.state.items[strTime] = [];
                 }
             }
-        }
-        this.setState({filled: true});
-
-        // console.log(this.state.items);
-        // const newItems = {};
-        // Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
-        // this.setState({
-        //     items: newItems
-        // });
-        // }, 1000);
-        // console.log(`Load Items for ${day.year}-${day.month}`);
+        // console.log(Object.keys(this.state.items).length);
+        this.reloadEvents();
+        console.log("finis");
+        this.setState({...this.state, items: this.state.items});
     }
 
-    getRandomColor() {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
+    reloadEvents() {
+        const events = this.props.calendar.events;
+        if (!events)
+            return;
+        for (let k = 0; k < events.length; ++k) {
+            const event = events[k];
+            let strTimeStart = new Date(event.start_time);
+            const strTimee = new Date(event.end_time);
+            // const calcol = this.getRandomColor();
+            while (strTimeStart.getTime() <= strTimee.getTime()) {
+                let isoDate = this.timeToString(strTimeStart);
+                // if (!this.state.items[isoDate]) {
+                this.state.items[isoDate] = [];
+                // }
+                this.state.items[isoDate].push({
+                    id: event.id,
+                    name: event.name
+                    // color: calcol
+                });
+                strTimeStart.setDate(strTimeStart.getDate() + 1);
+            }
         }
-        return color;
     }
 
     removeEvent(event) {
@@ -123,7 +104,9 @@ export class _CalendarDashboard extends Component {
             }
         ];
         return (
-            <View style={[styles.item, {backgroundColor: item.color}]}>
+            <View style={[styles.item,
+                // {backgroundColor: item.color}
+            ]}>
 
                 <Swipeout autoClose={true} right={swipeoutBtns} style={{backgroundColor: '#d6d6d6', borderRadius: 5}}>
                     <TouchableHighlight
@@ -136,12 +119,6 @@ export class _CalendarDashboard extends Component {
                 </Swipeout>
             </View>
         )
-    }
-
-    renderEmptyDate() {
-        return (
-            <View style={styles.emptyDate}><Text>This is empty date!</Text></View>
-        );
     }
 
     rowHasChanged(r1, r2) {
@@ -171,29 +148,37 @@ export class _CalendarDashboard extends Component {
         return today
     }
 
+    refreshCalendar() {
+        this.props.GetEvents(this.props.calendar.calendars);
+    }
+
     componentDidUpdate() {
-        if (this.props.calendar.status === CalendarActionType.RefreshCalendar) {
-            this.setState({new: true});
-            // console.log(this.props.calendar);
-            // console.log('salope de merde avs niquer ta merz la reine des grosse putes');
-            this.props.GetUsersEventsFiltered(this.props.calendar.calendarFilters);
+        console.log("WillUpdate");
+        console.log(this.props.calendar.status);
+        if (this.props.calendar.status === CalendarActionType.GetCalendarsSuccess) {
+            this.props.GetEvents(this.props.calendar.calendars);
+            console.log("getting events");
         }
-        // if (this.props.calendar.status === CalendarActionType.GetUsersEventsFiltered && this.state.new === false) {
-        //     this.setState({new: true});
-        // }
+        if (this.props.calendar.status === CalendarActionType.GetEventsSuccess) {
+            this.loadItems(this.state.scrolledDay);
+            this.props.ResetStatus();
+        }
+        if (this.props.calendar.status === CalendarActionType.RefreshCalendar)
+            this.props.GetEvents(this.props.calendar.calendars);
     }
 
     render() {
-        if (this.props.calendar && (this.props.calendar.status === CalendarActionType.GetAllUsersEvents
-            || this.props.calendar.status === CalendarActionType.GetUsersEventsFiltered
-            || this.props.calendar.status === CalendarActionType.CreateNewEventSuccess)
+        console.log("render");
+        // console.log(this.props.calendar.status);
+        // if (this.props.calendar.events)
+        //     console.log(this.props.calendar.events);
+        // else
+        //     console.log("loadingCalendars");
+        if (this.props.calendar.status === CalendarActionType.GetCalendars
+        // || this.props.calendar.status === CalendarActionType.GetEvents
         )
             return (
-                <Container style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}>
+                <Container style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                     <Loader/>
                 </Container>
             );
@@ -225,16 +210,12 @@ export class _CalendarDashboard extends Component {
                             return (<View style={{backgroundColor: 'red'}}/>);
                         }}
                         rowHasChanged={this.rowHasChanged.bind(this)}
-                        minDate={'2019-01-01'}
-                        pastScrollRange={10}
+                        pastScrollRange={50}
+                        futureScrollRange={50}
                         onRefresh={() => {
-                            // console.log('refreshing...');
-                            this.setState({new: true});
-                            this.props.GetAllUsersEvents(this.props.login);
-                            // this.setState({ref: false})
+                            this.refreshCalendar();
                         }}
                         // Set this true while waiting for new data from a refresh
-                        refreshing={this.state.ref}
                     />
                 </Container>
                 <Fab
@@ -242,6 +223,8 @@ export class _CalendarDashboard extends Component {
                     style={{backgroundColor: '#5067FF'}}
                     position="bottomRight"
                     onPress={() => {
+                        // this.loadItems(this.state.scrolledDay);
+                        // this.setState({...this.state, items:{}});
                         this.props.navigation.navigate({routeName: 'CreateEvent'});
                     }}>
                     <Icon name="add"/>
@@ -249,9 +232,7 @@ export class _CalendarDashboard extends Component {
             </Container>
         )
     }
-
 }
-
 
 const styles = StyleSheet.create({
     item: {
@@ -272,9 +253,10 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        GetAllUsersEvents: (pseudo) => dispatch(GetAllUsersEvents(pseudo)),
-        GetUsersEventsFiltered: (filters) => dispatch(GetUsersEventsFiltered(filters)),
-        DeleteEvent: (event) => dispatch(DeleteEvent(event))
+        GetCalendars: (pseudo) => dispatch(GetCalendars(pseudo)),
+        GetEvents: (calendars) => dispatch(GetEvents(calendars)),
+        DeleteEvent: (event) => dispatch(DeleteEvent(event)),
+        ResetStatus: () => dispatch(ResetStatus())
     }
 };
 

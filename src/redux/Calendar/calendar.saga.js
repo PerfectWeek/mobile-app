@@ -7,12 +7,17 @@ import {
     GetEventInfoSuccess,
     GetEventInfoFail,
     ModifyEventSuccess,
-    ModifyEventFail
+    ModifyEventFail, DeleteEventFail, DeleteEventSuccess
 } from "../Calendar/calendar.actions";
 import {takeEvery, put} from "redux-saga/effects";
 import {Network} from "../../Network/Requests";
 import {Toast} from "native-base";
-import {GetUsersEventsFilteredFail, GetUsersEventsFilteredSuccess} from "./calendar.actions";
+import {
+    CreateNewEventFail, GetCalendarsFail,
+    GetCalendarsSuccess, GetEventsFail, GetEventsSuccess,
+    GetUsersEventsFilteredFail,
+    GetUsersEventsFilteredSuccess
+} from "./calendar.actions";
 
 function getEvents() {
     return Network.Get('/users/{pseudo}/calendars')
@@ -62,6 +67,7 @@ function* ModifyEvent(action) {
             err = response.data.message;
         else
             err = "Connection error";
+        console.log(response);
         yield Toast.show({
             text: err,
             type: "danger",
@@ -83,6 +89,7 @@ function* DeleteEvent(action) {
             buttonText: "Okay",
             duration: 10000
         });
+        yield put(DeleteEventSuccess());
     }
     else {
         let err;
@@ -96,6 +103,7 @@ function* DeleteEvent(action) {
             buttonText: "Okay",
             duration: 5000
         });
+        yield put(DeleteEventFail());
     }
     yield put(RefreshCalendar());
 }
@@ -134,32 +142,15 @@ function* CreatNewEvent(action) {
     }
 }
 
-function* GetAllUsersEvents(action) {
-    console.log('GETTER')
+function* GetCalendars(action) {
     try {
-        let listEventsByCalendars = [];
         const resp = yield Network.Get('/users/' + action.pseudo.pseudo + '/calendars');
         if (resp.status !== 200)
             throw resp.data;
-        const listCalendars = resp.data.calendars;
-        for (let idx = 0; idx < listCalendars.length; idx++) {
-            const item = listCalendars[idx].calendar;
-
-            const listEvents = yield Network.Get('/calendars/' + item.id + '/events');
-            if (resp.status !== 200) {
-                throw resp.data;
-            }
-
-            listEventsByCalendars.push({
-                calendarId: item.id,
-                calendarName: item.name,
-                events: listEvents.data.events
-            })
-            var calendarFilters = listCalendars.map(c => {
-                return {id: c.calendar.id, name: c.calendar.name, show: true}
-            });
-        }
-        yield put(GetAllUsersEventsSuccess(listEventsByCalendars, calendarFilters));
+        const calendars = resp.data.calendars.map(c => {
+            return {...c.calendar, show: true}
+        });
+        yield put(GetCalendarsSuccess(calendars));
     }
     catch (e) {
         let err;
@@ -167,7 +158,7 @@ function* GetAllUsersEvents(action) {
             err = e.message;
         else
             err = "Connection error";
-        yield put(GetAllUsersEventsFail(err));
+        yield put(GetCalendarsFail(err));
         Toast.show({
             text: err,
             type: "danger",
@@ -177,30 +168,25 @@ function* GetAllUsersEvents(action) {
     }
 }
 
-function* GetUsersEventsFiltered(action) {
-    console.log("KAKA");
+function* GetEvents(action) {
     try {
-        let listEventsByCalendars = [];
+        let events = [];
 
-        const listCalendars = action.filters;
+        const listCalendars = action.calendars;
         for (let idx = 0; idx < listCalendars.length; idx++) {
             const item = listCalendars[idx];
             if (item.show) {
                 const listEvents = yield Network.Get('/calendars/' + item.id + '/events');
                 if (listEvents.status !== 200) {
-                    throw listEvents.data;
+                    throw listEvents;
                 }
-
-                listEventsByCalendars.push({
-                    calendarId: item.id,
-                    calendarName: item.name,
-                    events: listEvents.data.events
-                });
+                events.push(
+                    ...listEvents.data.events
+                );
             }
         }
-        // console.log(listEventsByCalendars);
-        // console.log("SALOPE");
-        yield put(GetUsersEventsFilteredSuccess(listEventsByCalendars));
+        console.log(events);
+        yield put(GetEventsSuccess(events));
     }
     catch (e) {
         let err;
@@ -208,7 +194,7 @@ function* GetUsersEventsFiltered(action) {
             err = e.message;
         else
             err = "Connection error";
-        yield put(GetUsersEventsFilteredFail(err));
+        yield put(GetEventsFail(err));
         Toast.show({
             text: err,
             type: "danger",
@@ -219,8 +205,8 @@ function* GetUsersEventsFiltered(action) {
 }
 
 export function* CalendarSaga() {
-    yield takeEvery(CalendarActionType.GetAllUsersEvents, GetAllUsersEvents);
-    yield takeEvery(CalendarActionType.GetUsersEventsFiltered, GetUsersEventsFiltered);
+    yield takeEvery(CalendarActionType.GetEvents, GetEvents);
+    yield takeEvery(CalendarActionType.GetCalendars, GetCalendars);
     yield takeEvery(CalendarActionType.ModifyEvent, ModifyEvent);
     yield takeEvery(CalendarActionType.GetEventInfo, GetTheEventInfo);
     yield takeEvery(CalendarActionType.CreateNewEvent, CreatNewEvent);

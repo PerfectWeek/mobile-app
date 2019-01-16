@@ -36,6 +36,16 @@ export const CalendarReducer = (state = {status: 'NONE'}, action) => {
                 status: CalendarActionType.DeleteEvent,
                 event: action.event
             };
+        case CalendarActionType.DeleteEventSuccess:
+            return {
+                ...state,
+                status: CalendarActionType.DeleteEventSuccess
+            };
+        case CalendarActionType.DeleteEventFail:
+            return {
+                ...state,
+                status: CalendarActionType.DeleteEventFail
+            };
         case CalendarActionType.RefreshCalendar:
             return {
                 ...state,
@@ -58,47 +68,52 @@ export const CalendarReducer = (state = {status: 'NONE'}, action) => {
                 status: CalendarActionType.CreateNewEventFail,
                 error_message: action.error_message
             };
-        case CalendarActionType.GetAllUsersEvents:
+        case CalendarActionType.GetCalendars:
             return {
                 ...state,
-                status: CalendarActionType.GetAllUsersEvents,
+                status: CalendarActionType.GetCalendars,
                 pseudo: action.pseudo
             };
-        case CalendarActionType.GetAllUsersEventsSuccess:
+        case CalendarActionType.GetCalendarsSuccess:
             return {
                 ...state,
-                status: CalendarActionType.GetAllUsersEventsSuccess,
-                calendars: action.calendars,
-                calendarFilters: action.calendarFilters
-            };
-        case CalendarActionType.GetAllUsersEventsFail:
-            return {
-                ...state,
-                status: CalendarActionType.GetAllUsersEventsFail,
-                error_message: action.error_message
-            };
-        case CalendarActionType.GetUsersEventsFiltered:
-            return {
-                ...state,
-                status: CalendarActionType.GetUsersEventsFiltered,
-                filters: action.filters
-            };
-        case CalendarActionType.GetUsersEventsFilteredSuccess:
-            return {
-                ...state,
-                status: CalendarActionType.GetUsersEventsFilteredSuccess,
+                status: CalendarActionType.GetCalendarsSuccess,
                 calendars: action.calendars
             };
-        case CalendarActionType.GetUsersEventsFilteredFail:
+        case CalendarActionType.GetCalendarsFail:
             return {
                 ...state,
-                status: CalendarActionType.GetUsersEventsFilteredFail,
+                status: CalendarActionType.GetCalendarsFail,
+                error_message: action.error_message
+            };
+
+        case CalendarActionType.GetEvents:
+            return {
+                ...state,
+                status: CalendarActionType.GetEvents,
+                calendars: action.calendars
+            };
+        case CalendarActionType.GetEventsSuccess:
+            return {
+                ...state,
+                status: CalendarActionType.GetEventsSuccess,
+                events: action.events
+            };
+        case CalendarActionType.GetEventsFail:
+            return {
+                ...state,
+                status: CalendarActionType.GetEventsFail,
                 error_message: action.error_message
             };
         case CalendarActionType.SetFilters:
             return {
                 ...state,
-                SetFilters: action.filters
+                calendars: action.calendars
+            };
+        case CalendarActionType.ResetStatus:
+            return {
+                ...state,
+                status: CalendarActionType.Nothing,
             };
         default:
             return state;

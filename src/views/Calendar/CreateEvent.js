@@ -38,16 +38,19 @@ export class _CreateEvent extends React.Component {
         )
     }
 
-    render() {
+    componentDidUpdate() {
         if (this.props.calendar && this.props.calendar.status === CalendarActionType.CreateNewEventSuccess) {
             this.props.navigation.goBack();
             this.props.RefreshCalendar();
         }
+    }
+
+    render() {
         let listcal = [];
         this.props.calendar.calendars.map((it) => {
             listcal.push({
-                label: it.calendarName,
-                value: it.calendarId,
+                label: it.name,
+                value: it.id,
             })
         });
 
