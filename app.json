@@ -1,5 +1,17 @@
 {
   "expo": {
-    "sdkVersion": "27.0.0"
+    "sdkVersion": "27.0.0",
+    "name": "PerfectWeek",
+    "description": "Plan a perfect week",
+    "icon": "Resources/Image/logo.png",
+    "version": "0.5",
+    "slug": "perfectweek",
+    "orientation": "portrait",
+    "ios": {
+      "bundleIdentifier": "com.perfectweek.perfectweek"
+    },
+    "android": {
+      "package": "com.perfectweek.perfectweek"
+    }
   }
 }

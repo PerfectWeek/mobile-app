@@ -1,27 +1,162 @@
 export const CalendarActionType = {
     Nothing: 'NOTHING',
-    GetAllUsersEvents: 'GETALLEVENTS',
-    GetAllUsersEventsSuccess: "GETALLEVENTSSUCCESS",
-    GetAllUsersEventsFail: "GETALLEVENTSFAIL"
+    GetCalendars: 'GET_CALENDARS',
+    GetCalendarsSuccess: "GET_CALENDARS_SUCCESS",
+    GetCalendarsFail: "GET_CALENDARS_FAIL",
+    GetEvents: 'GET_EVENTS',
+    GetEventsSuccess: "GET_EVENTS_SUCCESS",
+    GetEventsFail: "GET_EVENTS_FAIL",
+    CreateNewEvent: "CREATE_NEW_EVENT",
+    CreateNewEventSuccess: "CREATE_NEW_EVENT_SUCCESS",
+    CreateNewEventFail: "CREATE_NEW_EVENT_FAIL",
+    ModifyEvent: "MODIFY_EVENT",
+    ModifyEventSuccess: "MODIFY_EVENT_SUCCESS",
+    ModifyEventFail: "MODIFY_EVENT_FAIL",
+    GetEventInfo: "GET_EVENT_INFO",
+    GetEventInfoSuccess: "GET_EVENT_INFO_SUCCESS",
+    GetEventInfoFail: "GET_EVENT_INFO_FAIL",
+    DeleteEvent: "DELETE_EVENT",
+    DeleteEventSuccess: "DELETE_EVENT_SUCCESS",
+    DeleteEventFail: "DELETE_EVENT_FAIL",
+    RefreshCalendar: "REFRESH_CALENDAR",
+    SetFilters: "SET_FILTERS",
+    ResetStatus: "RESET_STATUS"
 };
 
-export const GetAllUsersEvents = (_pseudo) => {
+export const GetEventInfo = (event) => {
+    return {
+        type: CalendarActionType.GetEventInfo,
+        event: event
+    }
+};
+
+export const GetEventInfoSuccess = (event) => {
+    return {
+        type: CalendarActionType.GetEventInfoSuccess,
+        event: event
+    }
+};
+
+export const GetEventInfoFail = () => {
+    return {
+        type: CalendarActionType.GetEventInfoFail
+    }
+};
+
+export const ModifyEventSuccess = () => {
+    return {
+        type: CalendarActionType.ModifyEventSuccess
+    }
+};
+export const ModifyEventFail = () => {
+    return {
+        type: CalendarActionType.ModifyEventFail
+    }
+};
+
+export const ModifyTheEvent = (event) => {
+    return {
+        type: CalendarActionType.ModifyEvent,
+        event: event
+    }
+};
+
+export const DeleteEvent = (event) => {
+    return {
+        type: CalendarActionType.DeleteEvent,
+        event: event
+    }
+};
+
+export const DeleteEventSuccess = () => {
+    return {
+        type: CalendarActionType.DeleteEventSuccess
+    }
+};
+
+export const DeleteEventFail = () => {
+    return {
+        type: CalendarActionType.DeleteEventFail
+    }
+};
+
+export const RefreshCalendar = () => {
+    return {
+        type: CalendarActionType.RefreshCalendar
+    }
+};
+
+export const CreateNewEvent = (event) => {
+    return {
+        type: CalendarActionType.CreateNewEvent,
+        event: event
+    }
+};
+
+export const CreateNewEventSuccess = () => {
+    return {
+        type: CalendarActionType.CreateNewEventSuccess
+    }
+};
+
+export const CreateNewEventFail = (error_message) => {
+    return {
+        type: CalendarActionType.CreateNewEventFail,
+        error_message: error_message
+    }
+};
+
+export const GetCalendars = (_pseudo) => {
   return {
-      type: CalendarActionType.GetAllUsersEvents,
+      type: CalendarActionType.GetCalendars,
       pseudo: _pseudo
   };
 };
 
-export const GetAllUsersEventsSuccess = (calendars) => {
+export const GetCalendarsSuccess = (calendars) => {
   return {
-      type: CalendarActionType.GetAllUsersEventsSuccess,
+      type: CalendarActionType.GetCalendarsSuccess,
       calendars
   }
 };
 
-export const GetAllUsersEventsFail = (error_message) => {
+export const GetCalendarsFail = (error_message) => {
     return {
-        type: CalendarActionType.GetAllUsersEventsFail,
+        type: CalendarActionType.GetCalendarsFail,
         error_message: error_message
+    };
+};
+
+export const GetEvents = (_calendars) => {
+    return {
+        type: CalendarActionType.GetEvents,
+        calendars: _calendars
+    };
+};
+
+export const GetEventsSuccess = (events) => {
+    return {
+        type: CalendarActionType.GetEventsSuccess,
+        events
+    }
+};
+
+export const GetEventsFail = (error_message) => {
+    return {
+        type: CalendarActionType.GetEventsFail,
+        error_message: error_message
+    };
+};
+
+export const SetFilters = (calendars) => {
+    return {
+        type: CalendarActionType.SetFilters,
+        calendars: calendars
+    };
+};
+
+export const ResetStatus = () => {
+    return {
+        type: CalendarActionType.ResetStatus
     };
 };

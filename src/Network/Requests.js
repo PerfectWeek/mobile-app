@@ -1,6 +1,5 @@
 import axios from 'react-native-axios'
 import {AsyncStorage} from 'react-native';
-import {_Home} from "../views/home";
 
 // axios.defaults.baseURL = 'http://192.168.1.6:3000';
 axios.defaults.baseURL = 'https://perfect-week-test.herokuapp.com';
@@ -105,13 +104,4 @@ export class Network {
     }
 
 }
-
-// const mapStateToProps = (state, ownProps) => {
-//     return {
-//         ...ownProps,
-//         login: state.login
-//     }
-// };
-
-// export const Home = withNavigation(connect(mapStateToProps)(_Home));
 
