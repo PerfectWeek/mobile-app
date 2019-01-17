@@ -201,6 +201,25 @@ export const GroupReducer = (state = {status: 'NONE'}, action) => {
                 status: GroupsActionType.DeleteGroupFail,
                 error_message: action.error_message
             };
+        case GroupsActionType.UpdateGroupImage:
+            return {
+                ...state,
+                status: GroupsActionType.UpdateGroupImage
+            };
+        case GroupsActionType.UpdateGroupImageSuccess: {
+            state.groups[action.groupId].image = action.image;
+            return {
+                ...state,
+                status: GroupsActionType.UpdateGroupImage,
+                error_message: action.error_message
+            };
+        }
+        case GroupsActionType.UpdateGroupImageFail:
+            return {
+                ...state,
+                status: GroupsActionType.UpdateGroupImageFail,
+                error_message: action.error_message
+            };
         default:
             return state;
     }

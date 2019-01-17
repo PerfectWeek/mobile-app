@@ -1,15 +1,15 @@
 import React from 'react';
 import {
-    View
+    View, TouchableOpacity
 } from 'react-native';
 import {
     Title,
-    Icon, Form, Item, Input, Button, Text, Thumbnail
+    Icon, Form, Item, Input, Text, Thumbnail
 } from 'native-base';
 import connect from "react-redux/es/connect/connect";
 import PropTypes from "prop-types";
 import Modal from "../../Components/Modal";
-import {EditGroupInfo, GroupsActionType} from "../../redux/Groups/groups.actions";
+import {EditGroupInfo, GroupsActionType, UpdateGroupImage} from "../../redux/Groups/groups.actions";
 import {validateNotEmpty} from "../../Utils/utils";
 import Loader from "../../Components/Loader";
 import {Primary} from "../../../Style/Constant";
@@ -21,8 +21,8 @@ export class _GroupDetailScreenImagePicker extends React.Component {
 
     constructor(props) {
         super(props);
-        // const {group} = this.props;
-        // this.state = {groupName: group.name, groupDescription: group.description};
+        const {group} = this.props;
+        this.state = {base64: group.image, new: false};
     }
 
     componentDidMount() {
@@ -36,22 +36,47 @@ export class _GroupDetailScreenImagePicker extends React.Component {
     render() {
         const {group} = this.props;
         return (
-                <Modal
-                    // canValidate={(this.state.groupName !== '' && this.props.groups.status !== GroupsActionType.EditGroupInfo)}
-                    // canClose={(this.props.groups.status !== GroupsActionType.EditGroupInfo)}
-                    onRef={ref => (this.modal = ref)} title='Edit Group Image'
-                    actionButtonTitle='Update' validateCallback={() => {
+            <Modal
+                // canValidate={(this.state.new)}
+                onRef={ref => (this.modal = ref)} title='Edit Group Image'
+                actionButtonTitle='Update' validateCallback={() => {
+                this.props.UpdateGroupImage(group.id, this.state.base64);
+            }}>
+                <View style={{
+                    flexDirection: 'column',
+                    alignItems: 'center'
                 }}>
-                    <View style={{
-                        flexDirection: 'row', justifyContent: 'space-between'
-                    }}>
-                    </View>
-                    {/*{*/}
-                        {/*(this.props.groups.status === GroupsActionType.EditGroupInfo) ?*/}
-                            {/*<Loader/>*/}
-                            {/*: null*/}
-                    {/*}*/}
-                </Modal>
+                    {this.state.base64 &&
+                    <Thumbnail large source={{uri: this.state.base64}}/>}
+
+                    <TouchableOpacity
+                        style={{
+                            borderWidth: 2,
+                            borderColor: '#5CB85C',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: 'white',
+                            borderRadius: 10,
+                            padding: 10,
+                            margin: 10
+                        }}
+                        onPress={async () => {
+                            const res = await Expo.ImagePicker.launchImageLibraryAsync({
+                                // base64: true
+                            });
+                            if (res.cancelled)
+                                return;
+                            console.log(res);
+                            // this.setState({...this.state, base64: "data:image/png;base64," + res.base64, new: true});
+                            this.setState({...this.state, base64: res.base64, new: true});
+                        }}>
+                        <Text style={{fontSize: 18}}>Select image</Text>
+                    </TouchableOpacity>
+                </View>
+                {this.props.groups.status === GroupsActionType.UpdateGroupImage &&
+                <Loader/>
+                }
+            </Modal>
         )
     }
 
@@ -64,7 +89,7 @@ export class _GroupDetailScreenImagePicker extends React.Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        // EditGroupInfo: (group) => dispatch(EditGroupInfo(group))
+        UpdateGroupImage: (groupId, image) => dispatch(UpdateGroupImage(groupId, image))
     }
 };
 

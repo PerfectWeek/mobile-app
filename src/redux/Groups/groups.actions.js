@@ -29,6 +29,9 @@ export const GroupsActionType = {
     DeleteGroup: 'DELETE_GROUP',
     DeleteGroupSuccess: 'DELETE_GROUP_SUCCESS',
     DeleteGroupFail: 'DELETE_GROUP_FAIL',
+    UpdateGroupImage: 'UPDATE_GROUP_IMAGE',
+    UpdateGroupImageSuccess: 'UPDATE_GROUP_IMAGE_SUCCESS',
+    UpdateGroupImageFail: 'UPDATE_GROUP_IMAGE_FAIL',
 };
 
 export const GetGroups = (pseudo) => {
@@ -258,6 +261,30 @@ export const DeleteGroupSuccess = (groupId) => {
 export const DeleteGroupFail = (error_message) => {
     return {
         type: GroupsActionType.DeleteGroupFail,
+        error_message: error_message
+    }
+};
+
+export const UpdateGroupImage = (groupId, image) => {
+    return {
+        type: GroupsActionType.UpdateGroupImage,
+        groupId,
+        image
+    }
+};
+
+export const UpdateGroupImageSuccess = (groupId, image) => {
+    return {
+        type: GroupsActionType.UpdateGroupImageSuccess,
+        error_message: null,
+        groupId,
+        image
+    }
+};
+
+export const UpdateGroupImageFail = (error_message) => {
+    return {
+        type: GroupsActionType.UpdateGroupImageFail,
         error_message: error_message
     }
 };

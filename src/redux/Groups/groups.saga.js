@@ -20,7 +20,7 @@ import {
     GetGroupInfoSuccess,
     GetGroupsImage,
     GetGroupsImageFail,
-    GetGroupsImageSuccess
+    GetGroupsImageSuccess, UpdateGroupImageSuccess, UpdateGroupImageFail
 } from "./groups.actions";
 import {Network} from "../../Network/Requests";
 import {Toast} from "native-base";
@@ -35,8 +35,7 @@ function* GetGroups(action) {
         }, {});
         yield put(GetGroupSuccess(groupMap));
         yield put(GetGroupsImage(groupMap));
-    }
-    else {
+    } else {
         let err;
         if (resp.data !== undefined && resp.data.message !== undefined)
             err = resp.data.message;
@@ -58,8 +57,7 @@ function* _GetGroupsImage(action) {
         const resp = yield Network.Get('/groups/' + groupsArray[idx].id + '/image');
         if (resp.status === 200) {
             groupsArray[idx].image = resp.data.image;
-        }
-        else {
+        } else {
             let err;
             if (resp.data !== undefined && resp.data.message !== undefined)
                 err = resp.data.message;
@@ -82,8 +80,7 @@ function* GetGroupInfo(action) {
     const resp = yield Network.Get('/groups/' + action.id);
     if (resp.status === 200) {
         yield put(GetGroupInfoSuccess(resp.data.group))
-    }
-    else {
+    } else {
         let err;
         if (resp.data !== undefined && resp.data.message !== undefined)
             err = resp.data.message;
@@ -103,8 +100,7 @@ function* GetGroupMembers(action) {
     const resp = yield Network.Get('/groups/' + action.id + '/members');
     if (resp.status === 200) {
         yield put(GetGroupMembersSuccess(action.id, resp.data.members))
-    }
-    else {
+    } else {
         let err;
         if (resp.data !== undefined && resp.data.message !== undefined)
             err = resp.data.message;
@@ -133,8 +129,7 @@ function* RemoveGroupMember(action) {
             buttonText: "Okay",
             duration: 10000
         });
-    }
-    else {
+    } else {
         let err;
         if (resp.data !== undefined && resp.data.message !== undefined)
             err = resp.data.message;
@@ -161,8 +156,7 @@ function* UpdateMemberRole(action) {
             buttonText: "Okay",
             duration: 10000
         });
-    }
-    else {
+    } else {
         let err;
         if (resp.data !== undefined && resp.data.message !== undefined)
             err = resp.data.message;
@@ -188,8 +182,7 @@ function* AddGroupMembers(action) {
             buttonText: "Okay",
             duration: 10000
         });
-    }
-    else {
+    } else {
         let err;
         if (resp.data !== undefined && resp.data.message !== undefined)
             err = resp.data.message;
@@ -218,8 +211,7 @@ function* EditGroupInfo(action) {
             buttonText: "Okay",
             duration: 10000
         });
-    }
-    else {
+    } else {
         let err;
         if (resp.data !== undefined && resp.data.message !== undefined)
             err = resp.data.message;
@@ -249,8 +241,7 @@ function* CreateGroup(action) {
             buttonText: "Okay",
             duration: 10000
         });
-    }
-    else {
+    } else {
         let err;
         if (resp.data !== undefined && resp.data.message !== undefined)
             err = resp.data.message;
@@ -276,8 +267,7 @@ function* DeleteGroup(action) {
             buttonText: "Okay",
             duration: 10000
         });
-    }
-    else {
+    } else {
         let err;
         if (resp.data !== undefined && resp.data.message !== undefined)
             err = resp.data.message;
@@ -293,7 +283,38 @@ function* DeleteGroup(action) {
     }
 }
 
+function* UpdateGroupImage(action) {
+    // console.log(action.image);
+    // console.log("YEAD");
+    const resp = yield Network.Post('/groups/' + action.groupId + '/upload-image', {image: action.image});
+    if (resp.status === 200) {
+        yield put(UpdateGroupImageSuccess(action.groupId, action.image));
+        yield Toast.show({
+            text: "Update successful.",
+            type: "success",
+            buttonText: "Okay",
+            duration: 10000
+        });
+    } else {
+        let err;
+        console.log(resp);
+        if (resp.data !== undefined && resp.data.message !== undefined)
+            err = resp.data.message;
+        else
+            err = "Connection error";
+        yield Toast.show({
+            text: err,
+            type: "danger",
+            buttonText: "Okay",
+            duration: 5000
+        });
+        yield put(UpdateGroupImageFail(err));
+    }
+}
+
+
 export function* GroupSaga() {
+    yield takeEvery(GroupsActionType.UpdateGroupImage, UpdateGroupImage);
     yield takeEvery(GroupsActionType.GetGroups, GetGroups);
     yield takeEvery(GroupsActionType.GetGroupsImage, _GetGroupsImage);
     yield takeEvery(GroupsActionType.GetGroupMembers, GetGroupMembers);
