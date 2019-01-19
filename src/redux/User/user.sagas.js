@@ -3,7 +3,7 @@ import {
     DeleteUserFail,
     DeleteUserSuccess,
     GetInfoFail,
-    GetInfoSuccess,
+    GetInfoSuccess, GetUserImage, GetUserImageFail, GetUserImageSuccess,
     UpdateInfoFail,
     UpdateInfoSuccess,
     UserActionsType
@@ -12,28 +12,42 @@ import {Network} from "../../Network/Requests";
 import {UpdateUserInfo} from "../Login/login.actions";
 import {NavigationActions} from "react-navigation";
 import {Toast} from "native-base";
+import {GetGroupFail} from "../Groups/groups.actions";
 
-function _get_user_info(pseudo) {
-    return Network.Get('/users/' + pseudo);
-}
 
 function* GetUserInfo(action) {
-    const response = yield _get_user_info(action.pseudo);
+    const response = yield Network.Get('/users/' + action.pseudo);
     if (response.status === 200) {
         yield put(GetInfoSuccess(response.data.user));
-    }
-    else {
-        console.log(response);
+        yield put(GetUserImage(action.pseudo));
+    } else {
+        let err;
         if (response.data !== undefined && response.data.message !== undefined)
-            yield put(GetInfoFail(response.data.message));
+            err = response.data.message;
         else
-            yield put(GetInfoFail("Connection error"));
+            err = "Connection error";
+        yield Toast.show({text: err, type: "danger", buttonText: "Okay", duration: 5000});
+        yield put(GetInfoFail(err));
     }
 }
 
+function* _GetUserImage(action) {
+    const response = yield Network.Get('/users/' + action.pseudo + '/image');
+    if (response.status === 200) {
+        yield put(GetUserImageSuccess(response.data.image));
+    } else {
+        let err;
+        if (response.data !== undefined && response.data.message !== undefined)
+            err = response.data.message;
+        else
+            err = "Connection error";
+        yield Toast.show({text: err, type: "danger", buttonText: "Okay", duration: 5000});
+        yield put(GetUserImageFail(err));
+    }
+}
+
+
 function* UpdateInfo(action) {
-    // console.log('/users/' + action.pseudo);
-    // console.log({ 'pseudo' : action.new_pseudo });
     const response = yield Network.Put('/users/' + action.pseudo, {'pseudo': action.new_pseudo});
     if (response.status === 200) {
         yield put(UpdateUserInfo(response.data.user.pseudo, response.data.user.email));
@@ -44,8 +58,7 @@ function* UpdateInfo(action) {
             buttonText: "Okay",
             duration: 10000
         });
-    }
-    else {
+    } else {
         let err;
         if (response.data !== undefined && response.data.message !== undefined)
             err = response.data.message;
@@ -66,8 +79,7 @@ function* DeleteUser(action) {
     if (response.status === 200) {
         yield put(DeleteUserSuccess(response.data.user));
         yield put(NavigationActions.navigate({routeName: 'Login'}));
-    }
-    else {
+    } else {
         if (response.data !== undefined && response.data.message !== undefined)
             yield put(DeleteUserFail(response.data.message));
         else
@@ -77,6 +89,7 @@ function* DeleteUser(action) {
 
 export function* UserSagas() {
     yield takeEvery(UserActionsType.GetInfo, GetUserInfo);
+    yield takeEvery(UserActionsType.GetUserImage, _GetUserImage);
     yield takeEvery(UserActionsType.UpdateInfo, UpdateInfo);
     yield takeEvery(UserActionsType.DeleteUser, DeleteUser);
 }

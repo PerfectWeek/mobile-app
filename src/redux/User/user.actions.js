@@ -10,6 +10,9 @@ export const UserActionsType = {
     DeleteUser: 'DELETE_USER',
     DeleteUserSuccess: 'DELETE_USER_SUCCESS',
     DeleteUserFail: 'DELETE_USER_FAIL',
+    GetUserImage: 'GET_USER_IMAGE',
+    GetUserImageSuccess: 'GET_USER_IMAGE_SUCCESS',
+    GetUserImageFail: 'GET_USER_IMAGE_FAIL',
 };
 
 export const GetInfo = (pseudo) => {
@@ -33,6 +36,29 @@ export const GetInfoFail= (error_message) => {
         error_message: error_message
     }
 };
+
+export const GetUserImage = (pseudo) => {
+    return {
+        type: UserActionsType.GetUserImage,
+        pseudo: pseudo
+    }
+};
+
+export const GetUserImageSuccess = (image) => {
+    return {
+        type: UserActionsType.GetUserImageSuccess,
+        image,
+        error_message: null
+    }
+};
+
+export const GetUserImageFail= (error_message) => {
+    return {
+        type: UserActionsType.GetUserImageFail,
+        error_message: error_message
+    }
+};
+
 
 export const UpdateInfo = (pseudo, new_pseudo) => {
     return {

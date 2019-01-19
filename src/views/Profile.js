@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Right, Header, Title, Body, Form, Icon, Input, Item, Text, View, Toast, Container} from 'native-base';
+import {Button, Right, Header, Title, Body, Form, Icon, Input, Item, Text, View, Toast, Container, Thumbnail} from 'native-base';
 import connect from "react-redux/es/connect/connect";
 import {Alert, Platform} from "react-native";
 import {DeleteUser, GetInfo, UpdateInfo, UserActionsType} from "../redux/User/user.actions";
@@ -51,8 +51,15 @@ export class _Profile extends React.Component {
                     </Right>
                 </Header>
                 {
-                    this.props.user.user_info !== undefined && this.props.user.user_info !== null ?
+                    this.props.user.user_info !== undefined && this.props.user.user_info !== null && this.props.user.status !== UserActionsType.GetUserImage ?
                         <View>
+                            <View style={{ marginTop:10,alignItems: 'center', justifyContent: 'center'}}>
+                                {
+                                    this.props.user.image &&
+                                    <Thumbnail large source={{uri: this.props.user.image}}/>
+                                }
+
+                            </View>
                             <Form>
                                 <Item error={!validateNotEmpty(this.state.pseudo)}>
                                     <Icon active name='person'/>
