@@ -22,7 +22,7 @@ export class _GroupDetailScreenImagePicker extends React.Component {
     constructor(props) {
         super(props);
         const {group} = this.props;
-        this.state = {base64: group.image, new: false};
+        this.state = {display: group.image, new: false};
     }
 
     componentDidMount() {
@@ -37,17 +37,17 @@ export class _GroupDetailScreenImagePicker extends React.Component {
         const {group} = this.props;
         return (
             <Modal
-                // canValidate={(this.state.new)}
+                canValidate={(this.state.new)}
                 onRef={ref => (this.modal = ref)} title='Edit Group Image'
                 actionButtonTitle='Update' validateCallback={() => {
-                this.props.UpdateGroupImage(group.id, this.state.base64);
+                this.props.UpdateGroupImage(group.id, this.state.image);
             }}>
                 <View style={{
                     flexDirection: 'column',
                     alignItems: 'center'
                 }}>
-                    {this.state.base64 &&
-                    <Thumbnail large source={{uri: this.state.base64}}/>}
+                    {this.state.display &&
+                    <Thumbnail large source={{uri: this.state.display}}/>}
 
                     <TouchableOpacity
                         style={{
@@ -61,14 +61,10 @@ export class _GroupDetailScreenImagePicker extends React.Component {
                             margin: 10
                         }}
                         onPress={async () => {
-                            const res = await Expo.ImagePicker.launchImageLibraryAsync({
-                                // base64: true
-                            });
+                            const res = await Expo.ImagePicker.launchImageLibraryAsync();
                             if (res.cancelled)
                                 return;
-                            console.log(res);
-                            // this.setState({...this.state, base64: "data:image/png;base64," + res.base64, new: true});
-                            this.setState({...this.state, base64: res.base64, new: true});
+                            this.setState({...this.state, image: res, display:res.uri, new: true});
                         }}>
                         <Text style={{fontSize: 18}}>Select image</Text>
                     </TouchableOpacity>

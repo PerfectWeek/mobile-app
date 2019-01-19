@@ -284,11 +284,15 @@ function* DeleteGroup(action) {
 }
 
 function* UpdateGroupImage(action) {
-    // console.log(action.image);
-    // console.log("YEAD");
-    const resp = yield Network.Post('/groups/' + action.groupId + '/upload-image', {image: action.image});
+    const data = new FormData();
+    data.append('image', {
+        uri: action.image.uri,
+        type: 'image/jpeg', // or photo.type
+        name: 'GroupProfilePicture'
+    });
+    const resp = yield Network.PostMultiPart('/groups/' + action.groupId + '/upload-image', data);
     if (resp.status === 200) {
-        yield put(UpdateGroupImageSuccess(action.groupId, action.image));
+        yield put(UpdateGroupImageSuccess(action.groupId, action.image.uri));
         yield Toast.show({
             text: "Update successful.",
             type: "success",

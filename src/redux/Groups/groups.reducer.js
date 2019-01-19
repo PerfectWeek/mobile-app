@@ -210,7 +210,7 @@ export const GroupReducer = (state = {status: 'NONE'}, action) => {
             state.groups[action.groupId].image = action.image;
             return {
                 ...state,
-                status: GroupsActionType.UpdateGroupImage,
+                status: GroupsActionType.UpdateGroupImageSuccess,
                 error_message: action.error_message
             };
         }
