@@ -1,4 +1,3 @@
-
 export const UserActionsType = {
     UserReset: 'RESET',
     GetInfo: 'GET_INFO',
@@ -13,6 +12,9 @@ export const UserActionsType = {
     GetUserImage: 'GET_USER_IMAGE',
     GetUserImageSuccess: 'GET_USER_IMAGE_SUCCESS',
     GetUserImageFail: 'GET_USER_IMAGE_FAIL',
+    UpdateUserImage: 'UPDATE_USER_IMAGE',
+    UpdateUserImageSuccess: 'UPDATE_USER_IMAGE_SUCCESS',
+    UpdateUserImageFail: 'UPDATE_USER_IMAGE_FAIL',
 };
 
 export const GetInfo = (pseudo) => {
@@ -30,7 +32,7 @@ export const GetInfoSuccess = (user_info) => {
     }
 };
 
-export const GetInfoFail= (error_message) => {
+export const GetInfoFail = (error_message) => {
     return {
         type: UserActionsType.GetInfoFail,
         error_message: error_message
@@ -52,7 +54,7 @@ export const GetUserImageSuccess = (image) => {
     }
 };
 
-export const GetUserImageFail= (error_message) => {
+export const GetUserImageFail = (error_message) => {
     return {
         type: UserActionsType.GetUserImageFail,
         error_message: error_message
@@ -76,7 +78,7 @@ export const UpdateInfoSuccess = (user_info) => {
     }
 };
 
-export const UpdateInfoFail= (error_message) => {
+export const UpdateInfoFail = (error_message) => {
     return {
         type: UserActionsType.UpdateInfoFail,
         error_message: error_message
@@ -97,7 +99,7 @@ export const DeleteUserSuccess = () => {
     }
 };
 
-export const DeleteUserFail= (error_message) => {
+export const DeleteUserFail = (error_message) => {
     return {
         type: UserActionsType.DeleteUserFail,
         error_message: error_message
@@ -107,5 +109,28 @@ export const DeleteUserFail= (error_message) => {
 export const UserReset = () => {
     return {
         type: UserActionsType.UserReset
+    }
+};
+
+export const UpdateUserImage = (pseudo, image) => {
+    return {
+        type: UserActionsType.UpdateUserImage,
+        pseudo,
+        image
+    }
+};
+
+export const UpdateUserImageSuccess = (image) => {
+    return {
+        type: UserActionsType.UpdateUserImageSuccess,
+        error_message: null,
+        image
+    }
+};
+
+export const UpdateUserImageFail = (error_message) => {
+    return {
+        type: UserActionsType.UpdateUserImageFail,
+        error_message: error_message
     }
 };

@@ -5,15 +5,13 @@ import {
     GetInfoFail,
     GetInfoSuccess, GetUserImage, GetUserImageFail, GetUserImageSuccess,
     UpdateInfoFail,
-    UpdateInfoSuccess,
+    UpdateInfoSuccess, UpdateUserImageFail, UpdateUserImageSuccess,
     UserActionsType
 } from "./user.actions";
 import {Network} from "../../Network/Requests";
 import {UpdateUserInfo} from "../Login/login.actions";
 import {NavigationActions} from "react-navigation";
 import {Toast} from "native-base";
-import {GetGroupFail} from "../Groups/groups.actions";
-
 
 function* GetUserInfo(action) {
     const response = yield Network.Get('/users/' + action.pseudo);
@@ -87,7 +85,41 @@ function* DeleteUser(action) {
     }
 }
 
+function* UpdateUserImage(action) {
+    const data = new FormData();
+    data.append('image', {
+        uri: action.image.uri,
+        type: 'image/jpeg', // or photo.type
+        name: 'UserProfilePicture'
+    });
+    const resp = yield Network.PostMultiPart('/users/' + action.pseudo + '/upload-image', data);
+    if (resp.status === 200) {
+        yield put(UpdateUserImageSuccess(action.image.uri));
+        yield Toast.show({
+            text: "Update successful.",
+            type: "success",
+            buttonText: "Okay",
+            duration: 10000
+        });
+    } else {
+        let err;
+        console.log(resp);
+        if (resp.data !== undefined && resp.data.message !== undefined)
+            err = resp.data.message;
+        else
+            err = "Connection error";
+        yield Toast.show({
+            text: err,
+            type: "danger",
+            buttonText: "Okay",
+            duration: 5000
+        });
+        yield put(UpdateUserImageFail(err));
+    }
+}
+
 export function* UserSagas() {
+    yield takeEvery(UserActionsType.UpdateUserImage, UpdateUserImage);
     yield takeEvery(UserActionsType.GetInfo, GetUserInfo);
     yield takeEvery(UserActionsType.GetUserImage, _GetUserImage);
     yield takeEvery(UserActionsType.UpdateInfo, UpdateInfo);

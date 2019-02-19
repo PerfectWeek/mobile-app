@@ -84,6 +84,25 @@ export const UserReducer = (state = {
                 status: UserActionsType.DeleteUserFail,
                 error_message: action.error_message
             };
+        case UserActionsType.UpdateUserImage:
+            return {
+                ...state,
+                status: UserActionsType.UpdateUserImage
+            };
+        case UserActionsType.UpdateUserImageSuccess: {
+            return {
+                ...state,
+                status: UserActionsType.UpdateUserImageSuccess,
+                error_message: action.error_message,
+                image: action.image
+            };
+        }
+        case UserActionsType.UpdateUserImageFail:
+            return {
+                ...state,
+                status: UserActionsType.UpdateUserImageFail,
+                error_message: action.error_message
+            };
         default:
             return state;
     }

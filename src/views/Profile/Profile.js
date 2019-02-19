@@ -1,13 +1,30 @@
 import React from 'react';
-import {Button, Right, Header, Title, Body, Form, Icon, Input, Item, Text, View, Toast, Container, Thumbnail} from 'native-base';
+import {
+    Button,
+    Right,
+    Header,
+    Title,
+    Body,
+    Form,
+    Icon,
+    Input,
+    Item,
+    Text,
+    View,
+    Toast,
+    Container,
+    Thumbnail,
+    ActionSheet
+} from 'native-base';
 import connect from "react-redux/es/connect/connect";
 import {Alert, Platform} from "react-native";
-import {DeleteUser, GetInfo, UpdateInfo, UserActionsType} from "../redux/User/user.actions";
+import {DeleteUser, GetInfo, UpdateInfo, UserActionsType} from "../../redux/User/user.actions";
 import LottieView from "lottie-react-native";
-import {validateNotEmpty} from "../Utils/utils";
-import {Logout} from "../redux/Login/login.actions";
-import {HeaderBackgroundColor, ScreenBackgroundColor} from "../../Style/Constant";
-import Loader from "../Components/Loader";
+import {validateNotEmpty} from "../../Utils/utils";
+import {Logout} from "../../redux/Login/login.actions";
+import {HeaderBackgroundColor, ScreenBackgroundColor} from "../../../Style/Constant";
+import Loader from "../../Components/Loader";
+import {ProfileImagePicker} from "./ProfileImagePicker";
 
 
 export class _Profile extends React.Component {
@@ -37,29 +54,53 @@ export class _Profile extends React.Component {
                     </Body>
                     <Right>
                         <Button transparent onPress={() => {
-                            Alert.alert('Logout ?', '', [{
-                                text: 'Yes', onPress: () => {
-                                    this.props.Logout();
-                                }
-                            }, {
-                                text: 'Cancel', onPress: () => {
-                                }, style: 'cancel'
-                            }], {cancelable: false})
+                            const BUTTONS = [];
+                            const ButtonsCallback = [];
+                            BUTTONS.push("Logout");
+                            ButtonsCallback.push(() => {
+                                Alert.alert('Logout ?', '', [{
+                                    text: 'Yes', onPress: () => {
+                                        this.props.Logout();
+                                    }
+                                }, {
+                                    text: 'Cancel', onPress: () => {
+                                    }, style: 'cancel'
+                                }], {cancelable: false})
+                            });
+                            BUTTONS.push("Edit profile picture");
+                            ButtonsCallback.push(() => {
+                                this.ProfilePictureModal.openEditModal();
+                            });
+                            BUTTONS.push("Cancel");
+                            ButtonsCallback.push(() => {
+                            });
+                            const CANCEL_INDEX = BUTTONS.length - 1;
+                            ActionSheet.show(
+                                {
+                                    options: BUTTONS,
+                                    cancelButtonIndex: CANCEL_INDEX,
+                                    title: "Options"
+                                },
+                                buttonIndex => {
+                                    ButtonsCallback[buttonIndex]();
+                                })
+
                         }}>
-                            <Icon type={"FontAwesome"} name='power-off' style={{color: '#064C96'}}/>
+                            <Icon type={"SimpleLineIcons"} name='options-vertical' style={{color: '#064C96'}}/>
                         </Button>
                     </Right>
                 </Header>
                 {
                     this.props.user.user_info !== undefined && this.props.user.user_info !== null && this.props.user.status !== UserActionsType.GetUserImage ?
                         <View>
-                            <View style={{ marginTop:10,alignItems: 'center', justifyContent: 'center'}}>
+                            <View style={{marginTop: 10, alignItems: 'center', justifyContent: 'center'}}>
                                 {
                                     this.props.user.image &&
                                     <Thumbnail large source={{uri: this.props.user.image}}/>
                                 }
 
                             </View>
+                            <ProfileImagePicker onRef={ref => (this.ProfilePictureModal = ref)}/>
                             <Form>
                                 <Item error={!validateNotEmpty(this.state.pseudo)}>
                                     <Icon active name='person'/>
