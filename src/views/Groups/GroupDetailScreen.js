@@ -42,8 +42,9 @@ export class _GroupDetailScreen extends React.Component {
     constructor(props) {
         super(props);
         if (this.props.navigation.state.params.group.members === undefined) {
+            // this.props.GetGroupDetail(this.props.navigation.state.params.group.id);
             this.props.GetGroupInfo(this.props.navigation.state.params.group.id);
-            this.props.GetGroupMembers(this.props.navigation.state.params.group.id);
+            // this.props.GetGroupMembers(this.props.navigation.state.params.group.id);
         }
     }
 
@@ -97,10 +98,7 @@ export class _GroupDetailScreen extends React.Component {
                     <Loader/>
                 </Container>
             );
-        let idx = group.members.findIndex((g) => {
-            return g.pseudo === this.props.login.pseudo
-        });
-        const isAdmin = group.members[idx].role === "Admin";
+        const isAdmin = group.members[this.props.login.pseudo].role === "Admin";
         return (
             <ScrollView style={{marginLeft: 10, marginRight: 10, height: Dimensions.get('window').height}}>
                 <GroupDetailScreenGroupName group={group} onRef={ref => (this.groupName = ref)}/>
@@ -144,11 +142,11 @@ export class _GroupDetailScreen extends React.Component {
                             <Text style={{marginBottom: 0, marginLeft: 30}}>Add Members</Text>
                             </Body>
                         </ListItem>
-                        {group.members.map((member, index) => {
+                        {Object.values(group.members).map((member, index) => {
                             return (
                                 <ListItem key={index} avatar>
                                     <Left>
-                                        <Thumbnail source={{uri: 'https://picsum.photos/200/300/?random'}}/>
+                                        <Thumbnail source={{uri: this.props.users[member.pseudo] === undefined ? null : this.props.users[member.pseudo].image}}/>
                                     </Left>
                                     <Body>
                                     <Text>{member.pseudo}</Text>
@@ -223,7 +221,8 @@ const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
         groups: state.group,
-        login: state.login
+        login: state.login,
+        users : state.user.users
     }
 };
 

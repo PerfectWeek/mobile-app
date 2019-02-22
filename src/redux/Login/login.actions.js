@@ -4,7 +4,8 @@ export const LoginActionsType = {
     LoginFail: 'LOGIN_FAIL',
     UpdateUserInfo: 'UPDATE_USER_INFO',
     Logout: 'LOGOUT',
-    CheckIfLogged: "CHECK_IF_LOGGED"
+    CheckIfLogged: "CHECK_IF_LOGGED",
+    ResetStores : 'RESET_STORES'
 };
 
 export const Login = (email, password) => {
@@ -32,19 +33,18 @@ export const LoginFail = (error_message) => {
     }
 };
 
-export const UpdateUserInfo = (pseudo, email) => {
-    return {
-        type: LoginActionsType.UpdateUserInfo,
-        pseudo,
-        email,
-    }
-};
-
 export const Logout = () => {
     return {
         type: LoginActionsType.Logout
     }
 };
+
+export const ResetStores = () => {
+    return {
+        type: LoginActionsType.ResetStores
+    }
+};
+
 
 export const CheckIfLogged = () => {
     return {

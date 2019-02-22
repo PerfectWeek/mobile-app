@@ -1,11 +1,13 @@
 export const UserActionsType = {
     UserReset: 'RESET',
-    GetInfo: 'GET_INFO',
-    GetInfoSuccess: 'GET_INFO_SUCCESS',
-    GetInfoFail: 'GET_INFO_FAIL',
-    UpdateInfo: 'UPDATE_INFO',
-    UpdateInfoSuccess: 'UPDATE_INFO_SUCCESS',
-    UpdateInfoFail: 'UPDATE_INFO_FAIL',
+    SetUserInfo: 'SET_USER_INFO',
+    GetUsersInfo: 'GET_USERS_INFO',
+    GetUserInfo: 'GET_USER_INFO',
+    GetUserInfoSuccess: 'GET_INFO_SUCCESS',
+    GetUserInfoFail: 'GET_INFO_FAIL',
+    UpdateUserInfo: 'UPDATE_USER_INFO',
+    UpdateUserInfoSuccess: 'UPDATE_USER_INFO_SUCCESS',
+    UpdateUserInfoFail: 'UPDATE_USER_INFO_FAIL',
     DeleteUser: 'DELETE_USER',
     DeleteUserSuccess: 'DELETE_USER_SUCCESS',
     DeleteUserFail: 'DELETE_USER_FAIL',
@@ -17,24 +19,37 @@ export const UserActionsType = {
     UpdateUserImageFail: 'UPDATE_USER_IMAGE_FAIL',
 };
 
-export const GetInfo = (pseudo) => {
+export const SetUserInfo = (user) => {
     return {
-        type: UserActionsType.GetInfo,
+        type: UserActionsType.GetUserInfoSuccess,
+        user
+    }
+};
+
+export const GetUserInfo = (pseudo) => {
+    return {
+        type: UserActionsType.GetUserInfo,
         pseudo: pseudo
     }
 };
 
-export const GetInfoSuccess = (user_info) => {
+export const GetUsersInfo = (users) => {
     return {
-        type: UserActionsType.GetInfoSuccess,
-        user_info,
+        type: UserActionsType.GetUsersInfo,
+        users
+    }
+};
+export const GetUserInfoSuccess = (user) => {
+    return {
+        type: UserActionsType.GetUserInfoSuccess,
+        user,
         error_message: null
     }
 };
 
-export const GetInfoFail = (error_message) => {
+export const GetUserInfoFail = (error_message) => {
     return {
-        type: UserActionsType.GetInfoFail,
+        type: UserActionsType.GetUserInfoFail,
         error_message: error_message
     }
 };
@@ -62,25 +77,25 @@ export const GetUserImageFail = (error_message) => {
 };
 
 
-export const UpdateInfo = (pseudo, new_pseudo) => {
+export const UpdateUserInfo = (pseudo, new_pseudo) => {
     return {
-        type: UserActionsType.UpdateInfo,
-        pseudo: pseudo,
-        new_pseudo: new_pseudo
+        type: UserActionsType.UpdateUserInfo,
+        pseudo,
+        new_pseudo
     }
 };
 
-export const UpdateInfoSuccess = (user_info) => {
+export const UpdateUserInfoSuccess = (user) => {
     return {
-        type: UserActionsType.UpdateInfoSuccess,
+        type: UserActionsType.UpdateUserInfoSuccess,
         error_message: null,
-        user_info,
+        user,
     }
 };
 
-export const UpdateInfoFail = (error_message) => {
+export const UpdateUserInfoFail = (error_message) => {
     return {
-        type: UserActionsType.UpdateInfoFail,
+        type: UserActionsType.UpdateUserInfoFail,
         error_message: error_message
     }
 };
@@ -120,11 +135,12 @@ export const UpdateUserImage = (pseudo, image) => {
     }
 };
 
-export const UpdateUserImageSuccess = (image) => {
+export const UpdateUserImageSuccess = (image, pseudo) => {
     return {
         type: UserActionsType.UpdateUserImageSuccess,
         error_message: null,
-        image
+        image,
+        pseudo
     }
 };
 

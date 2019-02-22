@@ -1,4 +1,4 @@
-import {put, takeEvery} from "redux-saga/effects";
+import {call, put, takeEvery} from "redux-saga/effects";
 import {
     GetGroupSuccess,
     GetGroupFail,
@@ -20,27 +20,30 @@ import {
     GetGroupInfoSuccess,
     GetGroupsImage,
     GetGroupsImageFail,
-    GetGroupsImageSuccess, UpdateGroupImageSuccess, UpdateGroupImageFail
+    GetGroupsImageSuccess, UpdateGroupImageSuccess, UpdateGroupImageFail, GetGroupInfoFail
 } from "./groups.actions";
 import {Network} from "../../Network/Requests";
 import {Toast} from "native-base";
 import {NavigationActions} from "react-navigation";
+import {GroupService} from "../../Services/Groups/groups";
+import {UserService} from "../../Services/Users/users";
+import {arrayToObject} from "../../Utils/utils";
+import {GetUsersInfo} from "../User/user.actions";
+
 
 function* GetGroups(action) {
-    const resp = yield Network.Get('/users/' + action.pseudo + '/groups');
-    if (resp.status === 200) {
-        const groupMap = resp.data.groups.reduce(function (map, obj) {
+    try {
+        const groups = yield GroupService.GetGroupsForUserPseudo(action.pseudo);
+        const groupMap = yield groups.reduce(function (map, obj) {
             map[obj.id] = obj;
             return map;
         }, {});
+
+        let groupsArray = Object.values(groups);
+        let res = yield GroupService.GetGroupsImage(groupsArray);
+        yield put(GetGroupsImageSuccess(res));
         yield put(GetGroupSuccess(groupMap));
-        yield put(GetGroupsImage(groupMap));
-    } else {
-        let err;
-        if (resp.data !== undefined && resp.data.message !== undefined)
-            err = resp.data.message;
-        else
-            err = "Connection error";
+    } catch (err) {
         yield Toast.show({
             text: err,
             type: "danger",
@@ -51,76 +54,30 @@ function* GetGroups(action) {
     }
 }
 
-function* _GetGroupsImage(action) {
-    let groupsArray = Object.values(action.groups);
-    for (let idx = 0; idx < groupsArray.length; idx++) {
-        const resp = yield Network.Get('/groups/' + groupsArray[idx].id + '/image');
-        if (resp.status === 200) {
-            groupsArray[idx].image = resp.data.image;
-        } else {
-            let err;
-            if (resp.data !== undefined && resp.data.message !== undefined)
-                err = resp.data.message;
-            else
-                err = "Connection error";
-            yield Toast.show({
-                text: err,
-                type: "danger",
-                buttonText: "Okay",
-                duration: 5000
-            });
-            yield put(GetGroupsImageFail(err));
-            return;
-        }
-    }
-    yield put(GetGroupsImageSuccess(action.groups));
-}
-
 function* GetGroupInfo(action) {
-    const resp = yield Network.Get('/groups/' + action.id);
-    if (resp.status === 200) {
-        yield put(GetGroupInfoSuccess(resp.data.group))
-    } else {
-        let err;
-        if (resp.data !== undefined && resp.data.message !== undefined)
-            err = resp.data.message;
-        else
-            err = "Connection error";
+    try {
+        const group = yield GroupService.GetGroupDetail(action.id);
+        let members = yield GroupService.GetGroupMembers(action.id);
+        members = yield UserService.GetUsersImage(members);
+        members = arrayToObject(members, "pseudo");
+        yield put(GetGroupMembersSuccess(action.id, members));
+        yield put(GetGroupInfoSuccess(group))
+    } catch (err) {
         yield Toast.show({
             text: err,
             type: "danger",
             buttonText: "Okay",
             duration: 5000
         });
-        yield put(GetGroupInfoSuccess(err));
-    }
-}
-
-function* GetGroupMembers(action) {
-    const resp = yield Network.Get('/groups/' + action.id + '/members');
-    if (resp.status === 200) {
-        yield put(GetGroupMembersSuccess(action.id, resp.data.members))
-    } else {
-        let err;
-        if (resp.data !== undefined && resp.data.message !== undefined)
-            err = resp.data.message;
-        else
-            err = "Connection error";
-        yield Toast.show({
-            text: err,
-            type: "danger",
-            buttonText: "Okay",
-            duration: 5000
-        });
-        yield put(GetGroupMembersFail(err));
+        yield put(GetGroupInfoFail(err))
     }
 }
 
 function* RemoveGroupMember(action) {
-    const resp = yield Network.Delete('/groups/' + action.groupId + '/members/' + action.member.pseudo);
-    if (resp.status === 200) {
+    try {
+        const members = yield GroupService.RemoveGroupMember(action.groupId, action.member.pseudo);
         const selfKick = action.Selfpseudo === action.member.pseudo;
-        yield put(RemoveGroupMemberSuccess(action.groupId, resp.data.members, selfKick));
+        yield put(RemoveGroupMemberSuccess(action.groupId, arrayToObject(members, "pseudo"), selfKick));
         if (selfKick)
             yield put(NavigationActions.navigate({routeName: 'Master'}));
         yield Toast.show({
@@ -129,22 +86,16 @@ function* RemoveGroupMember(action) {
             buttonText: "Okay",
             duration: 10000
         });
-    } else {
-        let err;
-        if (resp.data !== undefined && resp.data.message !== undefined)
-            err = resp.data.message;
-        else
-            err = "Connection error";
+    } catch (err) {
         yield Toast.show({
             text: err,
             type: "danger",
             buttonText: "Okay",
             duration: 5000
         });
-        yield put(RemoveGroupMemberFail(err));
+        yield put(RemoveGroupMemberFail(err))
     }
 }
-
 
 function* UpdateMemberRole(action) {
     const resp = yield Network.Put('/groups/' + action.groupId + "/members/" + action.member.pseudo, {role: action.newRole});
@@ -173,28 +124,24 @@ function* UpdateMemberRole(action) {
 }
 
 function* AddGroupMembers(action) {
-    const resp = yield Network.Post('/groups/' + action.groupId + '/add-members', {users: action.members});
-    if (resp.status === 200) {
-        yield put(AddGroupMembersSuccess(action.groupId, resp.data.members));
+    try {
+        const members = yield GroupService.AddGroupMembers(action.groupId, action.members);
+        yield put(GetUsersInfo(members));
+        yield put(AddGroupMembersSuccess(action.groupId, arrayToObject(members, "pseudo")));
         yield Toast.show({
             text: "Update successful.",
             type: "success",
             buttonText: "Okay",
             duration: 10000
         });
-    } else {
-        let err;
-        if (resp.data !== undefined && resp.data.message !== undefined)
-            err = resp.data.message;
-        else
-            err = "Connection error";
+    } catch (err) {
         yield Toast.show({
             text: err,
             type: "danger",
             buttonText: "Okay",
             duration: 5000
         });
-        yield put(AddGroupMembersFail(err));
+        yield put(AddGroupMembersFail(err))
     }
 }
 
@@ -301,7 +248,6 @@ function* UpdateGroupImage(action) {
         });
     } else {
         let err;
-        console.log(resp);
         if (resp.data !== undefined && resp.data.message !== undefined)
             err = resp.data.message;
         else
@@ -320,8 +266,6 @@ function* UpdateGroupImage(action) {
 export function* GroupSaga() {
     yield takeEvery(GroupsActionType.UpdateGroupImage, UpdateGroupImage);
     yield takeEvery(GroupsActionType.GetGroups, GetGroups);
-    yield takeEvery(GroupsActionType.GetGroupsImage, _GetGroupsImage);
-    yield takeEvery(GroupsActionType.GetGroupMembers, GetGroupMembers);
     yield takeEvery(GroupsActionType.UpdateMemberRole, UpdateMemberRole);
     yield takeEvery(GroupsActionType.AddGroupMembers, AddGroupMembers);
     yield takeEvery(GroupsActionType.RemoveGroupMember, RemoveGroupMember);

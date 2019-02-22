@@ -33,7 +33,6 @@ export class _GroupsScreen extends React.Component {
     }
 
     render() {
-        const groups = this.props.groups.groups;
         return (
             <View style={{
                 paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
@@ -51,7 +50,7 @@ export class _GroupsScreen extends React.Component {
                     </Right>
                 </Header>
                 <ScrollView style={{backgroundColor: ScreenBackgroundColor, marginLeft: 10, marginRight: 10, height: Dimensions.get('window').height}}>
-                    {groups === undefined ?
+                    {this.props.groups === null ?
                         <Container style={{
                             backgroundColor: ScreenBackgroundColor,
                             flexDirection: 'row',
@@ -60,7 +59,7 @@ export class _GroupsScreen extends React.Component {
                         }}>
                             <Loader/>
                         </Container>
-                        : (Object.values(groups).length === 0) ?
+                        : (Object.values(this.props.groups).length === 0) ?
                             <View>
                                 <Text style={{marginTop: 20, textAlign: 'center', fontSize: 22}}>
                                     You are not in any groups
@@ -75,7 +74,7 @@ export class _GroupsScreen extends React.Component {
                                 </Button>
                             </View>
                             :
-                            Object.values(groups).map((group) => {
+                            Object.values(this.props.groups).map((group) => {
                                 return (
                                     <Animatable.View key={group.id} animation="fadeInUp">
                                         <List>
@@ -88,7 +87,7 @@ export class _GroupsScreen extends React.Component {
                                                 </Left>
                                                 <Body>
                                                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>{group.name}</Text>
-                                                <Text>{group.nb_members} members</Text>
+                                                <Text>{group.members !== undefined ? Object.keys(group.members).length : group.nb_members} members</Text>
                                                 </Body>
                                                 <Right>
                                                     <Icon style={{marginTop:10, fontSize:28}} type='SimpleLineIcons' name='options-vertical'
@@ -141,7 +140,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
-        groups: state.group,
+        GroupStore: state.group,
+        groups: state.group.groups,
         login: state.login
     }
 };

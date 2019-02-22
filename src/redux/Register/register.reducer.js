@@ -1,9 +1,12 @@
 import {RegisterActionsType} from "./register.actions";
+import {LoginActionsType} from "../Login/login.actions";
 
-export const RegisterReducer = (state = {
-    status: 'NONE'
-}, action) => {
+const default_state = {status: 'NONE'};
+
+export const RegisterReducer = (state = default_state, action) => {
     switch (action.type) {
+        case LoginActionsType.ResetStores:
+            return default_state;
         case RegisterActionsType.Register:
             return {
                 ...state,
