@@ -2,30 +2,53 @@ import {put, takeEvery} from "redux-saga/effects";
 import {
     DeleteUserFail,
     DeleteUserSuccess,
-    GetInfoFail,
-    GetInfoSuccess, GetUserImage, GetUserImageFail, GetUserImageSuccess,
-    UpdateInfoFail,
-    UpdateInfoSuccess, UpdateUserImageFail, UpdateUserImageSuccess,
-    UserActionsType
+    GetUserImageFail,
+    GetUserImageSuccess,
+    GetUserInfoSuccess,
+    UpdateUserInfoFail,
+    UpdateUserInfoSuccess,
+    UpdateUserImageFail,
+    UpdateUserImageSuccess,
+    UserActionsType, GetUserInfoFail, SetUserInfo
 } from "./user.actions";
 import {Network} from "../../Network/Requests";
-import {UpdateUserInfo} from "../Login/login.actions";
 import {NavigationActions} from "react-navigation";
 import {Toast} from "native-base";
+import {UserService} from "../../Services/Users/users";
+import {Logout} from "../Login/login.actions";
 
 function* GetUserInfo(action) {
-    const response = yield Network.Get('/users/' + action.pseudo);
-    if (response.status === 200) {
-        yield put(GetInfoSuccess(response.data.user));
-        yield put(GetUserImage(action.pseudo));
-    } else {
-        let err;
-        if (response.data !== undefined && response.data.message !== undefined)
-            err = response.data.message;
-        else
-            err = "Connection error";
-        yield Toast.show({text: err, type: "danger", buttonText: "Okay", duration: 5000});
-        yield put(GetInfoFail(err));
+    try {
+        const user = yield UserService.GetUserInfo(action.pseudo);
+        user.image = yield UserService.GetUserImage(action.pseudo);
+        yield put(GetUserInfoSuccess(user));
+    } catch (err) {
+        yield Toast.show({
+            text: err,
+            type: "danger",
+            buttonText: "Okay",
+            duration: 5000
+        });
+        yield put(GetUserInfoFail(err))
+    }
+}
+
+function* GetUsersInfo(action) {
+    for (let idx = 0; idx < action.users.length; idx++) {
+        try {
+            const user = yield UserService.GetUserInfo(action.users[idx].pseudo);
+            user.image = yield UserService.GetUserImage(action.users[idx].pseudo);
+            yield put(SetUserInfo(user));
+        } catch (err) {
+            yield Toast.show({
+                text: err,
+                type: "danger",
+                buttonText: "Okay",
+                duration: 5000
+            });
+            yield put(GetUserInfoFail(err));
+            return;
+        }
     }
 }
 
@@ -44,31 +67,25 @@ function* _GetUserImage(action) {
     }
 }
 
-
-function* UpdateInfo(action) {
-    const response = yield Network.Put('/users/' + action.pseudo, {'pseudo': action.new_pseudo});
-    if (response.status === 200) {
-        yield put(UpdateUserInfo(response.data.user.pseudo, response.data.user.email));
-        yield put(UpdateInfoSuccess(response.data.user));
+function* UpdateUserInfo(action) {
+    try {
+        const user = yield UserService.UpdateUserInfo(action.pseudo, action.new_pseudo);
+        yield put(UpdateUserInfoSuccess(user));
         yield Toast.show({
             text: "Update successful.",
             type: "success",
             buttonText: "Okay",
             duration: 10000
         });
-    } else {
-        let err;
-        if (response.data !== undefined && response.data.message !== undefined)
-            err = response.data.message;
-        else
-            err = "Connection error";
-        yield put(UpdateInfoFail(err));
+        yield put(Logout());
+    } catch (err) {
         yield Toast.show({
             text: err,
             type: "danger",
             buttonText: "Okay",
             duration: 5000
         });
+        yield put(UpdateUserInfoFail(err))
     }
 }
 
@@ -86,42 +103,31 @@ function* DeleteUser(action) {
 }
 
 function* UpdateUserImage(action) {
-    const data = new FormData();
-    data.append('image', {
-        uri: action.image.uri,
-        type: 'image/jpeg', // or photo.type
-        name: 'UserProfilePicture'
-    });
-    const resp = yield Network.PostMultiPart('/users/' + action.pseudo + '/upload-image', data);
-    if (resp.status === 200) {
-        yield put(UpdateUserImageSuccess(action.image.uri));
+    try {
+        yield UserService.UpdateUserImage(action.image.uri, action.pseudo);
+        yield put(UpdateUserImageSuccess(action.image.uri, action.pseudo));
         yield Toast.show({
             text: "Update successful.",
             type: "success",
             buttonText: "Okay",
             duration: 10000
         });
-    } else {
-        let err;
-        console.log(resp);
-        if (resp.data !== undefined && resp.data.message !== undefined)
-            err = resp.data.message;
-        else
-            err = "Connection error";
+    } catch (err) {
         yield Toast.show({
             text: err,
             type: "danger",
             buttonText: "Okay",
             duration: 5000
         });
-        yield put(UpdateUserImageFail(err));
+        yield put(UpdateUserImageFail(err))
     }
 }
 
 export function* UserSagas() {
     yield takeEvery(UserActionsType.UpdateUserImage, UpdateUserImage);
-    yield takeEvery(UserActionsType.GetInfo, GetUserInfo);
+    yield takeEvery(UserActionsType.GetUserInfo, GetUserInfo);
     yield takeEvery(UserActionsType.GetUserImage, _GetUserImage);
-    yield takeEvery(UserActionsType.UpdateInfo, UpdateInfo);
+    yield takeEvery(UserActionsType.UpdateUserInfo, UpdateUserInfo);
     yield takeEvery(UserActionsType.DeleteUser, DeleteUser);
+    yield takeEvery(UserActionsType.GetUsersInfo, GetUsersInfo);
 }

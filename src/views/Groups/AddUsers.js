@@ -34,8 +34,8 @@ class _AddUsers extends Component {
 
         return (
             <Modal
-                canValidate={(this.state.usersToAdd.length > 0 && this.props.groups.status !== GroupsActionType.AddGroupMembers)}
-                canClose={(this.props.groups.status !== GroupsActionType.AddGroupMembers)}
+                canValidate={(this.state.usersToAdd.length > 0 && this.props.GroupStore.status !== GroupsActionType.AddGroupMembers)}
+                canClose={(this.props.GroupStore.status !== GroupsActionType.AddGroupMembers)}
                 onRef={ref => (this.modal = ref)} title='Add members'
                 actionButtonTitle='Add' validateCallback={() => {
                 this.props.AddGroupMembers(groupId, this.state.usersToAdd);
@@ -56,7 +56,7 @@ class _AddUsers extends Component {
                     </Form>
                     <Button
                         disabled={!validateNotEmpty(this.state.searchBar) || this.state.usersToAdd.includes(this.state.searchBar)
-                        || (this.props.groups.status === GroupsActionType.AddGroupMembers)}
+                        || (this.props.GroupStore.status === GroupsActionType.AddGroupMembers)}
                         onPress={() => {
                             this.setState({
                                 usersToAdd: [...this.state.usersToAdd, this.state.searchBar],
@@ -87,7 +87,7 @@ class _AddUsers extends Component {
                     </View>
                 </ScrollView>
                 {
-                    (this.props.groups.status === GroupsActionType.AddGroupMembers) ?
+                    (this.props.GroupStore.status === GroupsActionType.AddGroupMembers) ?
                         <Loader/>
                         : null
                 }
@@ -110,7 +110,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
-        groups: state.group
+        GroupStore: state.group
     }
 };
 

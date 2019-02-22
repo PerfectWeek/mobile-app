@@ -1,32 +1,40 @@
 import {UserActionsType} from "./user.actions";
+import {GetGroupMembersSuccess, GroupsActionType} from "../Groups/groups.actions";
+import {deepmerge} from "../../Utils/utils";
+import {LoginActionsType} from "../Login/login.actions";
 
-export const UserReducer = (state = {
-    status: 'NONE'
-}, action) => {
+const default_state = {
+    status: 'NONE',
+    users: {}
+};
+
+export const UserReducer = (state = default_state, action) => {
     switch (action.type) {
+        case LoginActionsType.ResetStores:
+            return default_state;
         case UserActionsType.UserReset:
-            return {
-                ...state,
-                status: 'NONE',
-                error_message: null,
-                user_info: null
-            };
+            return default_state;
         case UserActionsType.GetInfo:
             return {
                 ...state,
                 status: UserActionsType.GetInfo
             };
-        case UserActionsType.GetInfoSuccess:
+        case UserActionsType.SetUserInfo:
             return {
                 ...state,
-                status: UserActionsType.GetInfoSuccess,
-                error_message: action.error_message,
-                user_info: action.user_info
+                users: deepmerge(state.users, {[action.user.pseudo]: action.user})
             };
-        case UserActionsType.GetInfoFail:
+        case UserActionsType.GetUserInfoSuccess:
             return {
                 ...state,
-                status: UserActionsType.GetInfoFail,
+                status: UserActionsType.GetUserInfoSuccess,
+                error_message: action.error_message,
+                users: deepmerge(state.users, {[action.user.pseudo]: action.user})
+            };
+        case UserActionsType.GetUserInfoFail:
+            return {
+                ...state,
+                status: UserActionsType.GetUserInfoFail,
                 error_message: action.error_message
             };
         case UserActionsType.GetUserImage:
@@ -35,11 +43,13 @@ export const UserReducer = (state = {
                 status: UserActionsType.GetUserImage
             };
         case UserActionsType.GetUserImageSuccess:
+            state.users[action.pseudo].image = action.image;
             return {
                 ...state,
                 status: UserActionsType.GetUserImageSuccess,
                 error_message: action.error_message,
-                image: action.image
+                image: action.image,
+                users: state.users
             };
         case UserActionsType.GetUserImageFail:
             return {
@@ -48,22 +58,22 @@ export const UserReducer = (state = {
                 error_message: action.error_message
             };
 
-        case UserActionsType.UpdateInfo:
+        case UserActionsType.UpdateUserInfo:
             return {
                 ...state,
-                status: UserActionsType.UpdateInfo
+                status: UserActionsType.UpdateUserInfo
             };
-        case UserActionsType.UpdateInfoSuccess:
+        case UserActionsType.UpdateUserInfoSuccess:
             return {
                 ...state,
-                status: UserActionsType.UpdateInfoSuccess,
+                status: UserActionsType.UpdateUserInfoSuccess,
                 error_message: action.error_message,
-                user_info: action.user_info
+                users: {[action.user.pseudo]: action.user}
             };
-        case UserActionsType.UpdateInfoFail:
+        case UserActionsType.UpdateUserInfoFail:
             return {
                 ...state,
-                status: UserActionsType.UpdateInfoFail,
+                status: UserActionsType.UpdateUserInfoFail,
                 error_message: action.error_message
             };
         case UserActionsType.DeleteUser:
@@ -94,7 +104,7 @@ export const UserReducer = (state = {
                 ...state,
                 status: UserActionsType.UpdateUserImageSuccess,
                 error_message: action.error_message,
-                image: action.image
+                users: deepmerge(state.users, {[action.pseudo]: {image: action.image}})
             };
         }
         case UserActionsType.UpdateUserImageFail:
@@ -103,6 +113,15 @@ export const UserReducer = (state = {
                 status: UserActionsType.UpdateUserImageFail,
                 error_message: action.error_message
             };
+        case GroupsActionType.GetGroupMembersSuccess:
+            // console.log(state.users);
+            // console.log(action.members);
+            // console.log(deepmerge(state.users === undefined ? {} : state.users, action.members));
+            return {
+                ...state,
+                users: deepmerge(state.users, action.members)
+            };
+
         default:
             return state;
     }

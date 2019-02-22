@@ -1,7 +1,12 @@
 import {CalendarActionType} from "./calendar.actions";
+import {LoginActionsType} from "../Login/login.actions";
 
-export const CalendarReducer = (state = {status: 'NONE'}, action) => {
+const default_state = {status: 'NONE'};
+
+export const CalendarReducer = (state = default_state, action) => {
     switch (action.type) {
+        case LoginActionsType.ResetStores:
+            return default_state;
         case CalendarActionType.GetEventInfo:
             return {
                 ...state,

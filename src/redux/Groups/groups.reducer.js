@@ -1,7 +1,16 @@
 import {GroupsActionType} from "./groups.actions";
+import {UserActionsType} from "../User/user.actions";
+import {LoginActionsType} from "../Login/login.actions";
 
-export const GroupReducer = (state = {status: 'NONE'}, action) => {
+const default_state = {
+    status: 'NONE',
+    groups: null
+};
+
+export const GroupReducer = (state = default_state, action) => {
     switch (action.type) {
+        case LoginActionsType.ResetStores:
+            return default_state;
         case GroupsActionType.GetGroups:
             return {
                 ...state,
@@ -81,10 +90,7 @@ export const GroupReducer = (state = {status: 'NONE'}, action) => {
                 status: GroupsActionType.UpdateMemberRole
             };
         case GroupsActionType.UpdateMemberRoleSuccess: {
-            const memberIndex = state.groups[action.groupId].members.findIndex(m => {
-                return m.pseudo === action.member.pseudo
-            });
-            state.groups[action.groupId].members[memberIndex] = action.member;
+            state.groups[action.groupId].members[action.member.pseudo] = action.member;
             return {
                 ...state,
                 status: GroupsActionType.UpdateMemberRoleSuccess,
@@ -104,7 +110,6 @@ export const GroupReducer = (state = {status: 'NONE'}, action) => {
             };
         case GroupsActionType.AddGroupMembersSuccess: {
             state.groups[action.groupId].members = action.members;
-            state.groups[action.groupId].nb_members = action.members.length;
             return {
                 ...state,
                 status: GroupsActionType.AddGroupMembersSuccess,
@@ -127,7 +132,6 @@ export const GroupReducer = (state = {status: 'NONE'}, action) => {
                 delete state.groups[action.groupId];
             else {
                 state.groups[action.groupId].members = action.members;
-                state.groups[action.groupId].nb_members = action.members.length;
             }
             return {
                 ...state,

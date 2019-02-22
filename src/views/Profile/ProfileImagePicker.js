@@ -3,16 +3,11 @@ import {
     View, TouchableOpacity
 } from 'react-native';
 import {
-    Title,
-    Icon, Form, Item, Input, Text, Thumbnail
+    Text, Thumbnail
 } from 'native-base';
 import connect from "react-redux/es/connect/connect";
-import PropTypes from "prop-types";
 import Modal from "../../Components/Modal";
-import {EditGroupInfo, GroupsActionType, UpdateGroupImage} from "../../redux/Groups/groups.actions";
-import {validateNotEmpty} from "../../Utils/utils";
 import Loader from "../../Components/Loader";
-import {Primary} from "../../../Style/Constant";
 import {UpdateUserImage, UserActionsType} from "../../redux/User/user.actions";
 
 export class _ProfileImagePicker extends React.Component {
@@ -65,7 +60,7 @@ export class _ProfileImagePicker extends React.Component {
                         <Text style={{fontSize: 18}}>Select image</Text>
                     </TouchableOpacity>
                 </View>
-                {this.props.user.status === UserActionsType.UpdateUserImage &&
+                {this.props.UserStore.status === UserActionsType.UpdateUserImage &&
                 <Loader/>
                 }
             </Modal>
@@ -89,7 +84,8 @@ const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
         login: state.login,
-        user: state.user,
+        UserStore: state.user,
+        user: state.user.users[state.login.pseudo]
     }
 };
 

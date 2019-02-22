@@ -1,5 +1,5 @@
 import {put, takeEvery} from "redux-saga/effects";
-import {LoginActionsType, LoginFail, LoginSuccess} from "./login.actions";
+import {LoginActionsType, LoginFail, LoginSuccess, ResetStores} from "./login.actions";
 import {Network} from "../../Network/Requests";
 import {NavigationActions} from 'react-navigation'
 import {UserReset} from "../User/user.actions";
@@ -52,6 +52,7 @@ function* Logout(action) {
     yield Network.deleteToken();
     yield put(NavigationActions.navigate({routeName: 'Login'}));
     yield put(UserReset());
+    yield put(ResetStores());
 }
 
 export function* LoginSagas() {
