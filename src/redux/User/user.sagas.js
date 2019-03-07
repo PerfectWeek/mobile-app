@@ -23,12 +23,7 @@ function* GetUserInfo(action) {
         user.image = yield UserService.GetUserImage(action.pseudo);
         yield put(GetUserInfoSuccess(user));
     } catch (err) {
-        yield Toast.show({
-            text: err,
-            type: "danger",
-            buttonText: "Okay",
-            duration: 5000
-        });
+        yield Toast.show({text: err, type: "danger", buttonText: "Okay", duration: 5000});
         yield put(GetUserInfoFail(err))
     }
 }
@@ -40,12 +35,7 @@ function* GetUsersInfo(action) {
             user.image = yield UserService.GetUserImage(action.users[idx].pseudo);
             yield put(SetUserInfo(user));
         } catch (err) {
-            yield Toast.show({
-                text: err,
-                type: "danger",
-                buttonText: "Okay",
-                duration: 5000
-            });
+            yield Toast.show({text: err, type: "danger", buttonText: "Okay", duration: 5000});
             yield put(GetUserInfoFail(err));
             return;
         }
@@ -53,38 +43,25 @@ function* GetUsersInfo(action) {
 }
 
 function* _GetUserImage(action) {
-    const response = yield Network.Get('/users/' + action.pseudo + '/image');
-    if (response.status === 200) {
-        yield put(GetUserImageSuccess(response.data.image));
-    } else {
-        let err;
-        if (response.data !== undefined && response.data.message !== undefined)
-            err = response.data.message;
-        else
-            err = "Connection error";
+    try {
+        console.log("Hello azdazdadz !!!!ppp");
+        const image = yield UserService.GetUserImage(action.pseudo);
+        yield put(GetUserImageSuccess(image));
+    } catch (err) {
         yield Toast.show({text: err, type: "danger", buttonText: "Okay", duration: 5000});
         yield put(GetUserImageFail(err));
     }
+
 }
 
 function* UpdateUserInfo(action) {
     try {
         const user = yield UserService.UpdateUserInfo(action.pseudo, action.new_pseudo);
         yield put(UpdateUserInfoSuccess(user));
-        yield Toast.show({
-            text: "Update successful.",
-            type: "success",
-            buttonText: "Okay",
-            duration: 10000
-        });
+        yield Toast.show({text: "Update successful.", type: "success", buttonText: "Okay", duration: 10000});
         yield put(Logout());
     } catch (err) {
-        yield Toast.show({
-            text: err,
-            type: "danger",
-            buttonText: "Okay",
-            duration: 5000
-        });
+        yield Toast.show({text: err, type: "danger", buttonText: "Okay", duration: 5000});
         yield put(UpdateUserInfoFail(err))
     }
 }
@@ -106,19 +83,9 @@ function* UpdateUserImage(action) {
     try {
         yield UserService.UpdateUserImage(action.image.uri, action.pseudo);
         yield put(UpdateUserImageSuccess(action.image.uri, action.pseudo));
-        yield Toast.show({
-            text: "Update successful.",
-            type: "success",
-            buttonText: "Okay",
-            duration: 10000
-        });
+        yield Toast.show({text: "Update successful.", type: "success", buttonText: "Okay", duration: 10000});
     } catch (err) {
-        yield Toast.show({
-            text: err,
-            type: "danger",
-            buttonText: "Okay",
-            duration: 5000
-        });
+        yield Toast.show({text: err, type: "danger", buttonText: "Okay", duration: 5000});
         yield put(UpdateUserImageFail(err))
     }
 }
