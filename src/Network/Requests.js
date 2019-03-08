@@ -2,8 +2,8 @@ import axios from 'react-native-axios'
 import {AsyncStorage} from 'react-native';
 
 // axios.defaults.baseURL = 'http://192.168.1.6:3000';
-axios.defaults.baseURL = 'https://perfect-week-test.herokuapp.com';
-// axios.defaults.baseURL = 'https://api.kalastud.io';
+//axios.defaults.baseURL = 'https://perfect-week-test.herokuapp.com';
+ axios.defaults.baseURL = 'https://api.kalastud.io';
 
 
 export class Network {
@@ -59,6 +59,23 @@ export class Network {
                 return await axios.post(route, body, {
                     headers: {
                         'Authorization': 'Bearer ' + this.access_token
+                    }
+                });
+            else
+                return await axios.post(route, body);
+        }
+        catch (e) {
+            return e.response;
+        }
+    }
+
+    static async PostMultiPart(route, body) {
+        try {
+            if (this.access_token !== null)
+                return await axios.post(route, body, {
+                    headers: {
+                        'Authorization': 'Bearer ' + this.access_token,
+                        'content-type': 'multipart/form-data'
                     }
                 });
             else

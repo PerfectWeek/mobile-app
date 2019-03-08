@@ -5,7 +5,6 @@ import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider, connect} from 'react-redux';
 import {LoginReducer} from "./src/redux/Login/login.reducer";
 import {createSwitchNavigator} from 'react-navigation';
-import { Home } from "./src/views/home";
 import {
     createNavigationReducer,
     createReactNavigationReduxMiddleware,
@@ -31,14 +30,12 @@ import {CalendarSaga} from "./src/redux/Calendar/calendar.saga";
 import {CalendarReducer} from "./src/redux/Calendar/calendar.reducer";
 import HomeNavigator from "./src/views/HomeNavigator";
 
-
 const AppNavigator = createSwitchNavigator(
     {
         Login: {
             screen: LoginNavigator
         },
         Home: {
-            // screen: Home
             screen: HomeNavigator
         }
     },

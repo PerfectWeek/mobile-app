@@ -2,6 +2,9 @@ export const GroupsActionType = {
     GetGroups: 'GET_GROUPS',
     GetGroupSuccess: 'GET_GROUPS_SUCCESS',
     GetGroupFail: 'GET_GROUPS_FAIL',
+    GetGroupsImage: 'GET_GROUPS_IMAGE',
+    GetGroupsImageSuccess: 'GET_GROUPS_IMAGE_SUCCESS',
+    GetGroupsImageFail: 'GET_GROUPS_IMAGE_FAIL',
     GetGroupInfo: 'GET_GROUP_INFO',
     GetGroupInfoSuccess: 'GET_GROUP_INFO_SUCCESS',
     GetGroupInfoFail: 'GET_GROUP_INFO_FAIL',
@@ -26,6 +29,9 @@ export const GroupsActionType = {
     DeleteGroup: 'DELETE_GROUP',
     DeleteGroupSuccess: 'DELETE_GROUP_SUCCESS',
     DeleteGroupFail: 'DELETE_GROUP_FAIL',
+    UpdateGroupImage: 'UPDATE_GROUP_IMAGE',
+    UpdateGroupImageSuccess: 'UPDATE_GROUP_IMAGE_SUCCESS',
+    UpdateGroupImageFail: 'UPDATE_GROUP_IMAGE_FAIL',
 };
 
 export const GetGroups = (pseudo) => {
@@ -49,6 +55,29 @@ export const GetGroupFail = (error_message) => {
         error_message: error_message
     }
 };
+
+export const GetGroupsImage = (groups) => {
+    return {
+        type: GroupsActionType.GetGroupsImage,
+        groups
+    }
+};
+
+export const GetGroupsImageSuccess = (groups) => {
+    return {
+        type: GroupsActionType.GetGroupsImageSuccess,
+        groups,
+        error_message: null
+    }
+};
+
+export const GetGroupsImageFail = (error_message) => {
+    return {
+        type: GroupsActionType.GetGroupsImageFail,
+        error_message: error_message
+    }
+};
+
 
 export const GetGroupInfo = (id) => {
     return {
@@ -232,6 +261,30 @@ export const DeleteGroupSuccess = (groupId) => {
 export const DeleteGroupFail = (error_message) => {
     return {
         type: GroupsActionType.DeleteGroupFail,
+        error_message: error_message
+    }
+};
+
+export const UpdateGroupImage = (groupId, image) => {
+    return {
+        type: GroupsActionType.UpdateGroupImage,
+        groupId,
+        image
+    }
+};
+
+export const UpdateGroupImageSuccess = (groupId, image) => {
+    return {
+        type: GroupsActionType.UpdateGroupImageSuccess,
+        error_message: null,
+        groupId,
+        image
+    }
+};
+
+export const UpdateGroupImageFail = (error_message) => {
+    return {
+        type: GroupsActionType.UpdateGroupImageFail,
         error_message: error_message
     }
 };

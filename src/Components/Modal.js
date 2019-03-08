@@ -66,7 +66,7 @@ class Modal extends Component {
                         borderColor: '#cccccc',
                         margin: 30,
                         backgroundColor: 'white',
-                        borderRadius: 5
+                        borderRadius: 10
                     }}>
                         <TouchableWithoutFeedback>
                             <View style={{padding: 30}}>

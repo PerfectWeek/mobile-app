@@ -1,4 +1,5 @@
 import {LoginActionsType} from "./login.actions";
+import {UserActionsType} from "../User/user.actions";
 
 export const LoginReducer = (state = {
     status: 'NONE'
@@ -24,12 +25,10 @@ export const LoginReducer = (state = {
                 status: LoginActionsType.LoginFail,
                 error_message: action.error_message
             };
-        case LoginActionsType.UpdateUserInfo:
+        case UserActionsType.UpdateUserInfoSuccess:
             return {
                 ...state,
-                status: LoginActionsType.UpdateUserInfo,
-                pseudo: action.pseudo,
-                email: action.email
+                pseudo: action.user.pseudo
             };
         case LoginActionsType.Logout:
             return {

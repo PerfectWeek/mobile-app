@@ -1,6 +1,6 @@
 import React from 'react';
 import {Icon} from 'native-base';
-import {Profile} from './Profile';
+import {Profile} from './Profile/Profile';
 import {createBottomTabNavigator} from "react-navigation";
 import {HeaderBackgroundColor} from "../../Style/Constant";
 import {GroupsNavigator} from "./Groups/GroupsNavigator";
