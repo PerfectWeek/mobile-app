@@ -13,9 +13,9 @@ import {
 } from "./user.actions";
 import {Network} from "../../Network/Requests";
 import {NavigationActions} from "react-navigation";
-import {Toast} from "native-base";
 import {UserService} from "../../Services/Users/users";
 import {Logout} from "../Login/login.actions";
+import {ShowErrorNotification, ShowSuccessNotification} from "../../Utils/NotificationsModals";
 
 function* GetUserInfo(action) {
     try {
@@ -23,7 +23,7 @@ function* GetUserInfo(action) {
         user.image = yield UserService.GetUserImage(action.pseudo);
         yield put(GetUserInfoSuccess(user));
     } catch (err) {
-        yield Toast.show({text: err, type: "danger", buttonText: "Okay", duration: 5000});
+        yield ShowErrorNotification(err);
         yield put(GetUserInfoFail(err))
     }
 }
@@ -35,7 +35,7 @@ function* GetUsersInfo(action) {
             user.image = yield UserService.GetUserImage(action.users[idx].pseudo);
             yield put(SetUserInfo(user));
         } catch (err) {
-            yield Toast.show({text: err, type: "danger", buttonText: "Okay", duration: 5000});
+            yield ShowErrorNotification(err);
             yield put(GetUserInfoFail(err));
             return;
         }
@@ -44,11 +44,10 @@ function* GetUsersInfo(action) {
 
 function* _GetUserImage(action) {
     try {
-        console.log("Hello azdazdadz !!!!ppp");
         const image = yield UserService.GetUserImage(action.pseudo);
         yield put(GetUserImageSuccess(image));
     } catch (err) {
-        yield Toast.show({text: err, type: "danger", buttonText: "Okay", duration: 5000});
+        yield ShowErrorNotification(err);
         yield put(GetUserImageFail(err));
     }
 
@@ -58,10 +57,10 @@ function* UpdateUserInfo(action) {
     try {
         const user = yield UserService.UpdateUserInfo(action.pseudo, action.new_pseudo);
         yield put(UpdateUserInfoSuccess(user));
-        yield Toast.show({text: "Update successful.", type: "success", buttonText: "Okay", duration: 10000});
+        yield ShowSuccessNotification();
         yield put(Logout());
     } catch (err) {
-        yield Toast.show({text: err, type: "danger", buttonText: "Okay", duration: 5000});
+        yield ShowErrorNotification(err);
         yield put(UpdateUserInfoFail(err))
     }
 }
@@ -83,9 +82,9 @@ function* UpdateUserImage(action) {
     try {
         yield UserService.UpdateUserImage(action.image.uri, action.pseudo);
         yield put(UpdateUserImageSuccess(action.image.uri, action.pseudo));
-        yield Toast.show({text: "Update successful.", type: "success", buttonText: "Okay", duration: 10000});
+        yield ShowSuccessNotification();
     } catch (err) {
-        yield Toast.show({text: err, type: "danger", buttonText: "Okay", duration: 5000});
+        yield ShowErrorNotification(err);
         yield put(UpdateUserImageFail(err))
     }
 }

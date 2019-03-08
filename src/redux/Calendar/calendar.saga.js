@@ -11,13 +11,13 @@ import {
 } from "../Calendar/calendar.actions";
 import {takeEvery, put} from "redux-saga/effects";
 import {Network} from "../../Network/Requests";
-import {Toast} from "native-base";
 import {
     CreateNewEventFail, GetCalendarsFail,
     GetCalendarsSuccess, GetEventsFail, GetEventsSuccess,
     GetUsersEventsFilteredFail,
     GetUsersEventsFilteredSuccess
 } from "./calendar.actions";
+import {ShowErrorNotification, ShowSuccessNotification} from "../../Utils/NotificationsModals";
 
 function getEvents() {
     return Network.Get('/users/{pseudo}/calendars')
@@ -32,12 +32,7 @@ function* GetTheEventInfo(action) {
             err = response.data.message;
         else
             err = "Connection error";
-        yield Toast.show({
-            text: err,
-            type: "danger",
-            buttonText: "Okay",
-            duration: 5000
-        });
+        yield ShowErrorNotification(err);
         yield put(GetEventInfoFail());
     }
     yield put(GetEventInfoSuccess(response.data.event));
@@ -53,27 +48,15 @@ function* ModifyEvent(action) {
     });
 
     if (response.status === 200) {
-        yield Toast.show({
-            text: "Event Modified.",
-            type: "success",
-            buttonText: "Okay",
-            duration: 10000
-        });
+        yield ShowSuccessNotification("Event Modified");
         yield put(ModifyEventSuccess());
-    }
-    else {
+    } else {
         let err;
         if (response.status !== 500 && response.data !== undefined && response.data.message !== undefined)
             err = response.data.message;
         else
             err = "Connection error";
-        console.log(response);
-        yield Toast.show({
-            text: err,
-            type: "danger",
-            buttonText: "Okay",
-            duration: 5000
-        });
+        yield ShowErrorNotification(err);
         yield put(ModifyEventFail());
 
     }
@@ -83,26 +66,15 @@ function* DeleteEvent(action) {
     const response = yield Network.Delete('/events/' + action.event);
 
     if (response.status === 200) {
-        yield Toast.show({
-            text: "Event Deleted.",
-            type: "success",
-            buttonText: "Okay",
-            duration: 10000
-        });
+        yield ShowSuccessNotification("Event Deleted");
         yield put(DeleteEventSuccess());
-    }
-    else {
+    } else {
         let err;
         if (response.status !== 500 && response.data !== undefined && response.data.message !== undefined)
             err = response.data.message;
         else
             err = "Connection error";
-        yield Toast.show({
-            text: err,
-            type: "danger",
-            buttonText: "Okay",
-            duration: 5000
-        });
+        yield ShowErrorNotification(err);
         yield put(DeleteEventFail());
     }
     yield put(RefreshCalendar());
@@ -118,27 +90,16 @@ function* CreatNewEvent(action) {
     });
 
     if (response.status === 201) {
-        yield Toast.show({
-            text: "Event Created.",
-            type: "success",
-            buttonText: "Okay",
-            duration: 10000
-        });
+        yield ShowSuccessNotification("Event Created");
         yield put(CreateNewEventSuccess());
-    }
-    else {
+    } else {
         let err;
         if (response.status !== 500 && response.data !== undefined && response.data.message !== undefined)
             err = response.data.message;
         else
             err = "Connection error";
         yield put(CreateNewEventFail(err));
-        yield Toast.show({
-            text: err,
-            type: "danger",
-            buttonText: "Okay",
-            duration: 5000
-        });
+        yield ShowErrorNotification(err);
     }
 }
 
@@ -151,20 +112,14 @@ function* GetCalendars(action) {
             return {...c.calendar, show: true}
         });
         yield put(GetCalendarsSuccess(calendars));
-    }
-    catch (e) {
+    } catch (e) {
         let err;
         if (e !== undefined && e.message !== undefined)
             err = e.message;
         else
             err = "Connection error";
         yield put(GetCalendarsFail(err));
-        Toast.show({
-            text: err,
-            type: "danger",
-            buttonText: "Okay",
-            duration: 5000
-        });
+        yield ShowErrorNotification(err);
     }
 }
 
@@ -186,20 +141,14 @@ function* GetEvents(action) {
             }
         }
         yield put(GetEventsSuccess(events));
-    }
-    catch (e) {
+    } catch (e) {
         let err;
         if (e !== undefined && e.message !== undefined)
             err = e.message;
         else
             err = "Connection error";
         yield put(GetEventsFail(err));
-        Toast.show({
-            text: err,
-            type: "danger",
-            buttonText: "Okay",
-            duration: 5000
-        });
+        yield ShowErrorNotification(err);
     }
 }
 
