@@ -14,6 +14,7 @@ import Loader from "../Components/Loader";
 import {Google} from 'expo';
 import {ShowErrorNotification} from "../Utils/NotificationsModals";
 import LoginWithGoogleButton from "../Components/LoginWithGoogleButton";
+import LoginWithFacebookButton from "../Components/LoginWithFacebookButton";
 
 
 class _LoginScreen extends React.Component {
@@ -21,21 +22,6 @@ class _LoginScreen extends React.Component {
         title: 'Login',
         header: null
     };
-
-    async loginGoogle() {
-        // Idéalement on push pas les id sur github mais flemme
-        const clientId = '778613646655-o210sl8asjlulngac90ttr2q6bv81r08.apps.googleusercontent.com'; // DEV
-        // const clientId = '778613646655-8v0a79v6cqhruuq76774c216mpib7076.apps.googleusercontent.com'; // PROD
-        try {
-            let res = await Google.logInAsync({androidClientId: clientId});
-            if (res.type === 'success') {
-                this.props.LoginGoogle(res.user.email, res.accessToken, res.user.name);
-            }
-        } catch (e) {
-            await ShowErrorNotification("Couldn't connect with Google");
-            console.log(e);
-        }
-    }
 
     constructor(props) {
         super(props);
@@ -119,15 +105,13 @@ class _LoginScreen extends React.Component {
                         <Text style={{textDecorationLine: 'underline'}}> Register </Text>
                     </TouchableHighlight>
                     <View style={{
-                        marginTop: 20,
+                        marginTop: 80,
                         flex: 1,
-                        flexDirection: 'row',
+                        flexDirection: 'column',
                         justifyContent: 'center',
                     }}>
-                        <LoginWithGoogleButton onPress={this.loginGoogle.bind(this)}/>
-                        <Button>
-                            <Text>Facebook</Text>
-                        </Button>
+                        <LoginWithGoogleButton/>
+                        <LoginWithFacebookButton style={{marginTop:20}} onPress={() => {}}/>
                     </View>
 
                 </View>
@@ -155,7 +139,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
         Login: (email, password) => dispatch(Login(email, password)),
-        LoginGoogle: (email, accessToken, name) => dispatch(LoginGoogle(email, accessToken, name)),
         CheckIfLogged: () => dispatch(CheckIfLogged())
     }
 };
