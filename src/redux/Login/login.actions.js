@@ -2,6 +2,7 @@ export const LoginActionsType = {
     Login: 'LOGIN',
     LoginSuccess: 'LOGIN_SUCCESS',
     LoginFail: 'LOGIN_FAIL',
+    LoginGoogle: 'LOGIN_GOOGLE',
     UpdateUserInfo: 'UPDATE_USER_INFO',
     Logout: 'LOGOUT',
     CheckIfLogged: "CHECK_IF_LOGGED",
@@ -13,6 +14,15 @@ export const Login = (email, password) => {
         type: LoginActionsType.Login,
         email: email,
         password: password
+    }
+};
+
+export const LoginGoogle = (email, accessToken, name) => {
+    return {
+        type: LoginActionsType.LoginGoogle,
+        name,
+        email,
+        accessToken
     }
 };
 

@@ -31,8 +31,7 @@ function* Login(action) {
         yield Network.SaveToken(response.data.user.email, response.data.user.pseudo);
         yield put(NavigationActions.navigate({routeName: 'Home'}));
 
-    }
-    else {
+    } else {
         let err;
         if (response.data !== undefined && response.data.message !== undefined)
             err = response.data.message;
@@ -48,6 +47,14 @@ function* Login(action) {
     }
 }
 
+function* LoginGoogle(action) {
+    yield put(LoginSuccess(action.accessToken, action.name, action.email));
+    Network.access_token = action.accessToken;
+    yield Network.SaveToken(action.email, action.name);
+    yield put(NavigationActions.navigate({routeName: 'Home'}));
+}
+
+
 function* Logout(action) {
     yield Network.deleteToken();
     yield put(NavigationActions.navigate({routeName: 'Login'}));
@@ -58,5 +65,6 @@ function* Logout(action) {
 export function* LoginSagas() {
     yield takeEvery(LoginActionsType.CheckIfLogged, CheckIsLogged);
     yield takeEvery(LoginActionsType.Login, Login);
+    yield takeEvery(LoginActionsType.LoginGoogle, LoginGoogle);
     yield takeEvery(LoginActionsType.Logout, Logout);
 }
