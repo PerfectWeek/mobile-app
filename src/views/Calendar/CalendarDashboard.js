@@ -7,7 +7,7 @@ import {
     GetAllUsersEvents,
     CalendarActionType,
     DeleteEvent,
-    GetUsersEventsFiltered, GetEvents, GetCalendars, ResetStatus
+    GetUsersEventsFiltered, GetEvents, GetCalendars, ResetStatus, LoadCalendar, ReloadEvents
 } from "../../redux/Calendar/calendar.actions";
 import Loader from "../../Components/Loader";
 import {HeaderBackgroundColor} from "../../../Style/Constant";
@@ -22,7 +22,7 @@ export class _CalendarDashboard extends Component {
             items: {},
             scrolledDay: this.currentDate()
         };
-        this.props.GetCalendars(this.props.login);
+        this.props.LoadCalendar(this.props.login.pseudo);
     }
 
     static navigationOptions = {
@@ -47,7 +47,7 @@ export class _CalendarDashboard extends Component {
     }
 
     reloadEvents() {
-        const events = this.props.calendar.events;
+        const events = this.props.events;
         if (!events)
             return;
         for (let k = 0; k < events.length; ++k) {
@@ -60,13 +60,7 @@ export class _CalendarDashboard extends Component {
                 // if (!this.state.items[isoDate]) {
                 this.state.items[isoDate] = [];
                 // }
-                this.state.items[isoDate].push({
-                    id: event.id,
-                    name: event.name,
-                    end_time: event.end_time,
-                    start_time: event.start_time,
-                    // color: calcol
-                });
+                this.state.items[isoDate].push(event);
                 strTimeStart.setDate(strTimeStart.getDate() + 1);
             }
         }
@@ -120,15 +114,18 @@ export class _CalendarDashboard extends Component {
                 <Swipeout autoClose={true} right={swipeoutBtns}
                           style={{backgroundColor: '#e0e0e0', borderRadius: 5, padding: 0, height: '100%'}}>
                     <TouchableHighlight
-                        onPress={() => this.props.navigation.navigate('ConsultEvent', {eventId: item.id})}
+                        onPress={() => this.props.navigation.navigate('ConsultEvent', {event: item})}
                         underlayColor="rgba(52, 52, 52, 0.5)">
-                        <View style={{height: 50, marginTop: 15, marginLeft: 15}}>
-                            <Text style={{fontSize: 18, fontFamily: 'Lato_Bold'}}>{item.name}</Text>
-                            <Text style={{
-                                fontSize: 14,
-                                fontFamily: 'Lato_Medium'
-                            }}>{
-                                moment(item.start_time.split('T')[1].split('.')[0], "HH:mm:ss").format("HH:mm")} - {moment(item.end_time.split('T')[1].split('.')[0], "HH:mm:ss").format("HH:mm")}</Text>
+                        <View style={{height: 50, marginTop: 15, marginLeft: 15, marginRight: 15, flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+                            <View>
+                                <Text style={{fontSize: 18, fontFamily: 'Lato_Bold'}}>{item.name}</Text>
+                                <Text style={{
+                                    fontSize: 14,
+                                    fontFamily: 'Lato_Medium'
+                                }}>{
+                                    moment(item.start_time.split('T')[1].split('.')[0], "HH:mm:ss").format("HH:mm")} - {moment(item.end_time.split('T')[1].split('.')[0], "HH:mm:ss").format("HH:mm")}</Text>
+                            </View>
+                            <Text style={{fontSize: 18, fontFamily: 'Lato_Medium'}}>{item.calendar_name}</Text>
                         </View>
                     </TouchableHighlight>
                 </Swipeout>
@@ -164,34 +161,31 @@ export class _CalendarDashboard extends Component {
     }
 
     refreshCalendar() {
-        this.props.GetEvents(this.props.calendar.calendars);
+        this.props.ReloadEvents(this.props.calendar.calendars);
     }
 
     componentDidUpdate() {
         // console.log("WillUpdate");
         // console.log(this.props.calendar.status);
-        if (this.props.calendar.status === CalendarActionType.GetCalendarsSuccess) {
-            this.props.GetEvents(this.props.calendar.calendars);
-            // console.log("getting events");
-        }
-        if (this.props.calendar.status === CalendarActionType.GetEventsSuccess) {
-            this.loadItems(this.state.scrolledDay);
-            this.props.ResetStatus();
-        }
-        if (this.props.calendar.status === CalendarActionType.RefreshCalendar)
-            this.props.GetEvents(this.props.calendar.calendars);
+        // if (this.props.calendar.status === CalendarActionType.GetCalendarsSuccess) {
+        //     this.props.GetEvents(this.props.calendar.calendars);
+        // console.log("getting events");
+        // }
+        // if (this.props.calendar.status === CalendarActionType.GetEventsSuccess) {
+        //     this.loadItems(this.state.scrolledDay);
+        //     this.props.ResetStatus();
+        // }
+        // if (this.props.calendar.status === CalendarActionType.RefreshCalendar)
+        //     this.props.GetEvents(this.props.calendar.calendars);
     }
 
     render() {
         // console.log("render");
-        // console.log(this.props.calendar.status);
         // if (this.props.calendar.events)
         //     console.log(this.props.calendar.events);
         // else
         //     console.log("loadingCalendars");
-        if (this.props.calendar.status === CalendarActionType.GetCalendars
-        // || this.props.calendar.status === CalendarActionType.GetEvents
-        )
+        if (this.props.calendar.DashboardStatus !== CalendarActionType.LoadCalendarSuccess)
             return (
                 <Container style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                     <Loader/>
@@ -201,6 +195,7 @@ export class _CalendarDashboard extends Component {
             <Container style={{
                 paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
             }}>
+
                 <Container>
                     <Header androidStatusBarColor="#00AE93" style={{backgroundColor: HeaderBackgroundColor}}>
                         <Body>
@@ -270,18 +265,27 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        GetCalendars: (pseudo) => dispatch(GetCalendars(pseudo)),
-        GetEvents: (calendars) => dispatch(GetEvents(calendars)),
+        ReloadEvents: (calendars) => dispatch(ReloadEvents(calendars)),
+        LoadCalendar: (pseudo) => dispatch(LoadCalendar(pseudo)),
         DeleteEvent: (event) => dispatch(DeleteEvent(event)),
         ResetStatus: () => dispatch(ResetStatus())
     }
 };
 
 const mapStateToProps = (state, ownProps) => {
+    let events = [];
+    if (state.calendar.events)
+        events = state.calendar.events.map(e => {
+            return {...e, calendar_name: state.calendar.calendars.find(c => c.id === e.calendar_id).name}
+        });
+    // console.log(state.calendar.calendars);
+    // console.log(state.calendar.events);
+    // console.log(events);
     return {
         ...ownProps,
         calendar: state.calendar,
-        login: state.login
+        login: state.login,
+        events
     }
 };
 

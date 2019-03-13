@@ -17,24 +17,14 @@ export class _ConsultEvent extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            EventTitle: '',
-            description: '',
-            localisation: '',
-            dateBeginEvent: '',
-            dateEndEvent: '',
-            beginTime: '',
-            endTime: '',
-            recievedEvent: false
-        };
-        this.props.GetEventInfo(this.props.navigation.state.params.eventId)
+        this.state = this.fillInfoEvent(this.props.navigation.state.params.event);
     }
 
     fillInfoEvent(event) {
         const beginTimeEvent = event.start_time.split('T');
 
         const endTimeEvent = event.end_time.split('T');
-        this.setState({
+        return {
             id: event.id,
             EventTitle: event.name,
             description: event.description,
@@ -44,12 +34,7 @@ export class _ConsultEvent extends React.Component {
             dateEndEvent: endTimeEvent[0],
             endTime: endTimeEvent[1].substring(0, 5),
             recievedEvent: true
-        })
-    }
-
-    componentDidUpdate() {
-        if (this.props.calendar && this.props.calendar.status === CalendarActionType.GetEventInfoSuccess && this.state.recievedEvent === false)
-            this.fillInfoEvent(this.props.calendar.event);
+        }
     }
 
     render() {

@@ -20,7 +20,11 @@ export const CalendarActionType = {
     DeleteEventFail: "DELETE_EVENT_FAIL",
     RefreshCalendar: "REFRESH_CALENDAR",
     SetFilters: "SET_FILTERS",
-    ResetStatus: "RESET_STATUS"
+    ResetStatus: "RESET_STATUS",
+    ReloadEvents: 'RELOAD_EVENTS',
+    LoadCalendar: 'LOAD_CALENDAR',
+    LoadCalendarSuccess: "LOAD_CALENDAR_SUCCESS",
+    LoadCalendarFail: "LOAD_CALENDAR_FAIL",
 };
 
 export const GetEventInfo = (event) => {
@@ -158,5 +162,32 @@ export const SetFilters = (calendars) => {
 export const ResetStatus = () => {
     return {
         type: CalendarActionType.ResetStatus
+    };
+};
+
+export const ReloadEvents = (calendars) => {
+    return {
+        type: CalendarActionType.ReloadEvents,
+        calendars
+    };
+};
+
+export const LoadCalendar = (pseudo) => {
+    return {
+        type: CalendarActionType.LoadCalendar,
+        pseudo
+    };
+};
+
+export const LoadCalendarSuccess = () => {
+    return {
+        type: CalendarActionType.LoadCalendarSuccess
+    }
+};
+
+export const LoadCalendarFail = (error_message) => {
+    return {
+        type: CalendarActionType.LoadCalendarFail,
+        error_message: error_message
     };
 };

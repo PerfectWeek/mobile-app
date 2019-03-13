@@ -1,7 +1,7 @@
 import {CalendarActionType} from "./calendar.actions";
 import {LoginActionsType} from "../Login/login.actions";
 
-const default_state = {status: 'NONE'};
+const default_state = {status: 'NONE', DashboardStatus : 'NONE'};
 
 export const CalendarReducer = (state = default_state, action) => {
     switch (action.type) {
@@ -109,6 +109,21 @@ export const CalendarReducer = (state = default_state, action) => {
                 ...state,
                 status: CalendarActionType.GetEventsFail,
                 error_message: action.error_message
+            };
+        case CalendarActionType.LoadCalendar:
+            return {
+                ...state,
+                DashboardStatus: CalendarActionType.LoadCalendar
+            };
+        case CalendarActionType.ReloadEvents:
+            return {
+                ...state,
+                DashboardStatus: CalendarActionType.ReloadEvents
+            };
+        case CalendarActionType.LoadCalendarSuccess:
+            return {
+                ...state,
+                DashboardStatus: CalendarActionType.LoadCalendarSuccess
             };
         case CalendarActionType.SetFilters:
             return {

@@ -15,9 +15,14 @@ import {
     CreateNewEventFail, GetCalendarsFail,
     GetCalendarsSuccess, GetEventsFail, GetEventsSuccess,
     GetUsersEventsFilteredFail,
-    GetUsersEventsFilteredSuccess
+    GetUsersEventsFilteredSuccess, LoadCalendarFail, LoadCalendarSuccess
 } from "./calendar.actions";
 import {ShowErrorNotification, ShowSuccessNotification} from "../../Utils/NotificationsModals";
+import {GroupService} from "../../Services/Groups/groups";
+import {UserService} from "../../Services/Users/users";
+import {arrayToObject} from "../../Utils/utils";
+import {GetGroupInfoFail, GetGroupInfoSuccess, GetGroupMembersSuccess} from "../Groups/groups.actions";
+import {CalendarService} from "../../Services/Calendar/calendar";
 
 function getEvents() {
     return Network.Get('/users/{pseudo}/calendars')
@@ -152,7 +157,39 @@ function* GetEvents(action) {
     }
 }
 
+function* ReloadEvents(action) {
+    try {
+        const filtered_calendars = action.calendars.filter(c => c.show);
+        let events = yield CalendarService.GetEventsForCalendars(filtered_calendars);
+        events = yield CalendarService.GetEventsInfo(events);
+        yield put(GetEventsSuccess(events));
+        yield put(LoadCalendarSuccess());
+    } catch (err) {
+        yield ShowErrorNotification(err);
+        yield put(LoadCalendarFail(err));
+    }
+}
+
+function* LoadCalendar(action) {
+    try {
+        let calendars = yield CalendarService.GetCalendarsForUser(action.pseudo);
+        calendars = calendars.map(c => {
+            return {...c.calendar, show: true}
+        });
+        let events = yield CalendarService.GetEventsForCalendars(calendars);
+        events = yield CalendarService.GetEventsInfo(events);
+        yield put(GetCalendarsSuccess(calendars));
+        yield put(GetEventsSuccess(events));
+        yield put(LoadCalendarSuccess());
+    } catch (err) {
+        yield ShowErrorNotification(err);
+        yield put(LoadCalendarFail(err));
+    }
+}
+
 export function* CalendarSaga() {
+    yield takeEvery(CalendarActionType.ReloadEvents, ReloadEvents);
+    yield takeEvery(CalendarActionType.LoadCalendar, LoadCalendar);
     yield takeEvery(CalendarActionType.GetEvents, GetEvents);
     yield takeEvery(CalendarActionType.GetCalendars, GetCalendars);
     yield takeEvery(CalendarActionType.ModifyEvent, ModifyEvent);
