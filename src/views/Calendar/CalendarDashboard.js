@@ -60,7 +60,14 @@ export class _CalendarDashboard extends Component {
                 // if (!this.state.items[isoDate]) {
                 this.state.items[isoDate] = [];
                 // }
-                this.state.items[isoDate].push(event);
+                this.state.items[isoDate].push({
+                    id: event.id,
+                    name: event.name,
+                    calendar_name: event.calendar_name,
+                    end_time: event.end_time,
+                    start_time: event.start_time,
+                    // color: calcol
+                });
                 strTimeStart.setDate(strTimeStart.getDate() + 1);
             }
         }
@@ -114,7 +121,7 @@ export class _CalendarDashboard extends Component {
                 <Swipeout autoClose={true} right={swipeoutBtns}
                           style={{backgroundColor: '#e0e0e0', borderRadius: 5, padding: 0, height: '100%'}}>
                     <TouchableHighlight
-                        onPress={() => this.props.navigation.navigate('ConsultEvent', {event: item})}
+                        onPress={() => this.props.navigation.navigate('ConsultEvent', {eventId: item.id})}
                         underlayColor="rgba(52, 52, 52, 0.5)">
                         <View style={{height: 50, marginTop: 15, marginLeft: 15, marginRight: 15, flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
                             <View>
