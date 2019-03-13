@@ -66,7 +66,7 @@ export class _CalendarDashboard extends Component {
                     calendar_name: event.calendar_name,
                     end_time: event.end_time,
                     start_time: event.start_time,
-                    // color: calcol
+                    color: this.getRandomColor()
                 });
                 strTimeStart.setDate(strTimeStart.getDate() + 1);
             }
@@ -74,8 +74,8 @@ export class _CalendarDashboard extends Component {
     }
 
     getRandomColor() {
-        var letters = 'BCDEF'.split('');
-        var color = '#';
+        const letters = '9ABCD'.split('');
+        let color = '#';
         for (var i = 0; i < 6; i++) {
             color += letters[Math.floor(Math.random() * letters.length)];
         }
@@ -114,16 +114,19 @@ export class _CalendarDashboard extends Component {
             }
         ];
         return (
-            <View style={[styles.item,
-                {backgroundColor: item.color}
-            ]}>
-
                 <Swipeout autoClose={true} right={swipeoutBtns}
-                          style={{backgroundColor: '#e0e0e0', borderRadius: 5, padding: 0, height: '100%'}}>
+                          style={{backgroundColor: 'white', marginTop:15, marginRight: 15, borderWidth: 2,
+                              borderColor: item.color,
+                              borderRadius: 5}}>
                     <TouchableHighlight
                         onPress={() => this.props.navigation.navigate('ConsultEvent', {eventId: item.id})}
                         underlayColor="rgba(52, 52, 52, 0.5)">
-                        <View style={{height: 50, marginTop: 15, marginLeft: 15, marginRight: 15, flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <View style={{
+                            margin: 15,
+                            flex: 1,
+                            flexDirection: 'row',
+                            justifyContent: 'space-between'
+                        }}>
                             <View>
                                 <Text style={{fontSize: 18, fontFamily: 'Lato_Bold'}}>{item.name}</Text>
                                 <Text style={{
@@ -136,7 +139,6 @@ export class _CalendarDashboard extends Component {
                         </View>
                     </TouchableHighlight>
                 </Swipeout>
-            </View>
         )
     }
 
@@ -253,21 +255,21 @@ export class _CalendarDashboard extends Component {
     }
 }
 
-const styles = StyleSheet.create({
-    item: {
-        backgroundColor: 'white',
-        flex: 1,
-        borderRadius: 5,
-        // padding: 10,
-        marginRight: 10,
-        marginTop: 17
-    },
-    emptyDate: {
-        height: 15,
-        flex: 1,
-        paddingTop: 17
-    }
-});
+// const styles = StyleSheet.create({
+//     item: {
+//         backgroundColor: 'black',
+//         flex: 1,
+//         borderRadius: 5,
+//         padding: 1,
+//         marginRight: 10,
+//         marginTop: 17
+//     },
+//     emptyDate: {
+//         height: 15,
+//         flex: 1,
+//         paddingTop: 17
+//     }
+// });
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
