@@ -22,10 +22,10 @@ export class _ModifyEvent extends React.Component {
             EventTitle: '',
             description: '',
             localisation: '',
-            dateBeginEvent : '',
-            dateEndEvent : '',
-            beginTime : '',
-            endTime : '',
+            dateBeginEvent: '',
+            dateEndEvent: '',
+            beginTime: '',
+            endTime: '',
             recievedEvent: false
         };
         this.props.GetEventInfo(this.props.navigation.state.params.eventId)
@@ -58,8 +58,7 @@ export class _ModifyEvent extends React.Component {
     }
 
     componentDidUpdate() {
-        if (this.props.calendar && this.props.calendar.status === CalendarActionType.ModifyEventSuccess)
-        {
+        if (this.props.calendar && this.props.calendar.status === CalendarActionType.ModifyEventSuccess) {
             this.props.navigation.goBack();
             this.props.RefreshCalendar();
         }
@@ -76,7 +75,7 @@ export class _ModifyEvent extends React.Component {
         // }
 
         if (this.props.calendar && (this.props.calendar.status === CalendarActionType.ModifyEvent
-         || this.props.calendar.status === CalendarActionType.GetEventInfo)
+            || this.props.calendar.status === CalendarActionType.GetEventInfo)
         )
             return (
                 <Container style={{
@@ -84,7 +83,7 @@ export class _ModifyEvent extends React.Component {
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}>
-                    <Loader />
+                    <Loader/>
                 </Container>
             );
         // if (this.props.calendar && this.props.calendar.status === CalendarActionType.GetEventInfoSuccess && this.state.recievedEvent === false)
@@ -98,19 +97,19 @@ export class _ModifyEvent extends React.Component {
                         marginLeft: 10, marginRight: 30, flexGrow: 3
                     }}>
                         <Item>
-                            <Input style={{color: 'black', fontFamily: 'Lato_Medium', fontSize: 26}}
+                            <Input style={{...textStyle, fontSize: 26}}
                                    placeholder="Event name" value={this.state.EventTitle}
                                    onChangeText={(text) => this.setState({EventTitle: text})}/>
                         </Item>
                         <Item>
                             <Icon type='SimpleLineIcons' active name='pencil'/>
-                            <Input style={{color: 'black', fontFamily: 'Lato_Medium', fontSize: 16}}
+                            <Input style={textStyle}
                                    placeholder="Description" value={this.state.description}
                                    onChangeText={(text) => this.setState({description: text})}/>
                         </Item>
                         <Item>
                             <Icon type='SimpleLineIcons' active name='location-pin'/>
-                            <Input style={{color: 'black', fontFamily: 'Lato_Medium', fontSize: 16}}
+                            <Input style={textStyle}
                                    placeholder="Localisation" value={this.state.localisation}
                                    onChangeText={(text) => this.setState({localisation: text})}/>
                         </Item>
@@ -127,7 +126,7 @@ export class _ModifyEvent extends React.Component {
                                     alignItems: 'center'
                                 }}>
                                     <DatePicker
-                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Lato_Medium'}}}
+                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
                                         style={{
                                             width: 200, height: 50, justifyContent: 'center',
                                             alignItems: 'center'
@@ -144,7 +143,7 @@ export class _ModifyEvent extends React.Component {
                                         }}
                                     />
                                     <DatePicker
-                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Lato_Medium'}}}
+                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
                                         style={{width: 80}}
                                         date={this.state.beginTime}
                                         placeholder="End Time"
@@ -165,7 +164,7 @@ export class _ModifyEvent extends React.Component {
                                     alignItems: 'center'
                                 }}>
                                     <DatePicker
-                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Lato_Medium'}}}
+                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
                                         style={{
                                             width: 200, height: 50, justifyContent: 'center',
                                             alignItems: 'center', borderLeftColor: 'white'
@@ -182,7 +181,7 @@ export class _ModifyEvent extends React.Component {
                                         }}
                                     />
                                     <DatePicker
-                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Lato_Medium'}}}
+                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
                                         style={{width: 80}}
                                         date={this.state.endTime}
                                         placeholder="End Time"
@@ -200,7 +199,7 @@ export class _ModifyEvent extends React.Component {
                             </View>
                         </Item>
                         <Button success disabled={this.validator()}
-                                rounded style={{margin: 30, marginTop:5}}
+                                rounded style={{margin: 30, marginTop: 5}}
                                 onPress={() => {
                                     this.props.ModifyTheEvent(this.state)
                                 }}>
@@ -257,6 +256,8 @@ const pickerSelectStyles = StyleSheet.create({
         width: 250
     }
 });
+
+const textStyle = {margin: 10, color: 'black', fontFamily: 'Roboto_medium', fontSize: 16};
 
 
 export const ModifyEvent = connect(mapStateToProps, mapDispatchToProps)(_ModifyEvent);
