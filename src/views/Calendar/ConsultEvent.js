@@ -76,22 +76,22 @@ export class _ConsultEvent extends React.Component {
                         marginLeft: 10, marginRight: 30, flexGrow: 3
                     }}>
                         <Item>
-                            <Text style={{margin:10, color: 'black', fontFamily: 'Lato_Medium', fontSize: 26}}
+                            <Text style={{...textStyle, fontSize: 26}}
                                   placeholder="Event name">
                                 {this.state.EventTitle}
                             </Text>
                         </Item>
                         <Item>
                             <Icon type='SimpleLineIcons' active name='pencil'/>
-                            <Text style={{margin:10, color: 'black', fontFamily: 'Lato_Medium', fontSize: 16}}
+                            <Text style={textStyle}
                                   placeholder="Description">
                                 {this.state.description}
                             </Text>
                         </Item>
                         <Item>
                             <Icon type='SimpleLineIcons' active name='location-pin'/>
-                            <Text style={{margin:10, color: 'black', fontFamily: 'Lato_Medium', fontSize: 16}}
-                                   placeholder="Localisation">
+                            <Text style={textStyle}
+                                  placeholder="Localisation">
                                 {this.state.localisation}
                             </Text>
                         </Item>
@@ -109,7 +109,7 @@ export class _ConsultEvent extends React.Component {
                                 }}>
                                     <DatePicker
                                         disabled
-                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Lato_Medium'}}}
+                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
                                         style={{
                                             width: 200, height: 50, justifyContent: 'center',
                                             alignItems: 'center'
@@ -126,19 +126,24 @@ export class _ConsultEvent extends React.Component {
                                         }}
                                     />
                                     <DatePicker disabled
-                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Lato_Medium'}}}
-                                        style={{width: 80}}
-                                        date={this.state.beginTime}
-                                        placeholder="End Time"
-                                        mode="time"
-                                        format="HH:mm"
-                                        confirmBtnText="Confirm"
-                                        cancelBtnText="Cancel"
-                                        minuteInterval={1}
-                                        showIcon={false}
-                                        onDateChange={(time) => {
-                                            this.setState({beginTime: time});
-                                        }}
+                                                customStyles={{
+                                                    placeholderText: {
+                                                        color: 'black',
+                                                        fontFamily: 'Roboto_medium'
+                                                    }
+                                                }}
+                                                style={{width: 80}}
+                                                date={this.state.beginTime}
+                                                placeholder="End Time"
+                                                mode="time"
+                                                format="HH:mm"
+                                                confirmBtnText="Confirm"
+                                                cancelBtnText="Cancel"
+                                                minuteInterval={1}
+                                                showIcon={false}
+                                                onDateChange={(time) => {
+                                                    this.setState({beginTime: time});
+                                                }}
                                     />
                                 </View>
                                 <View style={{
@@ -147,36 +152,46 @@ export class _ConsultEvent extends React.Component {
                                     alignItems: 'center'
                                 }}>
                                     <DatePicker disabled
-                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Lato_Medium'}}}
-                                        style={{
-                                            width: 200, height: 50, justifyContent: 'center',
-                                            alignItems: 'center', borderLeftColor: 'white'
-                                        }}
-                                        placeholder={this.state.dateEndEvent === '' ? "Ending" : this.state.dateEndEvent}
-                                        format="YYYY-MM-DD"
-                                        minDate={this.state.dateBeginEvent === '' ? "2018-01-01" : this.state.dateBeginEvent}
-                                        maxDate="2022-01-01"
-                                        confirmBtnText="Confirm"
-                                        cancelBtnText="Cancel"
-                                        showIcon={false}
-                                        onDateChange={(date) => {
-                                            this.setState({dateEndEvent: date})
-                                        }}
+                                                customStyles={{
+                                                    placeholderText: {
+                                                        color: 'black',
+                                                        fontFamily: 'Roboto_medium'
+                                                    }
+                                                }}
+                                                style={{
+                                                    width: 200, height: 50, justifyContent: 'center',
+                                                    alignItems: 'center', borderLeftColor: 'white'
+                                                }}
+                                                placeholder={this.state.dateEndEvent === '' ? "Ending" : this.state.dateEndEvent}
+                                                format="YYYY-MM-DD"
+                                                minDate={this.state.dateBeginEvent === '' ? "2018-01-01" : this.state.dateBeginEvent}
+                                                maxDate="2022-01-01"
+                                                confirmBtnText="Confirm"
+                                                cancelBtnText="Cancel"
+                                                showIcon={false}
+                                                onDateChange={(date) => {
+                                                    this.setState({dateEndEvent: date})
+                                                }}
                                     />
                                     <DatePicker disabled
-                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Lato_Medium'}}}
-                                        style={{width: 80}}
-                                        date={this.state.endTime}
-                                        placeholder="End Time"
-                                        mode="time"
-                                        format="HH:mm"
-                                        confirmBtnText="Confirm"
-                                        cancelBtnText="Cancel"
-                                        minuteInterval={1}
-                                        showIcon={false}
-                                        onDateChange={(time) => {
-                                            this.setState({endTime: time});
-                                        }}
+                                                customStyles={{
+                                                    placeholderText: {
+                                                        color: 'black',
+                                                        fontFamily: 'Roboto_medium'
+                                                    }
+                                                }}
+                                                style={{width: 80}}
+                                                date={this.state.endTime}
+                                                placeholder="End Time"
+                                                mode="time"
+                                                format="HH:mm"
+                                                confirmBtnText="Confirm"
+                                                cancelBtnText="Cancel"
+                                                minuteInterval={1}
+                                                showIcon={false}
+                                                onDateChange={(time) => {
+                                                    this.setState({endTime: time});
+                                                }}
                                     />
                                 </View>
                             </View>
@@ -230,5 +245,6 @@ const pickerSelectStyles = StyleSheet.create({
     }
 });
 
+const textStyle = {margin: 10, color: 'black', fontFamily: 'Roboto_medium', fontSize: 16};
 
 export const ConsultEvent = connect(mapStateToProps, mapDispatchToProps)(_ConsultEvent);
