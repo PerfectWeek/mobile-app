@@ -76,19 +76,19 @@ export class _CreateEvent extends React.Component {
                         marginLeft: 10, marginRight: 30, flexGrow: 3
                     }}>
                         <Item>
-                            <Input style={{color: 'black', fontFamily: 'Lato_Medium', fontSize: 26}}
+                            <Input style={{color: 'black', fontFamily: 'Roboto_medium', fontSize: 26}}
                                    placeholder="Event name" value={this.state.EventTitle}
                                    onChangeText={(text) => this.setState({EventTitle: text})}/>
                         </Item>
                         <Item>
                             <Icon type='SimpleLineIcons' active name='pencil'/>
-                            <Input style={{color: 'black', fontFamily: 'Lato_Medium', fontSize: 16}}
+                            <Input style={{color: 'black', fontFamily: 'Roboto_medium', fontSize: 16}}
                                    placeholder="Description" value={this.state.description}
                                    onChangeText={(text) => this.setState({description: text})}/>
                         </Item>
                         <Item>
                             <Icon type='SimpleLineIcons' active name='location-pin'/>
-                            <Input style={{color: 'black', fontFamily: 'Lato_Medium', fontSize: 16}}
+                            <Input style={{color: 'black', fontFamily: 'Roboto_medium', fontSize: 16}}
                                    placeholder="Localisation" value={this.state.localisation}
                                    onChangeText={(text) => this.setState({localisation: text})}/>
                         </Item>
@@ -105,7 +105,7 @@ export class _CreateEvent extends React.Component {
                                     alignItems: 'center'
                                 }}>
                                     <DatePicker
-                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Lato_Medium'}}}
+                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
                                         style={{
                                             width: 200, height: 50, justifyContent: 'center',
                                             alignItems: 'center'
@@ -122,7 +122,7 @@ export class _CreateEvent extends React.Component {
                                         }}
                                     />
                                     <DatePicker
-                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Lato_Medium'}}}
+                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
                                         style={{width: 80}}
                                         date={this.state.beginTime}
                                         placeholder="End Time"
@@ -143,7 +143,7 @@ export class _CreateEvent extends React.Component {
                                     alignItems: 'center'
                                 }}>
                                     <DatePicker
-                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Lato_Medium'}}}
+                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
                                         style={{
                                             width: 200, height: 50, justifyContent: 'center',
                                             alignItems: 'center', borderLeftColor: 'white'
@@ -160,7 +160,7 @@ export class _CreateEvent extends React.Component {
                                         }}
                                     />
                                     <DatePicker
-                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Lato_Medium'}}}
+                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
                                         style={{width: 80}}
                                         date={this.state.endTime}
                                         placeholder="End Time"
