@@ -8,7 +8,7 @@ import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
 import {CheckIfLogged, LoginGoogle} from "../redux/Login/login.actions";
 import {Facebook} from "expo";
-import {ShowSuccessNotification} from "../Utils/NotificationsModals";
+import {ShowErrorNotification, ShowSuccessNotification} from "../Utils/NotificationsModals";
 
 class _LoginWithFacebookButton extends Component {
     static propTypes = {
@@ -33,12 +33,12 @@ class _LoginWithFacebookButton extends Component {
             if (type === 'success') {
                 // Get the user's name using Facebook's Graph API
                 const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
-                await ShowSuccessNotification('Logged in!' + `Hi ${(await response.json()).name}!`);
+                await ShowSuccessNotification('Logged in ! ' + `Hi ${(await response.json()).name}!`);
             } else {
                 // type === 'cancel'
             }
         } catch ({message}) {
-            alert(`Facebook Login Error: ${message}`);
+            await ShowErrorNotification("Couldn't connect with Facebook");
         }
     }
 

@@ -1,4 +1,5 @@
 export const LoginActionsType = {
+    SetLogged: 'SET_LOGGED',
     Login: 'LOGIN',
     LoginSuccess: 'LOGIN_SUCCESS',
     LoginFail: 'LOGIN_FAIL',
@@ -14,6 +15,15 @@ export const Login = (email, password) => {
         type: LoginActionsType.Login,
         email: email,
         password: password
+    }
+};
+
+export const SetLogged = (access_token, email, pseudo) => {
+    return {
+        type: LoginActionsType.SetLogged,
+        access_token,
+        email,
+        pseudo
     }
 };
 

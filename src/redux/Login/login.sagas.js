@@ -47,10 +47,18 @@ function* Login(action) {
     }
 }
 
+function* SetLogged(action) {
+    yield put(LoginSuccess(action.access_token, action.pseudo, action.email));
+    Network.access_token = action.access_token;
+    yield Network.SaveToken(action.email, action.pseudo);
+    yield put(NavigationActions.navigate({routeName: 'Home'}));
+}
+
+
 function* LoginGoogle(action) {
-    yield put(LoginSuccess(action.accessToken, action.name, action.email));
+    yield put(LoginSuccess(action.accessToken, action.pseudo, action.email));
     Network.access_token = action.accessToken;
-    yield Network.SaveToken(action.email, action.name);
+    yield Network.SaveToken(action.email, action.pseudo);
     yield put(NavigationActions.navigate({routeName: 'Home'}));
 }
 
@@ -63,6 +71,7 @@ function* Logout(action) {
 }
 
 export function* LoginSagas() {
+    yield takeEvery(LoginActionsType.SetLogged, SetLogged);
     yield takeEvery(LoginActionsType.CheckIfLogged, CheckIsLogged);
     yield takeEvery(LoginActionsType.Login, Login);
     yield takeEvery(LoginActionsType.LoginGoogle, LoginGoogle);

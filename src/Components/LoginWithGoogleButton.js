@@ -4,9 +4,10 @@ import {Image, Text} from 'react-native'
 import PropTypes from "prop-types";
 import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
-import {CheckIfLogged, Login, LoginGoogle} from "../redux/Login/login.actions";
+import {CheckIfLogged, Login, LoginGoogle, SetLogged} from "../redux/Login/login.actions";
 import {Google} from "expo";
-import {ShowErrorNotification} from "../Utils/NotificationsModals";
+import {ShowErrorNotification, ShowSuccessNotification} from "../Utils/NotificationsModals";
+import {Network} from "../Network/Requests";
 
 class _LoginWithGoogleButton extends Component {
     constructor(props) {
@@ -20,13 +21,16 @@ class _LoginWithGoogleButton extends Component {
         try {
             let res = await Google.logInAsync({androidClientId: clientId});
             if (res.type === 'success') {
-                this.props.LoginGoogle(res.user.email, res.accessToken, res.user.name);
+                // const response = await Network.Get(`/auth/google/callback?access_token=${res.accessToken}&refresh_token=${res.refreshToken}`);
+                // this.props.SetLogged(response.jwt, response.user.email, response.user.username);
+                await ShowSuccessNotification('Logged in ! ' + `Hi ${res.user.name}!`);
             }
         } catch (e) {
             await ShowErrorNotification("Couldn't connect with Google");
             console.log(e);
         }
     }
+
     render() {
         return (
 
@@ -50,7 +54,7 @@ class _LoginWithGoogleButton extends Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        LoginGoogle: (email, accessToken, name) => dispatch(LoginGoogle(email, accessToken, name)),
+        SetLogged: (access_token, email, pseudo) => dispatch(SetLogged(access_token, email, pseudo)),
     }
 };
 
