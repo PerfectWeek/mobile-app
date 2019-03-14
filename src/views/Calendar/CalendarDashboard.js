@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, StyleSheet, Text, Alert, TouchableHighlight, ScrollView, Platform} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 import {Agenda} from 'react-native-calendars';
-import {Body, Button, Container, Header, Icon, Right, Title, Fab} from "native-base";
+import {Body, Button, Container, Header, Icon, Right, Title, Fab, Thumbnail} from "native-base";
 import {
     GetAllUsersEvents,
     CalendarActionType,
@@ -111,29 +111,28 @@ export class _CalendarDashboard extends Component {
                 <TouchableHighlight
                     onPress={() => this.props.navigation.navigate('ConsultEvent', {eventId: item.id})}
                     underlayColor="rgba(52, 52, 52, 0.5)">
-                    {
 
-                        <View style={{
-                            margin: 15,
-                            flex: 1,
-                            flexDirection: 'row',
-                            justifyContent: 'space-between'
-                        }}>
-
-                            <View>
-                                <Text style={{fontSize: 18, fontFamily: 'Lato_Bold'}}>{item.name}</Text>
-                                <Text style={{
-                                    fontSize: 14,
-                                    fontFamily: 'Lato_Medium'
-                                }}>
-                                    {start_string} - {end_string}
-                                </Text>
-
-
-                            </View>
-                            <Text style={{fontSize: 18, fontFamily: 'Lato_Medium'}}>{item.calendar_name}</Text>
+                    <View style={{
+                        margin: 15,
+                        flex: 1,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                    }}>
+                        <Thumbnail
+                            source={{uri: item.image}}/>
+                        <View>
+                            <Text style={{fontSize: 18, fontFamily: 'Lato_Bold'}}>{item.name}</Text>
+                            <Text style={{
+                                fontSize: 14,
+                                fontFamily: 'Lato_Medium'
+                            }}>
+                                {start_string} - {end_string}
+                            </Text>
                         </View>
-                    }
+                        <Text style={{alignSelf: 'flex-start' ,fontSize: 18, fontFamily: 'Lato_Medium'}}>{item.calendar_name}</Text>
+                    </View>
+
                 </TouchableHighlight>
             </Swipeout>
         )
@@ -241,7 +240,6 @@ const mapStateToProps = (state, ownProps) => {
             return {...e, calendar_name: state.calendar.calendars.find(c => c.id === e.calendar_id).name}
         });
     }
-
     let items = {};
     for (let i = -150; i < 185; i++) {
         const time = new Date().getTime() + i * 24 * 60 * 60 * 1000;
@@ -277,7 +275,8 @@ const mapStateToProps = (state, ownProps) => {
                 calendar_name: event.calendar_name,
                 start_time: new Date(start),
                 end_time: end,
-                color: color
+                color: color,
+                image: event.image
             });
             items[isoDate] = items[isoDate].sort((a, b) => {
                 return a.start_time > b.start_time;

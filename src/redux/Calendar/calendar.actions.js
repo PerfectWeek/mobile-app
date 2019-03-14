@@ -5,6 +5,8 @@ export const CalendarActionType = {
     GetCalendarsFail: "GET_CALENDARS_FAIL",
     GetEvents: 'GET_EVENTS',
     GetEventsSuccess: "GET_EVENTS_SUCCESS",
+    GetEventsImages: 'GET_IMAGES_EVENTS',
+    GetEventsImagesSuccess: "GET_IMAGES_EVENTS_SUCCESS",
     GetEventsFail: "GET_EVENTS_FAIL",
     CreateNewEvent: "CREATE_NEW_EVENT",
     CreateNewEventSuccess: "CREATE_NEW_EVENT_SUCCESS",
@@ -144,6 +146,20 @@ export const GetEvents = (_calendars) => {
 export const GetEventsSuccess = (events) => {
     return {
         type: CalendarActionType.GetEventsSuccess,
+        events
+    }
+};
+
+export const GetEventsImages = (events) => {
+    return {
+        type: CalendarActionType.GetEventsImages,
+        events
+    };
+};
+
+export const GetEventsImagesSuccess = (events) => {
+    return {
+        type: CalendarActionType.GetEventsImagesSuccess,
         events
     }
 };

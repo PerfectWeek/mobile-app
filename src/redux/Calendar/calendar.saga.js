@@ -149,12 +149,14 @@ function* LoadCalendar(action) {
         calendars = calendars.map(c => {
             return {...c.calendar, show: true}
         });
-        let events = yield CalendarService.GetEventsForCalendars(calendars);
-        events = yield CalendarService.GetEventsInfo(events);
+        let events_array = yield CalendarService.GetEventsForCalendars(calendars);
+        events_array = yield CalendarService.GetEventsInfo(events_array);
         yield put(GetCalendarsSuccess(calendars));
-        events = arrayToObject(events, 'id');
+        let events = arrayToObject(events_array, 'id');
         yield put(GetEventsSuccess(events));
         yield put(LoadCalendarSuccess());
+        events_array = yield CalendarService.GetEventsImage(events_array);
+        yield put(GetEventsSuccess(arrayToObject(events_array, 'id')));
     } catch (err) {
         yield ShowErrorNotification(err);
         yield put(LoadCalendarFail(err));
