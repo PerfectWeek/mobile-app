@@ -47,9 +47,10 @@ export const GetEventInfoFail = () => {
     }
 };
 
-export const ModifyEventSuccess = () => {
+export const ModifyEventSuccess = (event) => {
     return {
-        type: CalendarActionType.ModifyEventSuccess
+        type: CalendarActionType.ModifyEventSuccess,
+        event
     }
 };
 export const ModifyEventFail = () => {
@@ -72,9 +73,10 @@ export const DeleteEvent = (event) => {
     }
 };
 
-export const DeleteEventSuccess = () => {
+export const DeleteEventSuccess = (eventId) => {
     return {
-        type: CalendarActionType.DeleteEventSuccess
+        type: CalendarActionType.DeleteEventSuccess,
+        eventId
     }
 };
 
@@ -97,9 +99,10 @@ export const CreateNewEvent = (event) => {
     }
 };
 
-export const CreateNewEventSuccess = () => {
+export const CreateNewEventSuccess = (event) => {
     return {
-        type: CalendarActionType.CreateNewEventSuccess
+        type: CalendarActionType.CreateNewEventSuccess,
+        event
     }
 };
 

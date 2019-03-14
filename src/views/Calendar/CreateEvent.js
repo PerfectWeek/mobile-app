@@ -1,7 +1,7 @@
 import React from 'react';
 import {Dimensions, View, StyleSheet} from 'react-native';
 import connect from "react-redux/es/connect/connect";
-import {Button, Form, Icon, Input, Item, Text, Title, Container} from "native-base";
+import {Button, Form, Icon, Input, Picker, Item, Text, Title, Container} from "native-base";
 import RNPickerSelect from 'react-native-picker-select';
 
 
@@ -26,8 +26,7 @@ export class _CreateEvent extends React.Component {
             dateEndEvent: '',
             beginTime: new Date().toLocaleTimeString('en-US', {hour12: false, hour: "numeric", minute: "numeric"}),
             endTime: '',
-            calendarId: -1,
-            calRef: 0
+            calendarId: -1
         }
     }
 
@@ -177,29 +176,25 @@ export class _CreateEvent extends React.Component {
                                 </View>
                             </View>
                         </Item>
-
                         <Item last>
                             <Icon type='SimpleLineIcons' active name='calendar'/>
-                            <RNPickerSelect
-                                placeholder={{
-                                    label: 'Select a calendar...',
-                                    value: null,
-                                    color: '#9EA0A4'
-                                }}
-                                style={{...pickerSelectStyles}}
-                                items={listcal}
+                            <Picker
+                                placeholder="Select a calendar"
+                                placeholderStyle={{color: "#9EA0A4"}}
+                                note
+                                selectedValue={this.state.calendarId}
+                                mode="dropdown"
+                                style={{width: 120}}
                                 onValueChange={(value) => {
-                                    this.setState({
-                                        calendarId: value,
-                                    });
-                                }}
-                                value={this.state.calendarId}
-                                ref={(el) => {
-                                    this.state.calref = el;
-                                }}
-                                useNativeAndroidPickerStyle={false}
-                                hideIcon={true}
-                            />
+                                    this.setState({calendarId: value});
+                                }}>
+                                <Picker.Item label={"Select a calendar"} value={-1} key={-1}/>
+                                {
+                                    this.props.calendar.calendars.map(c => {
+                                        return <Picker.Item label={c.name} value={c.id} key={c.id}/>
+                                    })
+                                }
+                            </Picker>
                         </Item>
                         <Button success disabled={this.validator()}
                                 rounded style={{margin: 30, marginTop: 10}}

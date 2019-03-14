@@ -20,9 +20,11 @@ export const CalendarReducer = (state = default_state, action) => {
                 event: action.event
             };
         case CalendarActionType.ModifyEventSuccess:
+            var idx = state.events.findIndex(e => e.id === action.event.id);
+            state.events[idx] = action.event;
             return {
                 ...state,
-                status: CalendarActionType.ModifyEventSuccess
+                status: CalendarActionType.ModifyEventSuccess,
             };
         case CalendarActionType.ModifyEventFail:
             return {
@@ -42,9 +44,12 @@ export const CalendarReducer = (state = default_state, action) => {
                 event: action.event
             };
         case CalendarActionType.DeleteEventSuccess:
+            var idx = state.events.findIndex(e => e.id === action.eventId);
+            state.events.splice(idx, 1);
             return {
                 ...state,
-                status: CalendarActionType.DeleteEventSuccess
+                status: CalendarActionType.DeleteEventSuccess,
+                events : state.events
             };
         case CalendarActionType.DeleteEventFail:
             return {
@@ -65,7 +70,8 @@ export const CalendarReducer = (state = default_state, action) => {
         case CalendarActionType.CreateNewEventSuccess:
             return {
                 ...state,
-                status: CalendarActionType.CreateNewEventSuccess
+                status: CalendarActionType.CreateNewEventSuccess,
+                events: [action.event, ...state.events]
             };
         case CalendarActionType.CreateNewEventFail:
             return {

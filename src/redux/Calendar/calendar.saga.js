@@ -54,7 +54,7 @@ function* ModifyEvent(action) {
 
     if (response.status === 200) {
         yield ShowSuccessNotification("Event Modified");
-        yield put(ModifyEventSuccess());
+        yield put(ModifyEventSuccess(response.data.event));
     } else {
         let err;
         if (response.status !== 500 && response.data !== undefined && response.data.message !== undefined)
@@ -72,7 +72,7 @@ function* DeleteEvent(action) {
 
     if (response.status === 200) {
         yield ShowSuccessNotification("Event Deleted");
-        yield put(DeleteEventSuccess());
+        yield put(DeleteEventSuccess(action.event.id));
     } else {
         let err;
         if (response.status !== 500 && response.data !== undefined && response.data.message !== undefined)
@@ -96,7 +96,8 @@ function* CreatNewEvent(action) {
 
     if (response.status === 201) {
         yield ShowSuccessNotification("Event Created");
-        yield put(CreateNewEventSuccess());
+        const events = yield CalendarService.GetEventsInfo([response.data.event]);
+        yield put(CreateNewEventSuccess(events[0]));
     } else {
         let err;
         if (response.status !== 500 && response.data !== undefined && response.data.message !== undefined)
@@ -124,35 +125,6 @@ function* GetCalendars(action) {
         else
             err = "Connection error";
         yield put(GetCalendarsFail(err));
-        yield ShowErrorNotification(err);
-    }
-}
-
-function* GetEvents(action) {
-    try {
-        let events = [];
-
-        const listCalendars = action.calendars;
-        for (let idx = 0; idx < listCalendars.length; idx++) {
-            const item = listCalendars[idx];
-            if (item.show) {
-                const listEvents = yield Network.Get('/calendars/' + item.id + '/events');
-                if (listEvents.status !== 200) {
-                    throw listEvents;
-                }
-                events.push(
-                    ...listEvents.data.events
-                );
-            }
-        }
-        yield put(GetEventsSuccess(events));
-    } catch (e) {
-        let err;
-        if (e !== undefined && e.message !== undefined)
-            err = e.message;
-        else
-            err = "Connection error";
-        yield put(GetEventsFail(err));
         yield ShowErrorNotification(err);
     }
 }
@@ -190,7 +162,6 @@ function* LoadCalendar(action) {
 export function* CalendarSaga() {
     yield takeEvery(CalendarActionType.ReloadEvents, ReloadEvents);
     yield takeEvery(CalendarActionType.LoadCalendar, LoadCalendar);
-    yield takeEvery(CalendarActionType.GetEvents, GetEvents);
     yield takeEvery(CalendarActionType.GetCalendars, GetCalendars);
     yield takeEvery(CalendarActionType.ModifyEvent, ModifyEvent);
     yield takeEvery(CalendarActionType.GetEventInfo, GetTheEventInfo);
