@@ -5,6 +5,8 @@ export const CalendarActionType = {
     GetCalendarsFail: "GET_CALENDARS_FAIL",
     GetEvents: 'GET_EVENTS',
     GetEventsSuccess: "GET_EVENTS_SUCCESS",
+    GetEventsImages: 'GET_IMAGES_EVENTS',
+    GetEventsImagesSuccess: "GET_IMAGES_EVENTS_SUCCESS",
     GetEventsFail: "GET_EVENTS_FAIL",
     CreateNewEvent: "CREATE_NEW_EVENT",
     CreateNewEventSuccess: "CREATE_NEW_EVENT_SUCCESS",
@@ -20,7 +22,11 @@ export const CalendarActionType = {
     DeleteEventFail: "DELETE_EVENT_FAIL",
     RefreshCalendar: "REFRESH_CALENDAR",
     SetFilters: "SET_FILTERS",
-    ResetStatus: "RESET_STATUS"
+    ResetStatus: "RESET_STATUS",
+    ReloadEvents: 'RELOAD_EVENTS',
+    LoadCalendar: 'LOAD_CALENDAR',
+    LoadCalendarSuccess: "LOAD_CALENDAR_SUCCESS",
+    LoadCalendarFail: "LOAD_CALENDAR_FAIL",
 };
 
 export const GetEventInfo = (event) => {
@@ -43,9 +49,10 @@ export const GetEventInfoFail = () => {
     }
 };
 
-export const ModifyEventSuccess = () => {
+export const ModifyEventSuccess = (event) => {
     return {
-        type: CalendarActionType.ModifyEventSuccess
+        type: CalendarActionType.ModifyEventSuccess,
+        event
     }
 };
 export const ModifyEventFail = () => {
@@ -61,16 +68,17 @@ export const ModifyTheEvent = (event) => {
     }
 };
 
-export const DeleteEvent = (event) => {
+export const DeleteEvent = (eventId) => {
     return {
         type: CalendarActionType.DeleteEvent,
-        event: event
+        eventId
     }
 };
 
-export const DeleteEventSuccess = () => {
+export const DeleteEventSuccess = (eventId) => {
     return {
-        type: CalendarActionType.DeleteEventSuccess
+        type: CalendarActionType.DeleteEventSuccess,
+        eventId
     }
 };
 
@@ -93,9 +101,10 @@ export const CreateNewEvent = (event) => {
     }
 };
 
-export const CreateNewEventSuccess = () => {
+export const CreateNewEventSuccess = (event) => {
     return {
-        type: CalendarActionType.CreateNewEventSuccess
+        type: CalendarActionType.CreateNewEventSuccess,
+        event
     }
 };
 
@@ -141,6 +150,20 @@ export const GetEventsSuccess = (events) => {
     }
 };
 
+export const GetEventsImages = (events) => {
+    return {
+        type: CalendarActionType.GetEventsImages,
+        events
+    };
+};
+
+export const GetEventsImagesSuccess = (events) => {
+    return {
+        type: CalendarActionType.GetEventsImagesSuccess,
+        events
+    }
+};
+
 export const GetEventsFail = (error_message) => {
     return {
         type: CalendarActionType.GetEventsFail,
@@ -158,5 +181,32 @@ export const SetFilters = (calendars) => {
 export const ResetStatus = () => {
     return {
         type: CalendarActionType.ResetStatus
+    };
+};
+
+export const ReloadEvents = (calendars) => {
+    return {
+        type: CalendarActionType.ReloadEvents,
+        calendars
+    };
+};
+
+export const LoadCalendar = (pseudo) => {
+    return {
+        type: CalendarActionType.LoadCalendar,
+        pseudo
+    };
+};
+
+export const LoadCalendarSuccess = () => {
+    return {
+        type: CalendarActionType.LoadCalendarSuccess
+    }
+};
+
+export const LoadCalendarFail = (error_message) => {
+    return {
+        type: CalendarActionType.LoadCalendarFail,
+        error_message: error_message
     };
 };

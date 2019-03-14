@@ -1,1 +1,0 @@
-export const groups = (state) => state.group;

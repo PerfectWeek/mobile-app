@@ -7,7 +7,7 @@ import {Dimensions, ScrollView} from "react-native";
 import {
     GetAllUsersEvents,
     GetUsersEventsFiltered,
-    RefreshCalendar,
+    RefreshCalendar, ReloadEvents,
     SetFilters
 } from "../../redux/Calendar/calendar.actions";
 
@@ -38,7 +38,7 @@ class _CalendarFilter extends Component {
                 actionButtonTitle='Filter'
                 validateCallback={() => {
                     this.props.SetFilters(this.state.filters);
-                    this.props.RefreshCalendar();
+                    this.props.RefreshCalendar(this.props.calendar.calendars);
                     this.modal.toggle();
                 }}>
                 <View style={{
@@ -77,7 +77,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
         SetFilters: (calendars) => dispatch(SetFilters(calendars)),
-        RefreshCalendar: () => dispatch(RefreshCalendar()),
+        RefreshCalendar: (calendars) => dispatch(ReloadEvents(calendars)),
 
 
     }
