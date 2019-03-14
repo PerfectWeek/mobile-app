@@ -15,6 +15,7 @@ import Swipeout from 'react-native-swipeout';
 import {CalendarFilter} from "./CalendarFilter";
 import moment from 'moment'
 import {dateDiffInDays, getRandomColor, timeToString} from "../../Utils/utils";
+import * as Animatable from 'react-native-animatable';
 
 export class _CalendarDashboard extends Component {
     constructor(props) {
@@ -119,8 +120,12 @@ export class _CalendarDashboard extends Component {
                         justifyContent: 'space-between',
                         alignItems: 'center'
                     }}>
-                        <Thumbnail
-                            source={{uri: item.image}}/>
+                        {item.image === undefined ? null :
+                            <Animatable.View animation="fadeIn">
+                                <Thumbnail source={{uri: item.image}}/>
+                            </Animatable.View>
+                        }
+
                         <View>
                             <Text style={{fontSize: 18, fontFamily: 'Lato_Bold'}}>{item.name}</Text>
                             <Text style={{
@@ -130,7 +135,11 @@ export class _CalendarDashboard extends Component {
                                 {start_string} - {end_string}
                             </Text>
                         </View>
-                        <Text style={{alignSelf: 'flex-start' ,fontSize: 18, fontFamily: 'Lato_Medium'}}>{item.calendar_name}</Text>
+                        <Text style={{
+                            alignSelf: 'flex-start',
+                            fontSize: 18,
+                            fontFamily: 'Lato_Medium'
+                        }}>{item.calendar_name}</Text>
                     </View>
 
                 </TouchableHighlight>
@@ -265,7 +274,11 @@ const mapStateToProps = (state, ownProps) => {
                 end.setUTCHours(0);
                 end.setUTCMinutes(0);
             }
-            if (strTimeStart > new Date(event.start_time)) {
+            if (strTimeStart > start && dateDiffInDays(end, strTimeStart) !== 0) {
+                end.setUTCHours(0);
+                end.setUTCMinutes(0);
+            }
+            if (strTimeStart > start) {
                 start.setUTCHours(0);
                 start.setUTCMinutes(0);
             }

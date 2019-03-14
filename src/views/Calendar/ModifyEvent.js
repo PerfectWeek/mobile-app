@@ -1,7 +1,7 @@
 import React from 'react';
-import {Dimensions, View, StyleSheet} from 'react-native';
+import {Dimensions, View, StyleSheet, TouchableOpacity} from 'react-native';
 import connect from "react-redux/es/connect/connect";
-import {Button, Form, Icon, Input, Item, Text, Title, Container} from "native-base";
+import {Button, Form, Icon, Input, Item, Text, Title, Container, Thumbnail} from "native-base";
 import RNPickerSelect from 'react-native-picker-select';
 
 
@@ -43,7 +43,10 @@ export class _ModifyEvent extends React.Component {
             beginTime: beginTimeEvent[1].substring(0, 5),
             dateEndEvent: endTimeEvent[0],
             endTime: endTimeEvent[1].substring(0, 5),
-            recievedEvent: true
+            recievedEvent: true,
+            image: event.image,
+            display: event.image,
+            new_image: false
         };
     }
 
@@ -58,15 +61,9 @@ export class _ModifyEvent extends React.Component {
     }
 
     render() {
-        // if (this.props.calendar && this.props.calendar.status === CalendarActionType.ModifyEventSuccess)
-        // {
-        //     this.props.navigation.goBack();
-        //     this.props.RefreshCalendar();
-        // }
 
         if (this.props.calendar && (this.props.calendar.status === CalendarActionType.ModifyEvent
-            || this.props.calendar.status === CalendarActionType.GetEventInfo)
-        )
+            || this.props.calendar.status === CalendarActionType.GetEventInfo))
             return (
                 <Container style={{
                     flexDirection: 'row',
@@ -76,12 +73,22 @@ export class _ModifyEvent extends React.Component {
                     <Loader/>
                 </Container>
             );
-        // if (this.props.calendar && this.props.calendar.status === CalendarActionType.GetEventInfoSuccess && this.state.recievedEvent === false)
-        //     this.fillInfoEvent(this.props.calendar.event);
         return (
             <Container>
+                <View style={{flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+                    <Thumbnail large source={{uri: this.state.display}}/>
+                    <TouchableOpacity style={GreenButtonStyle}
+                                      onPress={async () => {
+                                          const res = await Expo.ImagePicker.launchImageLibraryAsync();
+                                          if (res.cancelled)
+                                              return;
+                                          this.setState({...this.state, image: res, display: res.uri, new_image: true});
+                                      }}>
+                        <Text style={{fontSize: 18}}>Select image</Text>
+                    </TouchableOpacity>
+                </View>
                 <View style={{
-                    flexDirection: 'row', justifyContent: 'space-between', marginTop: 20
+                    flexDirection: 'row', justifyContent: 'space-between'
                 }}>
                     <Form style={{
                         marginLeft: 10, marginRight: 30, flexGrow: 3
@@ -246,6 +253,18 @@ const pickerSelectStyles = StyleSheet.create({
     }
 });
 
+const GreenButtonStyle = {
+    width: 150,
+    height: 50,
+    borderWidth: 2,
+    borderColor: '#5CB85C',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 10,
+    margin: 10
+};
 const textStyle = {margin: 10, color: 'black', fontFamily: 'Roboto_medium', fontSize: 16};
 
 
