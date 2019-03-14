@@ -5,7 +5,7 @@ import {Button, Form, Icon, Input, Item, Text, Title, Container} from "native-ba
 import RNPickerSelect from 'react-native-picker-select';
 
 
-import {CalendarActionType, RefreshCalendar, GetEventInfo, ModifyTheEvent} from "../../redux/Calendar/calendar.actions";
+import {CalendarActionType, RefreshCalendar, ModifyTheEvent} from "../../redux/Calendar/calendar.actions";
 import DatePicker from "react-native-datepicker";
 import Loader from "../../Components/Loader";
 import moment from "moment";
@@ -18,7 +18,7 @@ export class _ModifyEvent extends React.Component {
 
     constructor(props) {
         super(props);
-        const event = this.props.calendar.events.find(e => e.id === this.props.navigation.state.params.eventId);
+        const event = this.props.calendar.events[this.props.navigation.state.params.eventId];
         this.state = this.fillInfoEvent(event);
     }
 
@@ -207,7 +207,6 @@ export class _ModifyEvent extends React.Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        GetEventInfo: (event) => dispatch(GetEventInfo(event)),
         ModifyTheEvent: (event) => dispatch(ModifyTheEvent(event)),
         RefreshCalendar: () => dispatch(RefreshCalendar())
     }

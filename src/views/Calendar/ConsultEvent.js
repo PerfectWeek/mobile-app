@@ -17,7 +17,7 @@ export class _ConsultEvent extends React.Component {
 
     constructor(props) {
         super(props);
-        const event = this.props.calendar.events.find(e => e.id === this.props.navigation.state.params.eventId);
+        const event = this.props.calendar.events[this.props.navigation.state.params.eventId];
         this.state = this.fillInfoEvent(event);
     }
 

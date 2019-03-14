@@ -66,10 +66,10 @@ export const ModifyTheEvent = (event) => {
     }
 };
 
-export const DeleteEvent = (event) => {
+export const DeleteEvent = (eventId) => {
     return {
         type: CalendarActionType.DeleteEvent,
-        event: event
+        eventId
     }
 };
 

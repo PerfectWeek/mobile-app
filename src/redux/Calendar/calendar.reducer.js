@@ -20,8 +20,7 @@ export const CalendarReducer = (state = default_state, action) => {
                 event: action.event
             };
         case CalendarActionType.ModifyEventSuccess:
-            var idx = state.events.findIndex(e => e.id === action.event.id);
-            state.events[idx] = action.event;
+            state.events[action.event.id] = action.event;
             return {
                 ...state,
                 status: CalendarActionType.ModifyEventSuccess,
@@ -40,16 +39,13 @@ export const CalendarReducer = (state = default_state, action) => {
         case CalendarActionType.DeleteEvent:
             return {
                 ...state,
-                status: CalendarActionType.DeleteEvent,
-                event: action.event
+                status: CalendarActionType.DeleteEvent
             };
         case CalendarActionType.DeleteEventSuccess:
-            var idx = state.events.findIndex(e => e.id === action.eventId);
-            state.events.splice(idx, 1);
+            delete state.events[action.eventId];
             return {
                 ...state,
-                status: CalendarActionType.DeleteEventSuccess,
-                events : state.events
+                status: CalendarActionType.DeleteEventSuccess
             };
         case CalendarActionType.DeleteEventFail:
             return {
@@ -64,14 +60,13 @@ export const CalendarReducer = (state = default_state, action) => {
         case CalendarActionType.CreateNewEvent:
             return {
                 ...state,
-                status: CalendarActionType.CreateNewEvent,
-                event: action.event
+                status: CalendarActionType.CreateNewEvent
             };
         case CalendarActionType.CreateNewEventSuccess:
+            state.events[action.event.id] = action.event;
             return {
                 ...state,
                 status: CalendarActionType.CreateNewEventSuccess,
-                events: [action.event, ...state.events]
             };
         case CalendarActionType.CreateNewEventFail:
             return {

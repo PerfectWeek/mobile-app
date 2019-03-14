@@ -236,10 +236,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const mapStateToProps = (state, ownProps) => {
     let events = [];
-    if (state.calendar.events)
-        events = state.calendar.events.map(e => {
+    if (state.calendar.events) {
+        events = Object.values(state.calendar.events).map(e => {
             return {...e, calendar_name: state.calendar.calendars.find(c => c.id === e.calendar_id).name}
         });
+    }
 
     let items = {};
     for (let i = -150; i < 185; i++) {
@@ -255,6 +256,7 @@ const mapStateToProps = (state, ownProps) => {
         const event = events[k];
         let strTimeStart = new Date(event.start_time);
         const strTimee = new Date(event.end_time);
+        const color = getRandomColor();
         while (strTimeStart.getTime() <= strTimee.getTime()) {
             let isoDate = timeToString(strTimeStart);
             if (items[isoDate] === undefined)
@@ -275,7 +277,7 @@ const mapStateToProps = (state, ownProps) => {
                 calendar_name: event.calendar_name,
                 start_time: new Date(start),
                 end_time: end,
-                color: getRandomColor()
+                color: color
             });
             items[isoDate] = items[isoDate].sort((a, b) => {
                 return a.start_time > b.start_time;

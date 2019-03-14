@@ -68,11 +68,11 @@ function* ModifyEvent(action) {
 }
 
 function* DeleteEvent(action) {
-    const response = yield Network.Delete('/events/' + action.event);
+    const response = yield Network.Delete('/events/' + action.eventId);
 
     if (response.status === 200) {
         yield ShowSuccessNotification("Event Deleted");
-        yield put(DeleteEventSuccess(action.event.id));
+        yield put(DeleteEventSuccess(action.eventId));
     } else {
         let err;
         if (response.status !== 500 && response.data !== undefined && response.data.message !== undefined)
@@ -95,8 +95,8 @@ function* CreatNewEvent(action) {
     });
 
     if (response.status === 201) {
-        yield ShowSuccessNotification("Event Created");
         const events = yield CalendarService.GetEventsInfo([response.data.event]);
+        yield ShowSuccessNotification("Event Created");
         yield put(CreateNewEventSuccess(events[0]));
     } else {
         let err;
@@ -134,6 +134,7 @@ function* ReloadEvents(action) {
         const filtered_calendars = action.calendars.filter(c => c.show);
         let events = yield CalendarService.GetEventsForCalendars(filtered_calendars);
         events = yield CalendarService.GetEventsInfo(events);
+        events = arrayToObject(events, 'id');
         yield put(GetEventsSuccess(events));
         yield put(LoadCalendarSuccess());
     } catch (err) {
@@ -151,6 +152,7 @@ function* LoadCalendar(action) {
         let events = yield CalendarService.GetEventsForCalendars(calendars);
         events = yield CalendarService.GetEventsInfo(events);
         yield put(GetCalendarsSuccess(calendars));
+        events = arrayToObject(events, 'id');
         yield put(GetEventsSuccess(events));
         yield put(LoadCalendarSuccess());
     } catch (err) {
