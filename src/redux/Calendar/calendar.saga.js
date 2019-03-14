@@ -48,7 +48,6 @@ function* ModifyEvent(action) {
 
     if (response.status === 200) {
         var modified_event = response.data.event;
-        modified_event.image = action.event.image;
         yield ShowSuccessNotification("Event Modified");
         yield put(ModifyEventSuccess(modified_event));
     } else {
@@ -150,11 +149,13 @@ function* GetCalendars(action) {
 function* ReloadEvents(action) {
     try {
         const filtered_calendars = action.calendars.filter(c => c.show);
-        let events = yield CalendarService.GetEventsForCalendars(filtered_calendars);
-        events = yield CalendarService.GetEventsInfo(events);
-        events = arrayToObject(events, 'id');
+        let events_array = yield CalendarService.GetEventsForCalendars(filtered_calendars);
+        events_array = yield CalendarService.GetEventsInfo(events_array);
+        let events = arrayToObject(events_array, 'id');
         yield put(GetEventsSuccess(events));
         yield put(LoadCalendarSuccess());
+        events_array = yield CalendarService.GetEventsImage(events_array);
+        yield put(GetEventsSuccess(arrayToObject(events_array, 'id')));
     } catch (err) {
         yield ShowErrorNotification(err);
         yield put(LoadCalendarFail(err));

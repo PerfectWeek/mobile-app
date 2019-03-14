@@ -20,7 +20,7 @@ export const CalendarReducer = (state = default_state, action) => {
                 event: action.event
             };
         case CalendarActionType.ModifyEventSuccess:
-            state.events[action.event.id] = action.event;
+            state.events[action.event.id] = { ...state.events[action.event.id], ...action.event};
             return {
                 ...state,
                 status: CalendarActionType.ModifyEventSuccess,

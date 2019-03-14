@@ -6,6 +6,7 @@ import Modal from "../../Components/Modal";
 import {validateNotEmpty} from "../../Utils/utils";
 import {CreateGroup, GroupsActionType} from "../../redux/Groups/groups.actions";
 import {ScreenBackgroundColor} from "../../../Style/Constant";
+import Loader from "../../Components/Loader";
 
 export class _CreateGroupScreen extends React.Component {
     static navigationOptions = {
@@ -43,9 +44,10 @@ export class _CreateGroupScreen extends React.Component {
                                    onChangeText={(text) => this.setState({groupName: text})}/>
                         </Item>
                         <Item>
-                            <Input style={{textAlign: 'center', color: 'black', fontFamily: 'Lato_Medium', fontSize: 16}}
-                                   placeholder="Description" value={this.state.description}
-                                   onChangeText={(text) => this.setState({description: text})}/>
+                            <Input
+                                style={{textAlign: 'center', color: 'black', fontFamily: 'Lato_Medium', fontSize: 16}}
+                                placeholder="Description" value={this.state.description}
+                                onChangeText={(text) => this.setState({description: text})}/>
                         </Item>
                         <Title style={{
                             color: 'black',
@@ -104,16 +106,25 @@ export class _CreateGroupScreen extends React.Component {
                         }
                     </View>
                 </ScrollView>
-                <Button success disabled={this.state.groupName === ''}
-                        rounded style={{margin: 30, marginTop:5}}
-                        onPress={() => {
-                            this.props.CreateGroup({name: this.state.groupName, description : this.state.description, members: this.state.usersToAdd})
-                            // this.props.navigation.pop();
-                        }}>
-                    <Text>
-                        Create Group
-                    </Text>
-                </Button>
+                {
+                    this.props.groups.status === GroupsActionType.CreateGroup ? <Loader/> :
+                        <Button success
+                                disabled={this.state.groupName === '' || this.props.groups.status === GroupsActionType.CreateGroup}
+                                rounded style={{margin: 30, marginTop: 5}}
+                                onPress={() => {
+                                    this.props.CreateGroup({
+                                        name: this.state.groupName,
+                                        description: this.state.description,
+                                        members: this.state.usersToAdd
+                                    })
+                                    // this.props.navigation.pop();
+                                }}>
+                            <Text>
+                                Create Group
+                            </Text>
+                        </Button>
+                }
+
             </Container>
         )
     }

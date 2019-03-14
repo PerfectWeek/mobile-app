@@ -120,7 +120,7 @@ export class _CalendarDashboard extends Component {
                         justifyContent: 'space-between',
                         alignItems: 'center'
                     }}>
-                        {item.image === undefined ? null :
+                        {item.image === undefined || item.image === null ? null :
                             <Animatable.View animation="fadeIn">
                                 <Thumbnail source={{uri: item.image}}/>
                             </Animatable.View>
@@ -264,24 +264,46 @@ const mapStateToProps = (state, ownProps) => {
         let strTimeStart = new Date(event.start_time);
         const strTimee = new Date(event.end_time);
         const color = getRandomColor();
-        while (strTimeStart.getTime() <= strTimee.getTime()) {
+
+
+        let diffInDays = Math.abs(dateDiffInDays(new Date(event.end_time), new Date(event.start_time)));
+        for (let i = diffInDays; i >= 0; --i) {
             let isoDate = timeToString(strTimeStart);
             if (items[isoDate] === undefined)
                 items[isoDate] = [];
             let start = new Date(event.start_time);
             let end = new Date(event.end_time);
-            if (strTimeStart <= start && dateDiffInDays(end, start) !== 0) {
+
+            if (i > 0) {
                 end.setUTCHours(0);
                 end.setUTCMinutes(0);
             }
-            if (strTimeStart > start && dateDiffInDays(end, strTimeStart) !== 0) {
-                end.setUTCHours(0);
-                end.setUTCMinutes(0);
-            }
-            if (strTimeStart > start) {
+            if (diffInDays > 0 && i < diffInDays) {
                 start.setUTCHours(0);
                 start.setUTCMinutes(0);
             }
+
+            // if (strTimeStart > start && dateDiffInDays(end, strTimeStart) !== 0) {
+            //     end.setUTCHours(0);
+            //     end.setUTCMinutes(0);
+            // }
+            // if (strTimeStart > start) {
+            //     start.setUTCHours(0);
+            //     start.setUTCMinutes(0);
+            // }
+
+            // if (strTimeStart <= start && dateDiffInDays(end, start) !== 0) {
+            //     end.setUTCHours(0);
+            //     end.setUTCMinutes(0);
+            // }
+            // if (strTimeStart > start && dateDiffInDays(end, strTimeStart) !== 0) {
+            //     end.setUTCHours(0);
+            //     end.setUTCMinutes(0);
+            // }
+            // if (strTimeStart > start) {
+            //     start.setUTCHours(0);
+            //     start.setUTCMinutes(0);
+            // }
             items[isoDate].push({
                 id: event.id,
                 name: event.name,

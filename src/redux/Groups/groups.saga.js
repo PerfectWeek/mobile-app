@@ -131,6 +131,8 @@ function* CreateGroup(action) {
         description: action.group.description
     });
     if (resp.status === 201) {
+        let res = yield GroupService.GetGroupsImage([resp.data.group]);
+        resp.data.group.image = res[0].image;
         yield put(CreateGroupSuccess(resp.data.group));
         yield ShowSuccessNotification("Creation successful");
     } else {
