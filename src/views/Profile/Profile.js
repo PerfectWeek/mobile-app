@@ -12,6 +12,7 @@ import {
     Text,
     View,
     Toast,
+    Badge,
     Container,
     Thumbnail,
     ActionSheet
@@ -28,6 +29,9 @@ import {ProfileImagePicker} from "./ProfileImagePicker";
 
 
 export class _Profile extends React.Component {
+    static navigationOptions = {
+        header: null
+    }
     constructor(props) {
         super(props);
         this.state = {pseudo: this.props.login.pseudo};
@@ -50,6 +54,14 @@ export class _Profile extends React.Component {
                     <Title style={{color: '#000000', textAlign: 'center'}}>Profile</Title>
                     </Body>
                     <Right>
+                        <Button transparent onPress={() => {
+                            this.props.navigation.navigate('Invite')
+                        }}>
+                        <Icon type={"SimpleLineIcons"} name='bell' style={{color: '#064C96', fontSize:20}}/>
+                        </Button>
+                        <Badge info>
+                            <Text style={{fontSize:15}} >2</Text>
+                        </Badge>
                         <Button transparent onPress={() => {
                             const BUTTONS = [];
                             const ButtonsCallback = [];

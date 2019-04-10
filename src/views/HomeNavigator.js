@@ -1,6 +1,6 @@
 import React from 'react';
 import {Icon} from 'native-base';
-import {Profile} from './Profile/Profile';
+import ProfileNavigator from './Profile/ProfileNavigator';
 import {createBottomTabNavigator} from "react-navigation";
 import {HeaderBackgroundColor} from "../../Style/Constant";
 import {GroupsNavigator} from "./Groups/GroupsNavigator";
@@ -27,14 +27,14 @@ export default createBottomTabNavigator(
             }
         },
         Profile: {
-            screen: Profile,
+            screen: ProfileNavigator,
             navigationOptions: {
                 tabBarIcon: ({focused, tintColor}) => <Icon
                     name='user'
                     type='FontAwesome'
                     style={{color: tintColor}}/>
             }
-        }
+        },
     },
     {
         tabBarOptions: {

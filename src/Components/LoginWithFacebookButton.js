@@ -8,6 +8,8 @@ import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
 import {CheckIfLogged, LoginGoogle} from "../redux/Login/login.actions";
 import {Facebook} from "expo";
+import { Constants } from 'expo';
+
 import {ShowErrorNotification, ShowSuccessNotification} from "../Utils/NotificationsModals";
 
 class _LoginWithFacebookButton extends Component {
@@ -20,6 +22,11 @@ class _LoginWithFacebookButton extends Component {
     }
 
     async loginFacebook() {
+        let clientId = '';
+        if (Constants.isDevice)
+            clientId = '1085104211662288'; // PROD
+        else
+            clientId = '1611448665582219'; // DEV
         try {
             const {
                 type,
@@ -27,7 +34,7 @@ class _LoginWithFacebookButton extends Component {
                 expires,
                 permissions,
                 declinedPermissions,
-            } = await Facebook.logInWithReadPermissionsAsync('1611448665582219', {
+            } = await Facebook.logInWithReadPermissionsAsync(clientId, {
                 permissions: ['public_profile'],
             });
             if (type === 'success') {
