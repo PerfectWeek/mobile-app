@@ -54,7 +54,7 @@ export class _ConsultEvent extends React.Component {
 
         return (
             <Container>
-                <View style={{flex: 1, flexDirection: 'column', alignItems: 'center', margin: 20}}>
+                <View style={{flex: 1, flexDirection: 'column', alignItems: 'center', margin: 20, marginBottom:40}}>
                     <Thumbnail large source={{uri: this.state.image}}/>
                     <Text style={{...textStyle, fontSize: 26}}>
                         {this.state.EventTitle}

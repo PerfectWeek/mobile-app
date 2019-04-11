@@ -120,12 +120,13 @@ export class _ModifyEvent extends React.Component {
                                 <View style={{
                                     flexDirection: 'row',
                                     justifyContent: 'flex-start',
-                                    alignItems: 'center'
+                                    alignItems: 'center',
+                                    marginTop: 5
                                 }}>
                                     <DatePicker
                                         customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
                                         style={{
-                                            width: 200, height: 50, justifyContent: 'center',
+                                            width: 200, height: 40, justifyContent: 'center',
                                             alignItems: 'center'
                                         }}
                                         placeholder={this.state.dateBeginEvent === '' ? "Beginning" : this.state.dateBeginEvent}
@@ -158,12 +159,14 @@ export class _ModifyEvent extends React.Component {
                                 <View style={{
                                     flexDirection: 'row',
                                     justifyContent: 'flex-start',
-                                    alignItems: 'center'
+                                    alignItems: 'center',
+                                    marginBottom: 5,
+                                    marginTop: 5
                                 }}>
                                     <DatePicker
                                         customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
                                         style={{
-                                            width: 200, height: 50, justifyContent: 'center',
+                                            width: 200, height: 40, justifyContent: 'center',
                                             alignItems: 'center', borderLeftColor: 'white'
                                         }}
                                         placeholder={this.state.dateEndEvent === '' ? "Ending" : this.state.dateEndEvent}
@@ -255,7 +258,7 @@ const pickerSelectStyles = StyleSheet.create({
 
 const GreenButtonStyle = {
     width: 150,
-    height: 50,
+    height: 40,
     borderWidth: 2,
     borderColor: '#5CB85C',
     alignItems: 'center',
@@ -265,7 +268,7 @@ const GreenButtonStyle = {
     padding: 10,
     margin: 10
 };
-const textStyle = {margin: 10, color: 'black', fontFamily: 'Roboto_medium', fontSize: 16};
+const textStyle = {margin: 5, color: 'black', fontFamily: 'Roboto_medium', fontSize: 16};
 
 
 export const ModifyEvent = connect(mapStateToProps, mapDispatchToProps)(_ModifyEvent);
