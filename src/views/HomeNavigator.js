@@ -1,5 +1,5 @@
 import React from 'react';
-import {Icon} from 'native-base';
+import {Badge, Icon, Text, View} from 'native-base';
 import ProfileNavigator from './Profile/ProfileNavigator';
 import {createBottomTabNavigator} from "react-navigation";
 import {HeaderBackgroundColor} from "../../Style/Constant";
@@ -29,10 +29,17 @@ export default createBottomTabNavigator(
         Profile: {
             screen: ProfileNavigator,
             navigationOptions: {
-                tabBarIcon: ({focused, tintColor}) => <Icon
-                    name='user'
-                    type='FontAwesome'
-                    style={{color: tintColor}}/>
+                tabBarIcon: ({focused, tintColor}) =>
+                    <View>
+                        <Icon
+                            name='user'
+                            type='FontAwesome'
+                            style={{color: tintColor}}/>
+                        <View style={{ position: 'absolute', left: 12, top: 5, backgroundColor: 'red', borderRadius: 9, width: 18, height: 18, justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={{ color: 'white' }}>9</Text>
+                        </View>
+                    </View>
+
             }
         },
     },

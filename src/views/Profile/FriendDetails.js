@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Dimensions, View, ScrollView, Alert} from 'react-native';
+import {Dimensions, View, ScrollView, Alert, Platform} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 import {
     Thumbnail,
@@ -42,7 +42,7 @@ export class _FriendDetails extends Component {
             10: {id: 10, title: 'Football', type: 'Event'}
         };
         return (
-            <View style={{backgroundColor: ScreenBackgroundColor}}>
+            <View style={{backgroundColor: ScreenBackgroundColor, paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight}}>
                 <Header
                     androidStatusBarColor="#000"
                     style={{backgroundColor: "#FFF"}}

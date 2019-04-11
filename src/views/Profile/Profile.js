@@ -32,6 +32,7 @@ export class _Profile extends React.Component {
     static navigationOptions = {
         header: null
     }
+
     constructor(props) {
         super(props);
         this.state = {pseudo: this.props.login.pseudo};
@@ -57,11 +58,23 @@ export class _Profile extends React.Component {
                         <Button transparent onPress={() => {
                             this.props.navigation.navigate('Invite')
                         }}>
-                        <Icon type={"SimpleLineIcons"} name='bell' style={{color: '#064C96', fontSize:20}}/>
+                            <Icon type={"SimpleLineIcons"} name='bell' style={{color: '#064C96', fontSize: 20}}/>
+
+                            <View style={{
+                                position: 'absolute',
+                                left: 25,
+                                top: 5,
+                                backgroundColor: 'red',
+                                borderRadius: 9,
+                                width: 18,
+                                height: 18,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                                <Text style={{color: 'white'}}>9</Text>
+                            </View>
                         </Button>
-                        <Badge info>
-                            <Text style={{fontSize:15}} >2</Text>
-                        </Badge>
+
                         <Button transparent onPress={() => {
                             const BUTTONS = [];
                             const ButtonsCallback = [];

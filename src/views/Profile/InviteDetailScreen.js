@@ -45,6 +45,10 @@ export class _InviteDetailScreen extends React.Component {
                     >
                         <Text>No</Text>
                     </Button>
+                    <Button style={{marginLeft: 15}} info
+                    >
+                        <Text>Dismiss</Text>
+                    </Button>
                 </View>
             </View>
 

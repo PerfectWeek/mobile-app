@@ -73,7 +73,23 @@ export class _Invite extends React.Component {
                                             </Body>
                                             <Right>
                                                 <Icon style={{marginTop: 10, fontSize: 28}}
-                                                      type='SimpleLineIcons' name='options-vertical'/>
+                                                      type='SimpleLineIcons' name='options-vertical'
+                                                      onPress={() => {
+                                                          const BUTTONS = ["Yes", "No", "Dismiss", "Cancel"];
+                                                          const CANCEL_INDEX = BUTTONS.length - 1;
+                                                          const ButtonsCallback = [() => {}, () => {}, () => {}, () =>{}];
+                                                          ActionSheet.show(
+                                                              {
+                                                                  options: BUTTONS,
+                                                                  cancelButtonIndex: CANCEL_INDEX,
+                                                                  title: "Response"
+                                                              },
+                                                              buttonIndex => {
+                                                                  ButtonsCallback[buttonIndex]();
+                                                              })
+
+                                                      }}
+                                                />
                                             </Right>
                                         </ListItem>
 
