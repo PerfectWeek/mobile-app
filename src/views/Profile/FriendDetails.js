@@ -55,7 +55,7 @@ export class _FriendDetails extends Component {
                         </Button>
                     </Left>
                     <Body>
-                    <Title style={{color: '#000000', textAlign: 'center'}}>Profile</Title>
+                        <Title style={{color: '#000000', textAlign: 'center'}}>Profile</Title>
                     </Body>
                     <Right>
                         <Button transparent onPress={() => {
@@ -92,9 +92,7 @@ export class _FriendDetails extends Component {
                     marginTop: 20,
                     marginBottom: 10,
                     fontSize: 18,
-                    fontWeight: "bold",
-                    bottomBorderWidth: 1,
-                    borderBottomColor: 'red'
+                    fontWeight: "bold"
                 }}> Common events</Text>
                 <ScrollView style={{
                     backgroundColor: ScreenBackgroundColor,
