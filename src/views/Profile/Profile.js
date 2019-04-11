@@ -65,6 +65,14 @@ export class _Profile extends React.Component {
                         <Button transparent onPress={() => {
                             const BUTTONS = [];
                             const ButtonsCallback = [];
+                            BUTTONS.push("Friends list");
+                            ButtonsCallback.push(() => {
+                                this.props.navigation.navigate('FriendsList')
+                            });
+                            BUTTONS.push("Edit profile picture");
+                            ButtonsCallback.push(() => {
+                                this.ProfilePictureModal.openEditModal();
+                            });
                             BUTTONS.push("Logout");
                             ButtonsCallback.push(() => {
                                 Alert.alert('Logout ?', '', [{
@@ -75,10 +83,6 @@ export class _Profile extends React.Component {
                                     text: 'Cancel', onPress: () => {
                                     }, style: 'cancel'
                                 }], {cancelable: false})
-                            });
-                            BUTTONS.push("Edit profile picture");
-                            ButtonsCallback.push(() => {
-                                this.ProfilePictureModal.openEditModal();
                             });
                             BUTTONS.push("Cancel");
                             ButtonsCallback.push(() => {
@@ -105,6 +109,7 @@ export class _Profile extends React.Component {
                         <View>
                             <View style={{marginTop: 10, alignItems: 'center', justifyContent: 'center'}}>
                                 <Thumbnail large source={{uri: this.props.user.image}}/>
+
                             </View>
                             <ProfileImagePicker onRef={ref => (this.ProfilePictureModal = ref)}/>
                             <Form>

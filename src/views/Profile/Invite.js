@@ -28,7 +28,6 @@ import * as Animatable from "../Groups/GroupsScreen";
 export class _Invite extends React.Component {
     constructor(props) {
         super(props);
-
     }
 
     render() {
@@ -68,7 +67,7 @@ export class _Invite extends React.Component {
                                                 <Thumbnail
                                                     source={{uri: 'https://picsum.photos/200/300?image=' + Math.floor((Math.random() * 1000) % 200)}}/>
                                             </Left>
-                                            <Body>
+                                            <Body style={{height: 70}}>
                                             <Text style={{fontSize: 18, fontWeight: 'bold'}}>{invite.title}</Text>
                                             <Text>{invite.type}</Text>
                                             </Body>
