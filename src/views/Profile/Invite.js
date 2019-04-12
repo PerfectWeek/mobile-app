@@ -32,16 +32,16 @@ export class _Invite extends React.Component {
 
     render() {
         const IB = {
-            1: {id: 1, title: 'Party', type: 'event'},
-            2: {id: 2, title: 'The Bros', type: 'Group'},
-            3: {id: 3, title: 'Football', type: 'Event'},
-            4: {id: 4, title: 'Football', type: 'Event'},
-            5: {id: 5, title: 'Football', type: 'Event'},
-            6: {id: 6, title: 'Football', type: 'Event'},
-            7: {id: 7, title: 'Football', type: 'Event'},
-            8: {id: 8, title: 'Football', type: 'Event'},
-            9: {id: 9, title: 'Football', type: 'Event'},
-            10: {id: 10, title: 'Football', type: 'Event'}
+            1: {id: 1, title: 'Party',      description : 'Football match at 11pm. Paris VS OL', type: 'event'},
+            2: {id: 2, title: 'The Bros',   description : 'Football match at 11pm. Paris VS OL', type: 'Group'},
+            3: {id: 3, title: 'Football',   description : 'Football match at 11pm. Paris VS OL', type: 'Event'},
+            4: {id: 4, title: 'Football',   description : 'Football match at 11pm. Paris VS OL', type: 'Event'},
+            5: {id: 5, title: 'Football',   description : 'Football match at 11pm. Paris VS OL', type: 'Event'},
+            6: {id: 6, title: 'Football',   description : 'Football match at 11pm. Paris VS OL', type: 'Event'},
+            7: {id: 7, title: 'Football',   description : 'Football match at 11pm. Paris VS OL', type: 'Event'},
+            8: {id: 8, title: 'Football',   description : 'Football match at 11pm. Paris VS OL', type: 'Event'},
+            9: {id: 9, title: 'Football',   description : 'Football match at 11pm. Paris VS OL', type: 'Event'},
+            10: {id: 10, title: 'Football', description : 'Football match at 11pm. Paris VS OL', type: 'Event'}
         };
         return (
             <Container style={{
@@ -69,7 +69,7 @@ export class _Invite extends React.Component {
                                             </Left>
                                             <Body style={{height: 70}}>
                                             <Text style={{fontSize: 18, fontWeight: 'bold'}}>{invite.title}</Text>
-                                            <Text>{invite.type}</Text>
+                                            <Text>{invite.type} invitation</Text>
                                             </Body>
                                             <Right>
                                                 <Icon style={{marginTop: 10, fontSize: 28}}

@@ -18,7 +18,7 @@ import {
     ActionSheet
 } from 'native-base';
 import connect from "react-redux/es/connect/connect";
-import {Alert, Platform} from "react-native";
+import {Alert, Platform, TouchableOpacity} from "react-native";
 import {DeleteUser, GetInfo, GetUserInfo, UpdateUserInfo, UserActionsType} from "../../redux/User/user.actions";
 import LottieView from "lottie-react-native";
 import {validateNotEmpty} from "../../Utils/utils";
@@ -82,10 +82,6 @@ export class _Profile extends React.Component {
                             ButtonsCallback.push(() => {
                                 this.props.navigation.navigate('FriendsList')
                             });
-                            BUTTONS.push("Edit profile picture");
-                            ButtonsCallback.push(() => {
-                                this.ProfilePictureModal.openEditModal();
-                            });
                             BUTTONS.push("Logout");
                             ButtonsCallback.push(() => {
                                 Alert.alert('Logout ?', '', [{
@@ -97,6 +93,19 @@ export class _Profile extends React.Component {
                                     }, style: 'cancel'
                                 }], {cancelable: false})
                             });
+
+                            BUTTONS.push("Delete account");
+                            ButtonsCallback.push(() => {
+                                Alert.alert('Delete account ?', 'Are you sure you want to delete your account ? This action is irreversible', [{
+                                    text: 'Yes', onPress: () => {
+                                        this.props.DeleteUser(this.props.user.pseudo);
+                                    }
+                                }, {
+                                    text: 'Cancel', onPress: () => {
+                                    }, style: 'cancel'
+                                }], {cancelable: false})
+                            });
+
                             BUTTONS.push("Cancel");
                             ButtonsCallback.push(() => {
                             });
@@ -120,12 +129,28 @@ export class _Profile extends React.Component {
                     this.props.user !== undefined && this.props.user.email !== undefined && this.props.user.image !== undefined
                     && this.props.UserStore.status !== UserActionsType.GetUserInfo ?
                         <View>
-                            <View style={{marginTop: 10, alignItems: 'center', justifyContent: 'center'}}>
-                                <Thumbnail large source={{uri: this.props.user.image}}/>
+                            <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
+                                <Thumbnail style={{width: 160, height: 160, borderRadius: 100}}
+                                           source={{uri: this.props.user.image}}/>
 
+                                <TouchableOpacity style={PhotoButtonStyle}
+                                                  onPress={() => {
+                                                      this.ProfilePictureModal.openEditModal();
+                                                  }}>
+                                    <Icon active name='camera' style={{fontSize: 16}} type={"FontAwesome"}/>
+                                </TouchableOpacity>
+                                <Title style={{color: 'black', fontFamily: 'Lato_Bold', fontSize: 46, marginTop: 5}}>
+                                    {this.props.user.pseudo}
+                                </Title>
                             </View>
                             <ProfileImagePicker onRef={ref => (this.ProfilePictureModal = ref)}/>
-                            <Form>
+
+                            <Text
+                                style={{fontFamily: 'Lato_Bold', fontSize: 20, color: 'gray', marginTop: 30, marginLeft:10}}>
+                                Information :
+                            </Text>
+
+                            <Form style={{marginTop: 0}}>
                                 <Item error={!validateNotEmpty(this.state.pseudo)}>
                                     <Icon active name='person'/>
                                     <Input label="Username" value={this.state.pseudo}
@@ -142,37 +167,22 @@ export class _Profile extends React.Component {
                                     flexDirection: 'row',
                                     justifyContent: 'center',
                                 }}>
-                                    <Button
-                                        disabled={this.props.UserStore.status === UserActionsType.UpdateInfo || this.props.UserStore.status === UserActionsType.DeleteUser ||
-                                        !validateNotEmpty(this.state.pseudo)}
-                                        onPress={() => {
-                                            if (this.state.pseudo === "" || this.state.pseudo === null)
-                                                Toast.show({
-                                                    text: "Invalid pseudo",
-                                                    type: "danger",
-                                                    buttonText: "Okay",
-                                                    duration: 5000
-                                                });
-                                            else
-                                                this.props.UpdateInfo(this.props.user.pseudo, this.state.pseudo);
-                                        }}>
-                                        <Icon name='refresh'/>
-                                        <Text>Update</Text>
-                                    </Button>
-                                    <Button style={{marginLeft: 10}} danger
-                                            disabled={this.props.UserStore.status === UserActionsType.UpdateInfo || this.props.UserStore.status === UserActionsType.DeleteUser}
+                                    <Button success
+                                            disabled={this.props.UserStore.status === UserActionsType.UpdateInfo || this.props.UserStore.status === UserActionsType.DeleteUser ||
+                                            !validateNotEmpty(this.state.pseudo) || this.state.pseudo === this.props.login.pseudo || this.state.pseudo.indexOf(' ') !== -1}
                                             onPress={() => {
-                                                Alert.alert('Delete account ?', '', [{
-                                                    text: 'Yes', onPress: () => {
-                                                        this.props.DeleteUser(this.props.user.pseudo);
-                                                    }
-                                                }, {
-                                                    text: 'Cancel', onPress: () => {
-                                                    }, style: 'cancel'
-                                                }], {cancelable: false})
+                                                if (this.state.pseudo === "" || this.state.pseudo === null)
+                                                    Toast.show({
+                                                        text: "Invalid pseudo",
+                                                        type: "danger",
+                                                        buttonText: "Okay",
+                                                        duration: 5000
+                                                    });
+                                                else
+                                                    this.props.UpdateInfo(this.props.user.pseudo, this.state.pseudo);
                                             }}>
-                                        <Icon active name='trash'/>
-                                        <Text>Delete account</Text>
+                                        <Icon name='refresh'/>
+                                        <Text>Update information</Text>
                                     </Button>
                                 </View>
                             </Form>
@@ -225,6 +235,23 @@ const mapStateToProps = (state, ownProps) => {
         UserStore: state.user,
         user: state.user.users[state.login.pseudo]
     }
+};
+
+const PhotoButtonStyle = {
+    width: 40,
+    height: 40,
+    borderWidth: 1,
+    borderColor: 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'lightgrey',
+    borderRadius: 100,
+    padding: 10,
+    margin: 10,
+    overflow: 'hidden',
+    position: 'absolute',
+    right: 110,
+    top: 100
 };
 
 export const Profile = connect(mapStateToProps, mapDispatchToProps)(_Profile);

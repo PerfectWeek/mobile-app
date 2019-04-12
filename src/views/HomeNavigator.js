@@ -15,7 +15,7 @@ export default createBottomTabNavigator(
                 tabBarIcon: ({tintColor}) => <Icon
                     name='calendar'
                     type='FontAwesome'
-                    style={{color: tintColor}}/>
+                    style={{color: tintColor, marginTop:5, fontSize:22}}/>
             }
         },
         Groups: {
@@ -23,7 +23,7 @@ export default createBottomTabNavigator(
                 tabBarIcon: ({focused, tintColor}) => <Icon
                     name='users'
                     type='FontAwesome'
-                    style={{color: tintColor}}/>
+                    style={{color: tintColor, marginTop:5, fontSize:22}}/>
             }
         },
         Profile: {
@@ -34,7 +34,7 @@ export default createBottomTabNavigator(
                         <Icon
                             name='user'
                             type='FontAwesome'
-                            style={{color: tintColor}}/>
+                            style={{color: tintColor, marginTop:5, fontSize:22}}/>
                         <View style={{ position: 'absolute', left: 12, top: 5, backgroundColor: 'red', borderRadius: 9, width: 18, height: 18, justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={{ color: 'white' }}>9</Text>
                         </View>

@@ -28,39 +28,37 @@ export class _FriendsList extends Component {
             <Container style={{
                 backgroundColor: ScreenBackgroundColor
             }}>
-                <View>
 
-                    <ScrollView style={{
-                        backgroundColor: ScreenBackgroundColor,
-                        marginLeft: 10,
-                        marginRight: 10,
-                        height: Dimensions.get('window').height
-                    }}>
-                        <List>
-                            {
-                                Object.values(IB).map((invite) => {
-                                    return (
+                <ScrollView style={{
+                    backgroundColor: ScreenBackgroundColor,
+                    marginLeft: 10,
+                    marginRight: 10,
+                    height: Dimensions.get('window').height - 10
+                }}>
+                    <List>
+                        {
+                            Object.values(IB).map((invite) => {
+                                return (
 
-                                        <ListItem key={invite.id} onPress={() => {
-                                            this.props.navigation.navigate('FriendDetails', {invite: invite});
-                                        }} avatar>
-                                            <Left>
-                                                <Thumbnail
-                                                    small source={{uri: 'https://picsum.photos/200/300?image=' + Math.floor((Math.random() * 1000) % 200)}}/>
-                                            </Left>
-                                            <Body style={{height: 60}}>
-                                            <Text style={{fontSize: 18, fontWeight: 'bold'}}>{invite.title}</Text>
-                                            </Body>
-                                        </ListItem>
+                                    <ListItem key={invite.id} onPress={() => {
+                                        this.props.navigation.navigate('FriendDetails', {invite: invite});
+                                    }} avatar>
+                                        <Left>
+                                            <Thumbnail
+                                                large
+                                                source={{uri: 'https://picsum.photos/200/300?image=' + Math.floor((Math.random() * 1000) % 200)}}/>
+                                        </Left>
+                                        <Body style={{height: 60}}>
+                                        <Text style={{fontSize: 18, fontWeight: 'bold'}}>{invite.title}</Text>
+                                        </Body>
+                                    </ListItem>
 
-                                    )
-                                })
-                            }
-                        </List>
+                                )
+                            })
+                        }
+                    </List>
 
-                    </ScrollView>
-
-                </View>
+                </ScrollView>
             </Container>
         )
     }

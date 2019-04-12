@@ -23,6 +23,7 @@ export class _FriendDetails extends Component {
     constructor(props) {
         super(props);
     }
+
     static navigationOptions = {
         header: null
     }
@@ -42,7 +43,10 @@ export class _FriendDetails extends Component {
             10: {id: 10, title: 'Football', type: 'Event'}
         };
         return (
-            <View style={{backgroundColor: ScreenBackgroundColor, paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight}}>
+            <View style={{
+                backgroundColor: ScreenBackgroundColor,
+                paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
+            }}>
                 <Header
                     androidStatusBarColor="#000"
                     style={{backgroundColor: "#FFF"}}
@@ -51,11 +55,11 @@ export class _FriendDetails extends Component {
                         <Button transparent onPress={() => {
                             this.props.navigation.goBack()
                         }}>
-                            <Icon type={"SimpleLineIcons"} name='arrow-left' style={{color: '#064C96', fontSize:20}}/>
+                            <Icon type={"SimpleLineIcons"} name='arrow-left' style={{color: '#064C96', fontSize: 20}}/>
                         </Button>
                     </Left>
                     <Body>
-                        <Title style={{color: '#000000', textAlign: 'center'}}>Profile</Title>
+                    <Title style={{color: '#000000', textAlign: 'center'}}>Profile</Title>
                     </Body>
                     <Right>
                         <Button transparent onPress={() => {
@@ -83,43 +87,48 @@ export class _FriendDetails extends Component {
                         </Button>
                     </Right>
                 </Header>
-                <View style={{marginTop: 10, alignItems: 'center', justifyContent: 'center'}}>
-                    <Thumbnail large source={{uri: 'https://picsum.photos/200/300?image=' + Math.floor((Math.random() * 1000) % 200)}}/>
-                    <Text style={{fontSize: 18, fontFamily: 'Lato_Bold'}}>{this.props.navigation.state.params.invite.title}</Text>
+                <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
+                    <Thumbnail large
+                               source={{uri: 'https://picsum.photos/200/300?image=' + Math.floor((Math.random() * 1000) % 200)}}/>
+                    <Text style={{
+                        fontSize: 24,
+                        fontFamily: 'Lato_Bold',
+                        marginTop: 10
+                    }}>{this.props.navigation.state.params.invite.title}</Text>
                 </View>
 
                 <Text style={{
                     marginTop: 20,
                     marginBottom: 10,
+                    marginLeft: 5,
                     fontSize: 18,
-                    fontWeight: "bold"
+                    fontWeight: "bold",
+                    color: 'grey'
                 }}> Common events</Text>
                 <ScrollView style={{
                     backgroundColor: ScreenBackgroundColor,
-                    marginLeft: 10,
-                    marginRight: 10,
-                    height: 400
+                    marginTop: 0,
+                    margin: 10,
+                    height: 350
                 }}>
-                    <List>
-                        {
-                            Object.values(IB).map((invite) => {
-                                return (
+                    {
+                        Object.values(IB).map((invite) => {
+                            return (
 
-                                    <ListItem key={invite.id} avatar>
-                                        <Left>
-                                            <Thumbnail
-                                                small source={{uri: 'https://picsum.photos/200/300?image=' + Math.floor((Math.random() * 1000) % 200)}}/>
-                                        </Left>
-                                        <Body style={{height: 70}}>
-                                        <Text style={{fontSize: 15, fontWeight: 'bold'}}>{invite.title}</Text>
-                                        <Text style={{fontSize: 12, fontWeight: 'bold'}}>From : 12/12 - To : 31/12</Text>
-                                        </Body>
-                                    </ListItem>
+                                <ListItem key={invite.id} avatar>
+                                    <Left>
+                                        <Thumbnail
+                                            source={{uri: 'https://picsum.photos/200/300?image=' + Math.floor((Math.random() * 1000) % 200)}}/>
+                                    </Left>
+                                    <Body style={{height: 70}}>
+                                    <Text style={{fontSize: 18, fontWeight: 'bold'}}>{invite.title}</Text>
+                                    <Text style={{fontSize: 16, fontWeight: 'bold'}}>From : 12/12 - To : 31/12</Text>
+                                    </Body>
+                                </ListItem>
 
-                                )
-                            })
-                        }
-                    </List>
+                            )
+                        })
+                    }
                 </ScrollView>
             </View>
         )
