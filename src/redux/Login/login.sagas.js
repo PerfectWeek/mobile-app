@@ -28,7 +28,7 @@ function* CheckIsLogged(action) {
 
 function* Login(action) {
     try {
-        const response = yield _login(action.email, action.password + 's');
+        const response = yield _login(action.email, action.password);
         yield put(LoginSuccess(response.jwt, response.user.username, response.user.email));
         Network.access_token = response.jwt;
         yield Network.SaveToken(response.user.email, response.user.pseudo);
