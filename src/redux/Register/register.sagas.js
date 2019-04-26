@@ -4,32 +4,33 @@ import {Network} from "../../Network/Requests";
 import {Toast} from "native-base";
 
 function _register(username, email, password) {
-    return Network.Post("/users", {
-        pseudo: username,
-        email: email,
-        password: password
-    });
+    // return Network.Post("/users", {
+    //     pseudo: username,
+    //     email: email,
+    //     password: password
+    // });
+    return Network.strapi.register(username,email,password);
 }
 
 function* Register(action) {
-    const response = yield _register(action.username, action.email, action.password);
-    if (response.status === 201) {
-        yield Toast.show({
-            text: "User created. We sent you an email for confirmation.",
-            type: "success",
-            buttonText: "Okay",
-            duration: 10000
-        });
-        yield put(RegisterSuccess());
+    try {
+        const response = yield _register(action.username, action.email, action.password);
+            yield Toast.show({
+                text: "User created. We sent you an email for confirmation.",
+                type: "success",
+                buttonText: "Okay",
+                duration: 10000
+            });
+            yield put(RegisterSuccess());
     }
-    else {
+    catch (e) {
         let err;
-        if (response.status !== 500 && response.data !== undefined && response.data.message !== undefined)
+        if (response.status !== 500 && response.message !== undefined)
             err = response.data.message;
         else
             err = "Connection error";
         yield put(RegisterFail(err));
-       yield Toast.show({
+        yield Toast.show({
             text: err,
             type: "danger",
             buttonText: "Okay",
