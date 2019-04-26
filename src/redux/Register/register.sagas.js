@@ -25,8 +25,8 @@ function* Register(action) {
     }
     catch (e) {
         let err;
-        if (response.status !== 500 && response.message !== undefined)
-            err = response.data.message;
+        if (e.status !== 500 && e.message !== undefined)
+            err = e.message;
         else
             err = "Connection error";
         yield put(RegisterFail(err));
