@@ -6,10 +6,12 @@ import {UserReset} from "../User/user.actions";
 import {Toast} from "native-base";
 
 function _login(email, password) {
-    return Network.Post("/auth/login", {
-        email: email,
-        password: password
-    });
+    // return Network.Post("/auth/login", {
+    //     email: email,
+    //     password: password
+    // });
+    // console.log(Network.strapi.login(email, password))
+    return Network.strapi.login(email, password);
 }
 
 function* CheckIsLogged(action) {
@@ -17,6 +19,7 @@ function* CheckIsLogged(action) {
         const savedToken = yield Network.CheckToken();
         if (savedToken !== null) {
             Network.access_token = savedToken.token;
+            Network.strapi.setToken(savedToken.token, true);
             yield put(LoginSuccess(savedToken.token, savedToken.name, savedToken.email));
             yield put(NavigationActions.navigate({routeName: 'Home'}));
         }
@@ -24,17 +27,17 @@ function* CheckIsLogged(action) {
 }
 
 function* Login(action) {
-    const response = yield _login(action.email, action.password);
-    if (response.status === 200) {
-        yield put(LoginSuccess(response.data.access_token, response.data.user.pseudo, response.data.user.email));
-        Network.access_token = response.data.access_token;
-        yield Network.SaveToken(response.data.user.email, response.data.user.pseudo);
+    try {
+        const response = yield _login(action.email, action.password + 's');
+        yield put(LoginSuccess(response.jwt, response.user.username, response.user.email));
+        Network.access_token = response.jwt;
+        yield Network.SaveToken(response.user.email, response.user.pseudo);
         yield put(NavigationActions.navigate({routeName: 'Home'}));
-
-    } else {
+    }
+    catch (e) {
         let err;
-        if (response.data !== undefined && response.data.message !== undefined)
-            err = response.data.message;
+        if (e.message !== undefined)
+            err = e.message;
         else
             err = "Connection error";
         yield put(LoginFail(err));

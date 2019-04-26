@@ -1,14 +1,18 @@
 import axios from 'react-native-axios'
 import {AsyncStorage} from 'react-native';
+import Strapi from 'strapi-sdk-javascript';
 
 // axios.defaults.baseURL = 'http://192.168.1.6:3000';
 //axios.defaults.baseURL = 'https://perfect-week-test.herokuapp.com';
- axios.defaults.baseURL = 'https://api.kalastud.io';
-
+//  axios.defaults.baseURL = 'https://api.kalastud.io';
+ axios.defaults.baseURL = 'https://strapi-perfect-week.herokuapp.com';
 
 export class Network {
     static access_token = null;
     static storedTokenName = 'tokenAccess';
+    static strapi = new Strapi('https://strapi-perfect-week.herokuapp.com', {
+        localStorage: false
+    });
 
     static async CheckToken() {
         try {
@@ -43,10 +47,12 @@ export class Network {
 
     static async Get(route) {
         try {
-            if (this.access_token !== null)
-                return await axios.get(route, {headers: {'Authorization': 'Bearer ' + this.access_token}});
-            else
-                return await axios.get(route);
+            return await strapi.request('get', route);
+
+            // if (this.access_token !== null)
+            //     return await axios.get(route, {headers: {'Authorization': 'Bearer ' + this.access_token}});
+            // else
+            //     return await axios.get(route);
         }
         catch (e) {
             return e;
@@ -55,6 +61,9 @@ export class Network {
 
     static async Post(route, body) {
         try {
+            // return await strapi.request('post', route, {
+            //     data : body
+            // });
             if (this.access_token !== null)
                 return await axios.post(route, body, {
                     headers: {
@@ -71,15 +80,19 @@ export class Network {
 
     static async PostMultiPart(route, body) {
         try {
-            if (this.access_token !== null)
-                return await axios.post(route, body, {
-                    headers: {
-                        'Authorization': 'Bearer ' + this.access_token,
-                        'content-type': 'multipart/form-data'
-                    }
-                });
-            else
-                return await axios.post(route, body);
+            return await strapi.request('post', route, {
+                data : body,
+                headers: {'content-type': 'multipart/form-data'}
+            });
+            // if (this.access_token !== null)
+            //     return await axios.post(route, body, {
+            //         headers: {
+            //             'Authorization': 'Bearer ' + this.access_token,
+            //             'content-type': 'multipart/form-data'
+            //         }
+            //     });
+            // else
+            //     return await axios.post(route, body);
         }
         catch (e) {
             return e.response;
@@ -88,14 +101,17 @@ export class Network {
 
     static async Put(route, body) {
         try {
-            if (this.access_token !== null)
-                return await axios.put(route, body, {
-                    headers: {
-                        'Authorization': 'Bearer ' + this.access_token
-                    }
-                });
-            else
-                return await axios.put(route, body);
+            return await strapi.request('put', route, {
+                data : body
+            });
+            // if (this.access_token !== null)
+            //     return await axios.put(route, body, {
+            //         headers: {
+            //             'Authorization': 'Bearer ' + this.access_token
+            //         }
+            //     });
+            // else
+            //     return await axios.put(route, body);
         }
         catch (e) {
             return e.response;
@@ -104,16 +120,19 @@ export class Network {
 
     static async Delete(route) {
         try {
-            if (this.access_token !== null) {
-                return await axios.delete(route, {
-                    headers: {
-                        'Authorization': 'Bearer ' + this.access_token
-                    }
-                });
-            }
-            else {
-                return await axios.delete(route);
-            }
+            return await strapi.request('delete', route, {
+                data : body
+            });
+            // if (this.access_token !== null) {
+            //     return await axios.delete(route, {
+            //         headers: {
+            //             'Authorization': 'Bearer ' + this.access_token
+            //         }
+            //     });
+            // }
+            // else {
+            //     return await axios.delete(route);
+            // }
         }
         catch (e) {
             return e.response;

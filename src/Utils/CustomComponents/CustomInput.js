@@ -38,6 +38,7 @@ export default class CustomInput extends Component {
                            selectTextOnFocus={true}
                            secureTextEntry={this.props.secureTextEntry ? this.props.secureTextEntry : false}
                            onChangeText={(text) => this.handleChanges(text)}
+                           autoCapitalize={this.props.autoCapitalize ? this.props.autoCapitalize : 'none'}
                 />
                 {
                     er ?

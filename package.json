@@ -43,6 +43,7 @@
     "react-navigation-redux-helpers": "^2.0.5",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
-    "redux-saga": "^0.16.0"
+    "redux-saga": "^0.16.0",
+    "strapi-sdk-javascript": "^0.3.1"
   }
 }
