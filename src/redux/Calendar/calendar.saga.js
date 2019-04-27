@@ -166,9 +166,10 @@ function* LoadCalendar(action) {
     try {
         let calendars = yield CalendarService.GetCalendarsForUser(action.pseudo);
         calendars = calendars.map(c => {
-            return {...c.calendar, show: true}
+            return {...c, show: true}
         });
         let events_array = yield CalendarService.GetEventsForCalendars(calendars);
+        console.log(events_array)
         events_array = yield CalendarService.GetEventsInfo(events_array);
         yield put(GetCalendarsSuccess(calendars));
         let events = arrayToObject(events_array, 'id');

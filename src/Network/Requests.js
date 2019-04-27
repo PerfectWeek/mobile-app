@@ -47,7 +47,7 @@ export class Network {
 
     static async Get(route) {
         try {
-            return await strapi.request('get', route);
+            return await this.strapi.request('get', route);
 
             // if (this.access_token !== null)
             //     return await axios.get(route, {headers: {'Authorization': 'Bearer ' + this.access_token}});
