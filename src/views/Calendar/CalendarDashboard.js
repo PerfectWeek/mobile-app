@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, StyleSheet, Text, Alert, TouchableHighlight, ScrollView, Platform} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 import {Agenda} from 'react-native-calendars';
-import {Body, Button, Container, Header, Icon, Right, Title, Fab, Thumbnail} from "native-base";
+import {Body, Button, Container, Header, Icon, Right, Title, Fab, Thumbnail, ActionSheet} from "native-base";
 import {
     GetAllUsersEvents,
     CalendarActionType,
@@ -223,7 +223,31 @@ export class _CalendarDashboard extends Component {
                     style={{backgroundColor: '#5067FF'}}
                     position="bottomRight"
                     onPress={() => {
-                        this.props.navigation.navigate({routeName: 'CreateEvent'});
+                        const BUTTONS = [];
+                        const ButtonsCallback = [];
+                        BUTTONS.push("Create event");
+                        ButtonsCallback.push(() => {
+                            this.props.navigation.navigate({routeName: 'CreateEvent'});
+                        });
+
+                        BUTTONS.push("Find best slot");
+                        ButtonsCallback.push(() => {
+                            this.props.navigation.navigate({routeName: 'BestSlot'});
+                        });
+
+                        BUTTONS.push("Cancel");
+                        ButtonsCallback.push(() => {
+                        });
+                        const CANCEL_INDEX = BUTTONS.length - 1;
+                        ActionSheet.show(
+                            {
+                                options: BUTTONS,
+                                cancelButtonIndex: CANCEL_INDEX,
+                                title: "Options"
+                            },
+                            buttonIndex => {
+                                ButtonsCallback[buttonIndex]();
+                            })
                     }}>
                     <Icon name="add"/>
                 </Fab>

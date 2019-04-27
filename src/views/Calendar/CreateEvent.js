@@ -26,7 +26,8 @@ export class _CreateEvent extends React.Component {
             dateEndEvent: '',
             beginTime: new Date().toLocaleTimeString('en-US', {hour12: false, hour: "numeric", minute: "numeric"}),
             endTime: '',
-            calendarId: -1
+            calendarId: -1,
+            typeEvent: ''
         }
     }
 
@@ -47,6 +48,7 @@ export class _CreateEvent extends React.Component {
     }
 
     render() {
+        const eventsDefinedTypes = ['party', 'work', 'workout', 'hobby'];
         let listcal = [];
         this.props.calendar.calendars.map((it) => {
             listcal.push({
@@ -175,6 +177,26 @@ export class _CreateEvent extends React.Component {
                                     />
                                 </View>
                             </View>
+                        </Item>
+                        <Item>
+                            <Icon type='SimpleLineIcons' active name='event'/>
+                            <Picker
+                                placeholder="Type of event"
+                                placeholderStyle={{color: "#9EA0A4"}}
+                                note
+                                selectedValue={this.state.typeEvent}
+                                mode="dropdown"
+                                style={{width: 120}}
+                                onValueChange={(value) => {
+                                    this.setState({typeEvent: value});
+                                }}>
+                                <Picker.Item label={"Type of event"} value={-1} key={-1}/>
+                                {
+                                    eventsDefinedTypes.map((c, idx) => {
+                                        return <Picker.Item label={c} value={c} key={idx}/>
+                                    })
+                                }
+                            </Picker>
                         </Item>
                         <Item last>
                             <Icon type='SimpleLineIcons' active name='calendar'/>

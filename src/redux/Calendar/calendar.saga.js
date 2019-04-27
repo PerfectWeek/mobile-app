@@ -107,7 +107,8 @@ function* CreatNewEvent(action) {
         description: action.event.description,
         start_time: action.event.dateBeginEvent + "T" + action.event.beginTime,
         end_time: action.event.dateEndEvent + "T" + action.event.endTime,
-        location: action.event.localisation
+        location: action.event.localisation,
+        type: action.event.typeEvent
     });
 
     if (response.status === 201) {

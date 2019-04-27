@@ -4,6 +4,7 @@ import {CreateEvent} from "./CreateEvent";
 import {HeaderBackgroundColor, HeaderTintColor} from "../../../Style/Constant";
 import {ModifyEvent} from "./ModifyEvent";
 import {ConsultEvent} from "./ConsultEvent";
+import {SlotNavigator} from "./BestSlots/SlotNavigator";
 
 export const CalendarNavigator = createStackNavigator (
     {
@@ -18,6 +19,9 @@ export const CalendarNavigator = createStackNavigator (
         },
         ConsultEvent: {
             screen: ConsultEvent
+        },
+        BestSlot: {
+            screen: SlotNavigator
         }
     },
     {
