@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
-import {View, Button} from 'react-native'
+import {View, Button, TouchableHighlight, Text, Platform} from 'react-native'
 import connect from "react-redux/es/connect/connect";
 import {Agenda} from 'react-native-calendars';
 import {DeleteEvent, LoadCalendar, ReloadEvents, ResetStatus} from "../../../redux/Calendar/calendar.actions";
 import {dateDiffInDays, getRandomColor, timeToString} from "../../../Utils/utils";
+import Swipeout from "../CalendarDashboard";
+import {Container, Thumbnail} from "native-base";
+import * as Animatable from 'react-native-animatable';
+
 
 class _BestSlotCalendar extends Component {
     constructor(props) {
@@ -34,13 +38,143 @@ class _BestSlotCalendar extends Component {
         today = mm + '/' + dd + '/' + yyyy;
         return today
     }
+    rowHasChanged(r1, r2) {
+        return JSON.stringify(r1) !== JSON.stringify(r2);
+    }
+
+    loadItems(day) {
+        if (day === undefined)
+            return;
+        this.state.scrolledDay = day;
+
+        // this.reloadEvents();
+        this.setState({...this.state});
+    }
+
+    renderItem(item) {
+        const start = new Date(item.start_time);
+        const start_string = ("0" + start.getUTCHours()).slice(-2) + ":" + ("0" + start.getUTCMinutes()).slice(-2);
+        const end = new Date(item.end_time);
+        const end_string = ("0" + end.getUTCHours()).slice(-2) + ":" + ("0" + end.getUTCMinutes()).slice(-2);
+        return (
+            <View
+                      style={{
+                          backgroundColor: 'white', marginTop: 15, marginRight: 15, borderWidth: 2,
+                          borderColor: 'grey',
+                          borderRadius: 5
+                      }}>
+                <TouchableHighlight
+                    onPress={() => this.props.navigation.navigate('ConsultEvent', {eventId: item.id})}
+                    underlayColor="rgba(52, 52, 52, 0.5)">
+
+                    <View style={{
+                        margin: 15,
+                        flex: 1,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                    }}>
+                        {item.image === undefined || item.image === null ? null :
+                            <Animatable.View animation="fadeIn">
+                                <Thumbnail source={{uri: item.image}}/>
+                            </Animatable.View>
+                        }
+
+                        <View>
+                            <Text style={{fontSize: 18, fontFamily: 'Lato_Bold'}}>{item.name}</Text>
+                            <Text style={{
+                                fontSize: 14,
+                                fontFamily: 'Lato_Medium'
+                            }}>
+                                {start_string} - {end_string}
+                            </Text>
+                        </View>
+                        <Text style={{
+                            alignSelf: 'flex-start',
+                            fontSize: 18,
+                            fontFamily: 'Lato_Medium'
+                        }}>{item.calendar_name}</Text>
+                    </View>
+
+                </TouchableHighlight>
+            </View>
+        )
+    }
+
+    // renderItem(item) {
+    //     const start = new Date(item.start_time);
+    //     const start_string = ("0" + start.getUTCHours()).slice(-2) + ":" + ("0" + start.getUTCMinutes()).slice(-2);
+    //     const end = new Date(item.end_time);
+    //     const end_string = ("0" + end.getUTCHours()).slice(-2) + ":" + ("0" + end.getUTCMinutes()).slice(-2);
+    //     return (
+    //         <View
+    //             style={{
+    //                 backgroundColor: 'white', marginTop: 15, marginRight: 15, borderWidth: 2,
+    //                 borderColor: item.color,
+    //                 borderRadius: 5
+    //             }}>
+    //             <TouchableHighlight
+    //                 onPress={() => this.props.navigation.navigate('ConsultEvent', {eventId: item.id})}
+    //                 underlayColor="rgba(52, 52, 52, 0.5)">
+    //
+    //                 <View style={{
+    //                     margin: 15,
+    //                     flex: 1,
+    //                     flexDirection: 'row',
+    //                     justifyContent: 'space-between',
+    //                     alignItems: 'center'
+    //                 }}>
+    //                     {item.image === undefined || item.image === null ? null :
+    //                         <Animatable.View animation="fadeIn">
+    //                             <Thumbnail source={{uri: item.image}}/>
+    //                         </Animatable.View>
+    //                     }
+    //
+    //                     <View>
+    //                         <Text style={{fontSize: 18, fontFamily: 'Lato_Bold'}}>{item.name}</Text>
+    //                         <Text style={{
+    //                             fontSize: 14,
+    //                             fontFamily: 'Lato_Medium'
+    //                         }}>
+    //                             {start_string} - {end_string}
+    //                         </Text>
+    //                     </View>
+    //                     <Text style={{
+    //                         alignSelf: 'flex-start',
+    //                         fontSize: 18,
+    //                         fontFamily: 'Lato_Medium'
+    //                     }}>{item.calendar_name}</Text>
+    //                 </View>
+    //
+    //             </TouchableHighlight>
+    //         </View>
+    //     )
+    // }
 
     render(){
-        console.log(this.props.calendar)
+        // console.log(this.props.items)
         return (
-            <View>
-                <Button onPress={() => this.props.navigation.navigate('BestSlotEventCreation', {eventId: 'sd'})} title="sad"/>
-            </View>
+            <Container style={{
+                paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
+            }}>
+                <Agenda
+                    items={this.props.items}
+                    loadItemsForMonth={this.loadItems.bind(this)}
+                    selected={this.currentDate()}
+                    renderItem={this.renderItem.bind(this)}
+                    // renderEmptyDate={this.renderEmptyDate.bind(this)}
+                    renderEmptyDate={() => {
+                        return (<View style={{backgroundColor: 'red'}}/>);
+                    }}
+                    rowHasChanged={this.rowHasChanged.bind(this)}
+                    pastScrollRange={50}
+                    futureScrollRange={50}
+                    onRefresh={() => {
+                        // this.refreshCalendar();
+                    }}
+                />
+                {/*<Button onPress={() => this.props.navigation.navigate('BestSlotEventCreation', {eventId: 'sd'})} title="sad"/>*/}
+            </Container>
         )
     }
 }
