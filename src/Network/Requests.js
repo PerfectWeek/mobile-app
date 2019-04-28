@@ -54,6 +54,7 @@ export class Network {
     }
 
     static async Post(route, body) {
+        // console.log('body', body)
         try {
             if (this.access_token !== null)
                 return await axios.post(route, body, {

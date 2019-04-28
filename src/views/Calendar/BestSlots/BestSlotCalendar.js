@@ -63,13 +63,25 @@ class _BestSlotCalendar extends Component {
         this.setState({...this.state});
     }
 
-    sendItem(item, hBegin, hEnd, dBegin, dEnd) {
+    sendItem(item) {
+        const start = new Date(item.start_time);
+        let tmpMonth = start.getMonth() + 1;
+        const tmpm = tmpMonth < 10 ? '0'+tmpMonth : tmpMonth;
+        const tmpd = start.getDate() < 10 ? '0'+start.getDate() : start.getDate();
+        const sDate = start.getFullYear()+'-'+tmpm+'-'+tmpd;
+        const start_string = ("0" + start.getUTCHours()).slice(-2) + ":" + ("0" + start.getUTCMinutes()).slice(-2);
+        const end = new Date(item.end_time);
+        tmpMonth = end.getMonth() + 1;
+        const tmpmm = tmpMonth < 10 ? '0'+tmpMonth: tmpMonth;
+        const tmpdd = end.getDate() < 10 ? '0'+end.getDate() : end.getDate();
+        const eDate = end.getFullYear()+'-'+tmpmm+'-'+tmpdd;
+        const end_string = ("0" + end.getUTCHours()).slice(-2) + ":" + ("0" + end.getUTCMinutes()).slice(-2);
 
-        // console.log('sll', item)
-        item.dateBeginEvent = dBegin;
-        item.dateEndEvent = dEnd;
-        item.beginTime = hBegin;
-        item.endTime = hEnd;
+
+        item.dateBeginEvent = sDate;
+        item.dateEndEvent = eDate;
+        item.beginTime = start_string;
+        item.endTime = end_string;
         item.EventTitle = item.name;
         item.description = this.state.slotData.description;
         item.localisation = this.state.slotData.localisation;
@@ -81,14 +93,8 @@ class _BestSlotCalendar extends Component {
 
     renderItem(item) {
         const start = new Date(item.start_time);
-        const tmpm = start.getMonth() < 10 ? '0'+start.getMonth() : start.getMonth();
-        const tmpd = start.getDay() < 10 ? '0'+start.getDay() : start.getDay();
-        const sDate = start.getFullYear()+'-'+tmpm+'-'+tmpd;
         const start_string = ("0" + start.getUTCHours()).slice(-2) + ":" + ("0" + start.getUTCMinutes()).slice(-2);
         const end = new Date(item.end_time);
-        const tmpmm = end.getMonth() < 10 ? '0'+end.getMonth() : end.getMonth();
-        const tmpdd = end.getDay() < 10 ? '0'+end.getDay() : end.getDay();
-        const eDate = end.getFullYear()+'-'+tmpmm+'-'+tmpdd;
         const end_string = ("0" + end.getUTCHours()).slice(-2) + ":" + ("0" + end.getUTCMinutes()).slice(-2);
 
         if (item.slot)
@@ -100,7 +106,7 @@ class _BestSlotCalendar extends Component {
                         borderRadius: 5
                     }}>
                     <TouchableHighlight
-                        onPress={() => this.sendItem(item, start_string, end_string, sDate, eDate)}
+                        onPress={() => this.sendItem(item)}
                         underlayColor="rgba(52, 52, 52, 0.5)">
 
                         <View style={{
@@ -138,7 +144,7 @@ class _BestSlotCalendar extends Component {
 
                     </TouchableHighlight>
                 </View>
-            )
+            );
 
         return (
             <View
@@ -296,19 +302,20 @@ class _BestSlotCalendar extends Component {
                     }}
                     // refreshing={this.state.refresh}
                 />
-                {/*<Button onPress={() => this.props.navigation.navigate('BestSlotEventCreation', {eventId: 'sd'})} title="sad"/>*/}
-                <Button onPress={() => {this.setState({refresh: !this.state.refresh});
-                    this.prevSlot();
-                }} title="Prev"/>
-                <Text style={{
-                    fontSize: 14,
-                    fontFamily: 'Lato_Medium'
-                }}>
-                    {'Slot ' +this.state.idxSlot}
-                </Text>
-                <Button onPress={() => {this.setState({refresh: !this.state.refresh});
-                    this.nextSlot();
-                }} title="Next"/>
+                <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                    <Button onPress={() => {this.setState({refresh: !this.state.refresh});
+                        this.prevSlot();
+                    }} title="Prev"/>
+                    <Text style={{
+                        fontSize: 14,
+                        fontFamily: 'Lato_Medium'
+                    }}>
+                        {'        Slot ' +this.state.idxSlot+'        '}
+                    </Text>
+                    <Button onPress={() => {this.setState({refresh: !this.state.refresh});
+                        this.nextSlot();
+                    }} title="Next"/>
+                </View>
             </Container>
         )
     }

@@ -180,7 +180,7 @@ export class _CalendarDashboard extends Component {
                     <Loader/>
                 </Container>
             );
-        // console.log(this.props.selectedCalendar)
+        // console.log('items', this.props.items)
         return (
             <Container style={{
                 paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
@@ -271,12 +271,13 @@ const mapStateToProps = (state, ownProps) => {
     let events = [];
     let idCalendar = -1;
     if (state.calendar.events) {
-        console.log(state.calendar.events)
+        // console.log(state.calendar.events)
         events = Object.values(state.calendar.events).map(e => {
             return {...e, calendar_name: state.calendar.calendars.find(c => c.id === e.calendar_id).name}
         });
         if (Object.values(state.calendar.events).length !== 0)
             idCalendar = Object.values(state.calendar.events)[0].calendar_id
+        // console.log(events.length)
     }
     let items = {};
     for (let i = -150; i < 185; i++) {
@@ -342,12 +343,14 @@ const mapStateToProps = (state, ownProps) => {
                 color: color,
                 image: event.image
             });
+            // console.log(items)
             items[isoDate] = items[isoDate].sort((a, b) => {
                 return a.start_time > b.start_time;
             });
             strTimeStart.setDate(strTimeStart.getDate() + 1);
         }
     }
+    // console.log(items.length)
     return {
         ...ownProps,
         calendar: state.calendar,

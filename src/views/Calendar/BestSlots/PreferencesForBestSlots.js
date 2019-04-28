@@ -12,7 +12,7 @@ class _PreferencesForBestSlots extends Component {
             description: 'd',
             localisation: 'd',
             dateBeginEvent: '2019-04-27',
-            dateEndEvent: '2019-05-28',
+            dateEndEvent: '2019-04-28',
             beginTime: new Date().toLocaleTimeString('en-US', {hour12: false, hour: "numeric", minute: "numeric"}),
             endTime: '23:57',
             calendarId: this.props.navigation.getParam('calendarId'),
