@@ -21,7 +21,6 @@ class _BestSlotEvent extends Component {
 
 
     render(){
-        console.log(this.props.calendar)
         return (
             <View>
                 <Button onPress={() => this.props.navigation.navigate('Master')} title="happy"/>

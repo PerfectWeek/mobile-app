@@ -180,6 +180,7 @@ export class _CalendarDashboard extends Component {
                     <Loader/>
                 </Container>
             );
+        // console.log(this.props.selectedCalendar)
         return (
             <Container style={{
                 paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
@@ -232,7 +233,7 @@ export class _CalendarDashboard extends Component {
 
                         BUTTONS.push("Find best slot");
                         ButtonsCallback.push(() => {
-                            this.props.navigation.navigate({routeName: 'BestSlot'});
+                            this.props.navigation.navigate('PrefSlots', {calendarId: this.props.selectedCalendar});
                         });
 
                         BUTTONS.push("Cancel");
@@ -268,10 +269,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const mapStateToProps = (state, ownProps) => {
     let events = [];
+    let idCalendar = -1;
     if (state.calendar.events) {
+        console.log(state.calendar.events)
         events = Object.values(state.calendar.events).map(e => {
             return {...e, calendar_name: state.calendar.calendars.find(c => c.id === e.calendar_id).name}
         });
+        if (Object.values(state.calendar.events).length !== 0)
+            idCalendar = Object.values(state.calendar.events)[0].calendar_id
     }
     let items = {};
     for (let i = -150; i < 185; i++) {
@@ -347,7 +352,8 @@ const mapStateToProps = (state, ownProps) => {
         ...ownProps,
         calendar: state.calendar,
         login: state.login,
-        items
+        items,
+        selectedCalendar: idCalendar
     }
 };
 

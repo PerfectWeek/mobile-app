@@ -27,6 +27,30 @@ export const CalendarActionType = {
     LoadCalendar: 'LOAD_CALENDAR',
     LoadCalendarSuccess: "LOAD_CALENDAR_SUCCESS",
     LoadCalendarFail: "LOAD_CALENDAR_FAIL",
+    GetBestSlots: "GET_BEST_SLOTS",
+    GetBestSlotsSuccess: "GET_BEST_SLOTS_SUCCESS",
+    GetBestSlotsFail: "GET_BEST_SLOTS_FAIL"
+};
+
+
+export const GetBestSlotsSuccess = (slots) => {
+    return {
+        type: CalendarActionType.GetBestSlotsSuccess,
+        slots: slots
+    }
+};
+
+export const GetBestSlotsFail = () => {
+    return {
+        type: CalendarActionType.GetBestSlotsFail
+    }
+};
+
+export const GetBestSlots = (infos) => {
+    return {
+        type: CalendarActionType.GetBestSlots,
+        infos: infos
+    }
 };
 
 export const GetEventInfo = (event) => {

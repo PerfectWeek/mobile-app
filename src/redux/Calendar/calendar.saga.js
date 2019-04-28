@@ -7,7 +7,7 @@ import {
     GetEventInfoSuccess,
     GetEventInfoFail,
     ModifyEventSuccess,
-    ModifyEventFail, DeleteEventFail, DeleteEventSuccess
+    ModifyEventFail, DeleteEventFail, DeleteEventSuccess, GetBestSlotsFail, GetBestSlotsSuccess
 } from "../Calendar/calendar.actions";
 import {takeEvery, put} from "redux-saga/effects";
 import {Network} from "../../Network/Requests";
@@ -102,6 +102,7 @@ function* DeleteEvent(action) {
 }
 
 function* CreatNewEvent(action) {
+    console.log(action.event)
     const response = yield Network.Post('/calendars/' + action.event.calendarId + '/events', {
         name: action.event.EventTitle,
         description: action.event.description,
@@ -183,8 +184,48 @@ function* LoadCalendar(action) {
     }
 }
 
+function* GetBestSlots(action) {
+    try {
+        const resp = yield CalendarService.GetBestSlots({
+            calendarId: action.infos.calendarId,
+            duration: action.infos.timeEvent,
+            location: action.infos.localisation,
+            min_time: action.infos.dateBeginEvent + "T" + action.infos.beginTime,
+            max_time: action.infos.dateEndEvent + "T" + action.infos.endTime,
+            type: action.infos.typeEvent
+        });
+        if (resp.status !== 200)
+            throw resp.data;
+        const slots = resp.data.slots.map(c => {
+            return {...c,
+                show: true,
+                slot: true,
+                name: action.infos.EventTitle,
+                description: action.infos.description,
+                location: action.infos.localisation,
+                type: action.infos.typeEvent
+            }
+        });
+        // console.log(slots)
+        // name: action.event.EventTitle,
+        // description: action.event.description,
+        yield put(GetBestSlotsSuccess(slots));
+    }
+    catch (e) {
+        // console.log(e)
+        let err;
+        if (e !== undefined && e.message !== undefined)
+            err = e.message;
+        else
+            err = "Connection error";
+        yield put(GetBestSlotsFail(err));
+        yield ShowErrorNotification(err);
+    }
+}
+
 export function* CalendarSaga() {
     yield takeEvery(CalendarActionType.ReloadEvents, ReloadEvents);
+    yield takeEvery(CalendarActionType.GetBestSlots, GetBestSlots);
     yield takeEvery(CalendarActionType.LoadCalendar, LoadCalendar);
     yield takeEvery(CalendarActionType.GetCalendars, GetCalendars);
     yield takeEvery(CalendarActionType.ModifyEvent, ModifyEvent);

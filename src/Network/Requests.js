@@ -41,9 +41,9 @@ export class Network {
         }
     }
 
-    static async Get(route) {
+    static async Get(route, body) {
         try {
-            if (this.access_token !== null)
+            if (this.access_token !== null && typeof body === 'undefined')
                 return await axios.get(route, {headers: {'Authorization': 'Bearer ' + this.access_token}});
             else
                 return await axios.get(route);
