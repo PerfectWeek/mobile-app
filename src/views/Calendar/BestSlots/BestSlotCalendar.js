@@ -26,7 +26,8 @@ class _BestSlotCalendar extends Component {
             refresh: false,
             slotData: this.props.navigation.getParam('dataSlot'),
             idxSlot: 0,
-            slotsLoaded : false
+            slotsLoaded : false,
+            slt: {}
         };
         this.props.GetBestSlots(this.state.slotData);
     }
@@ -34,19 +35,25 @@ class _BestSlotCalendar extends Component {
         header: null
     };
 
-    newSelection(iter) {
+    newSelection(iter, slt) {
+        if (slt) {
+            slt = slt.sort(function(a,b){
+                // Turn your strings into dates, and then subtract them
+                // to get a value that is either negative, positive, or zero.
+                return new Date(a.start_time) - new Date(b.start_time);
+            });
+            this.setState({slt: slt});
+            // console.log('ss', ss)
+        }
+        else
+            slt = this.state.slt;
         let events = [];
-        // if (this.state.items) {
-        //     events = Object.values(this.state.items).map(e => {
-        //         return {...e, calendar_name: this.props.calendar.calendars.find(c => c.id === e.calendar_id).name}
-        //     });
-        //     if (this.props.calendar.slots)
-            events = events.concat(this.props.calendar.slots[iter]);
-            console.log(this.props.calendar.slots)
-            console.log('ok', this.state.idxSlot, this.props.calendar.slots[iter].start_time, events)
-
-
-        // }
+        if (this.props.calendar.events) {
+            events = Object.values(this.props.calendar.events).map(e => {
+                return {...e, calendar_name: this.props.calendar.calendars.find(c => c.id === e.calendar_id).name}
+            });
+            events = events.concat(slt[iter]);
+        }
         let items = {};
         for (let i = -150; i < 185; i++) {
             const time = new Date().getTime() + i * 24 * 60 * 60 * 1000;
@@ -354,8 +361,8 @@ class _BestSlotCalendar extends Component {
                 </Container>
             );
         if (!this.state.slotsLoaded) {
-            this.newSelection(0);
-            this.setState({slotsLoaded: true})
+            this.setState({slotsLoaded: true});
+            this.newSelection(0, this.props.calendar.slots);
         }
         return (
             <Container style={{
@@ -383,10 +390,10 @@ class _BestSlotCalendar extends Component {
                         this.prevSlot();
                     }} title="Prev"/>
                     <Text style={{
-                        fontSize: 14,
+                        fontSize: 16,
                         fontFamily: 'Lato_Medium'
                     }}>
-                        {'        Slot ' +this.state.idxSlot+'        '}
+                        {'        Slot n°'+this.state.idxSlot+'        '}
                     </Text>
                     <Button onPress={() => {this.setState({refresh: !this.state.refresh});
                         this.nextSlot();
@@ -406,7 +413,7 @@ const mapStateToProps = (state, ownProps) => {
     //     });
     //     if (state.calendar.slots)
     //         events = events.concat(state.calendar.slots);
-    //     // console.log(state.calendar.slots)
+    //     console.log('state', state.calendar.slots)
     // }
     // let items = {};
     // for (let i = -150; i < 185; i++) {
