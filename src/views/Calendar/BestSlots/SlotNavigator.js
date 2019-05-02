@@ -1,19 +1,21 @@
 import {createStackNavigator} from "react-navigation";
 import {BestSlotCalendar} from "./BestSlotCalendar";
-import {BestSlotEventCreation} from "./BestSlotEventCreation";
 import {HeaderBackgroundColor, HeaderTintColor} from "../../../../Style/Constant";
 import {PreferencesForBestSlots} from "./PreferencesForBestSlots";
 
 export const SlotNavigator = createStackNavigator (
     {
         MasterSlot: {
-            screen: BestSlotCalendar
+            screen: BestSlotCalendar,
+            navigationOptions: () => ({
+                title: 'Define best slot',
+            }),
         },
         PrefSlots: {
-            screen: PreferencesForBestSlots
-        },
-        BestSlotEventCreation: {
-            screen: BestSlotEventCreation
+            screen: PreferencesForBestSlots,
+            navigationOptions: () => ({
+                title: 'Define best slot',
+            })
         }
     },
     {

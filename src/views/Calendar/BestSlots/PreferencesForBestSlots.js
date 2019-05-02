@@ -8,15 +8,15 @@ class _PreferencesForBestSlots extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            EventTitle: 'd',
-            description: 'd',
-            localisation: 'd',
+            EventTitle: 'ww',
+            description: 'w',
+            localisation: 'w',
             dateBeginEvent: '2019-04-27',
-            dateEndEvent: '2019-04-28',
+            dateEndEvent: '2019-05-06',
             beginTime: new Date().toLocaleTimeString('en-US', {hour12: false, hour: "numeric", minute: "numeric"}),
-            endTime: '23:57',
+            endTime: '22:33',
             calendarId: this.props.navigation.getParam('calendarId'),
-            timeEvent: 10,
+            timeEvent: 30,
             typeEvent:'party'
         }
     }

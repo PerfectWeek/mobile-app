@@ -25,13 +25,81 @@ class _BestSlotCalendar extends Component {
             scrolledDay: this.currentDate(),
             refresh: false,
             slotData: this.props.navigation.getParam('dataSlot'),
-            idxSlot: 0
+            idxSlot: 0,
+            slotsLoaded : false
         };
         this.props.GetBestSlots(this.state.slotData);
     }
     static navigationOptions = {
         header: null
     };
+
+    newSelection(iter) {
+        let events = [];
+        // if (this.state.items) {
+        //     events = Object.values(this.state.items).map(e => {
+        //         return {...e, calendar_name: this.props.calendar.calendars.find(c => c.id === e.calendar_id).name}
+        //     });
+        //     if (this.props.calendar.slots)
+            events = events.concat(this.props.calendar.slots[iter]);
+            console.log(this.props.calendar.slots)
+            console.log('ok', this.state.idxSlot, this.props.calendar.slots[iter].start_time, events)
+
+
+        // }
+        let items = {};
+        for (let i = -150; i < 185; i++) {
+            const time = new Date().getTime() + i * 24 * 60 * 60 * 1000;
+            const date = new Date(time);
+            const strTime = date.toISOString().split('T')[0];
+            if (!items[strTime]) {
+                items[strTime] = [];
+            }
+        }
+
+        for (let k = 0; k < events.length; ++k) {
+            const event = events[k];
+            let strTimeStart = new Date(event.start_time);
+            const strTimee = new Date(event.end_time);
+            const color = getRandomColor();
+
+
+            let diffInDays = Math.abs(dateDiffInDays(new Date(event.end_time), new Date(event.start_time)));
+            for (let i = diffInDays; i >= 0; --i) {
+                let isoDate = timeToString(strTimeStart);
+                if (items[isoDate] === undefined)
+                    items[isoDate] = [];
+                let start = new Date(event.start_time);
+                let end = new Date(event.end_time);
+
+                if (i > 0) {
+                    end.setUTCHours(0);
+                    end.setUTCMinutes(0);
+                }
+                if (diffInDays > 0 && i < diffInDays) {
+                    start.setUTCHours(0);
+                    start.setUTCMinutes(0);
+                }
+
+                items[isoDate].push({
+                    id: event.id,
+                    name: event.name,
+                    calendar_name: event.calendar_name,
+                    start_time: new Date(start),
+                    end_time: end,
+                    color: color,
+                    image: event.image,
+                    slot: event.slot,
+                    score: event.score
+                });
+                items[isoDate] = items[isoDate].sort((a, b) => {
+                    return a.start_time > b.start_time;
+                });
+                strTimeStart.setDate(strTimeStart.getDate() + 1);
+            }
+        }
+        this.setState({items: items})
+    }
 
     currentDate() {
         var today = new Date();
@@ -250,13 +318,15 @@ class _BestSlotCalendar extends Component {
         }
 
         today = mm + '/' + dd + '/' + yyyy;
-        return today    }
+        return today
+    }
 
     nextSlot() {
         let iter =  (this.state.idxSlot + 1 >= this.props.calendar.slots.length) ? 0 : this.state.idxSlot + 1;
         this.setState({
             idxSlot: iter
         });
+        this.newSelection(iter);
         setTimeout(function() {this.setState({refresh: !this.state.refresh});}.bind(this), 300);
     }
     prevSlot() {
@@ -264,6 +334,7 @@ class _BestSlotCalendar extends Component {
         this.setState({
             idxSlot: iter,
         });
+        this.newSelection(iter);
         setTimeout(function() {this.setState({refresh: !this.state.refresh});}.bind(this), 300);
     }
 
@@ -275,18 +346,23 @@ class _BestSlotCalendar extends Component {
     }
 
     render(){
+        // console.log(this.state.items)
         if (this.props.calendar.slotsStatus !== CalendarActionType.GetBestSlotsSuccess || this.state.refresh !== false)
             return (
                 <Container style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                     <Loader/>
                 </Container>
             );
+        if (!this.state.slotsLoaded) {
+            this.newSelection(0);
+            this.setState({slotsLoaded: true})
+        }
         return (
             <Container style={{
                 paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
             }}>
                 <Agenda
-                    items={this.props.items}
+                    items={this.state.items}
                     loadItemsForMonth={this.loadItems.bind(this)}
                     selected={this.getD(this.props.calendar.slots[this.state.idxSlot].start_time)}
                     renderItem={this.renderItem.bind(this)}
@@ -323,69 +399,71 @@ class _BestSlotCalendar extends Component {
 
 
 const mapStateToProps = (state, ownProps) => {
-    let events = [];
-    if (state.calendar.events && state.calendar.slots) {
-        events = Object.values(state.calendar.events).map(e => {
-            return {...e, calendar_name: state.calendar.calendars.find(c => c.id === e.calendar_id).name}
-        });
-        events = events.concat(state.calendar.slots)
-    }
-    let items = {};
-    for (let i = -150; i < 185; i++) {
-        const time = new Date().getTime() + i * 24 * 60 * 60 * 1000;
-        const date = new Date(time);
-        const strTime = date.toISOString().split('T')[0];
-        if (!items[strTime]) {
-            items[strTime] = [];
-        }
-    }
-
-    for (let k = 0; k < events.length; ++k) {
-        const event = events[k];
-        let strTimeStart = new Date(event.start_time);
-        const strTimee = new Date(event.end_time);
-        const color = getRandomColor();
-
-
-        let diffInDays = Math.abs(dateDiffInDays(new Date(event.end_time), new Date(event.start_time)));
-        for (let i = diffInDays; i >= 0; --i) {
-            let isoDate = timeToString(strTimeStart);
-            if (items[isoDate] === undefined)
-                items[isoDate] = [];
-            let start = new Date(event.start_time);
-            let end = new Date(event.end_time);
-
-            if (i > 0) {
-                end.setUTCHours(0);
-                end.setUTCMinutes(0);
-            }
-            if (diffInDays > 0 && i < diffInDays) {
-                start.setUTCHours(0);
-                start.setUTCMinutes(0);
-            }
-
-            items[isoDate].push({
-                id: event.id,
-                name: event.name,
-                calendar_name: event.calendar_name,
-                start_time: new Date(start),
-                end_time: end,
-                color: color,
-                image: event.image,
-                slot: event.slot,
-                score: event.score
-            });
-            items[isoDate] = items[isoDate].sort((a, b) => {
-                return a.start_time > b.start_time;
-            });
-            strTimeStart.setDate(strTimeStart.getDate() + 1);
-        }
-    }
+    // let events = [];
+    // if (state.calendar.events) {
+    //     events = Object.values(state.calendar.events).map(e => {
+    //         return {...e, calendar_name: state.calendar.calendars.find(c => c.id === e.calendar_id).name}
+    //     });
+    //     if (state.calendar.slots)
+    //         events = events.concat(state.calendar.slots);
+    //     // console.log(state.calendar.slots)
+    // }
+    // let items = {};
+    // for (let i = -150; i < 185; i++) {
+    //     const time = new Date().getTime() + i * 24 * 60 * 60 * 1000;
+    //     const date = new Date(time);
+    //     const strTime = date.toISOString().split('T')[0];
+    //     if (!items[strTime]) {
+    //         items[strTime] = [];
+    //     }
+    // }
+    //
+    // for (let k = 0; k < events.length; ++k) {
+    //     const event = events[k];
+    //     let strTimeStart = new Date(event.start_time);
+    //     const strTimee = new Date(event.end_time);
+    //     const color = getRandomColor();
+    //
+    //
+    //     let diffInDays = Math.abs(dateDiffInDays(new Date(event.end_time), new Date(event.start_time)));
+    //     for (let i = diffInDays; i >= 0; --i) {
+    //         let isoDate = timeToString(strTimeStart);
+    //         if (items[isoDate] === undefined)
+    //             items[isoDate] = [];
+    //         let start = new Date(event.start_time);
+    //         let end = new Date(event.end_time);
+    //
+    //         if (i > 0) {
+    //             end.setUTCHours(0);
+    //             end.setUTCMinutes(0);
+    //         }
+    //         if (diffInDays > 0 && i < diffInDays) {
+    //             start.setUTCHours(0);
+    //             start.setUTCMinutes(0);
+    //         }
+    //
+    //         items[isoDate].push({
+    //             id: event.id,
+    //             name: event.name,
+    //             calendar_name: event.calendar_name,
+    //             start_time: new Date(start),
+    //             end_time: end,
+    //             color: color,
+    //             image: event.image,
+    //             slot: event.slot,
+    //             score: event.score
+    //         });
+    //         items[isoDate] = items[isoDate].sort((a, b) => {
+    //             return a.start_time > b.start_time;
+    //         });
+    //         strTimeStart.setDate(strTimeStart.getDate() + 1);
+    //     }
+    // }
     return {
         ...ownProps,
         calendar: state.calendar,
         login: state.login,
-        items
+        // items
     }
 };
 

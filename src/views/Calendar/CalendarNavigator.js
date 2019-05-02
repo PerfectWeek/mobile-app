@@ -21,7 +21,10 @@ export const CalendarNavigator = createStackNavigator (
             screen: ConsultEvent
         },
         BestSlot: {
-            screen: SlotNavigator
+            screen: SlotNavigator,
+            navigationOptions: () => ({
+                title: 'Define best slot',
+            })
         }
     },
     {
