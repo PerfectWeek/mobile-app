@@ -62,7 +62,7 @@ export class _InviteDetailScreen extends React.Component {
                     Details :
                 </Text>
                 <ScrollView style={{height: Dimensions.get('window').height / 6}}>
-                    <Text style={{...textStyle, marginTop:0}}
+                <Text style={{ fontSize: 18, textAlign : 'center', marginTop:0 }}
                           placeholder="Description">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
                         Labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in

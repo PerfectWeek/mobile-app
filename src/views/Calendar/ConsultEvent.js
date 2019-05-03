@@ -30,6 +30,7 @@ export class _ConsultEvent extends React.Component {
             EventTitle: event.name,
             description: event.description,
             localisation: event.location,
+            type: event.type,
             dateBeginEvent: beginTimeEvent[0],
             beginTime: beginTimeEvent[1].substring(0, 5),
             dateEndEvent: endTimeEvent[0],
@@ -187,6 +188,13 @@ export class _ConsultEvent extends React.Component {
                                 />
                             </View>
                         </View>
+                    </Item>
+                    <Item last>
+                        <Icon type='SimpleLineIcons' active name='flag'/>
+                        <Text style={textStyle}
+                              placeholder="Type">
+                            {this.state.type}
+                        </Text>
                     </Item>
                 </Form>
             </Container>

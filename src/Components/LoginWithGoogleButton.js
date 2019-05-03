@@ -26,8 +26,11 @@ class _LoginWithGoogleButton extends Component {
         try {
             let res = await Google.logInAsync({androidClientId: clientId});
             if (res.type === 'success') {
-                // const response = await Network.Get(`/auth/google/callback?access_token=${res.accessToken}&refresh_token=${res.refreshToken}`);
-                // this.props.SetLogged(response.jwt, response.user.email, response.user.username);
+                const response = await fetch(`https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&response_type=code&client_id=778613646655-mh4hplpsh40n5vsuudmh97gmvprqnu85.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fperfect-week-test.herokuapp.com%2Fauth%2Fproviders%2Fgoogle%2Fcallback`);
+
+                let res = await response.json();
+                this.props.LoginGoogle(res.user.email, res.token, res.user.pseudo)
+                console.log("Behold : ", res);
                 await ShowSuccessNotification('Logged in ! ' + `Hi ${res.user.name}!`);
             }
         } catch (e) {
@@ -59,7 +62,7 @@ class _LoginWithGoogleButton extends Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        SetLogged: (access_token, email, pseudo) => dispatch(SetLogged(access_token, email, pseudo)),
+        LoginGoogle: (email, accessToken, name) => dispatch(LoginGoogle(email, accessToken, name)),
     }
 };
 

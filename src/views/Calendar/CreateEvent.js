@@ -24,6 +24,7 @@ export class _CreateEvent extends React.Component {
             localisation: '',
             dateBeginEvent: '',
             dateEndEvent: '',
+            type: -1,
             beginTime: new Date().toLocaleTimeString('en-US', {hour12: false, hour: "numeric", minute: "numeric"}),
             endTime: '',
             calendarId: -1
@@ -32,7 +33,7 @@ export class _CreateEvent extends React.Component {
 
     validator() {
         return (this.state.EventTitle === '' || this.state.description === ''
-            || this.state.localisation === '' || this.state.dateBeginEvent === ''
+            || this.state.localisation === '' || this.state.dateBeginEvent === '' || this.state.type === -1
             || this.state.dateEndEvent === '' || this.state.beginTime === ''
             || this.state.endTime === '' || this.state.calendarId === -1
             || this.state.dateBeginEvent === this.state.dateEndEvent && moment(this.state.endTime, "HH:mm") < moment(this.state.beginTime, "HH:mm")
@@ -176,6 +177,26 @@ export class _CreateEvent extends React.Component {
                                 </View>
                             </View>
                         </Item>
+                        <Item>
+                            <Icon type='SimpleLineIcons' active name='flag'/>
+                            <Picker
+                                placeholder="Select a event type"
+                                placeholderStyle={{color: "#9EA0A4"}}
+                                note
+                                selectedValue={this.state.type}
+                                mode="dropdown"
+                                style={{width: 120}}
+                                onValueChange={(value) => {
+                                    this.setState({type: value});
+                                }}>
+                                <Picker.Item label={"Select a event type"} value={-1} key={-1}/>
+                                {
+                                    this.props.calendar.eventsType.map((type, index) => {
+                                        return <Picker.Item label={type} value={index} key={index}/>
+                                    })
+                                }
+                            </Picker>
+                        </Item>
                         <Item last>
                             <Icon type='SimpleLineIcons' active name='calendar'/>
                             <Picker
@@ -199,7 +220,7 @@ export class _CreateEvent extends React.Component {
                         <Button success disabled={this.validator()}
                                 rounded style={{margin: 30, marginTop: 10}}
                                 onPress={() => {
-                                    this.props.CreateNewEvent(this.state)
+                                    this.props.CreateNewEvent({...this.state, type : this.props.calendar.eventsType[this.state.type]})
                                 }}>
                             <Text>
                                 Create event

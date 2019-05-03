@@ -30,7 +30,7 @@ export const SetLogged = (access_token, email, pseudo) => {
 export const LoginGoogle = (email, accessToken, name) => {
     return {
         type: LoginActionsType.LoginGoogle,
-        name,
+        pseudo : name,
         email,
         accessToken
     }

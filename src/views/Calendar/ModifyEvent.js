@@ -25,7 +25,7 @@ export class _ModifyEvent extends React.Component {
     validator() {
         return (this.state.EventTitle === '' || this.state.description === ''
             || this.state.localisation === '' || this.state.dateBeginEvent === ''
-            || this.state.dateEndEvent === '' || this.state.beginTime === ''
+            || this.state.dateEndEvent === '' || this.state.beginTime === '' || this.state.type === ''
             || this.state.endTime === ''
             || this.state.dateBeginEvent === this.state.dateEndEvent && moment(this.state.endTime, "HH:mm") < moment(this.state.beginTime, "HH:mm")
         )
@@ -39,6 +39,7 @@ export class _ModifyEvent extends React.Component {
             EventTitle: event.name,
             description: event.description,
             localisation: event.location,
+            type: this.props.calendar.eventsType.findIndex(e => e === event.type),
             dateBeginEvent: beginTimeEvent[0],
             beginTime: beginTimeEvent[1].substring(0, 5),
             dateEndEvent: endTimeEvent[0],
@@ -198,10 +199,16 @@ export class _ModifyEvent extends React.Component {
                                 </View>
                             </View>
                         </Item>
+                        <Item last>
+                            <Icon type='SimpleLineIcons' active name='flag'/>
+                            <Input style={textStyle}
+                                   placeholder="Type" value={this.state.type}
+                                   onChangeText={(text) => this.setState({type: text})}/>
+                        </Item>
                         <Button success disabled={this.validator()}
                                 rounded style={{margin: 30, marginTop: 5}}
                                 onPress={() => {
-                                    this.props.ModifyTheEvent(this.state)
+                                    this.props.ModifyTheEvent({...this.state, type : this.props.calendar.eventsType[this.state.type]})
                                 }}>
                             <Text>
                                 Modify event

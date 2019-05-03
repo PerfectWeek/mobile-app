@@ -139,7 +139,7 @@ export class _Profile extends React.Component {
                                                   }}>
                                     <Icon active name='camera' style={{fontSize: 16}} type={"FontAwesome"}/>
                                 </TouchableOpacity>
-                                <Title style={{color: 'black', fontFamily: 'Lato_Bold', fontSize: 46, marginTop: 5}}>
+                                <Title style={{color: 'black', fontFamily: 'Lato_Bold', fontSize: 36, margin:5}}>
                                     {this.props.user.pseudo}
                                 </Title>
                             </View>

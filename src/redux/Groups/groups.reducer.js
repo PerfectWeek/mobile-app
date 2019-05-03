@@ -4,7 +4,7 @@ import {LoginActionsType} from "../Login/login.actions";
 
 const default_state = {
     status: 'NONE',
-    groups: null
+    groups: {}
 };
 
 export const GroupReducer = (state = default_state, action) => {

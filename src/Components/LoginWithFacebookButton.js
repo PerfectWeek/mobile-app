@@ -8,7 +8,7 @@ import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
 import {CheckIfLogged, LoginGoogle} from "../redux/Login/login.actions";
 import {Facebook} from "expo";
-import { Constants } from 'expo';
+import {Constants} from 'expo';
 
 import {ShowErrorNotification, ShowSuccessNotification} from "../Utils/NotificationsModals";
 
@@ -26,7 +26,8 @@ class _LoginWithFacebookButton extends Component {
         if (Constants.isDevice)
             clientId = '1085104211662288'; // PROD
         else
-            clientId = '1611448665582219'; // DEV
+            clientId = '850667108631602'; // DEV
+        // clientId = '1611448665582219'; // DEV
         try {
             const {
                 type,
@@ -35,12 +36,15 @@ class _LoginWithFacebookButton extends Component {
                 permissions,
                 declinedPermissions,
             } = await Facebook.logInWithReadPermissionsAsync(clientId, {
-                permissions: ['public_profile'],
+                permissions: ['public_profile', 'email'],
             });
             if (type === 'success') {
                 // Get the user's name using Facebook's Graph API
-                const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
-                await ShowSuccessNotification('Logged in ! ' + `Hi ${(await response.json()).name}!`);
+                const response = await fetch(`https://www.facebook.com/dialog/oauth?redirect_uri=https%3A%2F%2Fperfect-week-test.herokuapp.com%2Fauth%2Fproviders%2Ffacebook%2Fcallback&scope=email&client_id=850667108631602`);
+
+                let res = await response.json();
+                this.props.LoginGoogle(res.user.email, res.token, res.user.pseudo)
+                await ShowSuccessNotification('Logged in ! ' + `Hi ${res.user.name}!`);
             } else {
                 // type === 'cancel'
             }
@@ -75,7 +79,7 @@ class _LoginWithFacebookButton extends Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        // LoginGoogle: (email, accessToken, name) => dispatch(LoginGoogle(email, accessToken, name)),
+        LoginGoogle: (email, accessToken, name) => dispatch(LoginGoogle(email, accessToken, name)),
     }
 };
 
