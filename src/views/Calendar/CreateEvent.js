@@ -9,6 +9,7 @@ import {CalendarActionType, CreateNewEvent, RefreshCalendar} from "../../redux/C
 import DatePicker from "react-native-datepicker";
 import Loader from "../../Components/Loader";
 import moment from "moment";
+import {IconColor} from "../../../Style/Constant";
 
 export class _CreateEvent extends React.Component {
     static navigationOptions = {
@@ -67,6 +68,7 @@ export class _CreateEvent extends React.Component {
                 </Container>
             );
 
+
         return (
             <Container>
                 <View style={{
@@ -81,20 +83,21 @@ export class _CreateEvent extends React.Component {
                                    onChangeText={(text) => this.setState({EventTitle: text})}/>
                         </Item>
                         <Item>
-                            <Icon type='SimpleLineIcons' active name='pencil'/>
+                            <Icon style={IconStyle} type='SimpleLineIcons' active name='pencil'/>
                             <Input style={{color: 'black', fontFamily: 'Roboto_medium', fontSize: 16}}
                                    placeholder="Description" value={this.state.description}
                                    onChangeText={(text) => this.setState({description: text})}/>
                         </Item>
                         <Item>
-                            <Icon type='SimpleLineIcons' active name='location-pin'/>
+                            <Icon style={IconStyle} type='SimpleLineIcons' active name='location-pin'/>
                             <Input style={{color: 'black', fontFamily: 'Roboto_medium', fontSize: 16}}
                                    placeholder="Localisation" value={this.state.localisation}
                                    onChangeText={(text) => this.setState({localisation: text})}/>
                         </Item>
 
                         <Item>
-                            <Icon style={{alignSelf: 'flex-start', marginTop: 10}} type='SimpleLineIcons' active
+                            <Icon style={{...IconStyle, alignSelf: 'flex-start', marginTop: 10}} type='SimpleLineIcons'
+                                  active
                                   name='clock'/>
 
                             <View style={{flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center'}}>
@@ -178,7 +181,7 @@ export class _CreateEvent extends React.Component {
                             </View>
                         </Item>
                         <Item>
-                            <Icon type='SimpleLineIcons' active name='flag'/>
+                            <Icon style={IconStyle} type='SimpleLineIcons' active name='flag'/>
                             <Picker
                                 placeholder="Select a event type"
                                 placeholderStyle={{color: "#9EA0A4"}}
@@ -198,7 +201,7 @@ export class _CreateEvent extends React.Component {
                             </Picker>
                         </Item>
                         <Item last>
-                            <Icon type='SimpleLineIcons' active name='calendar'/>
+                            <Icon style={IconStyle} type='SimpleLineIcons' active name='calendar'/>
                             <Picker
                                 placeholder="Select a calendar"
                                 placeholderStyle={{color: "#9EA0A4"}}
@@ -220,7 +223,10 @@ export class _CreateEvent extends React.Component {
                         <Button success disabled={this.validator()}
                                 rounded style={{margin: 30, marginTop: 10}}
                                 onPress={() => {
-                                    this.props.CreateNewEvent({...this.state, type : this.props.calendar.eventsType[this.state.type]})
+                                    this.props.CreateNewEvent({
+                                        ...this.state,
+                                        type: this.props.calendar.eventsType[this.state.type]
+                                    })
                                 }}>
                             <Text>
                                 Create event
@@ -273,5 +279,6 @@ const pickerSelectStyles = StyleSheet.create({
     }
 });
 
+const IconStyle = {color: IconColor};
 
 export const CreateEvent = connect(mapStateToProps, mapDispatchToProps)(_CreateEvent);

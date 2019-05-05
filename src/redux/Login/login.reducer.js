@@ -30,7 +30,7 @@ export const LoginReducer = (state = {
                 ...state,
                 pseudo: action.user.pseudo
             };
-        case LoginActionsType.Logout:
+        case LoginActionsType.ResetStores:
             return {
                 ...state,
                 status: 'NONE',

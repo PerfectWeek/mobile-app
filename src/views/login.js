@@ -3,7 +3,7 @@ import {Image, Dimensions, Animated, Easing, StyleSheet, TouchableHighlight} fro
 import {View, Text, Container, Button} from 'native-base';
 import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
-import {LoginActionsType, Login, CheckIfLogged, LoginGoogle} from "../redux/Login/login.actions";
+import {LoginActionsType, Login, CheckIfLogged, LoginGoogle, ResetStores} from "../redux/Login/login.actions";
 import LottieView from 'lottie-react-native';
 import {validateEmail} from "../Utils/utils.js";
 import {validateNotEmpty, validatePassword} from "../Utils/utils";
@@ -28,6 +28,9 @@ class _LoginScreen extends React.Component {
         this.state = {username: '', password: ''};
         this.props.CheckIfLogged();
         this.spinValue = new Animated.Value(0);
+        if (this.props.login.status === LoginActionsType.Logout) {
+            this.props.ResetStores();
+        }
     }
 
     componentDidMount() {
@@ -111,7 +114,7 @@ class _LoginScreen extends React.Component {
                         justifyContent: 'center',
                     }}>
                         <LoginWithGoogleButton/>
-                        <LoginWithFacebookButton style={{marginTop:20}} onPress={() => {}}/>
+                        <LoginWithFacebookButton style={{marginTop: 20}}/>
                     </View>
 
                 </View>
@@ -139,7 +142,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
         Login: (email, password) => dispatch(Login(email, password)),
-        CheckIfLogged: () => dispatch(CheckIfLogged())
+        CheckIfLogged: () => dispatch(CheckIfLogged()),
+        ResetStores: () => dispatch(ResetStores())
     }
 };
 

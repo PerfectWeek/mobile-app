@@ -16,7 +16,7 @@ import {
     Button, Icon, ActionSheet, Container
 } from 'native-base';
 import connect from "react-redux/es/connect/connect";
-import {DeleteGroup, GetGroups} from "../../redux/Groups/groups.actions";
+import {DeleteGroup, GetGroups, GroupsActionType} from "../../redux/Groups/groups.actions";
 import * as Animatable from 'react-native-animatable';
 import {HeaderBackgroundColor, ScreenBackgroundColor} from "../../../Style/Constant";
 import {NavigationActions} from "react-navigation";
@@ -30,6 +30,7 @@ export class _GroupsScreen extends React.Component {
     constructor(props) {
         super(props);
         this.props.GetGroups(this.props.login.pseudo);
+        
     }
 
     render() {
@@ -50,7 +51,7 @@ export class _GroupsScreen extends React.Component {
                     </Right>
                 </Header>
                 <ScrollView style={{backgroundColor: ScreenBackgroundColor, marginLeft: 10, marginRight: 10, height: Dimensions.get('window').height}}>
-                    {this.props.groups === null ?
+                    {this.props.GroupStore.loading === true ?
                         <Container style={{
                             backgroundColor: ScreenBackgroundColor,
                             flexDirection: 'row',

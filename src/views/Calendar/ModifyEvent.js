@@ -1,7 +1,7 @@
 import React from 'react';
 import {Dimensions, View, StyleSheet, TouchableOpacity} from 'react-native';
 import connect from "react-redux/es/connect/connect";
-import {Button, Form, Icon, Input, Item, Text, Title, Container, Thumbnail} from "native-base";
+import {Button, Form, Icon, Input, Item, Text, Title, Container, Thumbnail, Picker} from "native-base";
 import RNPickerSelect from 'react-native-picker-select';
 
 
@@ -9,6 +9,7 @@ import {CalendarActionType, RefreshCalendar, ModifyTheEvent} from "../../redux/C
 import DatePicker from "react-native-datepicker";
 import Loader from "../../Components/Loader";
 import moment from "moment";
+import {IconColor} from "../../../Style/Constant";
 
 export class _ModifyEvent extends React.Component {
     static navigationOptions = {
@@ -25,7 +26,7 @@ export class _ModifyEvent extends React.Component {
     validator() {
         return (this.state.EventTitle === '' || this.state.description === ''
             || this.state.localisation === '' || this.state.dateBeginEvent === ''
-            || this.state.dateEndEvent === '' || this.state.beginTime === '' || this.state.type === ''
+            || this.state.dateEndEvent === '' || this.state.beginTime === '' || this.state.type === -1
             || this.state.endTime === ''
             || this.state.dateBeginEvent === this.state.dateEndEvent && moment(this.state.endTime, "HH:mm") < moment(this.state.beginTime, "HH:mm")
         )
@@ -100,20 +101,20 @@ export class _ModifyEvent extends React.Component {
                                    onChangeText={(text) => this.setState({EventTitle: text})}/>
                         </Item>
                         <Item>
-                            <Icon type='SimpleLineIcons' active name='pencil'/>
+                            <Icon style={IconStyle} type='SimpleLineIcons' active name='pencil'/>
                             <Input style={textStyle}
                                    placeholder="Description" value={this.state.description}
                                    onChangeText={(text) => this.setState({description: text})}/>
                         </Item>
                         <Item>
-                            <Icon type='SimpleLineIcons' active name='location-pin'/>
+                            <Icon style={IconStyle} type='SimpleLineIcons' active name='location-pin'/>
                             <Input style={textStyle}
                                    placeholder="Localisation" value={this.state.localisation}
                                    onChangeText={(text) => this.setState({localisation: text})}/>
                         </Item>
 
                         <Item>
-                            <Icon style={{alignSelf: 'flex-start', marginTop: 10}} type='SimpleLineIcons' active
+                            <Icon style={{...IconStyle, alignSelf: 'flex-start', marginTop: 10}} type='SimpleLineIcons' active
                                   name='clock'/>
 
                             <View style={{flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center'}}>
@@ -200,10 +201,24 @@ export class _ModifyEvent extends React.Component {
                             </View>
                         </Item>
                         <Item last>
-                            <Icon type='SimpleLineIcons' active name='flag'/>
-                            <Input style={textStyle}
-                                   placeholder="Type" value={this.state.type}
-                                   onChangeText={(text) => this.setState({type: text})}/>
+                            <Icon style={IconStyle} type='SimpleLineIcons' active name='flag'/>
+                            <Picker
+                                placeholder="Select a event type"
+                                placeholderStyle={{color: "#9EA0A4"}}
+                                note
+                                selectedValue={this.state.type}
+                                mode="dropdown"
+                                style={{width: 120}}
+                                onValueChange={(value) => {
+                                    this.setState({type: value});
+                                }}>
+                                <Picker.Item label={"Select a event type"} value={-1} key={-1}/>
+                                {
+                                    this.props.calendar.eventsType.map((type, index) => {
+                                        return <Picker.Item label={type} value={index} key={index}/>
+                                    })
+                                }
+                            </Picker>
                         </Item>
                         <Button success disabled={this.validator()}
                                 rounded style={{margin: 30, marginTop: 5}}
@@ -275,6 +290,7 @@ const GreenButtonStyle = {
     padding: 10,
     margin: 10
 };
+const IconStyle = {color: IconColor};
 const textStyle = {margin: 5, color: 'black', fontFamily: 'Roboto_medium', fontSize: 16};
 
 

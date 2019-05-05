@@ -8,6 +8,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import {CalendarActionType, RefreshCalendar, GetEventInfo, ModifyTheEvent} from "../../redux/Calendar/calendar.actions";
 import DatePicker from "react-native-datepicker";
 import Loader from "../../Components/Loader";
+import {IconColor} from "../../../Style/Constant";
 
 export class _ConsultEvent extends React.Component {
     static navigationOptions = {
@@ -55,7 +56,7 @@ export class _ConsultEvent extends React.Component {
 
         return (
             <Container>
-                <View style={{flex: 1, flexDirection: 'column', alignItems: 'center', margin: 20, marginBottom:40}}>
+                <View style={{flex: 1, flexDirection: 'column', alignItems: 'center', margin: 20, marginBottom: 40}}>
                     <Thumbnail large source={{uri: this.state.image}}/>
                     <Text style={{...textStyle, fontSize: 26}}>
                         {this.state.EventTitle}
@@ -66,14 +67,14 @@ export class _ConsultEvent extends React.Component {
                     marginLeft: 10, marginRight: 30, marginTop: 20, flexGrow: 3
                 }}>
                     <Item>
-                        <Icon type='SimpleLineIcons' active name='pencil'/>
+                        <Icon style={IconStyle} type='SimpleLineIcons' active name='pencil'/>
                         <Text style={textStyle}
                               placeholder="Description">
                             {this.state.description}
                         </Text>
                     </Item>
                     <Item>
-                        <Icon type='SimpleLineIcons' active name='location-pin'/>
+                        <Icon style={IconStyle} type='SimpleLineIcons' active name='location-pin'/>
                         <Text style={textStyle}
                               placeholder="Localisation">
                             {this.state.localisation}
@@ -81,7 +82,7 @@ export class _ConsultEvent extends React.Component {
                     </Item>
 
                     <Item>
-                        <Icon style={{alignSelf: 'flex-start', marginTop: 10}} type='SimpleLineIcons' active
+                        <Icon style={{...IconStyle, alignSelf: 'flex-start', marginTop: 10}} type='SimpleLineIcons' active
                               name='clock'/>
 
                         <View style={{
@@ -190,7 +191,7 @@ export class _ConsultEvent extends React.Component {
                         </View>
                     </Item>
                     <Item last>
-                        <Icon type='SimpleLineIcons' active name='flag'/>
+                        <Icon style={IconStyle} type='SimpleLineIcons' active name='flag'/>
                         <Text style={textStyle}
                               placeholder="Type">
                             {this.state.type}
@@ -243,6 +244,8 @@ const pickerSelectStyles = StyleSheet.create({
         width: 250
     }
 });
+
+const IconStyle = {color: IconColor};
 
 const textStyle = {margin: 10, color: 'black', fontFamily: 'Roboto_medium', fontSize: 16};
 

@@ -56,6 +56,12 @@ export class _Profile extends React.Component {
                     </Body>
                     <Right>
                         <Button transparent onPress={() => {
+                            this.props.navigation.navigate('FriendsList')
+                        }}>
+                            <Icon type={"SimpleLineIcons"} name='people' style={{color: '#064C96', fontSize: 20}}/>
+
+                        </Button>
+                        <Button transparent onPress={() => {
                             this.props.navigation.navigate('Invite')
                         }}>
                             <Icon type={"SimpleLineIcons"} name='bell' style={{color: '#064C96', fontSize: 20}}/>
@@ -78,10 +84,10 @@ export class _Profile extends React.Component {
                         <Button transparent onPress={() => {
                             const BUTTONS = [];
                             const ButtonsCallback = [];
-                            BUTTONS.push("Friends list");
-                            ButtonsCallback.push(() => {
-                                this.props.navigation.navigate('FriendsList')
-                            });
+                            // BUTTONS.push("Friends list");
+                            // ButtonsCallback.push(() => {
+                            //     this.props.navigation.navigate('FriendsList')
+                            // });
                             BUTTONS.push("Logout");
                             ButtonsCallback.push(() => {
                                 Alert.alert('Logout ?', '', [{

@@ -116,7 +116,7 @@ export class _CreateGroupScreen extends React.Component {
                                         name: this.state.groupName,
                                         description: this.state.description,
                                         members: this.state.usersToAdd
-                                    })
+                                    }, this.props.login.pseudo)
                                     // this.props.navigation.pop();
                                 }}>
                             <Text>
@@ -133,8 +133,8 @@ export class _CreateGroupScreen extends React.Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        CreateGroup: (group) => {
-            dispatch(CreateGroup(group))
+        CreateGroup: (group, pseudo) => {
+            dispatch(CreateGroup(group, pseudo))
         }
     }
 };

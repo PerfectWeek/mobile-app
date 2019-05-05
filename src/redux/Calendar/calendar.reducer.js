@@ -1,7 +1,7 @@
 import {CalendarActionType} from "./calendar.actions";
 import {LoginActionsType} from "../Login/login.actions";
 
-const eventsType = ['party', 'work', 'hobby', 'workout'];
+const eventsType = ['party', 'work', 'hobby', 'workout', 'other'];
 const default_state = {status: 'NONE', DashboardStatus: 'NONE', eventsType: eventsType};
 
 export const CalendarReducer = (state = default_state, action) => {

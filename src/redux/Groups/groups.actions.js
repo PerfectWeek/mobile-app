@@ -1,4 +1,5 @@
 export const GroupsActionType = {
+    SetLoading: 'SET_LOADING',
     GetGroups: 'GET_GROUPS',
     GetGroupSuccess: 'GET_GROUPS_SUCCESS',
     GetGroupFail: 'GET_GROUPS_FAIL',
@@ -221,10 +222,11 @@ export const EditGroupInfoFail = (error_message) => {
     }
 };
 
-export const CreateGroup = (group) => {
+export const CreateGroup = (group, pseudo) => {
     return {
         type: GroupsActionType.CreateGroup,
-        group
+        group,
+        pseudo
     }
 };
 
@@ -286,5 +288,12 @@ export const UpdateGroupImageFail = (error_message) => {
     return {
         type: GroupsActionType.UpdateGroupImageFail,
         error_message: error_message
+    }
+};
+
+export const SetLoading = (status) => {
+    return {
+        type: GroupsActionType.SetLoading,
+        loading : status,
     }
 };

@@ -12,8 +12,6 @@ export const UserReducer = (state = default_state, action) => {
     switch (action.type) {
         case LoginActionsType.ResetStores:
             return default_state;
-        case UserActionsType.UserReset:
-            return default_state;
         case UserActionsType.GetInfo:
             return {
                 ...state,

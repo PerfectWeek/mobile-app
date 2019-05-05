@@ -11,6 +11,11 @@ export const GroupReducer = (state = default_state, action) => {
     switch (action.type) {
         case LoginActionsType.ResetStores:
             return default_state;
+        case GroupsActionType.SetLoading:
+            return {
+                ...state,
+                loading: action.loading
+            };
         case GroupsActionType.GetGroups:
             return {
                 ...state,

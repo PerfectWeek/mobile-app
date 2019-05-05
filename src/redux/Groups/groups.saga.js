@@ -20,7 +20,7 @@ import {
     GetGroupInfoSuccess,
     GetGroupsImage,
     GetGroupsImageFail,
-    GetGroupsImageSuccess, UpdateGroupImageSuccess, UpdateGroupImageFail, GetGroupInfoFail
+    GetGroupsImageSuccess, UpdateGroupImageSuccess, UpdateGroupImageFail, GetGroupInfoFail, SetLoading
 } from "./groups.actions";
 import {Network} from "../../Network/Requests";
 import {NavigationActions} from "react-navigation";
@@ -29,9 +29,11 @@ import {UserService} from "../../Services/Users/users";
 import {arrayToObject} from "../../Utils/utils";
 import {GetUsersInfo} from "../User/user.actions";
 import {ShowErrorNotification, ShowSuccessNotification} from "../../Utils/NotificationsModals";
+import {GetCalendars} from "../Calendar/calendar.actions";
 
 
 function* GetGroups(action) {
+    yield put(SetLoading(true));
     try {
         const groups = yield GroupService.GetGroupsForUserPseudo(action.pseudo);
         const groupMap = yield groups.reduce(function (map, obj) {
@@ -47,6 +49,7 @@ function* GetGroups(action) {
         yield ShowErrorNotification(err);
         yield put(GetGroupFail(err));
     }
+    yield put(SetLoading(false));
 }
 
 function* GetGroupInfo(action) {
@@ -133,6 +136,7 @@ function* CreateGroup(action) {
     if (resp.status === 201) {
         let res = yield GroupService.GetGroupsImage([resp.data.group]);
         resp.data.group.image = res[0].image;
+        yield put(GetCalendars({pseudo: action.pseudo}));
         yield put(CreateGroupSuccess(resp.data.group));
         yield ShowSuccessNotification("Creation successful");
     } else {

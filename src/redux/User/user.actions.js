@@ -1,5 +1,4 @@
 export const UserActionsType = {
-    UserReset: 'RESET',
     SetUserInfo: 'SET_USER_INFO',
     GetUsersInfo: 'GET_USERS_INFO',
     GetUserInfo: 'GET_USER_INFO',
@@ -121,11 +120,6 @@ export const DeleteUserFail = (error_message) => {
     }
 };
 
-export const UserReset = () => {
-    return {
-        type: UserActionsType.UserReset
-    }
-};
 
 export const UpdateUserImage = (pseudo, image) => {
     return {
