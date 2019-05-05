@@ -11,6 +11,7 @@ import {Facebook} from "expo";
 import {Constants} from 'expo';
 
 import {ShowErrorNotification, ShowSuccessNotification} from "../Utils/NotificationsModals";
+import {ProviderService} from "../Services/Providers/provider";
 
 class _LoginWithFacebookButton extends Component {
     static propTypes = {
@@ -27,26 +28,14 @@ class _LoginWithFacebookButton extends Component {
             clientId = '1085104211662288'; // PROD
         else
             clientId = '850667108631602'; // DEV
-        // clientId = '1611448665582219'; // DEV
         try {
-            const {
-                type,
-                token,
-                expires,
-                permissions,
-                declinedPermissions,
-            } = await Facebook.logInWithReadPermissionsAsync(clientId, {
+            const res = await Facebook.logInWithReadPermissionsAsync(clientId, {
                 permissions: ['public_profile', 'email'],
             });
-            if (type === 'success') {
-                // Get the user's name using Facebook's Graph API
-                const response = await fetch(`https://www.facebook.com/dialog/oauth?redirect_uri=https%3A%2F%2Fperfect-week-test.herokuapp.com%2Fauth%2Fproviders%2Ffacebook%2Fcallback&scope=email&client_id=850667108631602`);
-
-                let res = await response.json();
-                this.props.LoginGoogle(res.user.email, res.token, res.user.pseudo)
-                await ShowSuccessNotification('Logged in ! ' + `Hi ${res.user.name}!`);
-            } else {
-                // type === 'cancel'
+            if (res.type === 'success') {
+                const auth = await ProviderService.ConnectWithFacebookTokens(res.token);
+                this.props.LoginGoogle(auth.user.email, auth.token, auth.user.pseudo);
+                await ShowSuccessNotification('Logged in ! ' + `Hi ${auth.user.pseudo}!`);
             }
         } catch ({message}) {
             await ShowErrorNotification("Couldn't connect with Facebook");

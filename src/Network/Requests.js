@@ -3,7 +3,8 @@ import {AsyncStorage} from 'react-native';
 
 // axios.defaults.baseURL = 'http://192.168.1.6:3000';
 axios.defaults.baseURL = 'https://perfect-week-test.herokuapp.com';
- // axios.defaults.baseURL = 'https://api.kalastud.io';
+
+// axios.defaults.baseURL = 'https://api.kalastud.io';
 
 
 export class Network {
@@ -14,11 +15,11 @@ export class Network {
         try {
             const savedData = await AsyncStorage.getItem(this.storedTokenName);
             return JSON.parse(savedData);
-        }
-        catch (e) {
+        } catch (e) {
             return null;
         }
     }
+
     static async SaveToken(email, name) {
         try {
             const jData = {
@@ -27,28 +28,29 @@ export class Network {
                 name: name
             };
             return await AsyncStorage.setItem(this.storedTokenName, JSON.stringify(jData));
-        }
-        catch (e) {
-            return null;
-        }
-    }
-    static async deleteToken() {
-        try {
-            return await AsyncStorage.removeItem(this.storedTokenName);
-        }
-        catch (e){
+        } catch (e) {
             return null;
         }
     }
 
-    static async Get(route) {
+    static async deleteToken() {
+        try {
+            return await AsyncStorage.removeItem(this.storedTokenName);
+        } catch (e) {
+            return null;
+        }
+    }
+
+    static async Get(route, params = {}) {
         try {
             if (this.access_token !== null)
-                return await axios.get(route, {headers: {'Authorization': 'Bearer ' + this.access_token}});
+                return await axios.get(route, {
+                    headers: {'Authorization': 'Bearer ' + this.access_token},
+                    params: params
+                });
             else
-                return await axios.get(route);
-        }
-        catch (e) {
+                return await axios.get(route, {params: params});
+        } catch (e) {
             return e;
         }
     }
@@ -63,8 +65,7 @@ export class Network {
                 });
             else
                 return await axios.post(route, body);
-        }
-        catch (e) {
+        } catch (e) {
             return e.response;
         }
     }
@@ -80,8 +81,7 @@ export class Network {
                 });
             else
                 return await axios.post(route, body);
-        }
-        catch (e) {
+        } catch (e) {
             return e.response;
         }
     }
@@ -96,8 +96,7 @@ export class Network {
                 });
             else
                 return await axios.put(route, body);
-        }
-        catch (e) {
+        } catch (e) {
             return e.response;
         }
     }
@@ -110,12 +109,10 @@ export class Network {
                         'Authorization': 'Bearer ' + this.access_token
                     }
                 });
-            }
-            else {
+            } else {
                 return await axios.delete(route);
             }
-        }
-        catch (e) {
+        } catch (e) {
             return e.response;
         }
     }

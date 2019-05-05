@@ -8,7 +8,9 @@ import {CheckIfLogged, Login, LoginGoogle, SetLogged} from "../redux/Login/login
 import {Google} from "expo";
 import {ShowErrorNotification, ShowSuccessNotification} from "../Utils/NotificationsModals";
 import {Network} from "../Network/Requests";
-import { Constants } from 'expo';
+import {Constants} from 'expo';
+import {ProviderService} from "../Services/Providers/provider";
+import axios from "react-native-axios";
 
 class _LoginWithGoogleButton extends Component {
     constructor(props) {
@@ -24,14 +26,11 @@ class _LoginWithGoogleButton extends Component {
             clientId = '778613646655-o210sl8asjlulngac90ttr2q6bv81r08.apps.googleusercontent.com'; // DEV
 
         try {
-            let res = await Google.logInAsync({androidClientId: clientId});
+            let res = await Google.logInAsync({androidClientId: clientId, scopes: ['profile', 'email']});
             if (res.type === 'success') {
-                const response = await fetch(`https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&response_type=code&client_id=778613646655-mh4hplpsh40n5vsuudmh97gmvprqnu85.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fperfect-week-test.herokuapp.com%2Fauth%2Fproviders%2Fgoogle%2Fcallback`);
-
-                let res = await response.json();
-                this.props.LoginGoogle(res.user.email, res.token, res.user.pseudo)
-                console.log("Behold : ", res);
-                await ShowSuccessNotification('Logged in ! ' + `Hi ${res.user.name}!`);
+                const auth = await ProviderService.ConnectWithGoogleTokens(res.accessToken, res.refreshToken);
+                this.props.LoginGoogle(auth.user.email, auth.token, auth.user.pseudo);
+                await ShowSuccessNotification('Logged in ! ' + `Hi ${auth.user.pseudo}!`);
             }
         } catch (e) {
             await ShowErrorNotification("Couldn't connect with Google");
