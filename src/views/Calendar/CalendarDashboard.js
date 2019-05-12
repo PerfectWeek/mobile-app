@@ -180,7 +180,7 @@ export class _CalendarDashboard extends Component {
                     <Loader/>
                 </Container>
             );
-        // console.log('items', this.props.items)
+        // console.log(this.props)
         return (
             <Container style={{
                 paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight

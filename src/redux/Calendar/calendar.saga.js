@@ -108,8 +108,10 @@ function* CreatNewEvent(action) {
         start_time: action.event.dateBeginEvent + "T" + action.event.beginTime,
         end_time: action.event.dateEndEvent + "T" + action.event.endTime,
         location: action.event.localisation,
-        type: action.event.typeEvent
+        type: action.event.typeEvent,
+        visibility: (action.event.visibility) ? 'public' : 'private'
     });
+    // console.log(response)
 
     if (response.status === 201) {
         const events = yield CalendarService.GetEventsInfo([response.data.event]);

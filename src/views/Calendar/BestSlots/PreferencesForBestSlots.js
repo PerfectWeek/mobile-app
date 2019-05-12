@@ -8,17 +8,18 @@ class _PreferencesForBestSlots extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            EventTitle: 'ww',
-            description: 'w',
-            localisation: 'w',
-            dateBeginEvent: '2019-04-27',
-            dateEndEvent: '2019-05-06',
+            EventTitle: '',
+            description: '',
+            localisation: '',
+            dateBeginEvent: '',
+            dateEndEvent: '',
             beginTime: new Date().toLocaleTimeString('en-US', {hour12: false, hour: "numeric", minute: "numeric"}),
-            endTime: '22:33',
+            endTime: '',
             calendarId: this.props.navigation.getParam('calendarId'),
-            timeEvent: 30,
-            typeEvent:'party'
+            timeEvent: 0,
+            typeEvent:''
         }
+        //console.log(this.props.navigation.getParam('calendarId'), this.props)
     }
 
     static navigationOptions = {
@@ -26,6 +27,7 @@ class _PreferencesForBestSlots extends Component {
     };
 
     validator() {
+        console.log(this.state)
         return (this.state.EventTitle === '' || this.state.description === ''
             || this.state.localisation === ''
             || this.state.dateBeginEvent === '' || this.state.timeEvent === 0
