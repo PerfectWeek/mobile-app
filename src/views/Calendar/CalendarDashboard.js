@@ -10,7 +10,7 @@ import {
     GetUsersEventsFiltered, GetEvents, GetCalendars, ResetStatus, LoadCalendar, ReloadEvents
 } from "../../redux/Calendar/calendar.actions";
 import Loader from "../../Components/Loader";
-import {HeaderBackgroundColor} from "../../../Style/Constant";
+import {HeaderBackgroundColor, ScreenBackgroundColor} from "../../../Style/Constant";
 import Swipeout from 'react-native-swipeout';
 import {CalendarFilter} from "./CalendarFilter";
 import moment from 'moment'
@@ -82,21 +82,22 @@ export class _CalendarDashboard extends Component {
     renderItem(item) {
         const swipeoutBtns = [
             {
+                text: 'Edit',
+                color: 'white',
+                backgroundColor: 'green',
+                onPress: () => {
+                    this.props.navigation.navigate('ModifyEvent', {eventId: item.id});
+                }
+            },
+            {
                 text: 'Delete',
                 color: 'white',
                 backgroundColor: 'red',
                 onPress: () => {
                     this.removeEvent(item)
                 }
-            },
-            {
-                text: 'Modify',
-                color: 'white',
-                backgroundColor: 'green',
-                onPress: () => {
-                    this.props.navigation.navigate('ModifyEvent', {eventId: item.id});
-                }
             }
+
         ];
         const start = new Date(item.start_time);
         const start_string = ("0" + start.getUTCHours()).slice(-2) + ":" + ("0" + start.getUTCMinutes()).slice(-2);
@@ -182,7 +183,8 @@ export class _CalendarDashboard extends Component {
             );
         return (
             <Container style={{
-                paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
+                paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight,
+                backgroundColor: ScreenBackgroundColor
             }}>
 
                 <Container>

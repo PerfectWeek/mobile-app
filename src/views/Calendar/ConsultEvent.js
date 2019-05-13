@@ -36,7 +36,8 @@ export class _ConsultEvent extends React.Component {
             beginTime: beginTimeEvent[1].substring(0, 5),
             dateEndEvent: endTimeEvent[0],
             endTime: endTimeEvent[1].substring(0, 5),
-            image: event.image
+            image: event.image,
+            visibility: event.visibility
         }
     }
 
@@ -190,11 +191,18 @@ export class _ConsultEvent extends React.Component {
                             </View>
                         </View>
                     </Item>
-                    <Item last>
+                    <Item>
                         <Icon style={IconStyle} type='SimpleLineIcons' active name='flag'/>
                         <Text style={textStyle}
                               placeholder="Type">
                             {this.state.type}
+                        </Text>
+                    </Item>
+                    <Item last>
+                        <Icon style={IconStyle} type='SimpleLineIcons' active name='lock'/>
+                        <Text style={textStyle}
+                              placeholder="Visibility">
+                            {this.state.visibility}
                         </Text>
                     </Item>
                 </Form>

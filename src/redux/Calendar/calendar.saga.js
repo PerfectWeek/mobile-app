@@ -44,7 +44,8 @@ function* ModifyEvent(action) {
         start_time: action.event.dateBeginEvent + "T" + action.event.beginTime,
         end_time: action.event.dateEndEvent + "T" + action.event.endTime,
         location: action.event.localisation,
-        type: action.event.type
+        type: action.event.type,
+        visibility: action.event.visibility
     });
 
     if (response.status === 200) {
@@ -109,7 +110,8 @@ function* CreatNewEvent(action) {
         start_time: action.event.dateBeginEvent + "T" + action.event.beginTime,
         end_time: action.event.dateEndEvent + "T" + action.event.endTime,
         location: action.event.localisation,
-        type: action.event.type
+        type: action.event.type,
+        visibility: action.event.visibility
     });
 
     if (response.status === 201) {

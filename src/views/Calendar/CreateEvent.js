@@ -25,6 +25,7 @@ export class _CreateEvent extends React.Component {
             localisation: '',
             dateBeginEvent: '',
             dateEndEvent: '',
+            visibility: 'public',
             type: -1,
             beginTime: new Date().toLocaleTimeString('en-US', {hour12: false, hour: "numeric", minute: "numeric"}),
             endTime: '',
@@ -35,7 +36,7 @@ export class _CreateEvent extends React.Component {
     validator() {
         return (this.state.EventTitle === '' || this.state.description === ''
             || this.state.localisation === '' || this.state.dateBeginEvent === '' || this.state.type === -1
-            || this.state.dateEndEvent === '' || this.state.beginTime === ''
+            || this.state.dateEndEvent === '' || this.state.beginTime === '' || this.state.visibility === ''
             || this.state.endTime === '' || this.state.calendarId === -1
             || this.state.dateBeginEvent === this.state.dateEndEvent && moment(this.state.endTime, "HH:mm") < moment(this.state.beginTime, "HH:mm")
         )
@@ -200,7 +201,7 @@ export class _CreateEvent extends React.Component {
                                 }
                             </Picker>
                         </Item>
-                        <Item last>
+                        <Item>
                             <Icon style={IconStyle} type='SimpleLineIcons' active name='calendar'/>
                             <Picker
                                 placeholder="Select a calendar"
@@ -218,6 +219,22 @@ export class _CreateEvent extends React.Component {
                                         return <Picker.Item label={c.name} value={c.id} key={c.id}/>
                                     })
                                 }
+                            </Picker>
+                        </Item>
+                        <Item last>
+                            <Icon style={IconStyle} type='SimpleLineIcons' active name='lock'/>
+                            <Picker
+                                placeholder="Select a visibility"
+                                placeholderStyle={{color: "#9EA0A4"}}
+                                note
+                                // selectedValue={this.state.visibility}
+                                mode="dropdown"
+                                style={{width: 120}}
+                                onValueChange={(value) => {
+                                    this.setState({visibility: value});
+                                }}>
+                                <Picker.Item label={'public'} value={'public'} key={0}/>
+                                <Picker.Item label={'private'} value={'private'} key={1}/>
                             </Picker>
                         </Item>
                         <Button success disabled={this.validator()}
