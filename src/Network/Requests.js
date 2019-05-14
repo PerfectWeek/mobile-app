@@ -3,8 +3,8 @@ import {AsyncStorage} from 'react-native';
 
 // axios.defaults.baseURL = 'http://192.168.1.6:3000';
 axios.defaults.baseURL = 'https://perfect-week-test.herokuapp.com';
-
 // axios.defaults.baseURL = 'https://api.kalastud.io';
+
 
 
 export class Network {
@@ -56,6 +56,7 @@ export class Network {
     }
 
     static async Post(route, body) {
+        // console.log('body', body)
         try {
             if (this.access_token !== null)
                 return await axios.post(route, body, {

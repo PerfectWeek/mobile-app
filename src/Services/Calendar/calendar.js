@@ -2,6 +2,16 @@ import {Network} from "../../Network/Requests";
 
 export class CalendarService {
 
+    static async GetBestSlots(infos) {
+        const resp = await Network.Get(encodeURI('/calendars/' + infos.calendarId + '/assistant/find-best-slots' +
+            '?duration='+infos.duration+
+            '&location='+infos.location+
+            '&max_time='+infos.max_time+
+            '&min_time='+infos.min_time+
+            '&type='+infos.type));
+        return resp;
+    }
+
     static async GetCalendarsForUser(pseudo) {
         const resp = await Network.Get('/users/' + pseudo + '/calendars');
         if (resp.status === 200)

@@ -137,6 +137,23 @@ export const CalendarReducer = (state = default_state, action) => {
                 ...state,
                 status: CalendarActionType.Nothing,
             };
+        case CalendarActionType.GetBestSlotsSuccess:
+            return {
+                ...state,
+                slots: action.slots,
+                slotsStatus: CalendarActionType.GetBestSlotsSuccess
+            };
+        case CalendarActionType.GetBestSlotsFail:
+            return {
+                ...state,
+                slotsStatus: CalendarActionType.GetBestSlotsFail
+            };
+        case CalendarActionType.GetBestSlots:
+            return {
+                ...state,
+                infos: action.infos,
+                slotsStatus: CalendarActionType.GetBestSlots
+            };
         default:
             return state;
     }

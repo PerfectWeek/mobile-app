@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, StyleSheet, Text, Alert, TouchableHighlight, ScrollView, Platform} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 import {Agenda} from 'react-native-calendars';
-import {Body, Button, Container, Header, Icon, Right, Title, Fab, Thumbnail} from "native-base";
+import {Body, Button, Container, Header, Icon, Right, Title, Fab, Thumbnail, ActionSheet} from "native-base";
 import {
     GetAllUsersEvents,
     CalendarActionType,
@@ -180,6 +180,7 @@ export class _CalendarDashboard extends Component {
                     <Loader/>
                 </Container>
             );
+        // console.log(this.props)
         return (
             <Container style={{
                 paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
@@ -223,7 +224,31 @@ export class _CalendarDashboard extends Component {
                     style={{backgroundColor: '#5067FF'}}
                     position="bottomRight"
                     onPress={() => {
-                        this.props.navigation.navigate({routeName: 'CreateEvent'});
+                        const BUTTONS = [];
+                        const ButtonsCallback = [];
+                        BUTTONS.push("Create event");
+                        ButtonsCallback.push(() => {
+                            this.props.navigation.navigate({routeName: 'CreateEvent'});
+                        });
+
+                        BUTTONS.push("Find best slot");
+                        ButtonsCallback.push(() => {
+                            this.props.navigation.navigate('PrefSlots', {calendarId: this.props.selectedCalendar});
+                        });
+
+                        BUTTONS.push("Cancel");
+                        ButtonsCallback.push(() => {
+                        });
+                        const CANCEL_INDEX = BUTTONS.length - 1;
+                        ActionSheet.show(
+                            {
+                                options: BUTTONS,
+                                cancelButtonIndex: CANCEL_INDEX,
+                                title: "Options"
+                            },
+                            buttonIndex => {
+                                ButtonsCallback[buttonIndex]();
+                            })
                     }}>
                     <Icon name="add"/>
                 </Fab>
@@ -244,10 +269,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const mapStateToProps = (state, ownProps) => {
     let events = [];
+    let idCalendar = -1;
     if (state.calendar.events) {
+        // console.log(state.calendar.events)
         events = Object.values(state.calendar.events).map(e => {
             return {...e, calendar_name: state.calendar.calendars.find(c => c.id === e.calendar_id).name}
         });
+        if (Object.values(state.calendar.events).length !== 0)
+            idCalendar = Object.values(state.calendar.events)[0].calendar_id
+        // console.log(events.length)
     }
     let items = {};
     for (let i = -150; i < 185; i++) {
@@ -313,17 +343,20 @@ const mapStateToProps = (state, ownProps) => {
                 color: color,
                 image: event.image
             });
+            // console.log(items)
             items[isoDate] = items[isoDate].sort((a, b) => {
                 return a.start_time > b.start_time;
             });
             strTimeStart.setDate(strTimeStart.getDate() + 1);
         }
     }
+    // console.log(items.length)
     return {
         ...ownProps,
         calendar: state.calendar,
         login: state.login,
-        items
+        items,
+        selectedCalendar: idCalendar
     }
 };
 

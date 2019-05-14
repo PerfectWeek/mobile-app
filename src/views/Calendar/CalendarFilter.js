@@ -37,6 +37,8 @@ class _CalendarFilter extends Component {
                 onRef={ref => (this.modal = ref)} title='Filter'
                 actionButtonTitle='Filter'
                 validateCallback={() => {
+                    // console.log('ti')
+                    // console.log(this.state.filters)
                     this.props.SetFilters(this.state.filters);
                     this.props.RefreshCalendar(this.props.calendar.calendars);
                     this.modal.toggle();

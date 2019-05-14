@@ -1,7 +1,7 @@
 import React from 'react';
 import {Dimensions, View, StyleSheet} from 'react-native';
 import connect from "react-redux/es/connect/connect";
-import {Button, Form, Icon, Input, Picker, Item, Text, Title, Container} from "native-base";
+import {Button, Form, Icon, Input, Picker, Item, Text, CheckBox, Container} from "native-base";
 import RNPickerSelect from 'react-native-picker-select';
 
 
@@ -28,7 +28,9 @@ export class _CreateEvent extends React.Component {
             type: -1,
             beginTime: new Date().toLocaleTimeString('en-US', {hour12: false, hour: "numeric", minute: "numeric"}),
             endTime: '',
-            calendarId: -1
+            calendarId: -1,
+            typeEvent: '',
+            visibility: false
         }
     }
 
@@ -49,6 +51,7 @@ export class _CreateEvent extends React.Component {
     }
 
     render() {
+        const eventsDefinedTypes = ['party', 'work', 'workout', 'hobby'];
         let listcal = [];
         this.props.calendar.calendars.map((it) => {
             listcal.push({
@@ -219,6 +222,14 @@ export class _CreateEvent extends React.Component {
                                     })
                                 }
                             </Picker>
+                        </Item>
+                        <Item style={{height: 30}}>
+                            <CheckBox checked={this.state.visibility} color="grey" onPress={()=>{
+                                this.setState({
+                                    visibility: !this.state.visibility
+                                })
+                            }}/>
+                            <Text>        Private</Text>
                         </Item>
                         <Button success disabled={this.validator()}
                                 rounded style={{margin: 30, marginTop: 10}}
