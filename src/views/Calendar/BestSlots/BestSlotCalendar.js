@@ -306,6 +306,8 @@ class _BestSlotCalendar extends Component {
 
     render(){
         // console.log(this.state.items)
+        if (this.props.calendar.slotsStatus === CalendarActionType.GetBestSlotsFail)
+            this.props.navigation.navigate('Master');
         if (this.props.calendar.slotsStatus !== CalendarActionType.GetBestSlotsSuccess || this.state.refresh !== false)
             return (
                 <Container style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
@@ -314,6 +316,7 @@ class _BestSlotCalendar extends Component {
             );
         if (!this.state.slotsLoaded) {
             this.setState({slotsLoaded: true});
+            // console.log('slots', this.props.calendar.slots);
             this.newSelection(0, this.props.calendar.slots);
         }
         return (
@@ -345,7 +348,7 @@ class _BestSlotCalendar extends Component {
                         fontSize: 16,
                         fontFamily: 'Lato_Medium'
                     }}>
-                        {'        Slot n°'+this.state.idxSlot+'        '}
+                        {'        Slot n°'+this.state.idxSlot+'/'+this.props.calendar.slots.length+'        '}
                     </Text>
                     <Button onPress={() => {this.setState({refresh: !this.state.refresh});
                         this.nextSlot();

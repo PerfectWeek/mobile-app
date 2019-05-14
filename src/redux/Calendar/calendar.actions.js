@@ -29,9 +29,32 @@ export const CalendarActionType = {
     LoadCalendarFail: "LOAD_CALENDAR_FAIL",
     GetBestSlots: "GET_BEST_SLOTS",
     GetBestSlotsSuccess: "GET_BEST_SLOTS_SUCCESS",
-    GetBestSlotsFail: "GET_BEST_SLOTS_FAIL"
+    GetBestSlotsFail: "GET_BEST_SLOTS_FAIL",
+    // GetEventAttendees: "GET_EVENT_ATTENDEES",
+    // GetEventAttendeesSuccess: "GET_EVENT_ATTENDEES_SUCCESS",
+    // GetEventAttendeesFail: "GET_EVENT_ATTENDEES_FAIL"
 };
 
+// export const GetEventAttendees = (idEvent) => {
+//     return {
+//         type: CalendarActionType.GetEventAttendees,
+//         idEvent: idEvent
+//     }
+// };
+//
+// export const GetEventAttendeesSuccess = (listAttendees) => {
+//     return {
+//         type: CalendarActionType.GetEventAttendeesSuccess,
+//         listAttendees: listAttendees
+//     }
+// };
+//
+//
+// export const GetEventAttendeesFail = () => {
+//     return {
+//         type: CalendarActionType.GetEventAttendeesFail,
+//     }
+// };
 
 export const GetBestSlotsSuccess = (slots) => {
     return {

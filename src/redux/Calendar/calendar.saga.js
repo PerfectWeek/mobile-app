@@ -23,6 +23,7 @@ import {CalendarService} from "../../Services/Calendar/calendar";
 
 
 function* GetTheEventInfo(action) {
+    // console.log(action)
     const response = yield Network.Get('/events/' + action.event);
 
     if (response.status !== 200) {
@@ -34,6 +35,7 @@ function* GetTheEventInfo(action) {
         yield ShowErrorNotification(err);
         yield put(GetEventInfoFail());
     }
+    console.log('resp', response.data)
     yield put(GetEventInfoSuccess(response.data.event));
 }
 
@@ -104,7 +106,7 @@ function* DeleteEvent(action) {
 }
 
 function* CreatNewEvent(action) {
-    console.log('action', action)
+    // console.log('action', action)
 
     try {
         const response = yield Network.Post('/calendars/' + action.event.calendarId + '/events', {
@@ -224,6 +226,8 @@ function* GetBestSlots(action) {
         // console.log(slots)
         // name: action.event.EventTitle,
         // description: action.event.description,
+        if (slots.length === 0)
+            throw {message: 'No slots found'};
         yield put(GetBestSlotsSuccess(slots));
     }
     catch (e) {
