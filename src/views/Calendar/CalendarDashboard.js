@@ -25,8 +25,7 @@ export class _CalendarDashboard extends Component {
             scrolledDay: this.currentDate()
         };
         this.props.LoadCalendar(this.props.login.pseudo);
-        console.log(this.props)
-
+        // console.log(this.props)
     }
 
     static navigationOptions = {
@@ -41,33 +40,6 @@ export class _CalendarDashboard extends Component {
         // this.reloadEvents();
         this.setState({...this.state});
     }
-
-    // reloadEvents() {
-    //     const events = this.props.events;
-    //     if (!events)
-    //         return;
-    //     for (let k = 0; k < events.length; ++k) {
-    //         const event = events[k];
-    //         let strTimeStart = new Date(event.start_time);
-    //         const strTimee = new Date(event.end_time);
-    //         // const calcol = this.getRandomColor();
-    //         while (strTimeStart.getTime() <= strTimee.getTime()) {
-    //             let isoDate = this.timeToString(strTimeStart);
-    //             // if (!this.state.items[isoDate]) {
-    //             this.state.items[isoDate] = [];
-    //             // }
-    //             this.state.items[isoDate].push({
-    //                 id: event.id,
-    //                 name: event.name,
-    //                 calendar_name: event.calendar_name,
-    //                 end_time: event.end_time,
-    //                 start_time: event.start_time,
-    //                 color: this.getRandomColor()
-    //             });
-    //             strTimeStart.setDate(strTimeStart.getDate() + 1);
-    //         }
-    //     }
-    // }
 
     removeEvent(event) {
         Alert.alert(
