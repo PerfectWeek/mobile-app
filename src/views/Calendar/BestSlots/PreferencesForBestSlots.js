@@ -18,7 +18,7 @@ class _PreferencesForBestSlots extends Component {
             beginTime: new Date().toLocaleTimeString('en-US', {hour12: false, hour: "numeric", minute: "numeric"}),
             endTime: '',
             calendarId: this.props.navigation.getParam('calendarId'),
-            timeEvent: 0,
+            timeEvent: '',
             type:'',
             visibility: 'public',
         }
@@ -33,7 +33,7 @@ class _PreferencesForBestSlots extends Component {
         console.log(this.state)
         return (this.state.EventTitle === '' || this.state.description === ''
             || this.state.localisation === ''
-            || this.state.dateBeginEvent === '' || this.state.timeEvent === 0
+            || this.state.dateBeginEvent === '' || this.state.timeEvent === '' || this.state.timeEvent === '0'
             || this.state.dateEndEvent === '' || this.state.beginTime === ''
             || this.state.endTime === '' || this.state.calendarId === -1
             || this.state.dateBeginEvent === this.state.dateEndEvent && moment(this.state.endTime, "HH:mm") < moment(this.state.beginTime, "HH:mm")
@@ -159,7 +159,7 @@ class _PreferencesForBestSlots extends Component {
                                placeholder="Event duration" value={this.state.timeEvent}
                                maxLength={4}
                                keyboardType='numeric'
-                               onChangeText={(text) => this.setState({timeEvent: parseInt(text)})}/>
+                               onChangeText={(text) => this.setState({timeEvent: text})}/>
                     </Item>
                 <Item>
                     <Icon type='SimpleLineIcons' active name='event'/>
