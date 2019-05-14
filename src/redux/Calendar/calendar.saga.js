@@ -115,7 +115,6 @@ function* CreatNewEvent(action) {
             location: action.event.localisation,
             type: action.event.type,
             visibility: action.event.visibility
-
         });
         if (response.status !== 201)
             throw response
@@ -127,7 +126,7 @@ function* CreatNewEvent(action) {
                 'users': action.event.usersToAdd
             });
             if (responseAddUsers.status !== 201) {
-                const rp = yield Network.Delete('/events/' + events[0].id);
+                yield Network.Delete('/events/' + events[0].id);
                 throw responseAddUsers
             }
         }
@@ -135,7 +134,6 @@ function* CreatNewEvent(action) {
         yield ShowSuccessNotification("Event Created");
     }
     catch (err) {
-        // let err;
         if (err.status !== 500 && err.data !== undefined && err.data.message !== undefined)
             err = err.data.message;
         else
@@ -143,39 +141,6 @@ function* CreatNewEvent(action) {
         yield put(CreateNewEventFail(err));
         yield ShowErrorNotification(err);
     }
-
-    // const response = yield Network.Post('/calendars/' + action.event.calendarId + '/events', {
-    //     name: action.event.EventTitle,
-    //     description: action.event.description,
-    //     start_time: action.event.dateBeginEvent + "T" + action.event.beginTime,
-    //     end_time: action.event.dateEndEvent + "T" + action.event.endTime,
-    //     location: action.event.localisation,
-    //     type: action.event.type,
-    //     visibility: action.event.visibility
-    //
-    // });
-
-    // if (response.status === 201) {
-    //     const events = yield CalendarService.GetEventsInfo([response.data.event]);
-    //     const events_w_image = yield CalendarService.GetEventsImage([events[0]]);
-    //     console.log('use', events[0].id, action.event.usersToAdd)
-    //     if (action.event.usersToAdd.length !== 0) {
-    //         const responseAddUsers = yield Network.Post('/events/' + events[0].id + '/invite-users', {
-    //             'users': action.usersToAdd
-    //         });
-    //         console.log('ua', responseAddUsers)
-    //     }
-    //     yield put(CreateNewEventSuccess(events_w_image[0]));
-    //     yield ShowSuccessNotification("Event Created");
-    // } else {
-    //     let err;
-    //     if (response.status !== 500 && response.data !== undefined && response.data.message !== undefined)
-    //         err = response.data.message;
-    //     else
-    //         err = "Connection error";
-    //     yield put(CreateNewEventFail(err));
-    //     yield ShowErrorNotification(err);
-    // }
 }
 
 function* GetCalendars(action) {
