@@ -3,6 +3,8 @@ import {View} from 'react-native';
 import {Container, Text, Button, Icon, Input, Item, Picker, Form, CheckBox} from "native-base";
 import DatePicker from "react-native-datepicker";
 import moment from "moment";
+import {IconColor} from "../../../../Style/Constant";
+
 
 class _PreferencesForBestSlots extends Component {
     constructor(props) {
@@ -17,8 +19,8 @@ class _PreferencesForBestSlots extends Component {
             endTime: '',
             calendarId: this.props.navigation.getParam('calendarId'),
             timeEvent: 0,
-            typeEvent:'',
-            visibility: false
+            type:'',
+            visibility: 'public',
         }
         //console.log(this.props.navigation.getParam('calendarId'), this.props)
     }
@@ -35,7 +37,7 @@ class _PreferencesForBestSlots extends Component {
             || this.state.dateEndEvent === '' || this.state.beginTime === ''
             || this.state.endTime === '' || this.state.calendarId === -1
             || this.state.dateBeginEvent === this.state.dateEndEvent && moment(this.state.endTime, "HH:mm") < moment(this.state.beginTime, "HH:mm")
-            || this.state.typeEvent === ''
+            || this.state.type === ''
         )
     }
 
@@ -165,11 +167,11 @@ class _PreferencesForBestSlots extends Component {
                         placeholder="Type of event"
                         placeholderStyle={{color: "#9EA0A4"}}
                         note
-                        selectedValue={this.state.typeEvent}
+                        selectedValue={this.state.type}
                         mode="dropdown"
                         style={{width: 120}}
                         onValueChange={(value) => {
-                            this.setState({typeEvent: value});
+                            this.setState({type: value});
                         }}>
                         <Picker.Item label={"Type of event"} value={-1} key={-1}/>
                         {
@@ -179,13 +181,21 @@ class _PreferencesForBestSlots extends Component {
                         }
                     </Picker>
                 </Item>
-                <Item style={{height: 30}}>
-                    <CheckBox checked={this.state.visibility} color="grey" onPress={()=>{
-                        this.setState({
-                            visibility: !this.state.visibility
-                        })
-                    }}/>
-                    <Text>        Private</Text>
+                <Item last>
+                    <Icon style={IconStyle} type='SimpleLineIcons' active name='lock'/>
+                    <Picker
+                        placeholder="Select a visibility"
+                        placeholderStyle={{color: "#9EA0A4"}}
+                        note
+                        // selectedValue={this.state.visibility}
+                        mode="dropdown"
+                        style={{width: 120}}
+                        onValueChange={(value) => {
+                            this.setState({visibility: value});
+                        }}>
+                        <Picker.Item label={'public'} value={'public'} key={0}/>
+                        <Picker.Item label={'private'} value={'private'} key={1}/>
+                    </Picker>
                 </Item>
                 <Button success disabled={this.validator()}
                         rounded style={{margin: 30, marginTop: 10}}
@@ -203,5 +213,8 @@ class _PreferencesForBestSlots extends Component {
     }
 
 }
+
+const IconStyle = {color: IconColor};
+
 
 export const PreferencesForBestSlots = _PreferencesForBestSlots;

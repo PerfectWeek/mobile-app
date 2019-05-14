@@ -22,7 +22,7 @@ export class _InviteDetailScreen extends React.Component {
     render() {
         return (
             <View>
-                <View style={{marginTop: 0, alignItems: 'center', justifyContent: 'center',}}>
+                <View style={{marginTop: 0, alignItems: 'center', justifyContent: 'center'}}>
                     <Thumbnail large
                                style={{width: Dimensions.get('window').width, height: 160, borderRadius: 0}}
 

@@ -23,7 +23,7 @@ import {
     RemoveGroupMember,
     UpdateMemberRole
 } from "../../redux/Groups/groups.actions";
-import {HeaderBackgroundColor, Primary} from "../../../Style/Constant";
+import {HeaderBackgroundColor, Primary, ScreenBackgroundColor} from "../../../Style/Constant";
 import {AddUsers} from "./AddUsers";
 import {GroupDetailScreenGroupName} from "./GroupDetailScreenGroupName";
 import Loader from "../../Components/Loader";
@@ -100,7 +100,7 @@ export class _GroupDetailScreen extends React.Component {
             );
         const isAdmin = group.members[this.props.login.pseudo].role === "Admin";
         return (
-            <ScrollView style={{marginLeft: 10, marginRight: 10, height: Dimensions.get('window').height}}>
+            <ScrollView style={{paddingLeft: 10, paddingRight: 10, height: Dimensions.get('window').height, backgroundColor: ScreenBackgroundColor}}>
                 <GroupDetailScreenGroupName group={group} onRef={ref => (this.groupName = ref)}/>
                 <GroupDetailScreenImagePicker group={group} onRef={ref => (this.groupImage = ref)}/>
                 <Title style={{

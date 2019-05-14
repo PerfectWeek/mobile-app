@@ -161,7 +161,8 @@ class _BestSlotCalendar extends Component {
         item.description = this.state.slotData.description;
         item.localisation = this.state.slotData.localisation;
         item.calendarId = this.state.slotData.calendarId;
-        item.typeEvent = this.state.slotData.typeEvent;
+        item.type = this.state.slotData.type;
+        item.visibility = this.state.slotData.visibility;
 
         this.props.CreateNewEvent(item)
     }
@@ -260,55 +261,6 @@ class _BestSlotCalendar extends Component {
         )
     }
 
-    // renderItem(item) {
-    //     const start = new Date(item.start_time);
-    //     const start_string = ("0" + start.getUTCHours()).slice(-2) + ":" + ("0" + start.getUTCMinutes()).slice(-2);
-    //     const end = new Date(item.end_time);
-    //     const end_string = ("0" + end.getUTCHours()).slice(-2) + ":" + ("0" + end.getUTCMinutes()).slice(-2);
-    //     return (
-    //         <View
-    //             style={{
-    //                 backgroundColor: 'white', marginTop: 15, marginRight: 15, borderWidth: 2,
-    //                 borderColor: item.color,
-    //                 borderRadius: 5
-    //             }}>
-    //             <TouchableHighlight
-    //                 onPress={() => this.props.navigation.navigate('ConsultEvent', {eventId: item.id})}
-    //                 underlayColor="rgba(52, 52, 52, 0.5)">
-    //
-    //                 <View style={{
-    //                     margin: 15,
-    //                     flex: 1,
-    //                     flexDirection: 'row',
-    //                     justifyContent: 'space-between',
-    //                     alignItems: 'center'
-    //                 }}>
-    //                     {item.image === undefined || item.image === null ? null :
-    //                         <Animatable.View animation="fadeIn">
-    //                             <Thumbnail source={{uri: item.image}}/>
-    //                         </Animatable.View>
-    //                     }
-    //
-    //                     <View>
-    //                         <Text style={{fontSize: 18, fontFamily: 'Lato_Bold'}}>{item.name}</Text>
-    //                         <Text style={{
-    //                             fontSize: 14,
-    //                             fontFamily: 'Lato_Medium'
-    //                         }}>
-    //                             {start_string} - {end_string}
-    //                         </Text>
-    //                     </View>
-    //                     <Text style={{
-    //                         alignSelf: 'flex-start',
-    //                         fontSize: 18,
-    //                         fontFamily: 'Lato_Medium'
-    //                     }}>{item.calendar_name}</Text>
-    //                 </View>
-    //
-    //             </TouchableHighlight>
-    //         </View>
-    //     )
-    // }
 
     getD(da) {
         var today = new Date(da);

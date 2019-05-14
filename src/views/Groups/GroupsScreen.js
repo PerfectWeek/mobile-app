@@ -36,7 +36,8 @@ export class _GroupsScreen extends React.Component {
     render() {
         return (
             <View style={{
-                paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
+                paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight,
+                backgroundColor: ScreenBackgroundColor
             }}>
                 <Header androidStatusBarColor="#00AE93" style={{backgroundColor: HeaderBackgroundColor}}>
                     <Body>
@@ -50,7 +51,7 @@ export class _GroupsScreen extends React.Component {
                         </Button>
                     </Right>
                 </Header>
-                <ScrollView style={{backgroundColor: ScreenBackgroundColor, marginLeft: 10, marginRight: 10, height: Dimensions.get('window').height}}>
+                <ScrollView style={{paddingLeft: 10, paddingRight: 10, height: Dimensions.get('window').height}}>
                     {this.props.GroupStore.loading === true ?
                         <Container style={{
                             backgroundColor: ScreenBackgroundColor,

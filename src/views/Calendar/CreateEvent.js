@@ -25,19 +25,19 @@ export class _CreateEvent extends React.Component {
             localisation: '',
             dateBeginEvent: '',
             dateEndEvent: '',
+            visibility: 'public',
             type: -1,
             beginTime: new Date().toLocaleTimeString('en-US', {hour12: false, hour: "numeric", minute: "numeric"}),
             endTime: '',
             calendarId: -1,
-            typeEvent: '',
-            visibility: false
+            typeEvent: ''
         }
     }
 
     validator() {
         return (this.state.EventTitle === '' || this.state.description === ''
             || this.state.localisation === '' || this.state.dateBeginEvent === '' || this.state.type === -1
-            || this.state.dateEndEvent === '' || this.state.beginTime === ''
+            || this.state.dateEndEvent === '' || this.state.beginTime === '' || this.state.visibility === ''
             || this.state.endTime === '' || this.state.calendarId === -1
             || this.state.dateBeginEvent === this.state.dateEndEvent && moment(this.state.endTime, "HH:mm") < moment(this.state.beginTime, "HH:mm")
         )
@@ -203,7 +203,7 @@ export class _CreateEvent extends React.Component {
                                 }
                             </Picker>
                         </Item>
-                        <Item last>
+                        <Item>
                             <Icon style={IconStyle} type='SimpleLineIcons' active name='calendar'/>
                             <Picker
                                 placeholder="Select a calendar"
@@ -223,13 +223,21 @@ export class _CreateEvent extends React.Component {
                                 }
                             </Picker>
                         </Item>
-                        <Item style={{height: 30}}>
-                            <CheckBox checked={this.state.visibility} color="grey" onPress={()=>{
-                                this.setState({
-                                    visibility: !this.state.visibility
-                                })
-                            }}/>
-                            <Text>        Private</Text>
+                        <Item last>
+                            <Icon style={IconStyle} type='SimpleLineIcons' active name='lock'/>
+                            <Picker
+                                placeholder="Select a visibility"
+                                placeholderStyle={{color: "#9EA0A4"}}
+                                note
+                                // selectedValue={this.state.visibility}
+                                mode="dropdown"
+                                style={{width: 120}}
+                                onValueChange={(value) => {
+                                    this.setState({visibility: value});
+                                }}>
+                                <Picker.Item label={'public'} value={'public'} key={0}/>
+                                <Picker.Item label={'private'} value={'private'} key={1}/>
+                            </Picker>
                         </Item>
                         <Button success disabled={this.validator()}
                                 rounded style={{margin: 30, marginTop: 10}}

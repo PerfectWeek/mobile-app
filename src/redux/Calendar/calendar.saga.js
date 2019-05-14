@@ -44,7 +44,8 @@ function* ModifyEvent(action) {
         start_time: action.event.dateBeginEvent + "T" + action.event.beginTime,
         end_time: action.event.dateEndEvent + "T" + action.event.endTime,
         location: action.event.localisation,
-        type: action.event.type
+        type: action.event.type,
+        visibility: action.event.visibility
     });
 
     if (response.status === 200) {
@@ -103,14 +104,16 @@ function* DeleteEvent(action) {
 }
 
 function* CreatNewEvent(action) {
+    // console.log('action', action)
     const response = yield Network.Post('/calendars/' + action.event.calendarId + '/events', {
         name: action.event.EventTitle,
         description: action.event.description,
         start_time: action.event.dateBeginEvent + "T" + action.event.beginTime,
         end_time: action.event.dateEndEvent + "T" + action.event.endTime,
         location: action.event.localisation,
-        type: action.event.typeEvent,
-        visibility: (action.event.visibility) ? 'public' : 'private'
+        type: action.event.type,
+        visibility: action.event.visibility
+
     });
     // console.log(response)
 
@@ -194,7 +197,7 @@ function* GetBestSlots(action) {
             location: action.infos.localisation,
             min_time: action.infos.dateBeginEvent + "T" + action.infos.beginTime,
             max_time: action.infos.dateEndEvent + "T" + action.infos.endTime,
-            type: action.infos.typeEvent
+            type: action.infos.type
         });
         if (resp.status !== 200)
             throw resp.data;
@@ -205,7 +208,7 @@ function* GetBestSlots(action) {
                 name: action.infos.EventTitle,
                 description: action.infos.description,
                 location: action.infos.localisation,
-                type: action.infos.typeEvent
+                type: action.infos.type
             }
         });
         // console.log(slots)

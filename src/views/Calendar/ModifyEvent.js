@@ -48,7 +48,8 @@ export class _ModifyEvent extends React.Component {
             recievedEvent: true,
             image: event.image,
             display: event.image,
-            new_image: false
+            new_image: false,
+            visibility: event.visibility,
         };
     }
 
@@ -200,7 +201,7 @@ export class _ModifyEvent extends React.Component {
                                 </View>
                             </View>
                         </Item>
-                        <Item last>
+                        <Item>
                             <Icon style={IconStyle} type='SimpleLineIcons' active name='flag'/>
                             <Picker
                                 placeholder="Select a event type"
@@ -218,6 +219,21 @@ export class _ModifyEvent extends React.Component {
                                         return <Picker.Item label={type} value={index} key={index}/>
                                     })
                                 }
+                            </Picker>
+                        </Item>
+                        <Item last>
+                            <Icon style={IconStyle} type='SimpleLineIcons' active name='lock'/>
+                            <Picker
+                                placeholder="Select a visibility"
+                                placeholderStyle={{color: "#9EA0A4"}}
+                                note
+                                mode="dropdown"
+                                style={{width: 120}}
+                                onValueChange={(value) => {
+                                    this.setState({visibility: value});
+                                }}>
+                                <Picker.Item label={'public'} value={'public'} key={0}/>
+                                <Picker.Item label={'private'} value={'private'} key={1}/>
                             </Picker>
                         </Item>
                         <Button success disabled={this.validator()}
