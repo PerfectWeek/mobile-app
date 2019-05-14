@@ -6,9 +6,18 @@ import {HeaderBackgroundColor} from "../../Style/Constant";
 import {GroupsNavigator} from "./Groups/GroupsNavigator";
 import {CalendarDashboard} from "./Calendar/CalendarDashboard";
 import {CalendarNavigator} from "./Calendar/CalendarNavigator";
+import {EventsNavigator} from "./Events/EventsNavigator";
 
 export default createBottomTabNavigator(
     {
+        Events: {
+            screen: EventsNavigator, navigationOptions: {
+                tabBarIcon: ({focused, tintColor}) => <Icon
+                    name='calendar-plus'
+                    type='MaterialCommunityIcons'
+                    style={{color: tintColor, marginTop:5, fontSize:22}}/>
+            }
+        },
         Dashboard: {
             screen: CalendarNavigator,
             navigationOptions: {
@@ -18,6 +27,14 @@ export default createBottomTabNavigator(
                     style={{color: tintColor, marginTop:5, fontSize:22}}/>
             }
         },
+        // Events: {
+        //     screen: EventsNavigator, navigationOptions: {
+        //         tabBarIcon: ({focused, tintColor}) => <Icon
+        //             name='calendar-plus'
+        //             type='MaterialCommunityIcons'
+        //             style={{color: tintColor, marginTop:5, fontSize:22}}/>
+        //     }
+        // },
         Groups: {
             screen: GroupsNavigator, navigationOptions: {
                 tabBarIcon: ({focused, tintColor}) => <Icon

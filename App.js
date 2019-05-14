@@ -96,6 +96,7 @@ export default class Root extends React.Component {
             Ionicons: require("native-base/Fonts/Ionicons.ttf"),
             Lato_Bold: require("./Resources/Font/Lato-Bold.ttf"),
             Lato_Medium: require("./Resources/Font/Lato-Medium.ttf"),
+            MaterialCommunityIcons: require("native-base/Fonts/MaterialCommunityIcons.ttf"),
             'simple-line-icons': require('native-base/Fonts/SimpleLineIcons.ttf'),
             'Material Icons': require("native-base/Fonts/MaterialIcons.ttf")
         };
@@ -107,6 +108,7 @@ export default class Root extends React.Component {
                 Lato_Bold: require("./Resources/Font/Lato-Bold.ttf"),
                 Lato_Medium: require("./Resources/Font/Lato-Medium.ttf"),
                 SimpleLineIcons: require("native-base/Fonts/SimpleLineIcons.ttf"),
+                MaterialCommunityIcons: require("native-base/Fonts/MaterialCommunityIcons.ttf"),
                 MaterialIcons: require("native-base/Fonts/MaterialIcons.ttf")
             };
         await Expo.Font.loadAsync(obj);
