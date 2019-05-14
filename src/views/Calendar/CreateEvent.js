@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, View, StyleSheet} from 'react-native';
+import {Dimensions, View, StyleSheet, ScrollView} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 import {Button, Form, Icon, Input, Picker, Item, Text, CheckBox, Container} from "native-base";
 import RNPickerSelect from 'react-native-picker-select';
@@ -10,6 +10,8 @@ import DatePicker from "react-native-datepicker";
 import Loader from "../../Components/Loader";
 import moment from "moment";
 import {IconColor} from "../../../Style/Constant";
+import {validateNotEmpty} from "../../Utils/utils";
+import {GroupsActionType} from "../../redux/Groups/groups.actions";
 
 export class _CreateEvent extends React.Component {
     static navigationOptions = {
@@ -30,7 +32,9 @@ export class _CreateEvent extends React.Component {
             beginTime: new Date().toLocaleTimeString('en-US', {hour12: false, hour: "numeric", minute: "numeric"}),
             endTime: '',
             calendarId: -1,
-            typeEvent: ''
+            typeEvent: '',
+            searchBar: '',
+            usersToAdd: []
         }
     }
 
@@ -74,6 +78,7 @@ export class _CreateEvent extends React.Component {
 
         return (
             <Container>
+
                 <View style={{
                     flexDirection: 'row', justifyContent: 'space-between', marginTop: 20
                 }}>
@@ -239,6 +244,51 @@ export class _CreateEvent extends React.Component {
                                 <Picker.Item label={'private'} value={'private'} key={1}/>
                             </Picker>
                         </Item>
+                        <View style={{
+                            flexDirection: 'row', justifyContent: 'space-between',
+                            margin: 20
+                        }}>
+                            <Form style={{
+                                marginLeft: 10, marginRight: 30, flexGrow: 3
+                            }}>
+
+                                <Item style={{marginTop: 0}}>
+                                    <Icon active name='person'/>
+                                    <Input placeholder="Pseudo" value={this.state.searchBar}
+                                           onChangeText={(text) => this.setState({searchBar: text})}/>
+                                </Item>
+                            </Form>
+                            <Button
+                                disabled={!validateNotEmpty(this.state.searchBar) || this.state.usersToAdd.includes(this.state.searchBar)}
+                                onPress={() => {
+                                    this.setState({
+                                        usersToAdd: [...this.state.usersToAdd, this.state.searchBar],
+                                        searchBar: ''
+                                    });
+                                }}>
+                                <Icon name='add'/>
+                            </Button>
+                        </View>
+                        <ScrollView style={{height: Dimensions.get('window').height / 4}}>
+                            <View style={{margin: 20, flexDirection: 'row', flexWrap: 'wrap'}}>
+                                {
+                                    this.state.usersToAdd.map((user, index) => {
+                                        return (
+                                            <Button rounded key={user} small style={{margin: 5, backgroundColor: 'grey'}}
+                                                    onPress={() => {
+                                                        this.state.usersToAdd.splice(index, 1);
+                                                        this.setState({
+                                                            usersToAdd: this.state.usersToAdd
+                                                        });
+                                                    }}>
+                                                <Text>{user}</Text>
+                                                <Icon type='FontAwesome' name='remove'/>
+                                            </Button>
+                                        );
+                                    })
+                                }
+                            </View>
+                        </ScrollView>
                         <Button success disabled={this.validator()}
                                 rounded style={{margin: 30, marginTop: 10}}
                                 onPress={() => {

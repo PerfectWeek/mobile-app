@@ -25,6 +25,8 @@ export class _CalendarDashboard extends Component {
             scrolledDay: this.currentDate()
         };
         this.props.LoadCalendar(this.props.login.pseudo);
+        console.log(this.props)
+
     }
 
     static navigationOptions = {
@@ -272,6 +274,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const mapStateToProps = (state, ownProps) => {
     let events = [];
     let idCalendar = -1;
+    // console.log('tim', state)
     if (state.calendar.events) {
         // console.log(state.calendar.events)
         events = Object.values(state.calendar.events).map(e => {
@@ -281,6 +284,8 @@ const mapStateToProps = (state, ownProps) => {
             idCalendar = Object.values(state.calendar.events)[0].calendar_id
         // console.log(events.length)
     }
+    if (state.calendar.calendars)
+        idCalendar = state.calendar.calendars[0].id
     let items = {};
     for (let i = -150; i < 185; i++) {
         const time = new Date().getTime() + i * 24 * 60 * 60 * 1000;
@@ -352,7 +357,7 @@ const mapStateToProps = (state, ownProps) => {
             strTimeStart.setDate(strTimeStart.getDate() + 1);
         }
     }
-    // console.log(items.length)
+    // console.log(idCalendar)
     return {
         ...ownProps,
         calendar: state.calendar,
