@@ -48,7 +48,7 @@ export class _EventsList extends React.Component {
                 </Header>
                 {
                     this.props.events.map((event, index) => {
-                        return <EventCard event={event} key={index}/>
+                        return <EventCard navigation={this.props.navigation} event={event} key={index}/>
                     })
                 }
 

@@ -69,8 +69,7 @@ export class _ConsultEvent extends React.Component {
                 }}>
                     <Item>
                         <Icon style={IconStyle} type='SimpleLineIcons' active name='pencil'/>
-                        <Text style={textStyle}
-                              placeholder="Description">
+                        <Text style={textStyle}>
                             {this.state.description}
                         </Text>
                     </Item>

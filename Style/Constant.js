@@ -7,4 +7,4 @@ export const IconColor = '#064C96';
 
 // export const HeaderTintColor= '#064c96';
 export const HeaderTintColor= '#000';
-export const ScreenBackgroundColor= '#F4F4F4';
+export const ScreenBackgroundColor= '#e9e9ef';
