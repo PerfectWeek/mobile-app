@@ -7,12 +7,16 @@ export const EventsReducer = (state = default_state, action) => {
     switch (action.type) {
         case LoginActionsType.ResetStores:
             return default_state;
-        // case CalendarActionType.GetEventInfo:
-        //     return {
-        //         ...state,
-        //         status: CalendarActionType.GetEventInfo,
-        //         event: action.event
-        //     };
+        case EventsActionType.SetLoading:
+            return {
+                ...state,
+                loading: action.loading
+            };
+        case EventsActionType.SetEvents:
+            return {
+                ...state,
+                events: action.events
+            };
         default:
             return state;
     }

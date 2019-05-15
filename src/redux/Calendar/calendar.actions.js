@@ -115,10 +115,9 @@ export const CreateNewEventFail = (error_message) => {
     }
 };
 
-export const GetCalendars = (_pseudo) => {
+export const GetCalendars = () => {
   return {
-      type: CalendarActionType.GetCalendars,
-      pseudo: _pseudo
+      type: CalendarActionType.GetCalendars
   };
 };
 

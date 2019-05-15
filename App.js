@@ -28,6 +28,8 @@ import getTheme from './native-base-theme/components';
 import platform from "./native-base-theme/variables/platform";
 import {CalendarSaga} from "./src/redux/Calendar/calendar.saga";
 import {CalendarReducer} from "./src/redux/Calendar/calendar.reducer";
+import {EventsSaga} from "./src/redux/Events/events.saga";
+import {EventsReducer} from "./src/redux/Events/events.reducer";
 import HomeNavigator from "./src/views/HomeNavigator";
 
 const AppNavigator = createSwitchNavigator(
@@ -52,6 +54,7 @@ const reducer = combineReducers({
     user: UserReducer,
     group: GroupReducer,
     calendar: CalendarReducer,
+    events: EventsReducer,
     nav: navReducer
 });
 
@@ -72,7 +75,8 @@ function* sagas() {
         fork(RegisterSagas),
         fork(UserSagas),
         fork(GroupSaga),
-        fork(CalendarSaga)
+        fork(CalendarSaga),
+        fork(EventsSaga)
     ]);
 }
 

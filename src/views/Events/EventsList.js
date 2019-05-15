@@ -10,6 +10,7 @@ import connect from "react-redux/es/connect/connect";
 import {HeaderBackgroundColor, ScreenBackgroundColor} from "../../../Style/Constant";
 import Loader from "../../Components/Loader";
 import EventCard from "../../Components/EventCard";
+import {GetEventRecommendation} from "../../redux/Events/events.actions";
 
 export class _EventsList extends React.Component {
     static navigationOptions = {
@@ -18,19 +19,26 @@ export class _EventsList extends React.Component {
 
     constructor(props) {
         super(props);
-        // this.props.GetGroups(this.props.login.pseudo);
+        this.props.GetEventRecommendation("2019-05-10T12:12:12", "2019-06-10T12:12:12", 10);
 
     }
 
+
     render() {
-        let a = [1, 1, 1, 1, 1, 1, 1, 1, 1];
+        if (this.props.loading !== false)
+            return (
+                <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+                    <Loader/>
+                </View>
+            );
         return (
             <ScrollView style={{
-                backgroundColor: '#cfced2'
+                // backgroundColor: '#cfced2'
+                backgroundColor: ScreenBackgroundColor
             }}
                         contentContainerStyle={{
                             flexGrow: 1,
-                            justifyContent: 'space-between',
+                            // justifyContent: 'space-between',
                             paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight,
 
                         }}>
@@ -40,8 +48,8 @@ export class _EventsList extends React.Component {
                     </Body>
                 </Header>
                 {
-                    a.map((a, index) => {
-                        return <EventCard key={index}/>
+                    this.props.events.map((event, index) => {
+                        return <EventCard event={event} key={index}/>
                     })
                 }
 
@@ -53,14 +61,16 @@ export class _EventsList extends React.Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        // GetGroups: (pseudo) => dispatch(GetGroups(pseudo)),
+        GetEventRecommendation: (min_time, max_time, limit) => dispatch(GetEventRecommendation(min_time, max_time, limit)),
     }
 };
 
 const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
-        // login: state.login
+        loading: state.events.loading,
+        events: state.events.events
+
     }
 };
 

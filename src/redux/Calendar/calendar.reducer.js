@@ -78,8 +78,7 @@ export const CalendarReducer = (state = default_state, action) => {
         case CalendarActionType.GetCalendars:
             return {
                 ...state,
-                status: CalendarActionType.GetCalendars,
-                pseudo: action.pseudo
+                status: CalendarActionType.GetCalendars
             };
         case CalendarActionType.GetCalendarsSuccess:
             return {
