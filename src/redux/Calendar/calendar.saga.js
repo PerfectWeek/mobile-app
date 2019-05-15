@@ -24,9 +24,10 @@ import {CalendarService} from "../../Services/Calendar/calendar";
 
 function* GetTheEventInfo(action) {
     // console.log(action)
+    let listAttendees = [];
     const response = yield Network.Get('/events/' + action.event);
-
-    if (response.status !== 200) {
+    const respons2 = yield Network.Get('/events/' + action.event + '/attendees');
+    if (response.status !== 200 || respons2.status !== 200) {
         let err;
         if (response.status !== 500 && response.data !== undefined && response.data.message !== undefined)
             err = response.data.message;
@@ -35,11 +36,25 @@ function* GetTheEventInfo(action) {
         yield ShowErrorNotification(err);
         yield put(GetEventInfoFail());
     }
-    console.log('resp', response.data)
-    yield put(GetEventInfoSuccess(response.data.event));
+    // console.log('resp', response.data)
+    for (let i = 0; i < respons2.data.attendees.length; i++) {
+        listAttendees.push(respons2.data.attendees[i]['pseudo'])
+    }
+    yield put(GetEventInfoSuccess({...response.data.event, 'attendees': listAttendees}));
 }
 
 function* ModifyEvent(action) {
+    // console.log('modif', action.event.attendeesToDel.length)
+    for (let i = 0; i < action.event.attendeesToDel.length; i++) {
+        const res = yield Network.Delete('/events/' + action.event.id + '/attendees/' + action.event.attendeesToDel[i]);
+        // console.log('def', res)
+    }
+    if (action.event.attendeesToAdd.length !== 0) {
+        const responseAddUsers = yield Network.Post('/events/' + action.event.id + '/invite-users', {
+            'users': action.event.attendeesToAdd
+        });
+        // console.log('add', responseAddUsers)
+    }
     const response = yield Network.Put('/events/' + action.event.id, {
         name: action.event.EventTitle,
         description: action.event.description,
@@ -119,7 +134,7 @@ function* CreatNewEvent(action) {
             visibility: action.event.visibility
         });
         if (response.status !== 201)
-            throw response
+            throw response;
 
         const events = yield CalendarService.GetEventsInfo([response.data.event]);
         const events_w_image = yield CalendarService.GetEventsImage([events[0]]);

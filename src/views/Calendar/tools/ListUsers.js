@@ -8,8 +8,9 @@ export class _ListUsers extends React.Component {
         super(props);
         this.state = {
             searchBar: '',
-            usersToAdd: []
+            usersToAdd: (this.props.loadList !== undefined) ? this.props.loadList : []
         }
+        // console.log('list', this.props)
     }
 
     render() {

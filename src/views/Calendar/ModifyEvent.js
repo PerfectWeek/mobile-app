@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Dimensions, View, StyleSheet, TouchableOpacity, ScrollView, Platform} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 import {Button, Form, Icon, Input, Item, Text, Title, Container, Thumbnail, Picker} from "native-base";
 import RNPickerSelect from 'react-native-picker-select';
@@ -9,7 +9,8 @@ import {CalendarActionType, RefreshCalendar, ModifyTheEvent, GetEventInfo} from 
 import DatePicker from "react-native-datepicker";
 import Loader from "../../Components/Loader";
 import moment from "moment";
-import {IconColor} from "../../../Style/Constant";
+import {IconColor, ScreenBackgroundColor} from "../../../Style/Constant";
+import {ListUsers} from "./tools/ListUsers";
 
 export class _ModifyEvent extends React.Component {
     static navigationOptions = {
@@ -35,7 +36,7 @@ export class _ModifyEvent extends React.Component {
     }
 
     fillInfoEvent(event) {
-        console.log('event', event)
+        // console.log('event', this.props);
         const beginTimeEvent = event.start_time.split('T');
         const endTimeEvent = event.end_time.split('T');
         return {
@@ -53,6 +54,7 @@ export class _ModifyEvent extends React.Component {
             display: event.image,
             new_image: false,
             visibility: event.visibility,
+            // attendees: event.attendees
         };
     }
 
@@ -61,15 +63,68 @@ export class _ModifyEvent extends React.Component {
             this.props.navigation.goBack();
             this.props.RefreshCalendar();
         }
-
         if (this.props.calendar && this.props.calendar.status === CalendarActionType.GetEventInfoSuccess && this.state.recievedEvent === false)
         {
             this.fillInfoEvent(this.props.calendar.event);
         }
+        if (this.props !== undefined && this.props.attendees !== undefined && this.state.attendees === undefined) {
+            this.setState({
+                attendees: [...this.props.attendees],
+                oldattendees:  [...this.props.attendees]
+            });
+            // this.forceUpdate();
+        }
+    }
+
+    removeA(arr) {
+        var what, a = arguments, L = a.length, ax;
+        while (L > 1 && arr.length) {
+            what = a[--L];
+            while ((ax= arr.indexOf(what)) !== -1) {
+                arr.splice(ax, 1);
+            }
+        }
+        return arr;
+    }
+
+    checkAttendees() {
+        let listToDel;
+        let listToAdd = [];
+        let oldAttend = this.state.oldattendees;
+        let newAttend = this.state.attendees;
+        let lp = 0;
+        // console.log(this.removeA(old, 'tim'))
+        const len =newAttend.length + oldAttend.length
+        while (lp < len) {
+            for (let i = 0; i < newAttend.length; i++) {
+                const tmp = newAttend[i];
+                if (!oldAttend.includes(tmp)) {
+                    listToAdd.push(tmp)
+                    newAttend = this.removeA(newAttend, tmp);
+                    oldAttend = this.removeA(oldAttend, tmp);
+                    // console.log('add', tmp)
+
+                }
+                if (oldAttend.includes(tmp)) {
+                    oldAttend = this.removeA(oldAttend, tmp);
+                    newAttend = this.removeA(newAttend, tmp);
+                    // console.log('let', tmp)
+                }
+                // console.log(this.state.oldattendees, this.state.attendees)
+
+            }
+            lp += 1;
+        }
+        listToDel = oldAttend;
+        // console.log(listToAdd, listToDel, oldAttend, this.state.attendees.length + this.state.oldattendees.length)
+        this.props.ModifyTheEvent({...this.state,
+            type : this.props.calendar.eventsType[this.state.type],
+            attendeesToDel: listToDel,
+            attendeesToAdd: listToAdd
+        })
     }
 
     render() {
-
         if (this.props.calendar && (this.props.calendar.status === CalendarActionType.ModifyEvent
             || this.props.calendar.status === CalendarActionType.GetEventInfo))
             return (
@@ -81,8 +136,18 @@ export class _ModifyEvent extends React.Component {
                     <Loader/>
                 </Container>
             );
+        // if (this.props !== undefined && this.props.attendees !== undefined && this.state.attendees === undefined) {
+        //     console.log('ok')
+        //     this.setState({
+        //         attendees: this.props.attendees
+        //     })
+        // }
+        console.log('updates', this.state);
         return (
+
             <Container>
+            <ScrollView style={{backgroundColor: ScreenBackgroundColor,
+                paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight}}>
                 <View style={{flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
                     <Thumbnail large source={{uri: this.state.display}}/>
                     <TouchableOpacity style={GreenButtonStyle}
@@ -241,10 +306,15 @@ export class _ModifyEvent extends React.Component {
                                 <Picker.Item label={'private'} value={'private'} key={1}/>
                             </Picker>
                         </Item>
+                        { (this.props.attendees !== undefined) ?
+                            <ListUsers callAddUser={(userList) => {
+                                this.setState({attendees: userList})
+                            }} loadList={this.props.attendees}/> : null
+                        }
                         <Button success disabled={this.validator()}
                                 rounded style={{margin: 30, marginTop: 5}}
                                 onPress={() => {
-                                    this.props.ModifyTheEvent({...this.state, type : this.props.calendar.eventsType[this.state.type]})
+                                    this.checkAttendees()
                                 }}>
                             <Text>
                                 Modify event
@@ -252,6 +322,7 @@ export class _ModifyEvent extends React.Component {
                         </Button>
                     </Form>
                 </View>
+            </ScrollView>
             </Container>
         )
     }
@@ -267,10 +338,18 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    return {
-        ...ownProps,
-        calendar: state.calendar,
-    }
+    // console.log('state', state.calendar.event)
+    if (state.calendar.event !== undefined && state.calendar.event.attendees !== undefined)
+        return {
+            ...ownProps,
+            calendar: state.calendar,
+            attendees: state.calendar.event.attendees
+        };
+    else
+        return {
+            ...ownProps,
+            calendar: state.calendar,
+        }
 };
 
 const pickerSelectStyles = StyleSheet.create({
