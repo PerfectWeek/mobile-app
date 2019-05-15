@@ -33,7 +33,6 @@ export class _EventsList extends React.Component {
             );
         return (
             <ScrollView style={{
-                // backgroundColor: '#cfced2'
                 backgroundColor: ScreenBackgroundColor
             }}
                         contentContainerStyle={{

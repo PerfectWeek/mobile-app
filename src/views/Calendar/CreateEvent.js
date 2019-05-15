@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, View, StyleSheet} from 'react-native';
+import {Dimensions, View, StyleSheet, ScrollView} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 import {Button, Form, Icon, Input, Picker, Item, Text, Title, Container} from "native-base";
 import RNPickerSelect from 'react-native-picker-select';
@@ -71,7 +71,7 @@ export class _CreateEvent extends React.Component {
 
 
         return (
-            <Container>
+            <ScrollView>
                 <View style={{
                     flexDirection: 'row', justifyContent: 'space-between', marginTop: 20
                 }}>
@@ -251,7 +251,7 @@ export class _CreateEvent extends React.Component {
                         </Button>
                     </Form>
                 </View>
-            </Container>
+            </ScrollView>
         )
     }
 }

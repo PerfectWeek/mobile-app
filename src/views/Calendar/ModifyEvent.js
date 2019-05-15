@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Dimensions, View, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 import {Button, Form, Icon, Input, Item, Text, Title, Container, Thumbnail, Picker} from "native-base";
 import RNPickerSelect from 'react-native-picker-select';
@@ -77,9 +77,9 @@ export class _ModifyEvent extends React.Component {
                 </Container>
             );
         return (
-            <Container>
+            <ScrollView>
                 <View style={{flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                    <Thumbnail large source={{uri: this.state.display}}/>
+                    <Thumbnail style={{marginTop:10}} large source={{uri: this.state.display}}/>
                     <TouchableOpacity style={GreenButtonStyle}
                                       onPress={async () => {
                                           const res = await Expo.ImagePicker.launchImageLibraryAsync();
@@ -247,7 +247,7 @@ export class _ModifyEvent extends React.Component {
                         </Button>
                     </Form>
                 </View>
-            </Container>
+            </ScrollView>
         )
     }
 }

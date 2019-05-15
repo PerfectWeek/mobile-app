@@ -30,7 +30,6 @@ function* GetEventRecommendation({min_time, max_time, limit}) {
         const mainCalendar = calendars.find(c => {
             return c.name === 'Main calendar'
         });
-
         let events = yield CalendarService.GetEventsSuggestion(mainCalendar.id, min_time, max_time, limit);
         events = yield CalendarService.GetEventsImage(events);
         events = yield CalendarService.GetEventsAttendees(events);
@@ -39,7 +38,6 @@ function* GetEventRecommendation({min_time, max_time, limit}) {
 
     } catch (err) {
         yield ShowErrorNotification(err);
-        // yield put(LoadCalendarFail(err));
     }
 }
 

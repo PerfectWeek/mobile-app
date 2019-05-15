@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, View, StyleSheet} from 'react-native';
+import {Dimensions, View, StyleSheet, ScrollView} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 import {Button, Form, Icon, Input, Item, Text, Title, Container, Thumbnail} from "native-base";
 import RNPickerSelect from 'react-native-picker-select';
@@ -56,7 +56,7 @@ export class _ConsultEvent extends React.Component {
             );
 
         return (
-            <Container>
+            <ScrollView>
                 <View style={{flex: 1, flexDirection: 'column', alignItems: 'center', margin: 20, marginBottom: 40}}>
                     <Thumbnail large source={{uri: this.state.image}}/>
                     <Text style={{...textStyle, fontSize: 26}}>
@@ -206,7 +206,7 @@ export class _ConsultEvent extends React.Component {
                         </Text>
                     </Item>
                 </Form>
-            </Container>
+            </ScrollView>
         )
     }
 }
