@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     Dimensions, ScrollView,
-    View
+    View, TouchableOpacity
 } from 'react-native';
 import {
     Button,
@@ -10,6 +10,10 @@ import {
 } from 'native-base';
 import connect from "react-redux/es/connect/connect";
 import moment from "moment";
+import Modal from "../../Components/Modal";
+import {GroupsActionType} from "../../redux/Groups/groups.actions";
+import UserList from "../../Components/UserList";
+import {JoinEvent} from "../../redux/Events/events.actions";
 
 const type_to_icon = {
     party: 'glass-cocktail',
@@ -22,19 +26,19 @@ export class _EventDetailScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        this.event = this.props.navigation.state.params.event;
-        this.state = {going: false};
     }
 
 
     render() {
+        let event = this.props.event;
+        let going = event.attendees.find(a => a.pseudo === this.props.pseudo) !== undefined;
         return (
             <ScrollView>
                 <View style={{marginTop: 0, justifyContent: 'center'}}>
                     <Thumbnail large
                                style={{width: Dimensions.get('window').width, height: 160, borderRadius: 0}}
 
-                               source={{uri: this.event.image}}/>
+                               source={{uri: event.image}}/>
                     <Text style={{
                         color: 'black',
                         textAlign: 'center',
@@ -42,50 +46,52 @@ export class _EventDetailScreen extends React.Component {
                         fontSize: 26,
                         marginTop: 10
                     }}>
-                        {this.event.name}
+                        {event.name}
                     </Text>
 
-                    <View style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        marginLeft: 20,
-                        marginRight: 20,
-                        marginTop: 10
-                    }}>
+                    <View style={rowStyle}>
+
                         <Icon style={{fontSize: 18}} active name='clock' type={"SimpleLineIcons"}/>
                         <Text style={{fontSize: 18, marginLeft: 10}}>
-                            {moment(this.event.start_time).format('ddd., DD MMMM. hh:mm')} - {moment(this.event.end_time).format('ddd., DD MMMM. hh:mm')}
+                            {moment.utc(event.start_time).format('ddd., DD MMMM. HH:mm')} - {moment.utc(event.end_time).format('ddd., DD MMMM. HH:mm')}
                         </Text>
                     </View>
-                    <View style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        marginLeft: 20,
-                        marginRight: 20,
-                        marginTop: 10
-                    }}>
+                    <View style={rowStyle}>
+
                         <Icon style={{fontSize: 18}} active name='location-pin' type={"SimpleLineIcons"}/>
                         <Text style={{fontSize: 18, marginLeft: 10}}>
-                            {this.event.location}
+                            {event.location}
                         </Text>
                     </View>
-                    {this.event.type !== 'other' && <View style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        marginLeft: 20,
-                        marginRight: 20,
-                        marginTop: 10
-                    }}>
-
-                        <Icon style={{fontSize: 18}} active name={type_to_icon[this.event.type]}
+                    <View style={rowStyle}>
+                        <Icon style={{fontSize: 18}} active name='people' type={"SimpleLineIcons"}/>
+                        <Text style={{fontSize: 18, marginLeft: 10}}>
+                            {event.attendees.length} people going
+                        </Text>
+                        <TouchableOpacity onPress={() => {this.modal.toggle()}}>
+                            <Text style={{
+                                marginLeft: 10,
+                                fontSize: 18,
+                                borderBottomColor: 'black',
+                                borderBottomWidth: 1
+                            }}>See all attendees</Text>
+                        </TouchableOpacity>
+                    </View>
+                    {event.type !== 'other' && <View style={rowStyle}>
+                        <Icon style={{fontSize: 18}} active name={type_to_icon[event.type]}
                               type={"MaterialCommunityIcons"}/>
                         <Text style={{fontSize: 18, marginLeft: 10}}>
-                            {this.event.type} - event
+                            {event.type} event
                         </Text>
                     </View>
                     }
 
                 </View>
+
+                <Modal
+                    onRef={ref => (this.modal = ref)} title='Attendees'>
+                    <UserList users={event.attendees}/>
+                </Modal>
 
                 <Text
                     style={{
@@ -100,7 +106,7 @@ export class _EventDetailScreen extends React.Component {
                 </Text>
                 <Text style={{fontSize: 18, textAlign: 'center', marginTop: 0}}>
 
-                    {this.event.description}
+                    {event.description}
                 </Text>
 
 
@@ -113,12 +119,12 @@ export class _EventDetailScreen extends React.Component {
                     <View style={{
                         flexDirection: 'column',
                     }}>
-                        <Button success={this.state.going} light={!this.state.going} onPress={() => {
-                            this.setState({...this.state, going: !this.state.going});
+                        <Button success={going} light={!going} onPress={() => {
+                            this.props.JoinEvent(event, going ? 'no' : 'going');
                         }}>
                             <Icon active name='check' type={"FontAwesome"}/>
                         </Button>
-                        <Text style={{color: this.state.going ? '#5cb85c' : 'grey', textAlign: 'center'}}>Going</Text>
+                        <Text style={{color: going ? '#5cb85c' : 'grey', textAlign: 'center'}}>Going</Text>
                     </View>
 
                 </View>
@@ -130,16 +136,20 @@ export class _EventDetailScreen extends React.Component {
 }
 
 const textStyle = {margin: 10, color: 'black', fontFamily: 'Roboto_medium', fontSize: 18, textAlign: 'center'};
+const rowStyle = {flexDirection: 'row', alignItems: 'center', marginLeft: 20, marginRight: 20, marginTop: 10};
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
+        JoinEvent: (event, status) => dispatch(JoinEvent(event, status)),
     }
 };
 
 const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
+        pseudo : state.login.pseudo,
+        event : state.events.events[ownProps.navigation.state.params.event_id]
     }
 };
 

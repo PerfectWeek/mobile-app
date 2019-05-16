@@ -1,3 +1,5 @@
+import {EventsActionType} from "../Events/events.actions";
+
 export const CalendarActionType = {
     Nothing: 'NOTHING',
     GetCalendars: 'GET_CALENDARS',
@@ -27,6 +29,7 @@ export const CalendarActionType = {
     LoadCalendar: 'LOAD_CALENDAR',
     LoadCalendarSuccess: "LOAD_CALENDAR_SUCCESS",
     LoadCalendarFail: "LOAD_CALENDAR_FAIL",
+    SetEvent: 'SET_EVENT_CALENDAR',
 };
 
 export const GetEventInfo = (event) => {
@@ -208,4 +211,11 @@ export const LoadCalendarFail = (error_message) => {
         type: CalendarActionType.LoadCalendarFail,
         error_message: error_message
     };
+};
+
+export const SetEvent = (event) => {
+    return {
+        type: CalendarActionType.SetEvent,
+        event
+    }
 };

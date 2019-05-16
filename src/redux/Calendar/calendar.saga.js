@@ -142,8 +142,6 @@ function* GetCalendars(action) {
             return {...c.calendar, show: true}
         });
         yield put(GetCalendarsSuccess(calendars));
-        yield console.log("bjour");
-
     } catch (e) {
         let err;
         if (e !== undefined && e.message !== undefined)
@@ -176,12 +174,13 @@ function* LoadCalendar(action) {
         let calendars = yield select((state) => {
             return state.calendar.calendars
         });
-        if (calendars === undefined)
+        if (calendars === undefined || calendars.length === 0)
             yield GetCalendars();
         calendars = yield select((state) => {
             return state.calendar.calendars
         });
         let events_array = yield CalendarService.GetEventsForCalendars(calendars);
+
         events_array = yield CalendarService.GetEventsInfo(events_array);
         let events = arrayToObject(events_array, 'id');
         yield put(GetEventsSuccess(events));

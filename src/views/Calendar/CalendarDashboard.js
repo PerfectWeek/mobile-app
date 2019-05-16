@@ -171,7 +171,7 @@ export class _CalendarDashboard extends Component {
     }
 
     refreshCalendar() {
-        this.props.ReloadEvents(this.props.calendar.calendars);
+        this.props.LoadCalendar(this.props.login.pseudo);
     }
 
     render() {
@@ -246,9 +246,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const mapStateToProps = (state, ownProps) => {
     let events = [];
-    if (state.calendar.events) {
-        events = Object.values(state.calendar.events).map(e => {
-            return {...e, calendar_name: state.calendar.calendars.find(c => c.id === e.calendar_id).name}
+    if (state.calendar.events && state.calendar.calendars.length > 0) {
+        const filtered_events = Object.values(state.calendar.events).filter(e => {return e.status === 'going'});
+        events = filtered_events.map(e => {
+            const calendar = state.calendar.calendars.find(c => c.id === e.calendar_id);
+            return {...e, calendar_name: calendar !== undefined ? calendar.name : ''}
         });
     }
     let items = {};

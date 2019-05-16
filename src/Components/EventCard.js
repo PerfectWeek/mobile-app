@@ -22,12 +22,12 @@ export default class EventCard extends Component {
 
     render() {
         const event = this.props.event;
-        const start_time = moment(event.start_time);
+        const start_time = moment.utc(event.start_time);
         if (event.image === undefined)
             event.image = `https://lorempixel.com/400/200/${type_to_theme[event.type]}/${Math.floor((Math.random() * 1000 % 10))}`;
         return (
             <TouchableNativeFeedback onPress={() => {
-                this.props.navigation.navigate('EventDetail', {event: event});
+                this.props.navigation.navigate('EventDetail', {event_id: event.id});
             }} background={TouchableNativeFeedback.SelectableBackground()}>
                 <View style={{
                     backgroundColor: '#f1f3f5',
@@ -41,7 +41,7 @@ export default class EventCard extends Component {
                                source={{uri: event.image}}/>
                     <View style={{margin: 10}}>
                         <Text style={{color: '#e94b61'}}>
-                            {start_time.format('ddd., DD MMMM. hh:mm')}
+                            {start_time.format('ddd., DD MMMM. HH:mm')}
                         </Text>
                         <Text style={{color: 'black', marginTop: 5, fontFamily: 'Lato_Bold'}}>
                             {event.name}

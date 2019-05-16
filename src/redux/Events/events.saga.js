@@ -1,9 +1,16 @@
 import {takeEvery, put, select} from "redux-saga/effects";
 import {ShowErrorNotification} from "../../Utils/NotificationsModals";
 import {arrayToObject} from "../../Utils/utils";
-import {EventsActionType, SetEvents, SetLoading} from "./events.actions";
+import {EventsActionType, SetEvent, SetEvents, SetLoading} from "./events.actions";
+import {SetEvent as SetCalendarEvent} from "../Calendar/calendar.actions";
 import {CalendarService} from "../../Services/Calendar/calendar";
-import {GetCalendars, GetCalendarsSuccess} from "../Calendar/calendar.actions";
+import {
+    CalendarActionType,
+    GetCalendars,
+    GetCalendarsSuccess,
+    GetEventInfoSuccess,
+    GetEventsSuccess
+} from "../Calendar/calendar.actions";
 import {Network} from "../../Network/Requests";
 
 
@@ -13,7 +20,7 @@ function* GetEventRecommendation({min_time, max_time, limit}) {
         let calendars = yield select((state) => {
             return state.calendar.calendars
         });
-        if (calendars === undefined) {
+        if (calendars === undefined || calendars.length === 0) {
 
             const pseudo = yield select((state) => {
                 return state.login.pseudo
@@ -33,6 +40,7 @@ function* GetEventRecommendation({min_time, max_time, limit}) {
         let events = yield CalendarService.GetEventsSuggestion(mainCalendar.id, min_time, max_time, limit);
         events = yield CalendarService.GetEventsImage(events);
         events = yield CalendarService.GetEventsAttendees(events);
+
         yield put(SetEvents(events));
         yield put(SetLoading(false));
 
@@ -41,6 +49,33 @@ function* GetEventRecommendation({min_time, max_time, limit}) {
     }
 }
 
+function* JoinEvent({event, status}) {
+    try {
+        console.log("Wsh alors ?");
+        // yield put(SetLoading(true));
+        yield CalendarService.JoinEvent(event.id, status);
+        const pseudo = yield select((state) => {
+            return state.login.pseudo
+        });
+        switch (status) {
+            case 'going':
+                event.attendees.push({pseudo, status : 'going'});
+                break;
+            case 'no':
+                const idx = event.attendees.findIndex(a => a.pseudo === pseudo);
+                event.attendees.splice(idx, 1);
+                break;
+        }
+        yield put(SetEvent(event));
+        yield put(SetCalendarEvent({ ...event, status : status}));
+        // yield put(SetLoading(false));
+    } catch (err) {
+        yield ShowErrorNotification(err);
+    }
+}
+
+
 export function* EventsSaga() {
     yield takeEvery(EventsActionType.GetEventRecommendation, GetEventRecommendation);
+    yield takeEvery(EventsActionType.JoinEvent, JoinEvent);
 }

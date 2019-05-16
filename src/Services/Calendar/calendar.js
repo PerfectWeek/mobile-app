@@ -95,4 +95,17 @@ export class CalendarService {
         }
         return events
     }
+
+    static async JoinEvent(event_id, status) {
+        const resp = await Network.Post(`/events/${event_id}/join`,
+            {status});
+        if (resp.status === 200)
+            return "ok";
+        let err;
+        if (resp.data !== undefined && resp.data.message !== undefined)
+            err = resp.data.message;
+        else
+            err = "Connection error";
+        throw err;
+    }
 }

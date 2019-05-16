@@ -4,7 +4,7 @@ import {
     Header,
     Body,
     Title,
-    Text
+    Text, Button
 } from 'native-base';
 import connect from "react-redux/es/connect/connect";
 import {HeaderBackgroundColor, ScreenBackgroundColor} from "../../../Style/Constant";
@@ -25,7 +25,7 @@ export class _EventsList extends React.Component {
 
 
     render() {
-        if (this.props.loading !== false)
+        if (this.props.events === undefined || this.props.loading !== false)
             return (
                 <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
                     <Loader/>
@@ -37,7 +37,6 @@ export class _EventsList extends React.Component {
             }}
                         contentContainerStyle={{
                             flexGrow: 1,
-                            // justifyContent: 'space-between',
                             paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight,
 
                         }}>
@@ -47,9 +46,17 @@ export class _EventsList extends React.Component {
                     </Body>
                 </Header>
                 {
-                    this.props.events.map((event, index) => {
-                        return <EventCard navigation={this.props.navigation} event={event} key={index}/>
-                    })
+                    Object.values(this.props.events).length === 0 ?
+                        <View>
+                            <Text style={{marginTop: 20, textAlign: 'center', fontSize: 22}}>
+                                You have no suggestion at the moment
+                            </Text>
+                        </View>
+                        :
+                        Object.values(this.props.events).map((event, index) => {
+                            return <EventCard navigation={this.props.navigation} event={this.props.events[event.id]}
+                                              key={event.id}/>
+                        })
                 }
 
             </ScrollView>

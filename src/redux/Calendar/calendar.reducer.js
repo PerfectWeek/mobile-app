@@ -2,7 +2,7 @@ import {CalendarActionType} from "./calendar.actions";
 import {LoginActionsType} from "../Login/login.actions";
 
 const eventsType = ['party', 'work', 'hobby', 'workout', 'other'];
-const default_state = {status: 'NONE', DashboardStatus: 'NONE', eventsType: eventsType};
+const default_state = {status: 'NONE', DashboardStatus: 'NONE', eventsType: eventsType, events: {}, calendars: []};
 
 export const CalendarReducer = (state = default_state, action) => {
     switch (action.type) {
@@ -135,6 +135,15 @@ export const CalendarReducer = (state = default_state, action) => {
             return {
                 ...state,
                 status: CalendarActionType.Nothing,
+            };
+        case CalendarActionType.SetEvent:
+            if (state.events[action.event.id] !== undefined)
+                state.events[action.event.id] = {...state.events[action.event.id], ...action.event};
+            else
+                state.events[action.event.id] = action.event;
+            return {
+                ...state,
+                events: {...state.events}
             };
         default:
             return state;

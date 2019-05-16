@@ -17,7 +17,17 @@ export const EventsReducer = (state = default_state, action) => {
                 ...state,
                 events: action.events
             };
+        case EventsActionType.SetEvent:
+            if (state.events[action.event.id] !== undefined)
+                state.events[action.event.id] = {...state.events[action.event.id], ...action.event};
+            else
+                state.events[action.event.id] = action.event;
+            return {
+                ...state,
+                events: {...state.events}
+            };
         default:
             return state;
     }
 };
+
