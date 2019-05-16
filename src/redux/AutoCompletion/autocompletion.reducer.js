@@ -13,13 +13,18 @@ export const AutoCompletionReducer = (state = {
         case AutoCompletionType.AskCompletionSuccess:
             return {
                 ...state,
-                state: AutoCompletionType.AskCompletionSuccess,
+                status: AutoCompletionType.AskCompletionSuccess,
                 pseudoMatched: action.pseudoMatched
             };
         case AutoCompletionType.AskCompletionFail:
             return {
                 ...state,
                 status: AutoCompletionType.AskCompletionFail
+            };
+        case AutoCompletionType.AskCompletionNone:
+            return {
+                ...state,
+                status: AutoCompletionType.AskCompletionNone
             };
         default:
             return state;

@@ -1,7 +1,8 @@
 export const AutoCompletionType = {
     AskCompletion: 'ASK_COMPLETION',
     AskCompletionSuccess: 'ASK_COMPLETION_SUCCESS',
-    AskCompletionFail: 'ASK_COMPLETION_FAIL'
+    AskCompletionFail: 'ASK_COMPLETION_FAIL',
+    AskCompletionNone: 'ASK_COMPLETION_NONE'
 };
 
 export const AskCompletion = (searchPseudo) => {
@@ -22,5 +23,11 @@ export const AskCompletionSuccess = (pseudoMatched) => {
 export const AskCompletionFail = () => {
     return {
         type: AutoCompletionType.AskCompletionFail
+    }
+};
+
+export const AskCompletionNone = () => {
+    return {
+        type: AutoCompletionType.AskCompletionNone
     }
 };

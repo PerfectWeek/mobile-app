@@ -1,11 +1,37 @@
 import {put, takeEvery} from "redux-saga/effects";
-import {AutoCompletionType, AskCompletion, AskCompletionFail, AskCompletionSuccess} from "./autocompletion.actions";
+import {AutoCompletionType, AskCompletionFail, AskCompletionSuccess} from "./autocompletion.actions";
 import {Network} from "../../Network/Requests";
 import {NavigationActions} from 'react-navigation'
 import {Toast} from "native-base";
+import {LoginFail} from "../Login/login.actions";
 
 function* AskCompletionPseudo(action) {
-    console.log("ASK", action)
+    // console.log("ASK", "search/users?q="+action.searchPseudo);
+    try {
+        const response = yield Network.Get("search/users?q="+action.searchPseudo);
+        if (response.status !== 200)
+            throw response;
+        let list = [];
+        for (let i = 0; i < response.data.users.length; i++) {
+            list.push(response.data.users[i].pseudo)
+        }
+
+        yield put(AskCompletionSuccess(list))
+    }
+    catch (e) {
+        let err;
+        if (e.data !== undefined && e.data.message !== undefined)
+            err = e.data.message;
+        else
+            err = "Connection error";
+        yield put(AskCompletionFail());
+        Toast.show({
+            text: err,
+            type: "danger",
+            buttonText: "Okay",
+            duration: 5000
+        });
+    }
 }
 
 export function* AutoCompletionSaga() {

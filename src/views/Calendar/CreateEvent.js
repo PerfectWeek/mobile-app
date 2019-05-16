@@ -2,7 +2,7 @@ import React from 'react';
 import {Dimensions, View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 import {Button, Form, Icon, Input, Picker, Item, Text, CheckBox, Container} from "native-base";
-import RNPickerSelect from 'react-native-picker-select';
+
 
 
 import {CalendarActionType, CreateNewEvent, RefreshCalendar} from "../../redux/Calendar/calendar.actions";
@@ -82,7 +82,7 @@ export class _CreateEvent extends React.Component {
                 <View style={{
                     flexDirection: 'row', justifyContent: 'space-between', marginTop: 20
                 }}>
-                    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null} keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}>
+                    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null} keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
                     <ScrollView>
                         <Form style={{
                             marginLeft: 10, marginRight: 30, flexGrow: 3
@@ -230,7 +230,7 @@ export class _CreateEvent extends React.Component {
                                     }
                                 </Picker>
                             </Item>
-                            <Item last>
+                            <Item>
                                 <Icon style={IconStyle} type='SimpleLineIcons' active name='lock'/>
                                 <Picker
                                     placeholder="Select a visibility"
@@ -251,7 +251,7 @@ export class _CreateEvent extends React.Component {
                             <Button success disabled={this.validator()}
                                     rounded style={{margin: 30, marginTop: 10}}
                                     onPress={() => {
-                                        console.log(this.state)
+                                        // console.log(this.state)
                                         this.props.CreateNewEvent({
                                             ...this.state,
                                             type: this.props.calendar.eventsType[this.state.type]

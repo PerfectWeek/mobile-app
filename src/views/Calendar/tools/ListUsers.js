@@ -1,10 +1,9 @@
-import {Dimensions, ScrollView, View, TouchableOpacity, StyleSheet, Text} from 'react-native'
+import {Dimensions, ScrollView, View, TouchableOpacity, StyleSheet} from 'react-native'
 import React from 'react';
-import {Form, Icon, Input, Item, Container, Button} from "native-base";
+import {Form, Icon, Input, Item, Container, Button,Text} from "native-base";
 import {validateNotEmpty} from "../../../Utils/utils";
 import connect from "react-redux/es/connect/connect";
-import {AskCompletion} from "../../../redux/AutoCompletion/autocompletion.actions";
-import ProgressiveInput from 'react-native-progressive-input';
+import {AskCompletion, AskCompletionNone, AutoCompletionType} from "../../../redux/AutoCompletion/autocompletion.actions";
 
 
 export class _ListUsers extends React.Component {
@@ -14,9 +13,8 @@ export class _ListUsers extends React.Component {
             query: '',
             isLoading: false,
             usersToAdd: (this.props.loadList !== undefined) ? this.props.loadList : [],
-            listPseudo: ['tim', 'ok', 'v', 'tim9']
+            listPseudo: []
         }
-        // console.log('list', this.props)
     }
 
     findPseudos(query) {
@@ -27,63 +25,65 @@ export class _ListUsers extends React.Component {
 
         this.props.AskCompletion(query)
 
-        // const regex = new RegExp(`${query.trim()}`, 'i');
-        // return this.state.listPseudo;
+    }
+
+    componentWillUpdate() {
+        if (this.props.pseudoMatched !== undefined && this.props.status === AutoCompletionType.AskCompletionSuccess) {
+            this.setState({listPseudo: this.props.pseudoMatched});
+            this.props.AskCompletionNone()
+        }
     }
 
 
     render() {
-        // const { query } = this.state;
-        // const pseudos = this.findPseudos(query);
-        console.log('q', this.state.query)
         return (
-            <Container>
                 <View>
                     <View style={{
                         flexDirection: 'row', justifyContent: 'space-between',
                         margin: 20
                     }}>
                         <Form style={{
-                            marginLeft: 10, marginRight: 30, flexGrow: 3
+                            // marginLeft: 10, marginRight: 30, flexGrow: 3
                         }}>
-                            {/*<Item>*/}
-                            {/*    <Input style={{color: 'black', fontFamily: 'Roboto_medium', fontSize: 26}}*/}
-                            {/*           placeholder="Event name" value={this.state.query}*/}
-                            {/*           onChangeText={(text) => this.setState({query: text})}/>*/}
-                            {/*</Item>*/}
-
-
-                            <Item style={{marginTop: 0}}>
+                            <Item style={{marginTop: 0, width: 300}}>
                                 <Icon active name='person'/>
                                 <Input placeholder="Add users by pseudo" value={this.state.query}
                                        onChangeText={(text) => this.findPseudos(text)} clearButtonMode="always"/>
                             </Item>
                         </Form>
-                        <Button
-                            disabled={!validateNotEmpty(this.state.query) || this.state.usersToAdd.includes(this.state.query)}
-                            onPress={() => {
-                                this.setState({
-                                    usersToAdd: [...this.state.usersToAdd, this.state.searchBar],
-                                    query: ''
-                                });
-                                this.props.callAddUser([...this.state.usersToAdd, this.state.query])
-                            }}>
-                            <Icon name='add'/>
-                        </Button>
-
                     </View>
-                    <ScrollView style={{height: Dimensions.get('window').height / 4}}>
+                    <Form style={{
+                        marginLeft: 20, flexGrow: 3
+                    }}>
+                        {this.state.listPseudo.map((item, idx) =>
+                            <Item key={idx}>
+                                <TouchableOpacity onPress={()=>{this.setState({
+                                    usersToAdd: [...this.state.usersToAdd, item],
+                                    query: '',
+                                    listPseudo: []
+                                });
+                                    this.props.callAddUser(this.state.usersToAdd)
+                                }}
+                                                  style={styles.touch}
+                                >
+                                <Text style={styles.itemText}>
+                                    {item}
+                                </Text>
+                            </TouchableOpacity>
+                            </Item>
+                        )}
+                    </Form>
                         <View style={{margin: 20, flexDirection: 'row', flexWrap: 'wrap'}}>
                             {
                                 this.state.usersToAdd.map((user, index) => {
                                     return (
-                                        <Button rounded key={user} small style={{margin: 5, backgroundColor: 'grey'}}
+                                        <Button rounded key={index} small style={{margin: 5, backgroundColor: 'grey'}}
                                                 onPress={() => {
                                                     this.state.usersToAdd.splice(index, 1);
                                                     this.setState({
-                                                        usersToAdd: this.state.usersToAdd
+                                                        usersToAdd: this.state.usersToAdd,
+                                                        listPseudo: []
                                                     });
-                                                    this.props.callAddUser(this.state.usersToAdd)
                                                 }}>
                                             <Text>{user}</Text>
                                             <Icon type='FontAwesome' name='remove'/>
@@ -92,9 +92,7 @@ export class _ListUsers extends React.Component {
                                 })
                             }
                         </View>
-                    </ScrollView>
                 </View>
-            </Container>
         )
     }
 
@@ -103,38 +101,34 @@ export class _ListUsers extends React.Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        AskCompletion: (pseudo) => dispatch(AskCompletion(pseudo))
-        // CreateNewEvent: (event) => dispatch(CreateNewEvent(event)),
-    // RefreshCalendar: () => dispatch(RefreshCalendar())
+        AskCompletion: (pseudo) => dispatch(AskCompletion(pseudo)),
+        AskCompletionNone: () => dispatch(AskCompletionNone())
     }
 };
 
 const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
-        pseudoMatched: state.pseudoMatched,
-        // login: state.login
+        pseudoMatched: state.autocompletion.pseudoMatched,
+        status: state.autocompletion.status,
     }
 };
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#F5FCFF',
-        flex: 1,
-        paddingTop: 25
-    },
-    autocompleteContainer: {
-        marginLeft: 10,
-        marginRight: 10,
-        width: 100,
-        // height: 300,
-    },
     itemText: {
         fontSize: 15,
         margin: 2,
         color: 'black',
         textAlign: 'center'
     },
+    touch: {
+        // borderColor: 'rgba(0, 0, 0, 0.3)',
+        // backgroundColor: 'rgba(0, 51, 102, 0.2)',
+        // marginBottom: 3,
+        // marginLeft: 10,
+        // borderWidth: 1,
+        // borderRadius: 5
+    }
 });
 
 export const ListUsers = connect(mapStateToProps, mapDispatchToProps)(_ListUsers);
