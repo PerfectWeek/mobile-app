@@ -122,7 +122,6 @@ function* DeleteEvent(action) {
 
 function* CreatNewEvent(action) {
     // console.log('action', action)
-
     try {
         const response = yield Network.Post('/calendars/' + action.event.calendarId + '/events', {
             name: action.event.EventTitle,
