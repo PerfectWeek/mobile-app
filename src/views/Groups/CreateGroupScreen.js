@@ -1,12 +1,13 @@
 import React from 'react';
 import {Dimensions, ScrollView, View} from 'react-native';
 import connect from "react-redux/es/connect/connect";
-import {Button, Form, Icon, Input, Item, Text, Title, Container} from "native-base";
+import {Button, Form, Icon, Input, Item, Text, Picker, Container} from "native-base";
 import Modal from "../../Components/Modal";
 import {validateNotEmpty} from "../../Utils/utils";
-import {CreateGroup, GroupsActionType} from "../../redux/Groups/groups.actions";
+import {CreateGroup, GetGroups, GroupsActionType} from "../../redux/Groups/groups.actions";
 import {ScreenBackgroundColor} from "../../../Style/Constant";
 import Loader from "../../Components/Loader";
+import {ListUsers} from "../Calendar/tools/ListUsers";
 
 export class _CreateGroupScreen extends React.Component {
     static navigationOptions = {
@@ -25,11 +26,21 @@ export class _CreateGroupScreen extends React.Component {
     }
 
     componentDidUpdate() {
-        if (this.props.groups.status === GroupsActionType.CreateGroupSuccess)
-            this.props.navigation.navigate('Detail', {group: this.props.groups.createdGroup});
+        if (this.props.groups.status === GroupsActionType.CreateGroupSuccess) {
+            this.props.GetGroups(this.props.login.pseudo);
+            this.props.navigation.navigate('Master')
+        }
+    }
+
+    onValueChange(item) {
+        const slp = item.split('-');
+        const idx = parseInt(slp[1])
+        this.state.usersToAdd[idx].role = slp[0];
+        this.forceUpdate();
     }
 
     render() {
+        // console.log(this.state.usersToAdd);
         return (
             <Container style={{backgroundColor: ScreenBackgroundColor}}>
                 <View style={{
@@ -49,63 +60,57 @@ export class _CreateGroupScreen extends React.Component {
                                 placeholder="Description" value={this.state.description}
                                 onChangeText={(text) => this.setState({description: text})}/>
                         </Item>
-                        <Title style={{
-                            color: 'black',
-                            fontFamily: 'Lato_Bold',
-                            fontSize: 18,
-                            marginTop: 20,
-                            flexDirection: 'row',
-                            justifyContent: 'flex-start',
-                        }}>Members:</Title>
+                        {/*<Title style={{*/}
+                        {/*    color: 'black',*/}
+                        {/*    fontFamily: 'Lato_Bold',*/}
+                        {/*    fontSize: 18,*/}
+                        {/*    marginTop: 20,*/}
+                        {/*    flexDirection: 'row',*/}
+                        {/*    justifyContent: 'flex-start',*/}
+                        {/*}}>Members:</Title>*/}
                     </Form>
                 </View>
+                <ListUsers callAddUser={(userList) => {
+                    this.setState({usersToAdd: userList})
+                }}
+                           displaySelection={false}
+                           formatAdd={(item) => {return ({name: item, role: 'actor'})}}
+                />
+                {/*  DISPLAY LIST USERS */}
+                <View style={{margin: 20, flexDirection: 'column'}}>
+                    {
+                        this.state.usersToAdd.map((user, index) => {
+                            return (
+                                <View key={index} style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                                <Text style={{marginTop: 8}}>{user.name}</Text>
+                                    <Picker
+                                        note
+                                        mode="dropdown"
+                                        style={{ width: 120 }}
+                                        selectedValue={user.role+"-"+index}
+                                        onValueChange={this.onValueChange.bind(this)}
+                                    >
+                                        <Picker.Item label="Admin" value={"admin-"+index} />
+                                        <Picker.Item label="Actor" value={"actor-"+index} />
+                                        <Picker.Item label="Spectator" value={"spectator-"+index} />
+                                        <Picker.Item label="Outsider" value={"outsider-"+index} />
+                                    </Picker>
 
-                <View style={{
-                    flexDirection: 'row', justifyContent: 'space-between',
-                    margin: 20
-                }}>
-                    <Form style={{
-                        marginLeft: 10, marginRight: 30, flexGrow: 3
-                    }}>
-
-                        <Item style={{marginTop: 0}}>
-                            <Icon active name='person'/>
-                            <Input placeholder="Pseudo" value={this.state.searchBar}
-                                   onChangeText={(text) => this.setState({searchBar: text})}/>
-                        </Item>
-                    </Form>
-                    <Button
-                        disabled={!validateNotEmpty(this.state.searchBar) || this.state.usersToAdd.includes(this.state.searchBar)
-                        || (this.props.groups.status === GroupsActionType.AddGroupMembers)}
-                        onPress={() => {
-                            this.setState({
-                                usersToAdd: [...this.state.usersToAdd, this.state.searchBar],
-                                searchBar: ''
-                            });
-                        }}>
-                        <Icon name='add'/>
-                    </Button>
+                                <Button rounded key={index} small style={{margin: 5, backgroundColor: 'grey'}}
+                                        onPress={() => {
+                                            this.state.usersToAdd.splice(index, 1);
+                                            this.setState({
+                                                usersToAdd: this.state.usersToAdd,
+                                                listPseudo: []
+                                            });
+                                        }}>
+                                    <Icon type='FontAwesome' name='remove'/>
+                                </Button>
+                                </View>
+                            );
+                        })
+                    }
                 </View>
-                <ScrollView style={{height: Dimensions.get('window').height / 4}}>
-                    <View style={{margin: 20, flexDirection: 'row', flexWrap: 'wrap'}}>
-                        {
-                            this.state.usersToAdd.map((user, index) => {
-                                return (
-                                    <Button rounded key={user} small style={{margin: 5, backgroundColor: 'grey'}}
-                                            onPress={() => {
-                                                this.state.usersToAdd.splice(index, 1);
-                                                this.setState({
-                                                    usersToAdd: this.state.usersToAdd
-                                                });
-                                            }}>
-                                        <Text>{user}</Text>
-                                        <Icon type='FontAwesome' name='remove'/>
-                                    </Button>
-                                );
-                            })
-                        }
-                    </View>
-                </ScrollView>
                 {
                     this.props.groups.status === GroupsActionType.CreateGroup ? <Loader/> :
                         <Button success
@@ -135,7 +140,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         ...ownProps,
         CreateGroup: (group, pseudo) => {
             dispatch(CreateGroup(group, pseudo))
-        }
+        },
+        GetGroups: (pseudo) => dispatch(GetGroups(pseudo)),
+
     }
 };
 

@@ -98,7 +98,15 @@ export class _GroupDetailScreen extends React.Component {
                     <Loader/>
                 </Container>
             );
-        const isAdmin = group.members[this.props.login.pseudo].role === "Admin";
+        console.log('gourp',group.members)
+        let isAdmin = false
+        for (let i = 0; i < group.members.length; i++) {
+            if (this.props.login.pseudo === group.members[i].pseudo && group.members[i].role === 'admin') {
+                isAdmin = true
+            }
+        }
+        // const isAdmin = group.members[this.props.login.pseudo].role === "Admin";
+        console.log('users', isAdmin, this.props)
         return (
             <ScrollView style={{paddingLeft: 10, paddingRight: 10, height: Dimensions.get('window').height, backgroundColor: ScreenBackgroundColor}}>
                 <GroupDetailScreenGroupName group={group} onRef={ref => (this.groupName = ref)}/>

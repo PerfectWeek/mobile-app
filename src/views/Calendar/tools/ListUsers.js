@@ -35,6 +35,7 @@ export class _ListUsers extends React.Component {
 
 
     render() {
+        console.log(this.state.usersToAdd)
         return (
                 <View>
                     <View style={{
@@ -57,11 +58,11 @@ export class _ListUsers extends React.Component {
                         {this.state.listPseudo.map((item, idx) =>
                             <Item key={idx}>
                                 <TouchableOpacity onPress={()=>{this.setState({
-                                    usersToAdd: [...this.state.usersToAdd, item],
+                                    usersToAdd: [...this.state.usersToAdd, (this.props.formatAdd === undefined) ? item : this.props.formatAdd(item)],
                                     query: '',
                                     listPseudo: []
                                 });
-                                    this.props.callAddUser([...this.state.usersToAdd, item])
+                                    (this.props.formatAdd === undefined) ? this.props.callAddUser([...this.state.usersToAdd, item]) : this.props.callAddUser([...this.state.usersToAdd, this.props.formatAdd(item)])
                                 }}
                                                   style={styles.touch}
                                 >
@@ -72,6 +73,7 @@ export class _ListUsers extends React.Component {
                             </Item>
                         )}
                     </Form>
+                    { this.props.displaySelection === undefined || this.props.displaySelection === true ?
                         <View style={{margin: 20, flexDirection: 'row', flexWrap: 'wrap'}}>
                             {
                                 this.state.usersToAdd.map((user, index) => {
@@ -91,6 +93,8 @@ export class _ListUsers extends React.Component {
                                 })
                             }
                         </View>
+                        : null
+                    }
                 </View>
         )
     }
