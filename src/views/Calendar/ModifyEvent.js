@@ -93,7 +93,7 @@ export class _ModifyEvent extends React.Component {
         let oldAttend = this.state.oldattendees;
         let newAttend = this.state.attendees;
         let lp = 0;
-        // console.log(this.removeA(old, 'tim'))
+        console.log('list:', oldAttend, newAttend)
         const len =newAttend.length + oldAttend.length
         while (lp < len) {
             for (let i = 0; i < newAttend.length; i++) {
@@ -116,7 +116,7 @@ export class _ModifyEvent extends React.Component {
             lp += 1;
         }
         listToDel = oldAttend;
-        // console.log(listToAdd, listToDel, oldAttend, this.state.attendees.length + this.state.oldattendees.length)
+        console.log(listToAdd, listToDel, oldAttend, this.state.attendees.length + this.state.oldattendees.length)
         this.props.ModifyTheEvent({...this.state,
             type : this.props.calendar.eventsType[this.state.type],
             attendeesToDel: listToDel,
@@ -142,7 +142,7 @@ export class _ModifyEvent extends React.Component {
         //         attendees: this.props.attendees
         //     })
         // }
-        console.log('updates', this.state);
+        console.log('updates', this.state.attendees);
         return (
 
             <Container>

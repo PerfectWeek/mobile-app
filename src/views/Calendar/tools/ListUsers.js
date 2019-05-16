@@ -24,7 +24,6 @@ export class _ListUsers extends React.Component {
         }
 
         this.props.AskCompletion(query)
-
     }
 
     componentWillUpdate() {
@@ -62,7 +61,7 @@ export class _ListUsers extends React.Component {
                                     query: '',
                                     listPseudo: []
                                 });
-                                    this.props.callAddUser(this.state.usersToAdd)
+                                    this.props.callAddUser([...this.state.usersToAdd, item])
                                 }}
                                                   style={styles.touch}
                                 >

@@ -44,16 +44,13 @@ function* GetTheEventInfo(action) {
 }
 
 function* ModifyEvent(action) {
-    // console.log('modif', action.event.attendeesToDel.length)
     for (let i = 0; i < action.event.attendeesToDel.length; i++) {
         const res = yield Network.Delete('/events/' + action.event.id + '/attendees/' + action.event.attendeesToDel[i]);
-        // console.log('def', res)
     }
     if (action.event.attendeesToAdd.length !== 0) {
         const responseAddUsers = yield Network.Post('/events/' + action.event.id + '/invite-users', {
             'users': action.event.attendeesToAdd
         });
-        // console.log('add', responseAddUsers)
     }
     const response = yield Network.Put('/events/' + action.event.id, {
         name: action.event.EventTitle,
