@@ -1,10 +1,10 @@
-import {Dimensions, ScrollView, View, TouchableOpacity, StyleSheet, Button, Text} from 'react-native'
+import {Dimensions, ScrollView, View, TouchableOpacity, StyleSheet, Text} from 'react-native'
 import React from 'react';
-import {Form, Icon, Input, Item} from "native-base";
+import {Form, Icon, Input, Item, Container, Button} from "native-base";
 import {validateNotEmpty} from "../../../Utils/utils";
 import connect from "react-redux/es/connect/connect";
 import {AskCompletion} from "../../../redux/AutoCompletion/autocompletion.actions";
-import Autocomplete from 'react-native-autocomplete-input';
+import ProgressiveInput from 'react-native-progressive-input';
 
 
 export class _ListUsers extends React.Component {
@@ -12,6 +12,7 @@ export class _ListUsers extends React.Component {
         super(props);
         this.state = {
             query: '',
+            isLoading: false,
             usersToAdd: (this.props.loadList !== undefined) ? this.props.loadList : [],
             listPseudo: ['tim', 'ok', 'v', 'tim9']
         }
@@ -19,86 +20,81 @@ export class _ListUsers extends React.Component {
     }
 
     findPseudos(query) {
+        this.setState({query: query});
         if (query === '') {
-            return [];
+            this.setState({listPseudo: []});
         }
 
+        this.props.AskCompletion(query)
+
         // const regex = new RegExp(`${query.trim()}`, 'i');
-        return this.state.listPseudo;
+        // return this.state.listPseudo;
     }
 
+
     render() {
-        const { query } = this.state;
-        const pseudos = this.findPseudos(query);
-
+        // const { query } = this.state;
+        // const pseudos = this.findPseudos(query);
+        console.log('q', this.state.query)
         return (
-            <View>
-                <View style={{
-                    flexDirection: 'row', justifyContent: 'space-between',
-                    margin: 20
-                }}>
-                    <Autocomplete
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        containerStyle={styles.autocompleteContainer}
-                        data={pseudos.length === 0 ? [] : pseudos}
-                        defaultValue={query}
-                        onChangeText={text => this.setState({ query: text })}
-                        placeholder="Search pseudo"
-                        renderItem={({ item, idx }) => (
+            <Container>
+                <View>
+                    <View style={{
+                        flexDirection: 'row', justifyContent: 'space-between',
+                        margin: 20
+                    }}>
+                        <Form style={{
+                            marginLeft: 10, marginRight: 30, flexGrow: 3
+                        }}>
+                            {/*<Item>*/}
+                            {/*    <Input style={{color: 'black', fontFamily: 'Roboto_medium', fontSize: 26}}*/}
+                            {/*           placeholder="Event name" value={this.state.query}*/}
+                            {/*           onChangeText={(text) => this.setState({query: text})}/>*/}
+                            {/*</Item>*/}
 
-                            <View><Button
+
+                            <Item style={{marginTop: 0}}>
+                                <Icon active name='person'/>
+                                <Input placeholder="Add users by pseudo" value={this.state.query}
+                                       onChangeText={(text) => this.findPseudos(text)} clearButtonMode="always"/>
+                            </Item>
+                        </Form>
+                        <Button
+                            disabled={!validateNotEmpty(this.state.query) || this.state.usersToAdd.includes(this.state.query)}
                             onPress={() => {
-                                console.log(item);
-                            }}
-                            title={item}
-                            /></View>
-                        )}
-                    />
-                    {/*<Form style={{*/}
-                    {/*    marginLeft: 10, marginRight: 30, flexGrow: 3*/}
-                    {/*}}>*/}
+                                this.setState({
+                                    usersToAdd: [...this.state.usersToAdd, this.state.searchBar],
+                                    query: ''
+                                });
+                                this.props.callAddUser([...this.state.usersToAdd, this.state.query])
+                            }}>
+                            <Icon name='add'/>
+                        </Button>
 
-                    {/*    <Item style={{marginTop: 0}}>*/}
-                    {/*        <Icon active name='person'/>*/}
-                    {/*        <Input placeholder="Add users by pseudo" value={this.state.searchBar}*/}
-                    {/*               onChangeText={(text) => this.setState({searchBar: text})}/>*/}
-                    {/*    </Item>*/}
-                    {/*</Form>*/}
-                    {/*<Button*/}
-                    {/*    disabled={!validateNotEmpty(this.state.searchBar) || this.state.usersToAdd.includes(this.state.searchBar)}*/}
-                    {/*    onPress={() => {*/}
-                    {/*        this.setState({*/}
-                    {/*            usersToAdd: [...this.state.usersToAdd, this.state.searchBar],*/}
-                    {/*            searchBar: ''*/}
-                    {/*        });*/}
-                    {/*        this.props.callAddUser([...this.state.usersToAdd, this.state.searchBar])*/}
-                    {/*    }}>*/}
-                    {/*    <Icon name='add'/>*/}
-                    {/*</Button>*/}
-                </View>
-                <ScrollView style={{height: Dimensions.get('window').height / 4}}>
-                    <View style={{margin: 20, flexDirection: 'row', flexWrap: 'wrap'}}>
-                        {
-                            this.state.usersToAdd.map((user, index) => {
-                                return (
-                                    <Button rounded key={user} small style={{margin: 5, backgroundColor: 'grey'}}
-                                            onPress={() => {
-                                                this.state.usersToAdd.splice(index, 1);
-                                                this.setState({
-                                                    usersToAdd: this.state.usersToAdd
-                                                });
-                                                this.props.callAddUser(this.state.usersToAdd)
-                                            }}>
-                                        <Text>{user}</Text>
-                                        <Icon type='FontAwesome' name='remove'/>
-                                    </Button>
-                                );
-                            })
-                        }
                     </View>
-                </ScrollView>
-            </View>
+                    <ScrollView style={{height: Dimensions.get('window').height / 4}}>
+                        <View style={{margin: 20, flexDirection: 'row', flexWrap: 'wrap'}}>
+                            {
+                                this.state.usersToAdd.map((user, index) => {
+                                    return (
+                                        <Button rounded key={user} small style={{margin: 5, backgroundColor: 'grey'}}
+                                                onPress={() => {
+                                                    this.state.usersToAdd.splice(index, 1);
+                                                    this.setState({
+                                                        usersToAdd: this.state.usersToAdd
+                                                    });
+                                                    this.props.callAddUser(this.state.usersToAdd)
+                                                }}>
+                                            <Text>{user}</Text>
+                                            <Icon type='FontAwesome' name='remove'/>
+                                        </Button>
+                                    );
+                                })
+                            }
+                        </View>
+                    </ScrollView>
+                </View>
+            </Container>
         )
     }
 
