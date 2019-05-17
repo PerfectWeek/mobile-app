@@ -98,15 +98,14 @@ export class _GroupDetailScreen extends React.Component {
                     <Loader/>
                 </Container>
             );
-        console.log('gourp',group.members)
+        // console.log('gourp',group.members)
         let isAdmin = false
         for (let i = 0; i < group.members.length; i++) {
             if (this.props.login.pseudo === group.members[i].pseudo && group.members[i].role === 'admin') {
                 isAdmin = true
             }
         }
-        // const isAdmin = group.members[this.props.login.pseudo].role === "Admin";
-        console.log('users', isAdmin, this.props)
+        console.log('TIM', group.members)
         return (
             <ScrollView style={{paddingLeft: 10, paddingRight: 10, height: Dimensions.get('window').height, backgroundColor: ScreenBackgroundColor}}>
                 <GroupDetailScreenGroupName group={group} onRef={ref => (this.groupName = ref)}/>
@@ -151,53 +150,54 @@ export class _GroupDetailScreen extends React.Component {
                             </Body>
                         </ListItem>
                         {Object.values(group.members).map((member, index) => {
+                            console.log('meme', this.props.users, member)
                             return (
                                 <ListItem key={index} avatar>
                                     <Left>
                                         <Thumbnail source={{uri: this.props.users[member.pseudo] === undefined ? null : this.props.users[member.pseudo].image}}/>
                                     </Left>
-                                    <Body>
-                                    <Text>{member.pseudo}</Text>
-                                    {/*<Text style={{color: '#ef3434'}}*/}
-                                    {/*note>{member.role === 'Admin' ? 'Administrator' : null}</Text>*/}
-                                    </Body>
-                                    <Right>
-                                        <Icon style={{marginTop: 10, fontSize: 28}} type='SimpleLineIcons'
-                                              name='options-vertical' onPress={() => {
-                                            const BUTTONS = [];
-                                            const ButtonsCallback = [];
-                                            if (isAdmin) {
-                                                // BUTTONS.push((member.role === 'Admin' ? "Remove as admin" : "Make admin"));
-                                                BUTTONS.push(this.props.login.pseudo === member.pseudo ? "Quit group" : "Remove from group");
-                                                // ButtonsCallback.push(() => {
-                                                //     this.ChangeRoleClicked(group.id, member);
-                                                // });
-                                                ButtonsCallback.push(() => {
-                                                    this.props.RemoveGroupMember(group.id, member, this.props.login.pseudo);
-                                                });
-                                            }
-                                            else if (this.props.login.pseudo === member.pseudo) {
-                                                BUTTONS.push("Quit group");
-                                                ButtonsCallback.push(() => {
-                                                    this.props.RemoveGroupMember(group.id, member, this.props.login.pseudo);
-                                                });
-                                            }
-                                            BUTTONS.push("Cancel");
-                                            ButtonsCallback.push(() => {
-                                            });
-                                            const CANCEL_INDEX = BUTTONS.length - 1;
-                                            ActionSheet.show(
-                                                {
-                                                    options: BUTTONS,
-                                                    cancelButtonIndex: CANCEL_INDEX,
-                                                    title: "Manage member"
-                                                },
-                                                buttonIndex => {
-                                                    ButtonsCallback[buttonIndex]();
-                                                })
+                                    {/*<Body>*/}
+                                    {/*<Text>{member.pseudo}</Text>*/}
+                                    {/*/!*<Text style={{color: '#ef3434'}}*!/*/}
+                                    {/*/!*note>{member.role === 'Admin' ? 'Administrator' : null}</Text>*!/*/}
+                                    {/*</Body>*/}
+                                    {/*<Right>*/}
+                                    {/*    <Icon style={{marginTop: 10, fontSize: 28}} type='SimpleLineIcons'*/}
+                                    {/*          name='options-vertical' onPress={() => {*/}
+                                    {/*        const BUTTONS = [];*/}
+                                    {/*        const ButtonsCallback = [];*/}
+                                    {/*        if (isAdmin) {*/}
+                                    {/*            // BUTTONS.push((member.role === 'Admin' ? "Remove as admin" : "Make admin"));*/}
+                                    {/*            BUTTONS.push(this.props.login.pseudo === member.pseudo ? "Quit group" : "Remove from group");*/}
+                                    {/*            // ButtonsCallback.push(() => {*/}
+                                    {/*            //     this.ChangeRoleClicked(group.id, member);*/}
+                                    {/*            // });*/}
+                                    {/*            ButtonsCallback.push(() => {*/}
+                                    {/*                this.props.RemoveGroupMember(group.id, member, this.props.login.pseudo);*/}
+                                    {/*            });*/}
+                                    {/*        }*/}
+                                    {/*        else if (this.props.login.pseudo === member.pseudo) {*/}
+                                    {/*            BUTTONS.push("Quit group");*/}
+                                    {/*            ButtonsCallback.push(() => {*/}
+                                    {/*                this.props.RemoveGroupMember(group.id, member, this.props.login.pseudo);*/}
+                                    {/*            });*/}
+                                    {/*        }*/}
+                                    {/*        BUTTONS.push("Cancel");*/}
+                                    {/*        ButtonsCallback.push(() => {*/}
+                                    {/*        });*/}
+                                    {/*        const CANCEL_INDEX = BUTTONS.length - 1;*/}
+                                    {/*        ActionSheet.show(*/}
+                                    {/*            {*/}
+                                    {/*                options: BUTTONS,*/}
+                                    {/*                cancelButtonIndex: CANCEL_INDEX,*/}
+                                    {/*                title: "Manage member"*/}
+                                    {/*            },*/}
+                                    {/*            buttonIndex => {*/}
+                                    {/*                ButtonsCallback[buttonIndex]();*/}
+                                    {/*            })*/}
 
-                                        }}/>
-                                    </Right>
+                                    {/*    }}/>*/}
+                                    {/*</Right>*/}
                                 </ListItem>
                             );
                         })}
@@ -211,7 +211,7 @@ export class _GroupDetailScreen extends React.Component {
     }
 
     ChangeRoleClicked(groupId, member) {
-        this.props.UpdateMemberRole(groupId, member, member.role === "Admin" ? "Spectator" : "Admin");
+        this.props.UpdateMemberRole(groupId, member, member.role === "admin" ? "spectator" : "admin");
     }
 }
 

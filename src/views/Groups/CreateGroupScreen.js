@@ -34,7 +34,7 @@ export class _CreateGroupScreen extends React.Component {
 
     onValueChange(item) {
         const slp = item.split('-');
-        const idx = parseInt(slp[1])
+        const idx = parseInt(slp[1]);
         this.state.usersToAdd[idx].role = slp[0];
         this.forceUpdate();
     }
@@ -60,57 +60,51 @@ export class _CreateGroupScreen extends React.Component {
                                 placeholder="Description" value={this.state.description}
                                 onChangeText={(text) => this.setState({description: text})}/>
                         </Item>
-                        {/*<Title style={{*/}
-                        {/*    color: 'black',*/}
-                        {/*    fontFamily: 'Lato_Bold',*/}
-                        {/*    fontSize: 18,*/}
-                        {/*    marginTop: 20,*/}
-                        {/*    flexDirection: 'row',*/}
-                        {/*    justifyContent: 'flex-start',*/}
-                        {/*}}>Members:</Title>*/}
                     </Form>
                 </View>
+                <View style={{marginRight: 30}}>
                 <ListUsers callAddUser={(userList) => {
                     this.setState({usersToAdd: userList})
                 }}
                            displaySelection={false}
                            formatAdd={(item) => {return ({name: item, role: 'actor'})}}
                 />
-                {/*  DISPLAY LIST USERS */}
-                <View style={{margin: 20, flexDirection: 'column'}}>
-                    {
-                        this.state.usersToAdd.map((user, index) => {
-                            return (
-                                <View key={index} style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                                <Text style={{marginTop: 8}}>{user.name}</Text>
-                                    <Picker
-                                        note
-                                        mode="dropdown"
-                                        style={{ width: 120 }}
-                                        selectedValue={user.role+"-"+index}
-                                        onValueChange={this.onValueChange.bind(this)}
-                                    >
-                                        <Picker.Item label="Admin" value={"admin-"+index} />
-                                        <Picker.Item label="Actor" value={"actor-"+index} />
-                                        <Picker.Item label="Spectator" value={"spectator-"+index} />
-                                        <Picker.Item label="Outsider" value={"outsider-"+index} />
-                                    </Picker>
-
-                                <Button rounded key={index} small style={{margin: 5, backgroundColor: 'grey'}}
-                                        onPress={() => {
-                                            this.state.usersToAdd.splice(index, 1);
-                                            this.setState({
-                                                usersToAdd: this.state.usersToAdd,
-                                                listPseudo: []
-                                            });
-                                        }}>
-                                    <Icon type='FontAwesome' name='remove'/>
-                                </Button>
-                                </View>
-                            );
-                        })
-                    }
                 </View>
+                {/*  DISPLAY LIST USERS */}
+                {/*<View style={{margin: 20, flexDirection: 'column'}}>*/}
+                {/*    {*/}
+                {/*        this.state.usersToAdd.map((user, index) => {*/}
+                {/*            return (*/}
+                {/*                <View key={index} style={{flexDirection: 'row', flexWrap: 'wrap'}}>*/}
+                {/*                <Text style={{marginTop: 8}}>{user.name}</Text>*/}
+                {/*                    <Picker*/}
+                {/*                        note*/}
+                {/*                        mode="dropdown"*/}
+                {/*                        style={{ width: 90}}*/}
+                {/*                        selectedValue={user.role+"-"+index}*/}
+                {/*                        onValueChange={this.onValueChange.bind(this)}*/}
+                {/*                    >*/}
+                {/*                        <Picker.Item label="Admin" value={"admin-"+index} />*/}
+                {/*                        <Picker.Item label="Actor" value={"actor-"+index} />*/}
+                {/*                        <Picker.Item label="Spectator" value={"spectator-"+index} />*/}
+                {/*                        <Picker.Item label="Outsider" value={"outsider-"+index} />*/}
+                {/*                    </Picker>*/}
+
+                {/*                <Button rounded key={index} small style={{backgroundColor: 'grey'}}*/}
+                {/*                        onPress={() => {*/}
+                {/*                            this.state.usersToAdd.splice(index, 1);*/}
+                {/*                            this.setState({*/}
+                {/*                                usersToAdd: this.state.usersToAdd,*/}
+                {/*                                listPseudo: []*/}
+                {/*                            });*/}
+                {/*                        }}>*/}
+                {/*                    <Icon type='FontAwesome' name='remove'/>*/}
+                {/*                </Button>*/}
+                {/*                </View>*/}
+                {/*            );*/}
+                {/*        })*/}
+                {/*    }*/}
+                {/*</View>*/}
                 {
                     this.props.groups.status === GroupsActionType.CreateGroup ? <Loader/> :
                         <Button success

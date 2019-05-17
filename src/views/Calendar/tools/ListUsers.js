@@ -1,6 +1,6 @@
 import {Dimensions, ScrollView, View, TouchableOpacity, StyleSheet} from 'react-native'
 import React from 'react';
-import {Form, Icon, Input, Item, Container, Button,Text} from "native-base";
+import {Form, Icon, Input, Item, Container, Button, Text, Picker} from "native-base";
 import {validateNotEmpty} from "../../../Utils/utils";
 import connect from "react-redux/es/connect/connect";
 import {AskCompletion, AskCompletionNone, AutoCompletionType} from "../../../redux/AutoCompletion/autocompletion.actions";
@@ -33,9 +33,26 @@ export class _ListUsers extends React.Component {
         }
     }
 
+    onValueChange(item) {
+        const slp = item.split('-');
+        const idx = parseInt(slp[1]);
+        this.state.usersToAdd[idx].role = slp[0];
+        this.forceUpdate();
+    }
+
+    checkLengthString(string) {
+        const nbMax = 15;
+        if (string.length > nbMax)
+        {
+            let tmp = string.slice(0, nbMax);
+            tmp = tmp + '...';
+            return tmp
+        }
+        return string
+    }
+
 
     render() {
-        console.log(this.state.usersToAdd)
         return (
                 <View>
                     <View style={{
@@ -45,7 +62,7 @@ export class _ListUsers extends React.Component {
                         <Form style={{
                             // marginLeft: 10, marginRight: 30, flexGrow: 3
                         }}>
-                            <Item style={{marginTop: 0, width: 300}}>
+                            <Item style={{marginTop: 0, width: (this.props.newWidth === undefined) ? 300 : this.props.newWidth}}>
                                 <Icon active name='person'/>
                                 <Input placeholder="Add users by pseudo" value={this.state.query}
                                        onChangeText={(text) => this.findPseudos(text)} clearButtonMode="always"/>
@@ -56,7 +73,7 @@ export class _ListUsers extends React.Component {
                         marginLeft: 20, flexGrow: 3
                     }}>
                         {this.state.listPseudo.map((item, idx) =>
-                            <Item key={idx}>
+                            <Item key={idx} style={{width: (this.props.newWidth === undefined) ? 300 : this.props.newWidth}}>
                                 <TouchableOpacity onPress={()=>{this.setState({
                                     usersToAdd: [...this.state.usersToAdd, (this.props.formatAdd === undefined) ? item : this.props.formatAdd(item)],
                                     query: '',
@@ -74,7 +91,7 @@ export class _ListUsers extends React.Component {
                         )}
                     </Form>
                     { this.props.displaySelection === undefined || this.props.displaySelection === true ?
-                        <View style={{margin: 20, flexDirection: 'row', flexWrap: 'wrap'}}>
+                        <View style={{margin: 30, flexDirection: 'row', flexWrap: 'wrap'}}>
                             {
                                 this.state.usersToAdd.map((user, index) => {
                                     return (
@@ -93,7 +110,42 @@ export class _ListUsers extends React.Component {
                                 })
                             }
                         </View>
-                        : null
+                        :
+                        <View style={{margin: 20, flexDirection: 'column', paddingTop: 10}}>
+                            {
+                                this.state.usersToAdd.map((user, index) => {
+                                    return (
+                                        <View key={index} style={{flexDirection: 'row', flexWrap: 'wrap', borderColor: 'rgba(0,0,0,0.3)', borderRadius: 5, borderWidth: 1, paddingTop:15, backgroundColor: 'rgba(25,81,127,0.2)'}}>
+                                            <Text style={{marginTop: 8}}>{this.checkLengthString(user.name)}</Text>
+                                            <Item><Picker
+                                                note
+                                                mode="dropdown"
+                                                style={{ width: 90, paddingBottom:15}}
+                                                selectedValue={user.role+"-"+index}
+                                                onValueChange={this.onValueChange.bind(this)}
+                                            >
+                                                <Picker.Item label="Admin" value={"admin-"+index} />
+                                                <Picker.Item label="Actor" value={"actor-"+index} />
+                                                <Picker.Item label="Spectator" value={"spectator-"+index} />
+                                                <Picker.Item label="Outsider" value={"outsider-"+index} />
+                                            </Picker>
+                                            </Item>
+
+                                            <Button rounded key={index} small style={{backgroundColor: 'grey'}}
+                                                    onPress={() => {
+                                                        this.state.usersToAdd.splice(index, 1);
+                                                        this.setState({
+                                                            usersToAdd: this.state.usersToAdd,
+                                                            listPseudo: []
+                                                        });
+                                                    }}>
+                                                <Icon type='FontAwesome' name='remove'/>
+                                            </Button>
+                                        </View>
+                                    );
+                                })
+                            }
+                        </View>
                     }
                 </View>
         )

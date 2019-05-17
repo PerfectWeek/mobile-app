@@ -39,8 +39,9 @@ export class GroupService {
 
     static async AddGroupMembers(groupId, members) {
         const resp = await Network.Post('/groups/' + groupId + '/add-members', {users: members});
+        // console.log('add', resp)
         if (resp.status === 200)
-            return resp.data.members;
+            return resp.data.group.members;
         let err;
         if (resp.data !== undefined && resp.data.message !== undefined)
             err = resp.data.message;

@@ -29,6 +29,7 @@ function* GetUserInfo(action) {
 }
 
 function* GetUsersInfo(action) {
+    // console.log('actino', action)
     for (let idx = 0; idx < action.users.length; idx++) {
         try {
             const user = yield UserService.GetUserInfo(action.users[idx].pseudo);

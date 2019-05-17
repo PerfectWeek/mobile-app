@@ -100,7 +100,12 @@ function* AddGroupMembers(action) {
     try {
         const members = yield GroupService.AddGroupMembers(action.groupId, action.members);
         yield put(GetUsersInfo(members));
-        yield put(AddGroupMembersSuccess(action.groupId, arrayToObject(members, "pseudo")));
+        let arr = []
+        for (let i = 0 ; i < members.length; i++) {
+            arr.push({'pseudo': members[i].pseudo})
+        }
+        // console.log('gggggg', arr, action.groupId)
+        yield put(AddGroupMembersSuccess(action.groupId, arr));
         yield ShowSuccessNotification();
     } catch (err) {
         yield ShowErrorNotification(err);
