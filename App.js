@@ -31,6 +31,7 @@ import {CalendarReducer} from "./src/redux/Calendar/calendar.reducer";
 import {EventsSaga} from "./src/redux/Events/events.saga";
 import {EventsReducer} from "./src/redux/Events/events.reducer";
 import HomeNavigator from "./src/views/HomeNavigator";
+import Home from "./src/views/home";
 
 const AppNavigator = createSwitchNavigator(
     {
@@ -38,7 +39,8 @@ const AppNavigator = createSwitchNavigator(
             screen: LoginNavigator
         },
         Home: {
-            screen: HomeNavigator
+            screen: Home
+            // screen: HomeNavigator
         }
     },
 
