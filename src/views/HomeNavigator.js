@@ -6,6 +6,7 @@ import {HeaderBackgroundColor} from "../../Style/Constant";
 import {GroupsNavigator} from "./Groups/GroupsNavigator";
 import {CalendarDashboard} from "./Calendar/CalendarDashboard";
 import {CalendarNavigator} from "./Calendar/CalendarNavigator";
+import {EventsNavigator} from "./Events/EventsNavigator";
 
 export default createBottomTabNavigator(
     {
@@ -15,6 +16,14 @@ export default createBottomTabNavigator(
                 tabBarIcon: ({tintColor}) => <Icon
                     name='calendar'
                     type='FontAwesome'
+                    style={{color: tintColor, marginTop:5, fontSize:22}}/>
+            }
+        },
+        Events: {
+            screen: EventsNavigator, navigationOptions: {
+                tabBarIcon: ({focused, tintColor}) => <Icon
+                    name='calendar-plus'
+                    type='MaterialCommunityIcons'
                     style={{color: tintColor, marginTop:5, fontSize:22}}/>
             }
         },

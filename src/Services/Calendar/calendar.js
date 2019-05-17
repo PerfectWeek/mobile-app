@@ -24,6 +24,19 @@ export class CalendarService {
         throw err;
     }
 
+    static async GetEventsSuggestion(calendarId, min_time, max_time, limit) {
+        const resp = await Network.Get(`/calendars/${calendarId}/assistant/get-event-suggestions`,
+            {min_time, max_time, limit});
+        if (resp.status === 200)
+            return resp.data.suggestions.map(s => s.event);
+        let err;
+        if (resp.data !== undefined && resp.data.message !== undefined)
+            err = resp.data.message;
+        else
+            err = "Connection error";
+        throw err;
+    }
+
     static async GetEventsForCalendars(calendars) {
         let events = [];
         for (let idx = 0; idx < calendars.length; idx++) {
@@ -74,5 +87,46 @@ export class CalendarService {
             }
         }
         return events
+    }
+
+    static async GetEventsAttendees(events) {
+        for (let idx = 0; idx < events.length; idx++) {
+            const resp = await Network.Get('/events/' + events[idx].id + '/attendees');
+            if (resp.status === 200) {
+                events[idx].attendees = resp.data.attendees;
+            } else {
+                let err;
+                if (resp.data !== undefined && resp.data.message !== undefined)
+                    err = resp.data.message;
+                else
+                    err = "Connection error";
+                throw err
+            }
+        }
+        return events
+    }
+
+    static async JoinEvent(event_id, status) {
+        const resp = await Network.Post(`/events/${event_id}/join`, {status});
+        if (resp.status === 200)
+            return "ok";
+        let err;
+        if (resp.data !== undefined && resp.data.message !== undefined)
+            err = resp.data.message;
+        else
+            err = "Connection error";
+        throw err;
+    }
+
+    static async ChangeEventStatus(event_id, status) {
+        const resp = await Network.Put(`/events/${event_id}/status`, {status});
+        if (resp.status === 200)
+            return "ok";
+        let err;
+        if (resp.data !== undefined && resp.data.message !== undefined)
+            err = resp.data.message;
+        else
+            err = "Connection error";
+        throw err;
     }
 }
