@@ -35,6 +35,10 @@ import {AutoCompletionReducer} from "./src/redux/AutoCompletion/autocompletion.r
 import {AutoCompletionSaga} from "./src/redux/AutoCompletion/autocompletion.sagas";
 
 import Home from "./src/views/home";
+import {InvitesReducer} from "./src/redux/Invites/invites.reducer";
+import {InvitesSaga} from "./src/redux/Invites/invites.saga";
+import {FriendsSaga} from "./src/redux/Friends/friends.saga";
+import {FriendsReducer} from "./src/redux/Friends/friends.reducer";
 
 const AppNavigator = createSwitchNavigator(
     {
@@ -59,8 +63,10 @@ const reducer = combineReducers({
     user: UserReducer,
     group: GroupReducer,
     calendar: CalendarReducer,
+    invites: InvitesReducer,
     autocompletion: AutoCompletionReducer,
     events: EventsReducer,
+    friends: FriendsReducer,
     nav: navReducer
 });
 
@@ -83,7 +89,9 @@ function* sagas() {
         fork(GroupSaga),
         fork(CalendarSaga),
         fork(AutoCompletionSaga),
-        fork(EventsSaga)
+        fork(EventsSaga),
+        fork(InvitesSaga),
+        fork(FriendsSaga)
     ]);
 }
 

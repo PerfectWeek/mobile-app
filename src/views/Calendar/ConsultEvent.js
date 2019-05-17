@@ -65,7 +65,7 @@ export class _ConsultEvent extends React.Component {
                 </View>
 
                 <Form style={{
-                    marginLeft: 10, marginRight: 30, marginTop: 20, flexGrow: 3
+                    marginLeft: 10, marginRight: 10, marginTop: 20, flexGrow: 3
                 }}>
                     <Item>
                         <Icon style={IconStyle} type='SimpleLineIcons' active name='pencil'/>

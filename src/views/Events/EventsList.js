@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, Platform, View, ScrollView} from 'react-native';
+import {Dimensions, Platform, View, ScrollView, RefreshControl} from 'react-native';
 import {
     Header,
     Body,
@@ -23,6 +23,9 @@ export class _EventsList extends React.Component {
 
     }
 
+    _onRefresh = () => {
+        this.props.GetEventRecommendation("2019-05-10T12:12:12", "2019-06-10T12:12:12", 10);
+    };
 
     render() {
         if (this.props.events === undefined || this.props.loading !== false)
@@ -35,6 +38,11 @@ export class _EventsList extends React.Component {
             <ScrollView style={{
                 backgroundColor: ScreenBackgroundColor
             }}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.props.loading}
+                                onRefresh={this._onRefresh}
+                            />}
                         contentContainerStyle={{
                             flexGrow: 1,
                             paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight,

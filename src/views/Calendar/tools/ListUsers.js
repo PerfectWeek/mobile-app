@@ -57,7 +57,7 @@ export class _ListUsers extends React.Component {
 
 
     render() {
-        console.log('list', this.state.usersToAdd);
+        // console.log('list', this.state.usersToAdd);
         return (
             <View>
                 <View style={{
@@ -72,7 +72,7 @@ export class _ListUsers extends React.Component {
                         }}>
                             <Icon active name='person'/>
                             <Input placeholder="Add users by pseudo" value={this.state.query}
-                                   autoCapitalize = 'none'
+                                   autoCapitalize='none'
                                    onChangeText={(text) => this.findPseudos(text)} clearButtonMode="always"/>
                         </Item>
                     </Form>
@@ -114,47 +114,53 @@ export class _ListUsers extends React.Component {
                                         <Text>{user}</Text>
                                         <Icon type='FontAwesome' name='remove'/>
                                     </Button>
-                                    );
-                                })
-                            }
-                        </View>
-                        :
-                        <View style={{margin: 20, flexDirection: 'column', paddingTop: 10}}>
-                            {
-                                this.state.usersToAdd.map((user, index) => {
-                                    return (
-                                        <View key={index} style={{flexDirection: 'row', flexWrap: 'wrap', borderColor: 'rgba(0,0,0,0.3)', borderRadius: 5, borderWidth: 1, paddingTop:15, backgroundColor: 'rgba(25,81,127,0.2)'}}>
-                                            <Text style={{marginTop: 8}}>{this.checkLengthString(user.name)}</Text>
-                                            <Item><Picker
-                                                note
-                                                mode="dropdown"
-                                                style={{ width: 90, paddingBottom:15}}
-                                                selectedValue={user.role+"-"+index}
-                                                onValueChange={this.onValueChange.bind(this)}
-                                            >
-                                                <Picker.Item label="Admin" value={"admin-"+index} />
-                                                <Picker.Item label="Actor" value={"actor-"+index} />
-                                                <Picker.Item label="Spectator" value={"spectator-"+index} />
-                                                <Picker.Item label="Outsider" value={"outsider-"+index} />
-                                            </Picker>
-                                            </Item>
-                                            <Button rounded key={index} small style={{backgroundColor: 'grey'}}
-                                                    onPress={() => {
-                                                        this.state.usersToAdd.splice(index, 1);
-                                                        this.setState({
-                                                            usersToAdd: this.state.usersToAdd,
-                                                            listPseudo: []
-                                                        });
-                                                    }}>
-                                                <Icon type='FontAwesome' name='remove'/>
-                                            </Button>
-                                        </View>
-                                    );
-                                })
-                            }
-                        </View>
-                    }
-                </View>
+                                );
+                            })
+                        }
+                    </View>
+                    :
+                    <View style={{flexDirection: 'column'}}>
+                        {
+                            this.state.usersToAdd.map((user, index) => {
+                                return (
+                                    <View key={index} style={{
+                                        flexDirection: 'column',
+                                        flexWrap: 'wrap',
+                                        borderColor: 'rgba(0,0,0,0.3)',
+                                        borderRadius: 5,
+                                        borderWidth: 1,
+                                        marginTop: 15,
+                                        backgroundColor: 'rgba(25,81,127,0.2)'
+                                    }}>
+                                        <Text style={{marginTop: 8}}>{this.checkLengthString(user.name)}</Text>
+                                        <Picker
+                                            note
+                                            mode="dropdown"
+                                            selectedValue={user.role + "-" + index}
+                                            onValueChange={this.onValueChange.bind(this)}
+                                        >
+                                            <Picker.Item label="Admin" value={"admin-" + index}/>
+                                            <Picker.Item label="Actor" value={"actor-" + index}/>
+                                            <Picker.Item label="Spectator" value={"spectator-" + index}/>
+                                            <Picker.Item label="Outsider" value={"outsider-" + index}/>
+                                        </Picker>
+                                        <Button full key={index} small style={{backgroundColor: 'grey'}}
+                                                onPress={() => {
+                                                    this.state.usersToAdd.splice(index, 1);
+                                                    this.setState({
+                                                        usersToAdd: this.state.usersToAdd,
+                                                        listPseudo: []
+                                                    });
+                                                }}>
+                                            <Icon type='FontAwesome' name='remove'/>
+                                        </Button>
+                                    </View>
+                                );
+                            })
+                        }
+                    </View>
+                }
+            </View>
         )
     }
 

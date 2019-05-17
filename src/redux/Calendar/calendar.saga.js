@@ -131,10 +131,9 @@ function* CreatNewEvent(action) {
         });
         if (response.status !== 201)
             throw response;
-
         const events = yield CalendarService.GetEventsInfo([response.data.event]);
         const events_w_image = yield CalendarService.GetEventsImage([events[0]]);
-        if (action.event.usersToAdd.length !== 0) {
+        if (action.event.usersToAdd !== undefined && action.event.usersToAdd.length !== 0) {
             const responseAddUsers = yield Network.Post('/events/' + events[0].id + '/invite-users', {
                 'users': action.event.usersToAdd
             });
@@ -145,8 +144,7 @@ function* CreatNewEvent(action) {
         }
         yield put(CreateNewEventSuccess(events_w_image[0]));
         yield ShowSuccessNotification("Event Created");
-    }
-    catch (err) {
+    } catch (err) {
         if (err.status !== 500 && err.data !== undefined && err.data.message !== undefined)
             err = err.data.message;
         else
@@ -228,7 +226,8 @@ function* GetBestSlots(action) {
         if (resp.status !== 200)
             throw resp.data;
         const slots = resp.data.slots.map(c => {
-            return {...c,
+            return {
+                ...c,
                 show: true,
                 slot: true,
                 name: action.infos.EventTitle,
@@ -243,8 +242,7 @@ function* GetBestSlots(action) {
         if (slots.length === 0)
             throw {message: 'No slots found'};
         yield put(GetBestSlotsSuccess(slots));
-    }
-    catch (e) {
+    } catch (e) {
         // console.log(e)
         let err;
         if (e !== undefined && e.message !== undefined)

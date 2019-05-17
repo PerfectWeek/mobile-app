@@ -3,11 +3,12 @@ import {Container} from 'native-base';
 import connect from "react-redux/es/connect/connect";
 import HomeNavigator from "./HomeNavigator";
 import {BackHandler, Platform} from "react-native";
-import {NavigationActions} from "react-navigation";
+import {GetInvites} from "../redux/Invites/invites.actions";
 
 export class _Home extends React.Component {
     constructor(props) {
         super(props);
+        this.props.GetInvites();
     }
 
     componentDidMount() {
@@ -37,7 +38,9 @@ export class _Home extends React.Component {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        ...ownProps
+        ...ownProps,
+        GetInvites: () => dispatch(GetInvites())
+
     }
 };
 

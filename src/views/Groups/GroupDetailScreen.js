@@ -168,11 +168,11 @@ export class _GroupDetailScreen extends React.Component {
                                             const BUTTONS = [];
                                             const ButtonsCallback = [];
                                             if (isAdmin) {
-                                                BUTTONS.push((member.role === 'admin' ? "Remove as admin" : "Make admin"));
+                                                // BUTTONS.push((member.role === 'admin' ? "Remove as admin" : "Make admin"));
                                                 BUTTONS.push(this.props.login.pseudo === member.pseudo ? "Quit group" : "Remove from group");
-                                                ButtonsCallback.push(() => {
-                                                    this.ChangeRoleClicked(group.id, member);
-                                                });
+                                                // ButtonsCallback.push(() => {
+                                                //     this.ChangeRoleClicked(group.id, member);
+                                                // });
                                                 ButtonsCallback.push(() => {
                                                     this.props.RemoveGroupMember(group.id, member, this.props.login.pseudo);
                                                 });

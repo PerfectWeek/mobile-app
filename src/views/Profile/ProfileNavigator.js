@@ -4,7 +4,7 @@ import {Profile} from "./Profile";
 import {Invite} from "./Invite";
 import {FriendsList} from './FriendsList';
 import {FriendDetails} from "./FriendDetails";
-import {InviteDetailScreen} from "./InviteDetailScreen";
+import {GroupInviteDetailScreen} from "./GroupInviteDetailScreen";
 import {HeaderBackgroundColor, HeaderTintColor} from "../../../Style/Constant";
 
 export default createStackNavigator(
@@ -18,12 +18,12 @@ export default createStackNavigator(
                 title: 'Invitations',
             }),
         },
-        InviteDetail: {
-            screen: InviteDetailScreen,
-            navigationOptions: ({ navigation }) => ({
-                title: `${navigation.state.params.invite.title}`,
-            })
-        },
+        // GroupInviteDetailScreen: {
+        //     screen: GroupInviteDetailScreen,
+        //     navigationOptions: ({ navigation }) => ({
+        //         title: `${navigation.state.params.invite.name}`,
+        //     })
+        // },
         FriendsList: {
             screen: FriendsList,
             navigationOptions: () => ({

@@ -319,11 +319,18 @@ const mapStateToProps = (state, ownProps) => {
             strTimeStart.setDate(strTimeStart.getDate() + 1);
         }
     }
+    const mainCalendar = state.calendar.calendars.find(c => {
+        return c.name === 'Main calendar'
+    });
+    let mainCalendarId = -1;
+    if (mainCalendar !== undefined)
+        mainCalendarId = mainCalendar.id;
     return {
         ...ownProps,
         calendar: state.calendar,
         login: state.login,
-        items
+        items,
+        selectedCalendar: mainCalendarId
     }
 };
 

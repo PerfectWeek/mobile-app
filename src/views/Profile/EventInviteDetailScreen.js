@@ -12,7 +12,7 @@ import {
 import connect from "react-redux/es/connect/connect";
 
 
-export class _InviteDetailScreen extends React.Component {
+export class _GroupInviteDetailScreen extends React.Component {
 
     constructor(props) {
         super(props);
@@ -134,4 +134,4 @@ const mapStateToProps = (state, ownProps) => {
 const textStyle = {margin: 10, color: 'black', fontFamily: 'Roboto_medium', fontSize: 18, textAlign: 'center'};
 
 
-export const InviteDetailScreen = connect(mapStateToProps, mapDispatchToProps)(_InviteDetailScreen);
+export const GroupInviteDetailScreen = connect(mapStateToProps, mapDispatchToProps)(_GroupInviteDetailScreen);

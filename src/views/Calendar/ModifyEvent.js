@@ -36,7 +36,6 @@ export class _ModifyEvent extends React.Component {
     }
 
     fillInfoEvent(event) {
-        // console.log('event', this.props);
         const beginTimeEvent = event.start_time.split('T');
         const endTimeEvent = event.end_time.split('T');
         return {
@@ -92,7 +91,6 @@ export class _ModifyEvent extends React.Component {
         let oldAttend = this.state.oldattendees;
         let newAttend = this.state.attendees;
         let lp = 0;
-        console.log('list:', oldAttend, newAttend)
         const len = newAttend.length + oldAttend.length
         while (lp < len) {
             for (let i = 0; i < newAttend.length; i++) {
@@ -115,7 +113,7 @@ export class _ModifyEvent extends React.Component {
             lp += 1;
         }
         listToDel = oldAttend;
-        console.log(listToAdd, listToDel, oldAttend, this.state.attendees.length + this.state.oldattendees.length)
+        // console.log(listToAdd, listToDel, oldAttend, this.state.attendees.length + this.state.oldattendees.length)
         this.props.ModifyTheEvent({
             ...this.state,
             type: this.props.calendar.eventsType[this.state.type],
@@ -331,7 +329,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    // console.log('state', state.calendar.event)
     if (state.calendar.event !== undefined && state.calendar.event.attendees !== undefined)
         return {
             ...ownProps,

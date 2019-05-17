@@ -66,19 +66,22 @@ export class _Profile extends React.Component {
                         }}>
                             <Icon type={"SimpleLineIcons"} name='bell' style={{color: '#064C96', fontSize: 20}}/>
 
-                            <View style={{
-                                position: 'absolute',
-                                left: 25,
-                                top: 5,
-                                backgroundColor: 'red',
-                                borderRadius: 9,
-                                width: 18,
-                                height: 18,
-                                justifyContent: 'center',
-                                alignItems: 'center'
-                            }}>
-                                <Text style={{color: 'white'}}>9</Text>
-                            </View>
+                            {
+                                this.props.invites !== undefined && this.props.invites.length > 0 && <View style={{
+                                    position: 'absolute',
+                                    left: 25,
+                                    top: 5,
+                                    backgroundColor: 'red',
+                                    borderRadius: 9,
+                                    width: 18,
+                                    height: 18,
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
+                                }}>
+                                    <Text style={{color: 'white'}}>{this.props.invites.length}</Text>
+                                </View>
+                            }
+
                         </Button>
 
                         <Button transparent onPress={() => {
@@ -145,14 +148,20 @@ export class _Profile extends React.Component {
                                                   }}>
                                     <Icon active name='camera' style={{fontSize: 16}} type={"FontAwesome"}/>
                                 </TouchableOpacity>
-                                <Title style={{color: 'black', fontFamily: 'Lato_Bold', fontSize: 36, margin:5}}>
+                                <Title style={{color: 'black', fontFamily: 'Lato_Bold', fontSize: 36, margin: 5}}>
                                     {this.props.user.pseudo}
                                 </Title>
                             </View>
                             <ProfileImagePicker onRef={ref => (this.ProfilePictureModal = ref)}/>
 
                             <Text
-                                style={{fontFamily: 'Lato_Bold', fontSize: 20, color: 'gray', marginTop: 30, marginLeft:10}}>
+                                style={{
+                                    fontFamily: 'Lato_Bold',
+                                    fontSize: 20,
+                                    color: 'gray',
+                                    marginTop: 30,
+                                    marginLeft: 10
+                                }}>
                                 Information :
                             </Text>
 
@@ -239,7 +248,8 @@ const mapStateToProps = (state, ownProps) => {
         ...ownProps,
         login: state.login,
         UserStore: state.user,
-        user: state.user.users[state.login.pseudo]
+        user: state.user.users[state.login.pseudo],
+        invites: state.invites.invites
     }
 };
 
