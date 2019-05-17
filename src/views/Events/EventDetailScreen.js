@@ -13,7 +13,7 @@ import moment from "moment";
 import Modal from "../../Components/Modal";
 import {GroupsActionType} from "../../redux/Groups/groups.actions";
 import UserList from "../../Components/UserList";
-import {JoinEvent} from "../../redux/Events/events.actions";
+import {ChangeEventStatus, JoinEvent} from "../../redux/Events/events.actions";
 
 const type_to_icon = {
     party: 'glass-cocktail',
@@ -31,7 +31,11 @@ export class _EventDetailScreen extends React.Component {
 
     render() {
         let event = this.props.event;
-        let going = event.attendees.find(a => a.pseudo === this.props.pseudo) !== undefined;
+        let going = false;
+        let user = event.attendees.find(a => a.pseudo === this.props.pseudo);
+        let present = user !== undefined;
+        if (present && user.status === 'going')
+            going = true;
         return (
             <ScrollView>
                 <View style={{marginTop: 0, justifyContent: 'center'}}>
@@ -66,7 +70,7 @@ export class _EventDetailScreen extends React.Component {
                     <View style={rowStyle}>
                         <Icon style={{fontSize: 18}} active name='people' type={"SimpleLineIcons"}/>
                         <Text style={{fontSize: 18, marginLeft: 10}}>
-                            {event.attendees.length} people going
+                            {event.attendees.filter(a => a.status === 'going').length} people going
                         </Text>
                         <TouchableOpacity onPress={() => {this.modal.toggle()}}>
                             <Text style={{
@@ -90,7 +94,7 @@ export class _EventDetailScreen extends React.Component {
 
                 <Modal
                     onRef={ref => (this.modal = ref)} title='Attendees'>
-                    <UserList users={event.attendees}/>
+                    <UserList users={event.attendees.filter(a => a.status === 'going')}/>
                 </Modal>
 
                 <Text
@@ -120,7 +124,10 @@ export class _EventDetailScreen extends React.Component {
                         flexDirection: 'column',
                     }}>
                         <Button success={going} light={!going} onPress={() => {
-                            this.props.JoinEvent(event, going ? 'no' : 'going');
+                            if (!present)
+                                this.props.JoinEvent(event, 'going');
+                            else
+                                this.props.ChangeEventStatus(event, going ? 'no' : 'going');
                         }}>
                             <Icon active name='check' type={"FontAwesome"}/>
                         </Button>
@@ -142,6 +149,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
         JoinEvent: (event, status) => dispatch(JoinEvent(event, status)),
+        ChangeEventStatus: (event, status) => dispatch(ChangeEventStatus(event, status)),
     }
 };
 

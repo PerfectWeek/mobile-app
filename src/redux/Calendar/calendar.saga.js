@@ -171,12 +171,8 @@ function* ReloadEvents(action) {
 
 function* LoadCalendar(action) {
     try {
+        yield GetCalendars();
         let calendars = yield select((state) => {
-            return state.calendar.calendars
-        });
-        if (calendars === undefined || calendars.length === 0)
-            yield GetCalendars();
-        calendars = yield select((state) => {
             return state.calendar.calendars
         });
         let events_array = yield CalendarService.GetEventsForCalendars(calendars);

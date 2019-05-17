@@ -118,12 +118,11 @@ export class _CalendarDashboard extends Component {
                         margin: 15,
                         flex: 1,
                         flexDirection: 'row',
-                        justifyContent: 'space-between',
                         alignItems: 'center'
                     }}>
                         {item.image === undefined || item.image === null ? null :
                             <Animatable.View animation="fadeIn">
-                                <Thumbnail source={{uri: item.image}}/>
+                                <Thumbnail style={{marginRight: 10}} source={{uri: item.image}}/>
                             </Animatable.View>
                         }
 
@@ -133,14 +132,10 @@ export class _CalendarDashboard extends Component {
                                 fontSize: 14,
                                 fontFamily: 'Lato_Medium'
                             }}>
-                                {start_string} - {end_string}
+                                {start_string} - {end_string} ·<Text
+                                style={{color: '#e94b61'}}> {item.calendar_name}</Text>
                             </Text>
                         </View>
-                        <Text style={{
-                            alignSelf: 'flex-start',
-                            fontSize: 18,
-                            fontFamily: 'Lato_Medium'
-                        }}>{item.calendar_name}</Text>
                     </View>
 
                 </TouchableHighlight>
@@ -247,7 +242,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const mapStateToProps = (state, ownProps) => {
     let events = [];
     if (state.calendar.events && state.calendar.calendars.length > 0) {
-        const filtered_events = Object.values(state.calendar.events).filter(e => {return e.status === 'going'});
+        const filtered_events = Object.values(state.calendar.events).filter(e => {
+            return e.status === 'going'
+        });
         events = filtered_events.map(e => {
             const calendar = state.calendar.calendars.find(c => c.id === e.calendar_id);
             return {...e, calendar_name: calendar !== undefined ? calendar.name : ''}

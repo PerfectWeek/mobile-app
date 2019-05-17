@@ -50,7 +50,7 @@ export default class EventCard extends Component {
                             {event.location}
                         </Text>
                         <Text style={{color: '#606770'}}>
-                            {event.type} event - {event.attendees.length} attendee
+                            {event.type} event - {event.attendees.filter(a => a.status === 'going').length} attendee
                         </Text>
                     </View>
                 </View>

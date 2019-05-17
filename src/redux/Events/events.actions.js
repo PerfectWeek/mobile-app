@@ -7,6 +7,8 @@ export const EventsActionType = {
     SetEvents: 'SET_EVENTS',
     SetEvent: 'SET_EVENT',
     JoinEvent: 'JOIN_EVENT',
+    ChangeEventStatus: 'CHANGE_EVENT_STATUS',
+
 };
 
 export const SetLoading = (loading) => {
@@ -37,6 +39,14 @@ export const SetEvent = (event) => {
 export const JoinEvent = (event, status) => {
     return {
         type: EventsActionType.JoinEvent,
+        event,
+        status
+    }
+};
+
+export const ChangeEventStatus = (event, status) => {
+    return {
+        type: EventsActionType.ChangeEventStatus,
         event,
         status
     }

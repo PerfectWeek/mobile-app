@@ -51,23 +51,30 @@ function* GetEventRecommendation({min_time, max_time, limit}) {
 
 function* JoinEvent({event, status}) {
     try {
-        console.log("Wsh alors ?");
         // yield put(SetLoading(true));
         yield CalendarService.JoinEvent(event.id, status);
         const pseudo = yield select((state) => {
             return state.login.pseudo
         });
-        switch (status) {
-            case 'going':
-                event.attendees.push({pseudo, status : 'going'});
-                break;
-            case 'no':
-                const idx = event.attendees.findIndex(a => a.pseudo === pseudo);
-                event.attendees.splice(idx, 1);
-                break;
-        }
+        event.attendees.push({pseudo, status: 'going'});
         yield put(SetEvent(event));
-        yield put(SetCalendarEvent({ ...event, status : status}));
+        yield put(SetCalendarEvent({...event, status: status}));
+        // yield put(SetLoading(false));
+    } catch (err) {
+        yield ShowErrorNotification(err);
+    }
+}
+
+function* ChangeEventStatus({event, status}) {
+    try {
+        // yield put(SetLoading(true));
+        yield CalendarService.ChangeEventStatus(event.id, status);
+        const pseudo = yield select((state) => {
+            return state.login.pseudo
+        });
+        event.attendees.find(a => a.pseudo === pseudo).status = status;
+        yield put(SetEvent(event));
+        yield put(SetCalendarEvent({...event, status: status}));
         // yield put(SetLoading(false));
     } catch (err) {
         yield ShowErrorNotification(err);
@@ -78,4 +85,5 @@ function* JoinEvent({event, status}) {
 export function* EventsSaga() {
     yield takeEvery(EventsActionType.GetEventRecommendation, GetEventRecommendation);
     yield takeEvery(EventsActionType.JoinEvent, JoinEvent);
+    yield takeEvery(EventsActionType.ChangeEventStatus, ChangeEventStatus);
 }
