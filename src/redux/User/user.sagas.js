@@ -29,11 +29,13 @@ function* GetUserInfo(action) {
 }
 
 function* GetUsersInfo(action) {
-    // console.log('actino', action)
     for (let idx = 0; idx < action.users.length; idx++) {
         try {
+            console.log('actino', action.users[idx].pseudo)
+
             const user = yield UserService.GetUserInfo(action.users[idx].pseudo);
             user.image = yield UserService.GetUserImage(action.users[idx].pseudo);
+            console.log('actino2', user)
             yield put(SetUserInfo(user));
         } catch (err) {
             yield ShowErrorNotification(err);

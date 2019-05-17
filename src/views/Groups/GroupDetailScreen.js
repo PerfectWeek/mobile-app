@@ -105,7 +105,7 @@ export class _GroupDetailScreen extends React.Component {
                 isAdmin = true
             }
         }
-        console.log('TIM', group.members)
+        // console.log('img', this.props.users);
         return (
             <ScrollView style={{paddingLeft: 10, paddingRight: 10, height: Dimensions.get('window').height, backgroundColor: ScreenBackgroundColor}}>
                 <GroupDetailScreenGroupName group={group} onRef={ref => (this.groupName = ref)}/>
@@ -150,7 +150,8 @@ export class _GroupDetailScreen extends React.Component {
                             </Body>
                         </ListItem>
                         {Object.values(group.members).map((member, index) => {
-                            console.log('img', this.props.users[member.pseudo],  member.pseudo, this.props.users);
+                            if (this.props.users[member.pseudo] === undefined)
+                                return (null)
                             return (
                                 <ListItem key={index} avatar>
                                     <Left>

@@ -1,4 +1,4 @@
-import {call, put, takeEvery} from "redux-saga/effects";
+import {call, put, takeEvery, select} from "redux-saga/effects";
 import {
     GetGroupSuccess,
     GetGroupFail,
@@ -98,13 +98,18 @@ function* UpdateMemberRole(action) {
 
 function* AddGroupMembers(action) {
     try {
+        // console.log('QWQWQWQWQ', action)
         const members = yield GroupService.AddGroupMembers(action.groupId, action.members);
+        let users2 = yield select((state) => {
+            return state.user.users
+        });
+        // console.log('USER', users2)
         yield put(GetUsersInfo(members));
-        let arr = []
-        for (let i = 0 ; i < members.length; i++) {
-            arr.push({'pseudo': members[i].pseudo})
-        }
-        yield put(AddGroupMembersSuccess(action.groupId, arr));
+        let users = yield select((state) => {
+            return state.user.users
+        });
+        // console.log('USER2', users)
+        yield put(AddGroupMembersSuccess(action.groupId, arrayToObject(members, "pseudo")));
         yield ShowSuccessNotification();
     } catch (err) {
         yield ShowErrorNotification(err);
