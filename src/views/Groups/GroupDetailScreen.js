@@ -150,54 +150,54 @@ export class _GroupDetailScreen extends React.Component {
                             </Body>
                         </ListItem>
                         {Object.values(group.members).map((member, index) => {
-                            console.log('meme', this.props.users, member)
+                            console.log('img', this.props.users[member.pseudo],  member.pseudo, this.props.users);
                             return (
                                 <ListItem key={index} avatar>
                                     <Left>
                                         <Thumbnail source={{uri: this.props.users[member.pseudo] === undefined ? null : this.props.users[member.pseudo].image}}/>
                                     </Left>
-                                    {/*<Body>*/}
-                                    {/*<Text>{member.pseudo}</Text>*/}
-                                    {/*/!*<Text style={{color: '#ef3434'}}*!/*/}
-                                    {/*/!*note>{member.role === 'Admin' ? 'Administrator' : null}</Text>*!/*/}
-                                    {/*</Body>*/}
-                                    {/*<Right>*/}
-                                    {/*    <Icon style={{marginTop: 10, fontSize: 28}} type='SimpleLineIcons'*/}
-                                    {/*          name='options-vertical' onPress={() => {*/}
-                                    {/*        const BUTTONS = [];*/}
-                                    {/*        const ButtonsCallback = [];*/}
-                                    {/*        if (isAdmin) {*/}
-                                    {/*            // BUTTONS.push((member.role === 'Admin' ? "Remove as admin" : "Make admin"));*/}
-                                    {/*            BUTTONS.push(this.props.login.pseudo === member.pseudo ? "Quit group" : "Remove from group");*/}
-                                    {/*            // ButtonsCallback.push(() => {*/}
-                                    {/*            //     this.ChangeRoleClicked(group.id, member);*/}
-                                    {/*            // });*/}
-                                    {/*            ButtonsCallback.push(() => {*/}
-                                    {/*                this.props.RemoveGroupMember(group.id, member, this.props.login.pseudo);*/}
-                                    {/*            });*/}
-                                    {/*        }*/}
-                                    {/*        else if (this.props.login.pseudo === member.pseudo) {*/}
-                                    {/*            BUTTONS.push("Quit group");*/}
-                                    {/*            ButtonsCallback.push(() => {*/}
-                                    {/*                this.props.RemoveGroupMember(group.id, member, this.props.login.pseudo);*/}
-                                    {/*            });*/}
-                                    {/*        }*/}
-                                    {/*        BUTTONS.push("Cancel");*/}
-                                    {/*        ButtonsCallback.push(() => {*/}
-                                    {/*        });*/}
-                                    {/*        const CANCEL_INDEX = BUTTONS.length - 1;*/}
-                                    {/*        ActionSheet.show(*/}
-                                    {/*            {*/}
-                                    {/*                options: BUTTONS,*/}
-                                    {/*                cancelButtonIndex: CANCEL_INDEX,*/}
-                                    {/*                title: "Manage member"*/}
-                                    {/*            },*/}
-                                    {/*            buttonIndex => {*/}
-                                    {/*                ButtonsCallback[buttonIndex]();*/}
-                                    {/*            })*/}
+                                    <Body>
+                                    <Text>{member.pseudo}</Text>
+                                    {/*<Text style={{color: '#ef3434'}}*/}
+                                    {/*note>{member.role === 'Admin' ? 'Administrator' : null}</Text>*/}
+                                    </Body>
+                                    <Right>
+                                        <Icon style={{marginTop: 10, fontSize: 28}} type='SimpleLineIcons'
+                                              name='options-vertical' onPress={() => {
+                                            const BUTTONS = [];
+                                            const ButtonsCallback = [];
+                                            if (isAdmin) {
+                                                // BUTTONS.push((member.role === 'Admin' ? "Remove as admin" : "Make admin"));
+                                                BUTTONS.push(this.props.login.pseudo === member.pseudo ? "Quit group" : "Remove from group");
+                                                // ButtonsCallback.push(() => {
+                                                //     this.ChangeRoleClicked(group.id, member);
+                                                // });
+                                                ButtonsCallback.push(() => {
+                                                    this.props.RemoveGroupMember(group.id, member, this.props.login.pseudo);
+                                                });
+                                            }
+                                            else if (this.props.login.pseudo === member.pseudo) {
+                                                BUTTONS.push("Quit group");
+                                                ButtonsCallback.push(() => {
+                                                    this.props.RemoveGroupMember(group.id, member, this.props.login.pseudo);
+                                                });
+                                            }
+                                            BUTTONS.push("Cancel");
+                                            ButtonsCallback.push(() => {
+                                            });
+                                            const CANCEL_INDEX = BUTTONS.length - 1;
+                                            ActionSheet.show(
+                                                {
+                                                    options: BUTTONS,
+                                                    cancelButtonIndex: CANCEL_INDEX,
+                                                    title: "Manage member"
+                                                },
+                                                buttonIndex => {
+                                                    ButtonsCallback[buttonIndex]();
+                                                })
 
-                                    {/*    }}/>*/}
-                                    {/*</Right>*/}
+                                        }}/>
+                                    </Right>
                                 </ListItem>
                             );
                         })}
