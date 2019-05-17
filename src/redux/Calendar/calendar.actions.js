@@ -1,3 +1,5 @@
+import {EventsActionType} from "../Events/events.actions";
+
 export const CalendarActionType = {
     Nothing: 'NOTHING',
     GetCalendars: 'GET_CALENDARS',
@@ -27,6 +29,8 @@ export const CalendarActionType = {
     LoadCalendar: 'LOAD_CALENDAR',
     LoadCalendarSuccess: "LOAD_CALENDAR_SUCCESS",
     LoadCalendarFail: "LOAD_CALENDAR_FAIL",
+    SetEvent: 'SET_EVENT_CALENDAR',
+
     GetBestSlots: "GET_BEST_SLOTS",
     GetBestSlotsSuccess: "GET_BEST_SLOTS_SUCCESS",
     GetBestSlotsFail: "GET_BEST_SLOTS_FAIL",
@@ -162,18 +166,17 @@ export const CreateNewEventFail = (error_message) => {
     }
 };
 
-export const GetCalendars = (_pseudo) => {
-  return {
-      type: CalendarActionType.GetCalendars,
-      pseudo: _pseudo
-  };
+export const GetCalendars = () => {
+    return {
+        type: CalendarActionType.GetCalendars
+    };
 };
 
 export const GetCalendarsSuccess = (calendars) => {
-  return {
-      type: CalendarActionType.GetCalendarsSuccess,
-      calendars
-  }
+    return {
+        type: CalendarActionType.GetCalendarsSuccess,
+        calendars
+    }
 };
 
 export const GetCalendarsFail = (error_message) => {
@@ -256,4 +259,11 @@ export const LoadCalendarFail = (error_message) => {
         type: CalendarActionType.LoadCalendarFail,
         error_message: error_message
     };
+};
+
+export const SetEvent = (event) => {
+    return {
+        type: CalendarActionType.SetEvent,
+        event
+    }
 };

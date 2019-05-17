@@ -63,14 +63,13 @@ export class _ModifyEvent extends React.Component {
             this.props.navigation.goBack();
             this.props.RefreshCalendar();
         }
-        if (this.props.calendar && this.props.calendar.status === CalendarActionType.GetEventInfoSuccess && this.state.recievedEvent === false)
-        {
+        if (this.props.calendar && this.props.calendar.status === CalendarActionType.GetEventInfoSuccess && this.state.recievedEvent === false) {
             this.fillInfoEvent(this.props.calendar.event);
         }
         if (this.props !== undefined && this.props.attendees !== undefined && this.state.attendees === undefined) {
             this.setState({
                 attendees: [...this.props.attendees],
-                oldattendees:  [...this.props.attendees]
+                oldattendees: [...this.props.attendees]
             });
             // this.forceUpdate();
         }
@@ -80,7 +79,7 @@ export class _ModifyEvent extends React.Component {
         var what, a = arguments, L = a.length, ax;
         while (L > 1 && arr.length) {
             what = a[--L];
-            while ((ax= arr.indexOf(what)) !== -1) {
+            while ((ax = arr.indexOf(what)) !== -1) {
                 arr.splice(ax, 1);
             }
         }
@@ -94,7 +93,7 @@ export class _ModifyEvent extends React.Component {
         let newAttend = this.state.attendees;
         let lp = 0;
         console.log('list:', oldAttend, newAttend)
-        const len =newAttend.length + oldAttend.length
+        const len = newAttend.length + oldAttend.length
         while (lp < len) {
             for (let i = 0; i < newAttend.length; i++) {
                 const tmp = newAttend[i];
@@ -117,8 +116,9 @@ export class _ModifyEvent extends React.Component {
         }
         listToDel = oldAttend;
         console.log(listToAdd, listToDel, oldAttend, this.state.attendees.length + this.state.oldattendees.length)
-        this.props.ModifyTheEvent({...this.state,
-            type : this.props.calendar.eventsType[this.state.type],
+        this.props.ModifyTheEvent({
+            ...this.state,
+            type: this.props.calendar.eventsType[this.state.type],
             attendeesToDel: listToDel,
             attendeesToAdd: listToAdd
         })
@@ -136,199 +136,187 @@ export class _ModifyEvent extends React.Component {
                     <Loader/>
                 </Container>
             );
-        // if (this.props !== undefined && this.props.attendees !== undefined && this.state.attendees === undefined) {
-        //     console.log('ok')
-        //     this.setState({
-        //         attendees: this.props.attendees
-        //     })
-        // }
-        console.log('updates', this.state.attendees);
+
         return (
 
-            <Container>
-                <View>
-                <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null} keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}>
-
-                    <ScrollView style={{backgroundColor: ScreenBackgroundColor,
-                    paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight}}>
-                    <View style={{flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                        <Thumbnail large source={{uri: this.state.display}}/>
-                        <TouchableOpacity style={GreenButtonStyle}
-                                          onPress={async () => {
-                                              const res = await Expo.ImagePicker.launchImageLibraryAsync();
-                                              if (res.cancelled)
-                                                  return;
-                                              this.setState({...this.state, image: res, display: res.uri, new_image: true});
-                                          }}>
-                            <Text style={{fontSize: 18}}>Select image</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{
-                        flexDirection: 'row', justifyContent: 'space-between'
-                    }}>
-                        <Form style={{
-                            marginLeft: 10, marginRight: 30, flexGrow: 3
-                        }}>
-                            <Item>
-                                <Input style={{...textStyle, fontSize: 26}}
-                                       placeholder="Event name" value={this.state.EventTitle}
-                                       onChangeText={(text) => this.setState({EventTitle: text})}/>
-                            </Item>
-                            <Item>
-                                <Icon style={IconStyle} type='SimpleLineIcons' active name='pencil'/>
-                                <Input style={textStyle}
-                                       placeholder="Description" value={this.state.description}
-                                       onChangeText={(text) => this.setState({description: text})}/>
-                            </Item>
-                            <Item>
-                                <Icon style={IconStyle} type='SimpleLineIcons' active name='location-pin'/>
-                                <Input style={textStyle}
-                                       placeholder="Localisation" value={this.state.localisation}
-                                       onChangeText={(text) => this.setState({localisation: text})}/>
-                            </Item>
-
-                            <Item>
-                                <Icon style={{...IconStyle, alignSelf: 'flex-start', marginTop: 10}} type='SimpleLineIcons' active
-                                      name='clock'/>
-
-                                <View style={{flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center'}}>
-
-                                    <View style={{
-                                        flexDirection: 'row',
-                                        justifyContent: 'flex-start',
-                                        alignItems: 'center',
-                                        marginTop: 5
-                                    }}>
-                                        <DatePicker
-                                            customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
-                                            style={{
-                                                width: 200, height: 40, justifyContent: 'center',
-                                                alignItems: 'center'
-                                            }}
-                                            placeholder={this.state.dateBeginEvent === '' ? "Beginning" : this.state.dateBeginEvent}
-                                            format="YYYY-MM-DD"
-                                            minDate="2018-01-01"
-                                            maxDate={this.state.dateEndEvent === '' ? "2022-01-01" : this.state.dateEndEvent}
-                                            confirmBtnText="Confirm"
-                                            cancelBtnText="Cancel"
-                                            showIcon={false}
-                                            onDateChange={(date) => {
-                                                this.setState({dateBeginEvent: date})
-                                            }}
-                                        />
-                                        <DatePicker
-                                            customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
-                                            style={{width: 80}}
-                                            date={this.state.beginTime}
-                                            placeholder="End Time"
-                                            mode="time"
-                                            format="HH:mm"
-                                            confirmBtnText="Confirm"
-                                            cancelBtnText="Cancel"
-                                            minuteInterval={1}
-                                            showIcon={false}
-                                            onDateChange={(time) => {
-                                                this.setState({beginTime: time});
-                                            }}
-                                        />
-                                    </View>
-                                    <View style={{
-                                        flexDirection: 'row',
-                                        justifyContent: 'flex-start',
-                                        alignItems: 'center',
-                                        marginBottom: 5,
-                                        marginTop: 5
-                                    }}>
-                                        <DatePicker
-                                            customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
-                                            style={{
-                                                width: 200, height: 40, justifyContent: 'center',
-                                                alignItems: 'center', borderLeftColor: 'white'
-                                            }}
-                                            placeholder={this.state.dateEndEvent === '' ? "Ending" : this.state.dateEndEvent}
-                                            format="YYYY-MM-DD"
-                                            minDate={this.state.dateBeginEvent === '' ? "2018-01-01" : this.state.dateBeginEvent}
-                                            maxDate="2022-01-01"
-                                            confirmBtnText="Confirm"
-                                            cancelBtnText="Cancel"
-                                            showIcon={false}
-                                            onDateChange={(date) => {
-                                                this.setState({dateEndEvent: date})
-                                            }}
-                                        />
-                                        <DatePicker
-                                            customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
-                                            style={{width: 80}}
-                                            date={this.state.endTime}
-                                            placeholder="End Time"
-                                            mode="time"
-                                            format="HH:mm"
-                                            confirmBtnText="Confirm"
-                                            cancelBtnText="Cancel"
-                                            minuteInterval={1}
-                                            showIcon={false}
-                                            onDateChange={(time) => {
-                                                this.setState({endTime: time});
-                                            }}
-                                        />
-                                    </View>
-                                </View>
-                            </Item>
-                            <Item>
-                                <Icon style={IconStyle} type='SimpleLineIcons' active name='flag'/>
-                                <Picker
-                                    placeholder="Select a event type"
-                                    placeholderStyle={{color: "#9EA0A4"}}
-                                    note
-                                    selectedValue={this.state.type}
-                                    mode="dropdown"
-                                    style={{width: 120}}
-                                    onValueChange={(value) => {
-                                        this.setState({type: value});
-                                    }}>
-                                    <Picker.Item label={"Select a event type"} value={-1} key={-1}/>
-                                    {
-                                        this.props.calendar.eventsType.map((type, index) => {
-                                            return <Picker.Item label={type} value={index} key={index}/>
-                                        })
-                                    }
-                                </Picker>
-                            </Item>
-                            <Item last>
-                                <Icon style={IconStyle} type='SimpleLineIcons' active name='lock'/>
-                                <Picker
-                                    placeholder="Select a visibility"
-                                    placeholderStyle={{color: "#9EA0A4"}}
-                                    note
-                                    mode="dropdown"
-                                    style={{width: 120}}
-                                    onValueChange={(value) => {
-                                        this.setState({visibility: value});
-                                    }}>
-                                    <Picker.Item label={'public'} value={'public'} key={0}/>
-                                    <Picker.Item label={'private'} value={'private'} key={1}/>
-                                </Picker>
-                            </Item>
-                            { (this.props.attendees !== undefined) ?
-                                <ListUsers callAddUser={(userList) => {
-                                    this.setState({attendees: userList})
-                                }} loadList={this.props.attendees}/> : null
-                            }
-                            <Button success disabled={this.validator()}
-                                    rounded style={{margin: 30, marginTop: 5}}
-                                    onPress={() => {
-                                        this.checkAttendees()
-                                    }}>
-                                <Text>
-                                    Modify event
-                                </Text>
-                            </Button>
-                        </Form>
-                    </View>
-                </ScrollView>
-                </KeyboardAvoidingView>
+            <ScrollView>
+                <View style={{flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+                    <Thumbnail style={{marginTop: 10}} large source={{uri: this.state.display}}/>
+                    <TouchableOpacity style={GreenButtonStyle}
+                                      onPress={async () => {
+                                          const res = await Expo.ImagePicker.launchImageLibraryAsync();
+                                          if (res.cancelled)
+                                              return;
+                                          this.setState({...this.state, image: res, display: res.uri, new_image: true});
+                                      }}>
+                        <Text style={{fontSize: 18}}>Select image</Text>
+                    </TouchableOpacity>
                 </View>
-            </Container>
+                <View style={{
+                    flexDirection: 'row', justifyContent: 'space-between'
+                }}>
+                    <Form style={{
+                        marginLeft: 10, marginRight: 30, flexGrow: 3
+                    }}>
+                        <Item>
+                            <Input style={{...textStyle, fontSize: 26}}
+                                   placeholder="Event name" value={this.state.EventTitle}
+                                   onChangeText={(text) => this.setState({EventTitle: text})}/>
+                        </Item>
+                        <Item>
+                            <Icon style={IconStyle} type='SimpleLineIcons' active name='pencil'/>
+                            <Input style={textStyle}
+                                   placeholder="Description" value={this.state.description}
+                                   onChangeText={(text) => this.setState({description: text})}/>
+                        </Item>
+                        <Item>
+                            <Icon style={IconStyle} type='SimpleLineIcons' active name='location-pin'/>
+                            <Input style={textStyle}
+                                   placeholder="Localisation" value={this.state.localisation}
+                                   onChangeText={(text) => this.setState({localisation: text})}/>
+                        </Item>
+
+                        <Item>
+                            <Icon style={{...IconStyle, alignSelf: 'flex-start', marginTop: 10}} type='SimpleLineIcons'
+                                  active
+                                  name='clock'/>
+
+                            <View style={{flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center'}}>
+
+                                <View style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'flex-start',
+                                    alignItems: 'center',
+                                    marginTop: 5
+                                }}>
+                                    <DatePicker
+                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
+                                        style={{
+                                            width: 200, height: 40, justifyContent: 'center',
+                                            alignItems: 'center'
+                                        }}
+                                        placeholder={this.state.dateBeginEvent === '' ? "Beginning" : this.state.dateBeginEvent}
+                                        format="YYYY-MM-DD"
+                                        minDate="2018-01-01"
+                                        maxDate={this.state.dateEndEvent === '' ? "2022-01-01" : this.state.dateEndEvent}
+                                        confirmBtnText="Confirm"
+                                        cancelBtnText="Cancel"
+                                        showIcon={false}
+                                        onDateChange={(date) => {
+                                            this.setState({dateBeginEvent: date})
+                                        }}
+                                    />
+                                    <DatePicker
+                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
+                                        style={{width: 80}}
+                                        date={this.state.beginTime}
+                                        placeholder="End Time"
+                                        mode="time"
+                                        format="HH:mm"
+                                        confirmBtnText="Confirm"
+                                        cancelBtnText="Cancel"
+                                        minuteInterval={1}
+                                        showIcon={false}
+                                        onDateChange={(time) => {
+                                            this.setState({beginTime: time});
+                                        }}
+                                    />
+                                </View>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'flex-start',
+                                    alignItems: 'center',
+                                    marginBottom: 5,
+                                    marginTop: 5
+                                }}>
+                                    <DatePicker
+                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
+                                        style={{
+                                            width: 200, height: 40, justifyContent: 'center',
+                                            alignItems: 'center', borderLeftColor: 'white'
+                                        }}
+                                        placeholder={this.state.dateEndEvent === '' ? "Ending" : this.state.dateEndEvent}
+                                        format="YYYY-MM-DD"
+                                        minDate={this.state.dateBeginEvent === '' ? "2018-01-01" : this.state.dateBeginEvent}
+                                        maxDate="2022-01-01"
+                                        confirmBtnText="Confirm"
+                                        cancelBtnText="Cancel"
+                                        showIcon={false}
+                                        onDateChange={(date) => {
+                                            this.setState({dateEndEvent: date})
+                                        }}
+                                    />
+                                    <DatePicker
+                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
+                                        style={{width: 80}}
+                                        date={this.state.endTime}
+                                        placeholder="End Time"
+                                        mode="time"
+                                        format="HH:mm"
+                                        confirmBtnText="Confirm"
+                                        cancelBtnText="Cancel"
+                                        minuteInterval={1}
+                                        showIcon={false}
+                                        onDateChange={(time) => {
+                                            this.setState({endTime: time});
+                                        }}
+                                    />
+                                </View>
+                            </View>
+                        </Item>
+                        <Item>
+                            <Icon style={IconStyle} type='SimpleLineIcons' active name='flag'/>
+                            <Picker
+                                placeholder="Select a event type"
+                                placeholderStyle={{color: "#9EA0A4"}}
+                                note
+                                selectedValue={this.state.type}
+                                mode="dropdown"
+                                style={{width: 120}}
+                                onValueChange={(value) => {
+                                    this.setState({type: value});
+                                }}>
+                                <Picker.Item label={"Select a event type"} value={-1} key={-1}/>
+                                {
+                                    this.props.calendar.eventsType.map((type, index) => {
+                                        return <Picker.Item label={type} value={index} key={index}/>
+                                    })
+                                }
+                            </Picker>
+                        </Item>
+                        <Item last>
+                            <Icon style={IconStyle} type='SimpleLineIcons' active name='lock'/>
+                            <Picker
+                                placeholder="Select a visibility"
+                                placeholderStyle={{color: "#9EA0A4"}}
+                                note
+                                mode="dropdown"
+                                style={{width: 120}}
+                                selectedValue={this.state.visibility}
+                                onValueChange={(value) => {
+                                    this.setState({visibility: value});
+                                }}>
+                                <Picker.Item label={'public'} value={'public'} key={0}/>
+                                <Picker.Item label={'private'} value={'private'} key={1}/>
+                            </Picker>
+                        </Item>
+                        {(this.props.attendees !== undefined) ?
+                            <ListUsers callAddUser={(userList) => {
+                                this.setState({attendees: userList})
+                            }} loadList={this.props.attendees}/> : null
+                        }
+                        <Button success disabled={this.validator()}
+                                rounded style={{margin: 30, marginTop: 5}}
+                                onPress={() => {
+                                    this.checkAttendees()
+                                }}>
+                            <Text>
+                                Modify event
+                            </Text>
+                        </Button>
+                    </Form>
+                </View>
+            </ScrollView>
         )
     }
 }

@@ -27,7 +27,7 @@ export class _InviteDetailScreen extends React.Component {
                                style={{width: Dimensions.get('window').width, height: 160, borderRadius: 0}}
 
                                source={{uri: 'https://picsum.photos/600/160?image=' + Math.floor((Math.random() * 1000) % 200)}}/>
-                    <Title style={{color: 'black', fontFamily: 'Lato_Bold', fontSize: 26, marginTop:5}}>
+                    <Title style={{color: 'black', fontFamily: 'Lato_Bold', fontSize: 26, marginTop: 5}}>
                         {this.props.navigation.state.params.invite.title}
                     </Title>
                     <View style={{
@@ -38,12 +38,10 @@ export class _InviteDetailScreen extends React.Component {
                     }}>
 
                         <Icon active name='clock-o' type={"FontAwesome"}/>
-                        <Text style={{...textStyle, fontSize: 24, marginLeft: 10}}
-                              placeholder="Description">
+                        <Text style={{...textStyle, fontSize: 24, marginLeft: 10}}>
                             19 April
                         </Text>
-                        <Text style={{...textStyle, fontSize: 16, marginLeft:0, marginTop:10}}
-                              placeholder="Description">
+                        <Text style={{...textStyle, fontSize: 16, marginLeft: 0, marginTop: 10}}>
                             11 - 12 pm
                         </Text>
 
@@ -51,19 +49,24 @@ export class _InviteDetailScreen extends React.Component {
                     </View>
                 </View>
 
-                <Text style={{...textStyle, color: '#3ab7ff', marginBottom: 0, marginTop:0}}
-                      placeholder="Description">
+                <Text style={{...textStyle, color: '#3ab7ff', marginBottom: 0, marginTop: 0}}>
                     Victor invited you
                 </Text>
 
                 <Text
-                    style={{...textStyle, textAlign: 'left', marginTop: 0, marginLeft: 10, marginBottom:0, fontSize: 20, color: 'gray'}}
-                    placeholder="Description">
+                    style={{
+                        ...textStyle,
+                        textAlign: 'left',
+                        marginTop: 0,
+                        marginLeft: 10,
+                        marginBottom: 0,
+                        fontSize: 20,
+                        color: 'gray'
+                    }}>
                     Details :
                 </Text>
                 <ScrollView style={{height: Dimensions.get('window').height / 6}}>
-                <Text style={{ fontSize: 18, textAlign : 'center', marginTop:0 }}
-                          placeholder="Description">
+                    <Text style={{fontSize: 18, textAlign: 'center', marginTop: 0}}>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
                         Labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in
                         non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

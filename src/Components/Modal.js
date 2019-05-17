@@ -5,6 +5,7 @@ import {
     TouchableWithoutFeedback,
     TouchableHighlight,
     TouchableOpacity,
+    ScrollView,
     Modal as ReactModal
 } from 'react-native';
 import {
@@ -16,7 +17,7 @@ import {Button, Icon, Title} from "native-base";
 class Modal extends Component {
     static propTypes = {
         title: PropTypes.string.isRequired,
-        actionButtonTitle: PropTypes.string.isRequired,
+        actionButtonTitle: PropTypes.string,
         validateCallback: PropTypes.func,
         children: PropTypes.node,
         canValidate: PropTypes.bool,
@@ -54,7 +55,8 @@ class Modal extends Component {
                 <TouchableOpacity activeOpacity={1}
                                   style={{
                                       height: Dimensions.get('window').height,
-                                      width: Dimensions.get('window').width
+                                      width: Dimensions.get('window').width,
+                                      zIndex: 1
                                   }}
                                   onPress={() => {
                                       this.toggle();
@@ -65,51 +67,60 @@ class Modal extends Component {
                         borderWidth: 1,
                         borderColor: '#cccccc',
                         margin: 30,
+                        marginBottom: 60,
                         backgroundColor: 'white',
                         borderRadius: 10
                     }}>
-                        <TouchableWithoutFeedback>
-                            <View style={{padding: 30}}>
-                                <View style={{
-                                    borderStyle: 'solid',
-                                    borderBottomWidth: 1,
-                                    borderBottomColor: '#cccccc',
-                                    marginBottom: 20
-                                }}>
-                                    <Title
-                                        style={{
-                                            color: 'black',
-                                            fontFamily: 'Lato_Bold',
-                                            fontSize: 22,
-                                            marginBottom: 30
-                                        }}>
-                                        {title}
-                                    </Title>
-                                </View>
-                                {children}
-                                <View style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                }}>
-                                    <Button success disabled={(canValidate !== undefined && canValidate === false)}
-                                            rounded style={{marginTop: 30}}
-                                            onPress={validateCallback}>
-                                        <Text>
-                                            {actionButtonTitle}
-                                        </Text>
-                                    </Button>
-                                    <Button rounded disabled={(canClose !== undefined && canClose === false)}
-                                            style={{marginTop: 30, backgroundColor: '#7e7e7e'}}
-                                            onPress={() => {
-                                                this.toggle();
+                        <View onStartShouldSetResponder={() => true}>
+                            <ScrollView>
+                                <View style={{margin: 30}}>
+
+                                    <View style={{
+                                        borderStyle: 'solid',
+                                        borderBottomWidth: 1,
+                                        borderBottomColor: '#cccccc',
+                                        marginBottom: 20
+                                    }}>
+                                        <Title
+                                            style={{
+                                                color: 'black',
+                                                fontFamily: 'Lato_Bold',
+                                                fontSize: 22,
+                                                marginBottom: 30
                                             }}>
-                                        <Text>
-                                            Close
-                                        </Text>
-                                    </Button>
+                                            {title}
+                                        </Title>
+                                    </View>
+                                    {children}
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between',
+                                        marginTop: 30
+                                    }}>
+                                        {
+                                            actionButtonTitle &&
+                                            <Button success
+                                                    disabled={(canValidate !== undefined && canValidate === false)}
+                                                    rounded onPress={validateCallback}>
+                                                <Text>
+                                                    {actionButtonTitle}
+                                                </Text>
+                                            </Button>
+                                        }
+
+                                        <Button rounded disabled={(canClose !== undefined && canClose === false)}
+                                                style={{backgroundColor: '#7e7e7e'}}
+                                                onPress={() => {
+                                                    this.toggle();
+                                                }}>
+                                            <Text>
+                                                Close
+                                            </Text>
+                                        </Button>
+                                    </View>
                                 </View>
-                            </View>
-                        </TouchableWithoutFeedback>
+                            </ScrollView>
+                        </View>
                     </View>
                 </TouchableOpacity>
             </ReactModal>

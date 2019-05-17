@@ -9,7 +9,7 @@ import {
     ModifyEventSuccess,
     ModifyEventFail, DeleteEventFail, DeleteEventSuccess, GetBestSlotsFail, GetBestSlotsSuccess
 } from "../Calendar/calendar.actions";
-import {takeEvery, put} from "redux-saga/effects";
+import {takeEvery, put, select} from "redux-saga/effects";
 import {Network} from "../../Network/Requests";
 import {
     CreateNewEventFail, GetCalendarsFail,
@@ -158,7 +158,10 @@ function* CreatNewEvent(action) {
 
 function* GetCalendars(action) {
     try {
-        const resp = yield Network.Get('/users/' + action.pseudo.pseudo + '/calendars');
+        const pseudo = yield select((state) => {
+            return state.login.pseudo
+        });
+        const resp = yield Network.Get(`/users/${pseudo}/calendars`);
         if (resp.status !== 200)
             throw resp.data;
         const calendars = resp.data.calendars.map(c => {
@@ -194,13 +197,13 @@ function* ReloadEvents(action) {
 
 function* LoadCalendar(action) {
     try {
-        let calendars = yield CalendarService.GetCalendarsForUser(action.pseudo);
-        calendars = calendars.map(c => {
-            return {...c.calendar, show: true}
+        yield GetCalendars();
+        let calendars = yield select((state) => {
+            return state.calendar.calendars
         });
         let events_array = yield CalendarService.GetEventsForCalendars(calendars);
+
         events_array = yield CalendarService.GetEventsInfo(events_array);
-        yield put(GetCalendarsSuccess(calendars));
         let events = arrayToObject(events_array, 'id');
         yield put(GetEventsSuccess(events));
         yield put(LoadCalendarSuccess());

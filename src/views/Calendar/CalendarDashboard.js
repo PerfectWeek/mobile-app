@@ -92,12 +92,11 @@ export class _CalendarDashboard extends Component {
                         margin: 15,
                         flex: 1,
                         flexDirection: 'row',
-                        justifyContent: 'space-between',
                         alignItems: 'center'
                     }}>
                         {item.image === undefined || item.image === null ? null :
                             <Animatable.View animation="fadeIn">
-                                <Thumbnail source={{uri: item.image}}/>
+                                <Thumbnail style={{marginRight: 10}} source={{uri: item.image}}/>
                             </Animatable.View>
                         }
 
@@ -107,14 +106,10 @@ export class _CalendarDashboard extends Component {
                                 fontSize: 14,
                                 fontFamily: 'Lato_Medium'
                             }}>
-                                {start_string} - {end_string}
+                                {start_string} - {end_string} ·<Text
+                                style={{color: '#e94b61'}}> {item.calendar_name}</Text>
                             </Text>
                         </View>
-                        <Text style={{
-                            alignSelf: 'flex-start',
-                            fontSize: 18,
-                            fontFamily: 'Lato_Medium'
-                        }}>{item.calendar_name}</Text>
                     </View>
 
                 </TouchableHighlight>
@@ -145,7 +140,7 @@ export class _CalendarDashboard extends Component {
     }
 
     refreshCalendar() {
-        this.props.ReloadEvents(this.props.calendar.calendars);
+        this.props.LoadCalendar(this.props.login.pseudo);
     }
 
     render() {
@@ -245,19 +240,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const mapStateToProps = (state, ownProps) => {
     let events = [];
-    let idCalendar = -1;
-    // console.log('tim', state)
-    if (state.calendar.events) {
-        // console.log(state.calendar.events)
-        events = Object.values(state.calendar.events).map(e => {
-            return {...e, calendar_name: state.calendar.calendars.find(c => c.id === e.calendar_id).name}
+    if (state.calendar.events && state.calendar.calendars.length > 0) {
+        const filtered_events = Object.values(state.calendar.events).filter(e => {
+            return e.status === 'going'
         });
-        if (Object.values(state.calendar.events).length !== 0)
-            idCalendar = Object.values(state.calendar.events)[0].calendar_id
-        // console.log(events.length)
+        events = filtered_events.map(e => {
+            const calendar = state.calendar.calendars.find(c => c.id === e.calendar_id);
+            return {...e, calendar_name: calendar !== undefined ? calendar.name : ''}
+        });
     }
-    if (state.calendar.calendars)
-        idCalendar = state.calendar.calendars[0].id
     let items = {};
     for (let i = -150; i < 185; i++) {
         const time = new Date().getTime() + i * 24 * 60 * 60 * 1000;
@@ -322,20 +313,17 @@ const mapStateToProps = (state, ownProps) => {
                 color: color,
                 image: event.image
             });
-            // console.log(items)
             items[isoDate] = items[isoDate].sort((a, b) => {
                 return a.start_time > b.start_time;
             });
             strTimeStart.setDate(strTimeStart.getDate() + 1);
         }
     }
-    // console.log(idCalendar)
     return {
         ...ownProps,
         calendar: state.calendar,
         login: state.login,
-        items,
-        selectedCalendar: idCalendar
+        items
     }
 };
 

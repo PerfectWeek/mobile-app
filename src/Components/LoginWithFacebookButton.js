@@ -23,13 +23,8 @@ class _LoginWithFacebookButton extends Component {
     }
 
     async loginFacebook() {
-        let clientId = '';
-        if (Constants.isDevice)
-            clientId = '1085104211662288'; // PROD
-        else
-            clientId = '850667108631602'; // DEV
         try {
-            const res = await Facebook.logInWithReadPermissionsAsync(clientId, {
+            const res = await Facebook.logInWithReadPermissionsAsync('850667108631602', {
                 permissions: ['public_profile', 'email'],
             });
             if (res.type === 'success') {

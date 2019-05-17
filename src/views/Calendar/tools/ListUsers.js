@@ -3,7 +3,11 @@ import React from 'react';
 import {Form, Icon, Input, Item, Container, Button, Text, Picker} from "native-base";
 import {validateNotEmpty} from "../../../Utils/utils";
 import connect from "react-redux/es/connect/connect";
-import {AskCompletion, AskCompletionNone, AutoCompletionType} from "../../../redux/AutoCompletion/autocompletion.actions";
+import {
+    AskCompletion,
+    AskCompletionNone,
+    AutoCompletionType
+} from "../../../redux/AutoCompletion/autocompletion.actions";
 
 
 export class _ListUsers extends React.Component {
@@ -37,14 +41,13 @@ export class _ListUsers extends React.Component {
         const slp = item.split('-');
         const idx = parseInt(slp[1]);
         this.state.usersToAdd[idx].role = slp[0];
-        (this.props.formatAdd === undefined) ? this.props.callAddUser([...this.state.usersToAdd, item]) : this.props.callAddUser([...this.state.usersToAdd, this.props.formatAdd(item)])
+        (this.props.formatAdd === undefined) ? this.props.callAddUser([...this.state.usersToAdd]) : this.props.callAddUser([...this.state.usersToAdd])
         this.forceUpdate();
     }
 
     checkLengthString(string) {
         const nbMax = 15;
-        if (string.length > nbMax)
-        {
+        if (string.length > nbMax) {
             let tmp = string.slice(0, nbMax);
             tmp = tmp + '...';
             return tmp
@@ -56,58 +59,61 @@ export class _ListUsers extends React.Component {
     render() {
         console.log('list', this.state.usersToAdd);
         return (
-                <View>
-                    <View style={{
-                        flexDirection: 'row', justifyContent: 'space-between',
-                        margin: 20
-                    }}>
-                        <Form style={{
-                            // marginLeft: 10, marginRight: 30, flexGrow: 3
-                        }}>
-                            <Item style={{marginTop: 0, width: (this.props.newWidth === undefined) ? 300 : this.props.newWidth}}>
-                                <Icon active name='person'/>
-                                <Input placeholder="Add users by pseudo" value={this.state.query}
-                                       onChangeText={(text) => this.findPseudos(text)} clearButtonMode="always"/>
-                            </Item>
-                        </Form>
-                    </View>
+            <View>
+                <View style={{
+                    flexDirection: 'row', justifyContent: 'space-between'
+                }}>
                     <Form style={{
-                        marginLeft: 20, flexGrow: 3
+                        // marginLeft: 10, marginRight: 30, flexGrow: 3
                     }}>
-                        {this.state.listPseudo.map((item, idx) =>
-                            <Item key={idx} style={{width: (this.props.newWidth === undefined) ? 300 : this.props.newWidth}}>
-                                <TouchableOpacity onPress={()=>{this.setState({
+                        <Item style={{
+                            marginTop: 0,
+                            width: (this.props.newWidth === undefined) ? 300 : this.props.newWidth
+                        }}>
+                            <Icon active name='person'/>
+                            <Input placeholder="Add users by pseudo" value={this.state.query}
+                                   autoCapitalize = 'none'
+                                   onChangeText={(text) => this.findPseudos(text)} clearButtonMode="always"/>
+                        </Item>
+                    </Form>
+                </View>
+                <Form style={{flexGrow: 3}}>
+                    {this.state.listPseudo.map((item, idx) =>
+                        <Item key={idx}
+                              style={{width: (this.props.newWidth === undefined) ? 300 : this.props.newWidth}}>
+                            <TouchableOpacity onPress={() => {
+                                this.setState({
                                     usersToAdd: [...this.state.usersToAdd, (this.props.formatAdd === undefined) ? item : this.props.formatAdd(item)],
                                     query: '',
                                     listPseudo: []
                                 });
-                                    (this.props.formatAdd === undefined) ? this.props.callAddUser([...this.state.usersToAdd, item]) : this.props.callAddUser([...this.state.usersToAdd, this.props.formatAdd(item)])
-                                }}
-                                                  style={styles.touch}
-                                >
+                                (this.props.formatAdd === undefined) ? this.props.callAddUser([...this.state.usersToAdd, item]) : this.props.callAddUser([...this.state.usersToAdd, this.props.formatAdd(item)])
+                            }}
+                                              style={styles.touch}
+                            >
                                 <Text style={styles.itemText}>
                                     {item}
                                 </Text>
                             </TouchableOpacity>
-                            </Item>
-                        )}
-                    </Form>
-                    { this.props.displaySelection === undefined || this.props.displaySelection === true ?
-                        <View style={{margin: 30, flexDirection: 'row', flexWrap: 'wrap'}}>
-                            {
-                                this.state.usersToAdd.map((user, index) => {
-                                    return (
-                                        <Button rounded key={index} small style={{margin: 5, backgroundColor: 'grey'}}
-                                                onPress={() => {
-                                                    this.state.usersToAdd.splice(index, 1);
-                                                    this.setState({
-                                                        usersToAdd: this.state.usersToAdd,
-                                                        listPseudo: []
-                                                    });
-                                                }}>
-                                            <Text>{user}</Text>
-                                            <Icon type='FontAwesome' name='remove'/>
-                                        </Button>
+                        </Item>
+                    )}
+                </Form>
+                {this.props.displaySelection === undefined || this.props.displaySelection === true ?
+                    <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                        {
+                            this.state.usersToAdd.map((user, index) => {
+                                return (
+                                    <Button rounded key={index} small style={{margin: 5, backgroundColor: 'grey'}}
+                                            onPress={() => {
+                                                this.state.usersToAdd.splice(index, 1);
+                                                this.setState({
+                                                    usersToAdd: this.state.usersToAdd,
+                                                    listPseudo: []
+                                                });
+                                            }}>
+                                        <Text>{user}</Text>
+                                        <Icon type='FontAwesome' name='remove'/>
+                                    </Button>
                                     );
                                 })
                             }
@@ -172,7 +178,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const styles = StyleSheet.create({
     itemText: {
-        fontSize: 15,
+        fontSize: 18,
         margin: 2,
         color: 'black',
         textAlign: 'center'
