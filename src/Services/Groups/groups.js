@@ -78,7 +78,7 @@ export class GroupService {
     static async RemoveGroupMember(groupId, member_pseudo) {
         const resp = await Network.Delete('/groups/' + groupId + '/members/' + member_pseudo);
         if (resp.status === 200)
-            return resp.data.members;
+            return resp.data.group.members;
         else {
             let err;
             if (resp.data !== undefined && resp.data.message !== undefined)

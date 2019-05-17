@@ -98,16 +98,15 @@ export class _GroupDetailScreen extends React.Component {
                     <Loader/>
                 </Container>
             );
-        // console.log('gourp',group.members)
-        let isAdmin = false
-        for (let i = 0; i < group.members.length; i++) {
-            if (this.props.login.pseudo === group.members[i].pseudo && group.members[i].role === 'admin') {
-                isAdmin = true
-            }
-        }
+        let isAdmin = group.members[this.props.login.pseudo].role === 'admin';
         // console.log('img', this.props.users);
         return (
-            <ScrollView style={{paddingLeft: 10, paddingRight: 10, height: Dimensions.get('window').height, backgroundColor: ScreenBackgroundColor}}>
+            <ScrollView style={{
+                paddingLeft: 10,
+                paddingRight: 10,
+                height: Dimensions.get('window').height,
+                backgroundColor: ScreenBackgroundColor
+            }}>
                 <GroupDetailScreenGroupName group={group} onRef={ref => (this.groupName = ref)}/>
                 <GroupDetailScreenImagePicker group={group} onRef={ref => (this.groupImage = ref)}/>
                 <Title style={{
@@ -151,16 +150,17 @@ export class _GroupDetailScreen extends React.Component {
                         </ListItem>
                         {Object.values(group.members).map((member, index) => {
                             if (this.props.users[member.pseudo] === undefined)
-                                return (null)
+                                return (null);
                             return (
                                 <ListItem key={index} avatar>
                                     <Left>
-                                        <Thumbnail source={{uri: this.props.users[member.pseudo] === undefined ? null : this.props.users[member.pseudo].image}}/>
+                                        <Thumbnail
+                                            source={{uri: this.props.users[member.pseudo] === undefined ? null : this.props.users[member.pseudo].image}}/>
                                     </Left>
                                     <Body>
                                     <Text>{member.pseudo}</Text>
-                                    {/*<Text style={{color: '#ef3434'}}*/}
-                                    {/*note>{member.role === 'Admin' ? 'Administrator' : null}</Text>*/}
+                                    <Text style={{color: 'gray'}}
+                                          note>{member.role}</Text>
                                     </Body>
                                     <Right>
                                         <Icon style={{marginTop: 10, fontSize: 28}} type='SimpleLineIcons'
@@ -168,16 +168,15 @@ export class _GroupDetailScreen extends React.Component {
                                             const BUTTONS = [];
                                             const ButtonsCallback = [];
                                             if (isAdmin) {
-                                                // BUTTONS.push((member.role === 'Admin' ? "Remove as admin" : "Make admin"));
+                                                BUTTONS.push((member.role === 'admin' ? "Remove as admin" : "Make admin"));
                                                 BUTTONS.push(this.props.login.pseudo === member.pseudo ? "Quit group" : "Remove from group");
-                                                // ButtonsCallback.push(() => {
-                                                //     this.ChangeRoleClicked(group.id, member);
-                                                // });
+                                                ButtonsCallback.push(() => {
+                                                    this.ChangeRoleClicked(group.id, member);
+                                                });
                                                 ButtonsCallback.push(() => {
                                                     this.props.RemoveGroupMember(group.id, member, this.props.login.pseudo);
                                                 });
-                                            }
-                                            else if (this.props.login.pseudo === member.pseudo) {
+                                            } else if (this.props.login.pseudo === member.pseudo) {
                                                 BUTTONS.push("Quit group");
                                                 ButtonsCallback.push(() => {
                                                     this.props.RemoveGroupMember(group.id, member, this.props.login.pseudo);
@@ -231,7 +230,7 @@ const mapStateToProps = (state, ownProps) => {
         ...ownProps,
         groups: state.group,
         login: state.login,
-        users : state.user.users
+        users: state.user.users
     }
 };
 

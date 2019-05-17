@@ -184,7 +184,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const styles = StyleSheet.create({
     itemText: {
-        fontSize: 15,
+        fontSize: 18,
         margin: 2,
         color: 'black',
         textAlign: 'center'

@@ -30,7 +30,7 @@ class _PreferencesForBestSlots extends Component {
     };
 
     validator() {
-        console.log(this.state)
+        // console.log(this.state)
         return (this.state.EventTitle === '' || this.state.description === ''
             || this.state.localisation === ''
             || this.state.dateBeginEvent === '' || this.state.timeEvent === '' || this.state.timeEvent === '0'
