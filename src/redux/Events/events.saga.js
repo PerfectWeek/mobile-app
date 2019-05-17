@@ -35,7 +35,7 @@ function* GetEventRecommendation({min_time, max_time, limit}) {
 
         }
         const mainCalendar = calendars.find(c => {
-            return c.name === 'Main calendar'
+            return c.name === 'Main calendar' || c.name === 'Main Calendar'
         });
         let events = yield CalendarService.GetEventsSuggestion(mainCalendar.id, min_time, max_time, limit);
         events = yield CalendarService.GetEventsImage(events);

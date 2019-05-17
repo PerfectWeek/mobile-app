@@ -30,7 +30,7 @@ export const CalendarActionType = {
     LoadCalendarSuccess: "LOAD_CALENDAR_SUCCESS",
     LoadCalendarFail: "LOAD_CALENDAR_FAIL",
     SetEvent: 'SET_EVENT_CALENDAR',
-
+    ChangeCalendarEventStatus: 'CHANGE_CALENDAR_EVENT_STATUS',
     GetBestSlots: "GET_BEST_SLOTS",
     GetBestSlotsSuccess: "GET_BEST_SLOTS_SUCCESS",
     GetBestSlotsFail: "GET_BEST_SLOTS_FAIL",
@@ -265,5 +265,13 @@ export const SetEvent = (event) => {
     return {
         type: CalendarActionType.SetEvent,
         event
+    }
+};
+
+export const ChangeCalendarEventStatus = (event, status) => {
+    return {
+        type: CalendarActionType.ChangeCalendarEventStatus,
+        event,
+        status
     }
 };

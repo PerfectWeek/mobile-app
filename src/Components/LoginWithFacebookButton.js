@@ -24,7 +24,9 @@ class _LoginWithFacebookButton extends Component {
 
     async loginFacebook() {
         try {
-            const res = await Facebook.logInWithReadPermissionsAsync('850667108631602', {
+            // '850667108631602'
+            // '826928231016562'
+            const res = await Facebook.logInWithReadPermissionsAsync('826928231016562', {
                 permissions: ['public_profile', 'email'],
             });
             if (res.type === 'success') {

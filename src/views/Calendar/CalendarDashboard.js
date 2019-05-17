@@ -103,7 +103,7 @@ export class _CalendarDashboard extends Component {
                         <View>
                             <Text style={{fontSize: 18, fontFamily: 'Lato_Bold'}}>{item.name}</Text>
                             <Text style={{
-                                fontSize: 14,
+                                fontSize: 12,
                                 fontFamily: 'Lato_Medium'
                             }}>
                                 {start_string} - {end_string} ·<Text
@@ -320,7 +320,7 @@ const mapStateToProps = (state, ownProps) => {
         }
     }
     const mainCalendar = state.calendar.calendars.find(c => {
-        return c.name === 'Main calendar'
+        return c.name === 'Main calendar' || c.name === 'Main Calendar'
     });
     let mainCalendarId = -1;
     if (mainCalendar !== undefined)

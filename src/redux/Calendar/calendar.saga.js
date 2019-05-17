@@ -7,7 +7,12 @@ import {
     GetEventInfoSuccess,
     GetEventInfoFail,
     ModifyEventSuccess,
-    ModifyEventFail, DeleteEventFail, DeleteEventSuccess, GetBestSlotsFail, GetBestSlotsSuccess
+    ModifyEventFail,
+    DeleteEventFail,
+    DeleteEventSuccess,
+    GetBestSlotsFail,
+    GetBestSlotsSuccess,
+    SetEvent as SetCalendarEvent
 } from "../Calendar/calendar.actions";
 import {takeEvery, put, select} from "redux-saga/effects";
 import {Network} from "../../Network/Requests";
@@ -20,6 +25,7 @@ import {
 import {ShowErrorNotification, ShowSuccessNotification} from "../../Utils/NotificationsModals";
 import {arrayToObject} from "../../Utils/utils";
 import {CalendarService} from "../../Services/Calendar/calendar";
+import {GetEventRecommendation, SetEvent} from "../Events/events.actions";
 
 
 function* GetTheEventInfo(action) {
@@ -254,6 +260,19 @@ function* GetBestSlots(action) {
     }
 }
 
+function* ChangeCalendarEventStatus({event, status}) {
+    try {
+        // yield put(SetLoading(true));
+        yield CalendarService.ChangeEventStatus(event.id, status);
+        // yield put(LoadCalendar());
+        yield put(GetEventRecommendation("2019-05-10T12:12:12", "2019-06-10T12:12:12", 10));
+        yield LoadCalendar();
+        // yield put(SetLoading(false));
+    } catch (err) {
+        yield ShowErrorNotification(err);
+    }
+}
+
 export function* CalendarSaga() {
     yield takeEvery(CalendarActionType.ReloadEvents, ReloadEvents);
     yield takeEvery(CalendarActionType.GetBestSlots, GetBestSlots);
@@ -263,4 +282,5 @@ export function* CalendarSaga() {
     yield takeEvery(CalendarActionType.GetEventInfo, GetTheEventInfo);
     yield takeEvery(CalendarActionType.CreateNewEvent, CreatNewEvent);
     yield takeEvery(CalendarActionType.DeleteEvent, DeleteEvent);
+    yield takeEvery(CalendarActionType.ChangeCalendarEventStatus, ChangeCalendarEventStatus);
 }

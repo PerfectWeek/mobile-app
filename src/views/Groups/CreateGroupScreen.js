@@ -62,7 +62,7 @@ export class _CreateGroupScreen extends React.Component {
                         </Item>
                     </Form>
                 </View>
-                <View style={{marginRight: 30}}>
+                <View style={{margin: 15}}>
                 <ListUsers callAddUser={(userList) => {
                     this.setState({usersToAdd: userList})
                 }}

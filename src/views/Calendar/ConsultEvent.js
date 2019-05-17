@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, View, StyleSheet, ScrollView} from 'react-native';
+import {Dimensions, View, StyleSheet, ScrollView, Alert} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 import {Button, Form, Icon, Input, Item, Text, Title, Container, Thumbnail} from "native-base";
 import RNPickerSelect from 'react-native-picker-select';
@@ -9,6 +9,7 @@ import {CalendarActionType, RefreshCalendar, GetEventInfo, ModifyTheEvent} from 
 import DatePicker from "react-native-datepicker";
 import Loader from "../../Components/Loader";
 import {IconColor} from "../../../Style/Constant";
+import {ChangeCalendarEventStatus} from "../../redux/Calendar/calendar.actions";
 
 export class _ConsultEvent extends React.Component {
     static navigationOptions = {
@@ -65,11 +66,11 @@ export class _ConsultEvent extends React.Component {
                 </View>
 
                 <Form style={{
-                    marginLeft: 10, marginRight: 10, marginTop: 20, flexGrow: 3
+                    flexGrow: 3
                 }}>
                     <Item>
                         <Icon style={IconStyle} type='SimpleLineIcons' active name='pencil'/>
-                        <Text style={textStyle}>
+                        <Text style={{...textStyle, marginRight: 40}}>
                             {this.state.description}
                         </Text>
                     </Item>
@@ -82,7 +83,8 @@ export class _ConsultEvent extends React.Component {
                     </Item>
 
                     <Item>
-                        <Icon style={{...IconStyle, alignSelf: 'flex-start', marginTop: 10}} type='SimpleLineIcons' active
+                        <Icon style={{...IconStyle, alignSelf: 'flex-start', marginTop: 10}} type='SimpleLineIcons'
+                              active
                               name='clock'/>
 
                         <View style={{
@@ -204,6 +206,20 @@ export class _ConsultEvent extends React.Component {
                             {this.state.visibility}
                         </Text>
                     </Item>
+                    <Button style={{backgroundColor: '#e94b61', margin: 10}} full onPress={() => {
+
+                        Alert.alert('Leave event?', '', [{
+                            text: 'Yes', onPress: () => {
+                                this.props.navigation.navigate('Master');
+                                this.props.ChangeCalendarEventStatus({id: this.state.id}, 'no')
+                            }
+                        }, {
+                            text: 'Cancel', onPress: () => {
+                            }, style: 'cancel'
+                        }], {cancelable: false})
+
+
+                    }}><Text>Leave Event</Text></Button>
                 </Form>
             </ScrollView>
         )
@@ -214,6 +230,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
         GetEventInfo: (event) => dispatch(GetEventInfo(event)),
+        ChangeCalendarEventStatus: (event, status) => dispatch(ChangeCalendarEventStatus(event, status)),
     }
 };
 
