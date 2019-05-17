@@ -137,6 +137,7 @@ function* EditGroupInfo(action) {
 }
 
 function* CreateGroup(action) {
+    // console.log('action', action)
     const resp = yield Network.Post('/groups', {
         name: action.group.name,
         members: action.group.members,

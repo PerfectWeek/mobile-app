@@ -37,6 +37,7 @@ export class _ListUsers extends React.Component {
         const slp = item.split('-');
         const idx = parseInt(slp[1]);
         this.state.usersToAdd[idx].role = slp[0];
+        (this.props.formatAdd === undefined) ? this.props.callAddUser([...this.state.usersToAdd, item]) : this.props.callAddUser([...this.state.usersToAdd, this.props.formatAdd(item)])
         this.forceUpdate();
     }
 
@@ -53,6 +54,7 @@ export class _ListUsers extends React.Component {
 
 
     render() {
+        console.log('list', this.state.usersToAdd);
         return (
                 <View>
                     <View style={{
@@ -130,7 +132,6 @@ export class _ListUsers extends React.Component {
                                                 <Picker.Item label="Outsider" value={"outsider-"+index} />
                                             </Picker>
                                             </Item>
-
                                             <Button rounded key={index} small style={{backgroundColor: 'grey'}}
                                                     onPress={() => {
                                                         this.state.usersToAdd.splice(index, 1);
