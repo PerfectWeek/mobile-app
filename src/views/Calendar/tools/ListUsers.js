@@ -57,9 +57,9 @@ export class _ListUsers extends React.Component {
 
 
     render() {
-        // console.log('list', this.state.usersToAdd);
         return (
             <View>
+                {this.props.editMode === undefined || this.props.editMode === true ?
                 <View style={{
                     flexDirection: 'row', justifyContent: 'space-between'
                 }}>
@@ -77,6 +77,11 @@ export class _ListUsers extends React.Component {
                         </Item>
                     </Form>
                 </View>
+                    :
+                    <Text style={styles.itemText}>
+                        Attendees
+                    </Text>
+                }
                 <Form style={{flexGrow: 3}}>
                     {this.state.listPseudo.map((item, idx) =>
                         <Item key={idx}
@@ -105,14 +110,17 @@ export class _ListUsers extends React.Component {
                                 return (
                                     <Button rounded key={index} small style={{margin: 5, backgroundColor: 'grey'}}
                                             onPress={() => {
-                                                this.state.usersToAdd.splice(index, 1);
-                                                this.setState({
-                                                    usersToAdd: this.state.usersToAdd,
-                                                    listPseudo: []
-                                                });
+                                                if (this.props.editMode === undefined || this.props.editMode === true) {
+                                                    this.state.usersToAdd.splice(index, 1);
+                                                    this.setState({
+                                                        usersToAdd: this.state.usersToAdd,
+                                                        listPseudo: []
+                                                    });
+                                                }
                                             }}>
                                         <Text>{user}</Text>
-                                        <Icon type='FontAwesome' name='remove'/>
+                                        {this.props.editMode === undefined || this.props.editMode === true ?
+                                            <Icon type='FontAwesome' name='remove'/> : null}
                                     </Button>
                                 );
                             })

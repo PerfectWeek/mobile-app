@@ -10,6 +10,7 @@ import DatePicker from "react-native-datepicker";
 import Loader from "../../Components/Loader";
 import {IconColor} from "../../../Style/Constant";
 import {ChangeCalendarEventStatus} from "../../redux/Calendar/calendar.actions";
+import {ListUsers} from "./tools/ListUsers";
 
 export class _ConsultEvent extends React.Component {
     static navigationOptions = {
@@ -19,7 +20,11 @@ export class _ConsultEvent extends React.Component {
 
     constructor(props) {
         super(props);
+        console.log('OOKKKKK')
         const event = this.props.calendar.events[this.props.navigation.state.params.eventId];
+
+        this.props.GetEventInfo(this.props.navigation.state.params.eventId);
+        console.log('envent', event)
         this.state = this.fillInfoEvent(event);
     }
 
@@ -206,6 +211,9 @@ export class _ConsultEvent extends React.Component {
                             {this.state.visibility}
                         </Text>
                     </Item>
+                    {(this.props.attendees !== undefined) ?
+                        <ListUsers callAddUser={()=>{}} loadList={this.props.attendees} editMode={false}/> : null
+                    }
                     <Button style={{backgroundColor: '#e94b61', margin: 10}} full onPress={() => {
 
                         Alert.alert('Leave event ?', '', [{
@@ -235,11 +243,25 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    return {
-        ...ownProps,
-        calendar: state.calendar,
-        // login: state.login
+    // return {
+    //     ...ownProps,
+    //     calendar: state.calendar,
+    //     // attendees: state.calendar.event.attendees
+    //     // login: state.login
+    // }
+    if (state.calendar.event !== undefined && state.calendar.event.attendees !== undefined) {
+        console.log('state.calendar.event.attendees', state.calendar.event.attendees)
+        return {
+            ...ownProps,
+            calendar: state.calendar,
+            attendees: state.calendar.event.attendees
+        };
     }
+    else
+        return {
+            ...ownProps,
+            calendar: state.calendar,
+        }
 };
 
 const pickerSelectStyles = StyleSheet.create({
