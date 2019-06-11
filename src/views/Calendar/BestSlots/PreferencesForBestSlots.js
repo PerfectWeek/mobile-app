@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View} from 'react-native';
-import {Container, Text, Button, Icon, Input, Item, Picker, Form, CheckBox} from "native-base";
+import {Container, Text, Button, Icon, Input, Item, Picker, Form, Toast} from "native-base";
 import DatePicker from "react-native-datepicker";
 import moment from "moment";
 import {IconColor} from "../../../../Style/Constant";
@@ -39,6 +39,23 @@ class _PreferencesForBestSlots extends Component {
             || this.state.dateBeginEvent === this.state.dateEndEvent && moment(this.state.endTime, "HH:mm") < moment(this.state.beginTime, "HH:mm")
             || this.state.type === ''
         )
+    }
+
+    checkDateInPast(date) {
+        const d1 = new Date(date);
+        const d2 = new Date();
+        d2.setHours(0);
+        d2.setMinutes(0);
+        if (d1.getTime() < d2.getTime()) {
+            Toast.show({
+                text: 'You can\'t create events in the past',
+                type: "danger",
+                buttonText: "Okay",
+                duration: 2000
+            });
+            return false;
+        }
+        return true;
     }
 
     render() {
@@ -95,7 +112,8 @@ class _PreferencesForBestSlots extends Component {
                             cancelBtnText="Cancel"
                             showIcon={false}
                             onDateChange={(date) => {
-                                this.setState({dateBeginEvent: date})
+                                if (this.checkDateInPast(date))
+                                    this.setState({dateBeginEvent: date})
                             }}
                         />
                         <DatePicker
@@ -133,7 +151,8 @@ class _PreferencesForBestSlots extends Component {
                             cancelBtnText="Cancel"
                             showIcon={false}
                             onDateChange={(date) => {
-                                this.setState({dateEndEvent: date})
+                                if (this.checkDateInPast(date))
+                                    this.setState({dateEndEvent: date})
                             }}
                         />
                         <DatePicker

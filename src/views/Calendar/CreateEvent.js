@@ -2,7 +2,7 @@ import React from 'react';
 import {Dimensions, View, StyleSheet, ScrollView, Platform} from 'react-native';
 
 import connect from "react-redux/es/connect/connect";
-import {Button, Form, Icon, Input, Picker, Item, Text, CheckBox, Container} from "native-base";
+import {Button, Form, Icon, Input, Picker, Item, Text, CheckBox, Container, Toast} from "native-base";
 
 
 import {CalendarActionType, CreateNewEvent, RefreshCalendar} from "../../redux/Calendar/calendar.actions";
@@ -54,6 +54,23 @@ export class _CreateEvent extends React.Component {
             this.props.navigation.goBack();
             this.props.RefreshCalendar();
         }
+    }
+
+    checkDateInPast(date) {
+        const d1 = new Date(date);
+        const d2 = new Date();
+        d2.setHours(0);
+        d2.setMinutes(0);
+        if (d1.getTime() < d2.getTime()) {
+            Toast.show({
+                text: 'You can\'t create events in the past',
+                type: "danger",
+                buttonText: "Okay",
+                duration: 2000
+            });
+            return false;
+        }
+        return true;
     }
 
     render() {
@@ -139,7 +156,8 @@ export class _CreateEvent extends React.Component {
                                         cancelBtnText="Cancel"
                                         showIcon={false}
                                         onDateChange={(date) => {
-                                            this.setState({dateBeginEvent: date})
+                                            if (this.checkDateInPast(date))
+                                                this.setState({dateBeginEvent: date})
                                         }}
                                     />
                                     <DatePicker
@@ -187,7 +205,8 @@ export class _CreateEvent extends React.Component {
                                         cancelBtnText="Cancel"
                                         showIcon={false}
                                         onDateChange={(date) => {
-                                            this.setState({dateEndEvent: date})
+                                            if (this.checkDateInPast(date))
+                                                this.setState({dateEndEvent: date})
                                         }}
                                     />
                                     <DatePicker

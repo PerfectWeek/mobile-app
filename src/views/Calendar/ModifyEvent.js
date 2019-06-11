@@ -1,7 +1,7 @@
 import React from 'react';
 import {Dimensions, View, StyleSheet, TouchableOpacity, ScrollView, Platform, KeyboardAvoidingView} from 'react-native';
 import connect from "react-redux/es/connect/connect";
-import {Button, Form, Icon, Input, Item, Text, Title, Container, Thumbnail, Picker} from "native-base";
+import {Button, Form, Icon, Input, Item, Text, Title, Container, Thumbnail, Picker, Toast} from "native-base";
 import RNPickerSelect from 'react-native-picker-select';
 
 
@@ -122,6 +122,23 @@ export class _ModifyEvent extends React.Component {
         })
     }
 
+    checkDateInPast(date) {
+        const d1 = new Date(date);
+        const d2 = new Date();
+        d2.setHours(0);
+        d2.setMinutes(0);
+        if (d1.getTime() < d2.getTime()) {
+            Toast.show({
+                text: 'You can\'t move events in the past',
+                type: "danger",
+                buttonText: "Okay",
+                duration: 2000
+            });
+            return false;
+        }
+        return true;
+    }
+
     render() {
         if (this.props.calendar && (this.props.calendar.status === CalendarActionType.ModifyEvent
             || this.props.calendar.status === CalendarActionType.GetEventInfo))
@@ -201,7 +218,8 @@ export class _ModifyEvent extends React.Component {
                                         cancelBtnText="Cancel"
                                         showIcon={false}
                                         onDateChange={(date) => {
-                                            this.setState({dateBeginEvent: date})
+                                            if (this.checkDateInPast(date))
+                                                this.setState({dateBeginEvent: date})
                                         }}
                                     />
                                     <DatePicker
@@ -241,7 +259,8 @@ export class _ModifyEvent extends React.Component {
                                         cancelBtnText="Cancel"
                                         showIcon={false}
                                         onDateChange={(date) => {
-                                            this.setState({dateEndEvent: date})
+                                            if (this.checkDateInPast(date))
+                                                this.setState({dateEndEvent: date})
                                         }}
                                     />
                                     <DatePicker
