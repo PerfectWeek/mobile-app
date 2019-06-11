@@ -20,11 +20,11 @@ export class _ConsultEvent extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log('OOKKKKK')
+        // console.log('OOKKKKK')
         const event = this.props.calendar.events[this.props.navigation.state.params.eventId];
 
         this.props.GetEventInfo(this.props.navigation.state.params.eventId);
-        console.log('envent', event)
+        // console.log('envent', event)
         this.state = this.fillInfoEvent(event);
     }
 
@@ -250,7 +250,7 @@ const mapStateToProps = (state, ownProps) => {
     //     // login: state.login
     // }
     if (state.calendar.event !== undefined && state.calendar.event.attendees !== undefined) {
-        console.log('state.calendar.event.attendees', state.calendar.event.attendees)
+        // console.log('state.calendar.event.attendees', state.calendar.event.attendees)
         return {
             ...ownProps,
             calendar: state.calendar,

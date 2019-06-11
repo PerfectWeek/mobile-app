@@ -60,7 +60,7 @@ export class _CalendarDashboard extends Component {
                 color: 'white',
                 backgroundColor: 'green',
                 onPress: () => {
-                    this.props.navigation.navigate('ModifyEvent', {eventId: item.id});
+                    this.props.navigation.navigate('ModifyEvent', {eventId: item.id, calendarId: this.props.selectedCalendar});
                 }
             },
             {

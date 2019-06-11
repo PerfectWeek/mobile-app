@@ -23,7 +23,7 @@ class _AddAddFriends extends Component {
     }
 
     render() {
-        console.log(this.state.usersToAdd);
+        // console.log(this.state.usersToAdd);
         return (
             <Modal
                 canValidate={(this.state.usersToAdd.length > 0)}

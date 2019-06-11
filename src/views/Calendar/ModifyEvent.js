@@ -20,9 +20,22 @@ export class _ModifyEvent extends React.Component {
 
     constructor(props) {
         super(props);
+        const cals = this.props.calendar.calendars;
+        for (let i = 0; i < cals.length; i++) {
+            if (cals[i].id === this.props.navigation.state.params.calendarId
+                && cals[i].role !== 'admin') {
+                Toast.show({
+                    text: 'You don\'t have rights to edit this event.',
+                    type: "danger",
+                    buttonText: "Okay",
+                    duration: 2000
+                });
+                this.props.navigation.goBack();
+                break ;
+            }
+        }
         const event = this.props.calendar.events[this.props.navigation.state.params.eventId];
         this.props.GetEventInfo(this.props.navigation.state.params.eventId)
-
         this.state = this.fillInfoEvent(event);
     }
 
@@ -140,6 +153,8 @@ export class _ModifyEvent extends React.Component {
     }
 
     render() {
+        // console.log('props', this.props)
+        // console.log('state', this.state)
         if (this.props.calendar && (this.props.calendar.status === CalendarActionType.ModifyEvent
             || this.props.calendar.status === CalendarActionType.GetEventInfo))
             return (
