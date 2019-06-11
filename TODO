@@ -1,0 +1,8 @@
+loading bar when signing in with facebook or google
+Fix Android prod problem
+fix Expo imports
+real screen for invitation
+real-time notification
+see atendees for ConsultEvent
+fix automatic reload on modify event
+block non admin modification for event and group

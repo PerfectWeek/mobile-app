@@ -60,7 +60,7 @@ export class _ConsultEvent extends React.Component {
             <ScrollView>
                 <View style={{flex: 1, flexDirection: 'column', alignItems: 'center', margin: 20, marginBottom: 40}}>
                     <Thumbnail large source={{uri: this.state.image}}/>
-                    <Text style={{...textStyle, fontSize: 26}}>
+                    <Text style={{...textStyle, fontSize: 25}}>
                         {this.state.EventTitle}
                     </Text>
                 </View>
@@ -208,7 +208,7 @@ export class _ConsultEvent extends React.Component {
                     </Item>
                     <Button style={{backgroundColor: '#e94b61', margin: 10}} full onPress={() => {
 
-                        Alert.alert('Leave event?', '', [{
+                        Alert.alert('Leave event ?', '', [{
                             text: 'Yes', onPress: () => {
                                 this.props.navigation.navigate('Master');
                                 this.props.ChangeCalendarEventStatus({id: this.state.id}, 'no')

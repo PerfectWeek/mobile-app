@@ -102,6 +102,8 @@ const Store = createStore(reducer, applyMiddleware(middleware, sagaMiddleware));
 // Run Saga Middleware
 sagaMiddleware.run(sagas);
 
+//console.disableYellowBox = true;
+
 export default class Root extends React.Component {
     constructor(props) {
         super(props);

@@ -47,7 +47,7 @@ export default createBottomTabNavigator(
         }
     },
     {
-        lazy: false,
+        // lazy: false,
         tabBarOptions: {
             activeTintColor: "#064C96",
             // activeTintColor: "#0686e3",
