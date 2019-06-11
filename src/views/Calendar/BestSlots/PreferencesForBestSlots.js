@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
 import {Container, Text, Button, Icon, Input, Item, Picker, Form, Toast} from "native-base";
 import DatePicker from "react-native-datepicker";
 import moment from "moment";
 import {IconColor} from "../../../../Style/Constant";
+// import TimePicker from "react-native-24h-timepicker";
+import HoursSelector from '../tools/HoursSelector';
+
 
 
 class _PreferencesForBestSlots extends Component {
@@ -18,7 +21,7 @@ class _PreferencesForBestSlots extends Component {
             beginTime: new Date().toLocaleTimeString('en-US', {hour12: false, hour: "numeric", minute: "numeric"}),
             endTime: '',
             calendarId: this.props.navigation.getParam('calendarId'),
-            timeEvent: '',
+            timeEvent: 0,
             type:'',
             visibility: 'public',
         }
@@ -33,7 +36,7 @@ class _PreferencesForBestSlots extends Component {
         // console.log(this.state)
         return (this.state.EventTitle === '' || this.state.description === ''
             || this.state.localisation === ''
-            || this.state.dateBeginEvent === '' || this.state.timeEvent === '' || this.state.timeEvent === '0'
+            || this.state.dateBeginEvent === '' || this.state.timeEvent === '' || this.state.timeEvent === 0
             || this.state.dateEndEvent === '' || this.state.beginTime === ''
             || this.state.endTime === '' || this.state.calendarId === -1
             || this.state.dateBeginEvent === this.state.dateEndEvent && moment(this.state.endTime, "HH:mm") < moment(this.state.beginTime, "HH:mm")
@@ -55,8 +58,18 @@ class _PreferencesForBestSlots extends Component {
             });
             return false;
         }
+
         return true;
     }
+
+    // onCancel() {
+    //     this.TimePicker.close();
+    // }
+    //
+    // onConfirm(hour, minute) {
+    //     this.setState({ timeEvent: hour*60+parseInt(minute) });
+    //     this.TimePicker.close();
+    // }
 
     render() {
         const eventsDefinedTypes = ['party', 'work', 'workout', 'hobby'];
@@ -175,11 +188,21 @@ class _PreferencesForBestSlots extends Component {
                     </Item>
                     <Item>
                         <Icon style={IconStyle} type='SimpleLineIcons' active name='hourglass'/>
-                        <Input style={{color: 'black', fontFamily: 'Roboto_medium', fontSize: 16}}
-                               placeholder="Event duration minutes" value={this.state.timeEvent}
-                               maxLength={4}
-                               keyboardType='numeric'
-                               onChangeText={(text) => this.setState({timeEvent: text})}/>
+                    {/*    <TouchableOpacity style={{height: 40, paddingTop: 10}} onPress={() => this.TimePicker.open()}>*/}
+                    {/*        <Text style={{color: "#9EA0A4", fontSize: 16, textAlign: 'center', paddingLeft: 16}}>*/}
+                    {/*            {this.state.timeEvent === ''  || this.state.timeEvent === '0:00' ? 'Event duration' :*/}
+                    {/*                `${Math.trunc(parseInt(this.state.timeEvent)/60)} Hours ${parseInt(this.state.timeEvent)%60} Minutes`*/}
+                    {/*            }*/}
+                    {/*        </Text>*/}
+                    {/*    </TouchableOpacity>*/}
+                    {/*    <TimePicker*/}
+                    {/*        ref={ref => {*/}
+                    {/*            this.TimePicker = ref;*/}
+                    {/*        }}*/}
+                    {/*        onCancel={() => this.onCancel()}*/}
+                    {/*        onConfirm={(hour, minute) => this.onConfirm(hour, minute)}*/}
+                    {/*    />*/}
+                    <HoursSelector time={this.state.timeEvent} placeholder={'Event duration'} onConfirm={(hours, minutes) => this.setState({ timeEvent: hours*60+parseInt(minutes) })}/>
                     </Item>
                 <Item>
                     <Icon style={IconStyle} type='SimpleLineIcons' active name='flag'/>
