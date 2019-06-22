@@ -5,12 +5,10 @@ import {
     View,
     Body,
     Title,
-    Card,
-    CardItem
 } from 'native-base';
-import {LinearGradient} from 'expo';
+import { LinearGradient } from 'expo-linear-gradient';
 import connect from "react-redux/es/connect/connect";
-import {Image, Platform} from "react-native";
+import {Platform} from "react-native";
 import {Logout} from "../redux/Login/login.actions";
 import {HeaderBackgroundColor} from "../../Style/Constant";
 

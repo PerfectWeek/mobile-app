@@ -30,7 +30,6 @@ import {CalendarSaga} from "./src/redux/Calendar/calendar.saga";
 import {CalendarReducer} from "./src/redux/Calendar/calendar.reducer";
 import {EventsSaga} from "./src/redux/Events/events.saga";
 import {EventsReducer} from "./src/redux/Events/events.reducer";
-import HomeNavigator from "./src/views/HomeNavigator";
 import {AutoCompletionReducer} from "./src/redux/AutoCompletion/autocompletion.reducer";
 import {AutoCompletionSaga} from "./src/redux/AutoCompletion/autocompletion.sagas";
 
@@ -39,6 +38,11 @@ import {InvitesReducer} from "./src/redux/Invites/invites.reducer";
 import {InvitesSaga} from "./src/redux/Invites/invites.saga";
 import {FriendsSaga} from "./src/redux/Friends/friends.saga";
 import {FriendsReducer} from "./src/redux/Friends/friends.reducer";
+import { AppLoading } from 'expo';
+import { FontAwesome } from '@expo/vector-icons';
+
+
+
 
 const AppNavigator = createSwitchNavigator(
     {
@@ -112,7 +116,7 @@ export default class Root extends React.Component {
 
     async componentWillMount() {
         let obj = {
-            FontAwesome: require("expo/node_modules/@expo/vector-icons/fonts/FontAwesome.ttf"),
+            ...FontAwesome.font,
             Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
             Ionicons: require("native-base/Fonts/Ionicons.ttf"),
             Lato_Bold: require("./Resources/Font/Lato-Bold.ttf"),
@@ -123,7 +127,7 @@ export default class Root extends React.Component {
         };
         if (Platform.OS !== 'ios')
             obj = {
-                FontAwesome: require("expo/node_modules/@expo/vector-icons/fonts/FontAwesome.ttf"),
+                ...FontAwesome.font,
                 Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
                 Ionicons: require("native-base/Fonts/Ionicons.ttf"),
                 Lato_Bold: require("./Resources/Font/Lato-Bold.ttf"),
@@ -139,7 +143,7 @@ export default class Root extends React.Component {
 
     render() {
         if (!this.state.isReady) {
-            return <Expo.AppLoading/>;
+            return <AppLoading/>;
         }
         return (
             <Provider store={Store}>
