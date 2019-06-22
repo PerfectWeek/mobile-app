@@ -4,7 +4,7 @@ import {
 
     Text
 } from 'native-base';
-import {Dimensions, TouchableNativeFeedback} from "react-native";
+import {Dimensions, TouchableHighlight} from "react-native";
 import moment from "moment";
 
 const type_to_theme = {
@@ -26,9 +26,9 @@ export default class EventCard extends Component {
         if (event.image === undefined)
             event.image = `https://lorempixel.com/400/200/${type_to_theme[event.type]}/${Math.floor((Math.random() * 1000 % 10))}`;
         return (
-            <TouchableNativeFeedback onPress={() => {
+            <TouchableHighlight onPress={() => {
                 this.props.navigation.navigate('EventDetail', {event_id: event.id});
-            }} background={TouchableNativeFeedback.SelectableBackground()}>
+            }}>
                 <View style={{
                     backgroundColor: '#f1f3f5',
                     borderBottomWidth: 5,
@@ -54,7 +54,7 @@ export default class EventCard extends Component {
                         </Text>
                     </View>
                 </View>
-            </TouchableNativeFeedback>
+            </TouchableHighlight>
         );
     }
 }

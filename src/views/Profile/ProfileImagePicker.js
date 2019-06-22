@@ -9,6 +9,9 @@ import connect from "react-redux/es/connect/connect";
 import Modal from "../../Components/Modal";
 import Loader from "../../Components/Loader";
 import {UpdateUserImage, UserActionsType} from "../../redux/User/user.actions";
+import * as ImagePicker from 'expo-image-picker';
+import {Constants, Permissions} from 'expo';
+
 
 export class _ProfileImagePicker extends React.Component {
 
@@ -52,7 +55,13 @@ export class _ProfileImagePicker extends React.Component {
                             margin: 10
                         }}
                         onPress={async () => {
-                            const res = await Expo.ImagePicker.launchImageLibraryAsync();
+                            if (Constants.platform.ios) {
+                                const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+                                if (status !== 'granted') {
+                                    alert('Sorry, we need camera roll permissions to make this work!');
+                                }
+                            }
+                            const res = await ImagePicker.launchImageLibraryAsync();
                             if (res.cancelled)
                                 return;
                             this.setState({...this.state, image: res, display: res.uri, new: true});
