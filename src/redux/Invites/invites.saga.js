@@ -2,10 +2,10 @@ import {takeEvery, put, select} from "redux-saga/effects";
 import {ShowErrorNotification, ShowSuccessNotification} from "../../Utils/NotificationsModals";
 import {GetInvites as GetInvitesAction, InvitesActionType, SetInvites, SetLoading} from "./invites.actions";
 import {InvitesService} from "../../Services/Invites/invites";
-import {GetGroupInfo, GetGroups} from "../Groups/groups.actions";
+import {GetGroups} from "../Groups/groups.actions";
 import {LoadCalendar} from "../Calendar/calendar.actions";
 
-function* GetInvites({}) {
+function* GetInvites() {
     try {
         yield put(SetLoading(true));
         let invites = [];
@@ -46,9 +46,9 @@ function* ReplyGroupInvite({group_id, response}) {
 function* ReplyFriendInvite({user_pseudo, response}) {
     try {
         yield InvitesService.ReplyFriendInvite(user_pseudo, response);
-        const pseudo = yield select((state) => {
-            return state.login.pseudo
-        });
+        // const pseudo = yield select((state) => {
+        //     return state.login.pseudo
+        // });
         // yield put(GetGroups(pseudo));
         yield put(GetInvitesAction());
         yield ShowSuccessNotification();
