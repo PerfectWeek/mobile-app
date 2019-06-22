@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
 import {CheckIfLogged, LoginGoogle} from "../redux/Login/login.actions";
-import {Facebook} from "expo";
+import * as Facebook from 'expo-facebook';
 import {Constants} from 'expo';
 
 import {ShowErrorNotification, ShowSuccessNotification} from "../Utils/NotificationsModals";

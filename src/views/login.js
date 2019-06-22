@@ -108,7 +108,6 @@ class _LoginScreen extends React.Component {
                         <Text style={{textDecorationLine: 'underline'}}> Register </Text>
                     </TouchableHighlight>
                     <View style={{
-                        marginTop: 80,
                         flex: 1,
                         flexDirection: 'column',
                         justifyContent: 'center',
@@ -166,6 +165,7 @@ const styles = StyleSheet.create({
         marginTop: 50,
         justifyContent: 'center',
         alignItems: 'center',
+        minHeight: 400
     }
 });
 

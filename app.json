@@ -8,16 +8,10 @@
     "slug": "perfectweek",
     "orientation": "portrait",
     "ios": {
-      "bundleIdentifier": "com.perfectweek.perfectweek",
-      "config" : {
-        "googleSignIn": {
-          "reservedClientId": "com.googleusercontent.apps.229429343101-mbbhg1ss8c9abugoljgngtvs10ievbb5"
-        }
-      }
+      "bundleIdentifier": "com.perfectweek.perfectweek"
     },
     "android": {
-      "package": "com.perfectweek.perfectweek",
-      "googleServicesFile": "./GoogleInfoService/google-servicesANDROID.json"
+      "package": "com.perfectweek.perfectweek"
     }
   }
 }
