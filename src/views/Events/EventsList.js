@@ -35,9 +35,13 @@ export class _EventsList extends React.Component {
                 </View>
             );
         return (
-            <ScrollView style={{
-                backgroundColor: ScreenBackgroundColor
-            }}
+            <View style={{backgroundColor: 'white'}}>
+                <Header androidStatusBarColor="#00AE93" style={{backgroundColor: HeaderBackgroundColor}}>
+                    <Body>
+                        <Title style={{color: 'black'}}>Events</Title>
+                    </Body>
+                </Header>
+            <ScrollView style={{backgroundColor: 'white'}}
                         refreshControl={
                             <RefreshControl
                                 refreshing={this.props.loading}
@@ -48,11 +52,6 @@ export class _EventsList extends React.Component {
                             paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight,
 
                         }}>
-                <Header androidStatusBarColor="#00AE93" style={{backgroundColor: HeaderBackgroundColor}}>
-                    <Body>
-                    <Title style={{color: 'black'}}>Events</Title>
-                    </Body>
-                </Header>
                 {
                     Object.values(this.props.events).length === 0 ?
                         <View>
@@ -68,6 +67,7 @@ export class _EventsList extends React.Component {
                 }
 
             </ScrollView>
+            </View>
         )
     }
 }

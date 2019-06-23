@@ -26,7 +26,9 @@ export default class EventCard extends Component {
         if (event.image === undefined)
             event.image = `https://lorempixel.com/400/200/${type_to_theme[event.type]}/${Math.floor((Math.random() * 1000 % 10))}`;
         return (
-            <TouchableHighlight onPress={() => {
+            <TouchableHighlight
+                underlayColor='transparent'
+                onPress={() => {
                 this.props.navigation.navigate('EventDetail', {event_id: event.id});
             }}>
                 <View style={{

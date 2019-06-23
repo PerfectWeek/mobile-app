@@ -1,9 +1,9 @@
 {
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 6022,
-  "expoServerNgrokUrl": "https://9z-pyx.tim92i.mobile-app.exp.direct",
-  "packagerNgrokUrl": "https://packager.9z-pyx.tim92i.mobile-app.exp.direct",
-  "ngrokPid": 6037,
+  "packagerPid": 6792,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "devToolsPort": 19002
 }
