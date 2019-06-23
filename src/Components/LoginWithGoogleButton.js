@@ -20,7 +20,10 @@ class _LoginWithGoogleButton extends Component {
         // Idéalement on push pas les id sur github mais flemme
         try {
             let res = await Google.logInAsync({
-                clientId: '923058375628-lq9uss5i7mqr9lqccrjlrnbriorfe89o.apps.googleusercontent.com',
+                iosClientId: '801287294023-633lrp09bt9iglu4nkcld3vad2ivj69p.apps.googleusercontent.com',
+                iosStandaloneAppClientId: '801287294023-633lrp09bt9iglu4nkcld3vad2ivj69p.apps.googleusercontent.com',
+                androidClientId: '801287294023-qssb60onuck2qve0bfj2cahq1riko6rm.apps.googleusercontent.com',
+                androidStandaloneAppClientId: '801287294023-qssb60onuck2qve0bfj2cahq1riko6rm.apps.googleusercontent.com',
                 scopes: ['profile', 'email']
             });
             if (res.type === 'success') {
