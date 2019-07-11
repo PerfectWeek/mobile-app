@@ -1,62 +1,63 @@
 import React from 'react';
-import {Platform} from 'react-native';
-import {StyleProvider, Root as RootNativeBase} from 'native-base';
-import {createStore, combineReducers, applyMiddleware} from 'redux';
-import {Provider, connect} from 'react-redux';
-import {LoginReducer} from "./src/redux/Login/login.reducer";
-import {createSwitchNavigator} from 'react-navigation';
+import { Platform } from 'react-native';
+import { StyleProvider, Root as RootNativeBase } from 'native-base';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { Provider, connect } from 'react-redux';
+import { LoginReducer } from "./src/redux/Login/login.reducer";
+import { createSwitchNavigator } from 'react-navigation';
 import {
     createNavigationReducer,
     createReactNavigationReduxMiddleware,
     reduxifyNavigator
 } from 'react-navigation-redux-helpers';
-import {LoginSagas} from "./src/redux/Login/login.sagas";
+import { LoginSagas } from "./src/redux/Login/login.sagas";
 
-import {RegisterReducer} from "./src/redux/Register/register.reducer";
-import {RegisterSagas} from "./src/redux/Register/register.sagas";
+import { RegisterReducer } from "./src/redux/Register/register.reducer";
+import { RegisterSagas } from "./src/redux/Register/register.sagas";
 
-import {UserReducer} from "./src/redux/User/user.reducer";
-import {UserSagas} from "./src/redux/User/user.sagas";
+import { UserReducer } from "./src/redux/User/user.reducer";
+import { UserSagas } from "./src/redux/User/user.sagas";
 
-import {GroupReducer} from "./src/redux/Groups/groups.reducer";
-import {GroupSaga} from "./src/redux/Groups/groups.saga";
+import { GroupReducer } from "./src/redux/Groups/groups.reducer";
+import { GroupSaga } from "./src/redux/Groups/groups.saga";
 
-import {fork, all} from "redux-saga/effects";
+import { fork, all } from "redux-saga/effects";
 import createSagaMiddleware from 'redux-saga';
 import LoginNavigator from "./src/views/LoginNavigator";
 import getTheme from './native-base-theme/components';
 import platform from "./native-base-theme/variables/platform";
-import {CalendarSaga} from "./src/redux/Calendar/calendar.saga";
-import {CalendarReducer} from "./src/redux/Calendar/calendar.reducer";
-import {EventsSaga} from "./src/redux/Events/events.saga";
-import {EventsReducer} from "./src/redux/Events/events.reducer";
-import {AutoCompletionReducer} from "./src/redux/AutoCompletion/autocompletion.reducer";
-import {AutoCompletionSaga} from "./src/redux/AutoCompletion/autocompletion.sagas";
+import { CalendarSaga } from "./src/redux/Calendar/calendar.saga";
+import { CalendarReducer } from "./src/redux/Calendar/calendar.reducer";
+import { EventsSaga } from "./src/redux/Events/events.saga";
+import { EventsReducer } from "./src/redux/Events/events.reducer";
+import { AutoCompletionReducer } from "./src/redux/AutoCompletion/autocompletion.reducer";
+import { AutoCompletionSaga } from "./src/redux/AutoCompletion/autocompletion.sagas";
 
-import Home from "./src/views/home";
-import {InvitesReducer} from "./src/redux/Invites/invites.reducer";
-import {InvitesSaga} from "./src/redux/Invites/invites.saga";
-import {FriendsSaga} from "./src/redux/Friends/friends.saga";
-import {FriendsReducer} from "./src/redux/Friends/friends.reducer";
+import { InvitesReducer } from "./src/redux/Invites/invites.reducer";
+import { InvitesSaga } from "./src/redux/Invites/invites.saga";
+import { FriendsSaga } from "./src/redux/Friends/friends.saga";
+import { FriendsReducer } from "./src/redux/Friends/friends.reducer";
 import { AppLoading } from 'expo';
 import { FontAwesome } from '@expo/vector-icons';
-
-
-
+import NotificationsHandler from './src/NotificationsHandler';
+import HomeNavigator from './src/views/HomeNavigator';
 
 const AppNavigator = createSwitchNavigator(
     {
         Login: {
             screen: LoginNavigator
         },
+        NotificationsHandler: {
+            screen: NotificationsHandler
+        },
         Home: {
-            screen: Home
-            // screen: HomeNavigator
-        }
+            // screen: Home
+            screen: HomeNavigator
+        },
     },
 
     {
-        initialRouteName: 'Login',
+        navReducerinitialRouteName: 'Login',
     });
 
 const navReducer = createNavigationReducer(AppNavigator);
@@ -111,7 +112,7 @@ sagaMiddleware.run(sagas);
 export default class Root extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {isReady: false};
+        this.state = { isReady: false };
     }
 
     async componentWillMount() {
@@ -138,18 +139,18 @@ export default class Root extends React.Component {
             };
         await Expo.Font.loadAsync(obj);
         await Expo.Font.loadAsync("Material Design Icons", require("native-base/Fonts//MaterialCommunityIcons.ttf"));
-        this.setState({isReady: true});
+        this.setState({ isReady: true });
     }
 
     render() {
         if (!this.state.isReady) {
-            return <AppLoading/>;
+            return <AppLoading />;
         }
         return (
             <Provider store={Store}>
                 <StyleProvider style={getTheme(platform)}>
                     <RootNativeBase>
-                        <AppWithNavigationState/>
+                        <AppWithNavigationState />
                     </RootNativeBase>
                 </StyleProvider>
             </Provider>

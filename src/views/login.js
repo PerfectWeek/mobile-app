@@ -1,21 +1,16 @@
 import React from 'react';
-import {Image, Dimensions, Animated, Easing, StyleSheet, TouchableHighlight} from 'react-native';
-import {View, Text, Container, Button} from 'native-base';
-import {withNavigation} from "react-navigation";
-import {connect} from "react-redux";
-import {LoginActionsType, Login, CheckIfLogged, LoginGoogle, ResetStores} from "../redux/Login/login.actions";
-import LottieView from 'lottie-react-native';
-import {validateEmail} from "../Utils/utils.js";
-import {validateNotEmpty, validatePassword} from "../Utils/utils";
-
+import { Image, Dimensions, Animated, Easing, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, Text, Container, Button } from 'native-base';
+import { withNavigation } from "react-navigation";
+import { connect } from "react-redux";
+import { LoginActionsType, Login, CheckIfLogged, LoginGoogle, ResetStores } from "../redux/Login/login.actions";
+import { validateEmail } from "../Utils/utils.js";
+import { validateNotEmpty, validatePassword } from "../Utils/utils";
 import CustomInput from '../Utils/CustomComponents/CustomInput'
 import CustomButton from '../Utils/CustomComponents/CustomButton'
 import Loader from "../Components/Loader";
-import {Google} from 'expo';
-import {ShowErrorNotification} from "../Utils/NotificationsModals";
 import LoginWithGoogleButton from "../Components/LoginWithGoogleButton";
 import LoginWithFacebookButton from "../Components/LoginWithFacebookButton";
-
 
 class _LoginScreen extends React.Component {
     static navigationOptions = {
@@ -25,16 +20,12 @@ class _LoginScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {username: '', password: ''};
+        this.state = { username: '', password: '' };
         this.props.CheckIfLogged();
         this.spinValue = new Animated.Value(0);
         if (this.props.login.status === LoginActionsType.Logout) {
             this.props.ResetStores();
         }
-    }
-
-    componentDidMount() {
-        this.runAnimation();
     }
 
     runAnimation() {
@@ -56,19 +47,15 @@ class _LoginScreen extends React.Component {
         });
         const spinimgwidth = Dimensions.get('window').width + 100;
         return (
-            <Container style={{paddingTop: Expo.Constants.statusBarHeight + 50}}>
+            <Container style={{ paddingTop: Expo.Constants.statusBarHeight + 50 }}>
                 <View style={styles.logo}>
                     <Image source={require('../../Resources/Image/pwlogo.png')} resizeMode={'contain'}
-                           style={{width: 350, height: 150}}/>
+                        style={{ width: 350, height: 150 }} />
                 </View>
 
-                {/*<Image source={require('../../Resources/Image/logo.png')} resizeMode={'contain'} style={{width: spinimgwidth, height: spinimgwidth,*/}
-                {/*position: 'relative',*/}
-                {/*left: -100,*/}
-                {/*}}/>*/}
                 <Animated.Image
                     style={{
-                        transform: [{rotate: spin}],
+                        transform: [{ rotate: spin }],
                         width: spinimgwidth,
                         height: spinimgwidth,
                         position: 'absolute',
@@ -82,38 +69,38 @@ class _LoginScreen extends React.Component {
                 />
                 <View style={styles.form}>
                     <CustomInput iconName={'mail'}
-                                 onChangeText={(text) => this.setState({username: text})}
-                                 error={!validateEmail(this.state.username)}
-                                 type={'email-address'}
-                                 placeholder={'Email'}
+                        onChangeText={(text) => this.setState({ username: text })}
+                        error={!validateEmail(this.state.username)}
+                        type={'email-address'}
+                        placeholder={'Email'}
                     />
-                    <CustomInput iconName={'lock'} secureTextEntry={true} style={{marginTop: 30}}
-                                 onChangeText={(text) => this.setState({password: text})}
-                                 error={!validatePassword(this.state.password)}
-                                 placeholder={'Password'}
+                    <CustomInput iconName={'lock'} secureTextEntry={true} style={{ marginTop: 30 }}
+                        onChangeText={(text) => this.setState({ password: text })}
+                        error={!validatePassword(this.state.password)}
+                        placeholder={'Password'}
                     />
-                    <CustomButton style={{marginTop: 30}}
-                                  disabled={this.props.login.status === LoginActionsType.Login ||
-                                  this.state.password === '' || this.state.username === '' ||
-                                  !validatePassword(this.state.password) || !validateNotEmpty(this.state.username)}
-                                  onPress={() => {
-                                      this.props.Login(this.state.username, this.state.password);
-                                  }}
-                                  title={'Login'}
+                    <CustomButton style={{ marginTop: 30 }}
+                        disabled={this.props.login.status === LoginActionsType.Login ||
+                            this.state.password === '' || this.state.username === '' ||
+                            !validatePassword(this.state.password) || !validateNotEmpty(this.state.username)}
+                        onPress={() => {
+                            this.props.Login(this.state.username, this.state.password);
+                        }}
+                        title={'Login'}
                     />
-                    <TouchableHighlight style={{marginTop: 10}}
-                                        onPress={() => this.props.navigation.navigate('Register')}
-                                        underlayColor={'rgba(0, 0, 0, 0)'}
+                    <TouchableHighlight style={{ marginTop: 10 }}
+                        onPress={() => this.props.navigation.navigate('Register')}
+                        underlayColor={'rgba(0, 0, 0, 0)'}
                     >
-                        <Text style={{textDecorationLine: 'underline'}}> Register </Text>
+                        <Text style={{ textDecorationLine: 'underline' }}> Register </Text>
                     </TouchableHighlight>
                     <View style={{
                         flex: 1,
                         flexDirection: 'column',
                         justifyContent: 'center',
                     }}>
-                        <LoginWithGoogleButton/>
-                        <LoginWithFacebookButton style={{marginTop: 20}}/>
+                        <LoginWithGoogleButton />
+                        <LoginWithFacebookButton style={{ marginTop: 20 }} />
                     </View>
 
                 </View>
@@ -127,7 +114,7 @@ class _LoginScreen extends React.Component {
                     }}>
                         {
                             (this.props.login.status === LoginActionsType.Login) ?
-                                <Loader/>
+                                <Loader />
                                 : null
                         }
                     </View>

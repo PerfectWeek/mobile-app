@@ -18,14 +18,19 @@ import {
     ActionSheet
 } from 'native-base';
 import connect from "react-redux/es/connect/connect";
-import {Alert, Platform, TouchableOpacity} from "react-native";
-import {DeleteUser, GetInfo, GetUserInfo, UpdateUserInfo, UserActionsType} from "../../redux/User/user.actions";
+import { Alert, Platform, TouchableOpacity } from "react-native";
+import { DeleteUser, GetInfo, GetUserInfo, UpdateUserInfo, UserActionsType } from "../../redux/User/user.actions";
 import LottieView from "lottie-react-native";
-import {validateNotEmpty} from "../../Utils/utils";
-import {Logout} from "../../redux/Login/login.actions";
-import {HeaderBackgroundColor, ScreenBackgroundColor} from "../../../Style/Constant";
+import { validateNotEmpty } from "../../Utils/utils";
+import { Logout } from "../../redux/Login/login.actions";
+import { HeaderBackgroundColor, ScreenBackgroundColor } from "../../../Style/Constant";
 import Loader from "../../Components/Loader";
-import {ProfileImagePicker} from "./ProfileImagePicker";
+import { ProfileImagePicker } from "./ProfileImagePicker";
+
+
+import * as Permissions from 'expo-permissions';
+import { Notifications } from "expo";
+import { StackActions, NavigationActions } from 'react-navigation';
 
 
 export class _Profile extends React.Component {
@@ -35,7 +40,7 @@ export class _Profile extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {pseudo: this.props.login.pseudo};
+        this.state = { pseudo: this.props.login.pseudo };
         if (this.props.user === undefined || this.props.user.email === undefined || this.props.user.image === undefined)
             this.props.GetInfo(this.props.login.pseudo);
     }
@@ -49,22 +54,22 @@ export class _Profile extends React.Component {
 
                 <Header
                     androidStatusBarColor="#000"
-                    style={{backgroundColor: "#FFF"}}
+                    style={{ backgroundColor: "#FFF" }}
                 >
                     <Body>
-                    <Title style={{color: '#000000', textAlign: 'center'}}>Profile</Title>
+                        <Title style={{ color: '#000000', textAlign: 'center' }}>Profile</Title>
                     </Body>
                     <Right>
                         <Button transparent onPress={() => {
                             this.props.navigation.navigate('FriendsList')
                         }}>
-                            <Icon type={"SimpleLineIcons"} name='people' style={{color: '#064C96', fontSize: 20}}/>
+                            <Icon type={"SimpleLineIcons"} name='people' style={{ color: '#064C96', fontSize: 20 }} />
 
                         </Button>
                         <Button transparent onPress={() => {
-                            this.props.navigation.navigate('Invite')
+                            this.props.navigation.navigate(this.newMethod())
                         }}>
-                            <Icon type={"SimpleLineIcons"} name='bell' style={{color: '#064C96', fontSize: 20}}/>
+                            <Icon type={"SimpleLineIcons"} name='bell' style={{ color: '#064C96', fontSize: 20 }} />
 
                             {
                                 this.props.invites !== undefined && this.props.invites.length > 0 && <View style={{
@@ -78,7 +83,7 @@ export class _Profile extends React.Component {
                                     justifyContent: 'center',
                                     alignItems: 'center'
                                 }}>
-                                    <Text style={{color: 'white'}}>{this.props.invites.length}</Text>
+                                    <Text style={{ color: 'white' }}>{this.props.invites.length}</Text>
                                 </View>
                             }
 
@@ -100,7 +105,7 @@ export class _Profile extends React.Component {
                                 }, {
                                     text: 'Cancel', onPress: () => {
                                     }, style: 'cancel'
-                                }], {cancelable: false})
+                                }], { cancelable: false })
                             });
 
                             BUTTONS.push("Delete account");
@@ -112,7 +117,7 @@ export class _Profile extends React.Component {
                                 }, {
                                     text: 'Cancel', onPress: () => {
                                     }, style: 'cancel'
-                                }], {cancelable: false})
+                                }], { cancelable: false })
                             });
 
                             BUTTONS.push("Cancel");
@@ -130,29 +135,29 @@ export class _Profile extends React.Component {
                                 })
 
                         }}>
-                            <Icon type={"SimpleLineIcons"} name='options-vertical' style={{color: '#064C96'}}/>
+                            <Icon type={"SimpleLineIcons"} name='options-vertical' style={{ color: '#064C96' }} />
                         </Button>
                     </Right>
                 </Header>
                 {
                     this.props.user !== undefined && this.props.user.email !== undefined && this.props.user.image !== undefined
-                    && this.props.UserStore.status !== UserActionsType.GetUserInfo ?
+                        && this.props.UserStore.status !== UserActionsType.GetUserInfo ?
                         <View>
-                            <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
-                                <Thumbnail style={{width: 160, height: 160, borderRadius: 100}}
-                                           source={{uri: this.props.user.image}}/>
+                            <View style={{ marginTop: 20, alignItems: 'center', justifyContent: 'center' }}>
+                                <Thumbnail style={{ width: 160, height: 160, borderRadius: 100 }}
+                                    source={{ uri: this.props.user.image }} />
 
                                 <TouchableOpacity style={PhotoButtonStyle}
-                                                  onPress={() => {
-                                                      this.ProfilePictureModal.openEditModal();
-                                                  }}>
-                                    <Icon active name='camera' style={{fontSize: 16}} type={"FontAwesome"}/>
+                                    onPress={() => {
+                                        this.ProfilePictureModal.openEditModal();
+                                    }}>
+                                    <Icon active name='camera' style={{ fontSize: 16 }} type={"FontAwesome"} />
                                 </TouchableOpacity>
-                                <Title style={{color: 'black', fontFamily: 'Lato_Bold', fontSize: 36, margin: 5}}>
+                                <Title style={{ color: 'black', fontFamily: 'Lato_Bold', fontSize: 36, margin: 5 }}>
                                     {this.props.user.pseudo}
                                 </Title>
                             </View>
-                            <ProfileImagePicker onRef={ref => (this.ProfilePictureModal = ref)}/>
+                            <ProfileImagePicker onRef={ref => (this.ProfilePictureModal = ref)} />
 
                             <Text
                                 style={{
@@ -165,15 +170,15 @@ export class _Profile extends React.Component {
                                 Information :
                             </Text>
 
-                            <Form style={{marginTop: 0}}>
+                            <Form style={{ marginTop: 0 }}>
                                 <Item error={!validateNotEmpty(this.state.pseudo)}>
-                                    <Icon active name='person'/>
+                                    <Icon active name='person' />
                                     <Input label="Username" value={this.state.pseudo}
-                                           onChangeText={(text) => this.setState({pseudo: text})}/>
+                                        onChangeText={(text) => this.setState({ pseudo: text })} />
                                 </Item>
                                 <Item disabled>
-                                    <Icon disabled name='mail'/>
-                                    <Input disabled label="Email" value={this.props.user.email}/>
+                                    <Icon disabled name='mail' />
+                                    <Input disabled label="Email" value={this.props.user.email} />
                                 </Item>
 
                                 <View style={{
@@ -183,20 +188,20 @@ export class _Profile extends React.Component {
                                     justifyContent: 'center',
                                 }}>
                                     <Button success
-                                            disabled={this.props.UserStore.status === UserActionsType.UpdateInfo || this.props.UserStore.status === UserActionsType.DeleteUser ||
+                                        disabled={this.props.UserStore.status === UserActionsType.UpdateInfo || this.props.UserStore.status === UserActionsType.DeleteUser ||
                                             !validateNotEmpty(this.state.pseudo) || this.state.pseudo === this.props.login.pseudo || this.state.pseudo.indexOf(' ') !== -1}
-                                            onPress={() => {
-                                                if (this.state.pseudo === "" || this.state.pseudo === null)
-                                                    Toast.show({
-                                                        text: "Invalid pseudo",
-                                                        type: "danger",
-                                                        buttonText: "Okay",
-                                                        duration: 5000
-                                                    });
-                                                else
-                                                    this.props.UpdateInfo(this.props.user.pseudo, this.state.pseudo);
-                                            }}>
-                                        <Icon name='refresh'/>
+                                        onPress={() => {
+                                            if (this.state.pseudo === "" || this.state.pseudo === null)
+                                                Toast.show({
+                                                    text: "Invalid pseudo",
+                                                    type: "danger",
+                                                    buttonText: "Okay",
+                                                    duration: 5000
+                                                });
+                                            else
+                                                this.props.UpdateInfo(this.props.user.pseudo, this.state.pseudo);
+                                        }}>
+                                        <Icon name='refresh' />
                                         <Text>Update information</Text>
                                     </Button>
                                 </View>
@@ -209,7 +214,7 @@ export class _Profile extends React.Component {
                             justifyContent: 'center',
                             alignItems: 'center'
                         }}>
-                            <Loader/>
+                            <Loader />
                         </Container>
                 }
 
@@ -223,13 +228,17 @@ export class _Profile extends React.Component {
                     }}>
                         {
                             (this.props.UserStore.status === UserActionsType.UpdateInfo) ?
-                                <Loader/>
+                                <Loader />
                                 : null
                         }
                     </View>
                 </View>
             </Container>
         )
+    }
+
+    newMethod() {
+        return 'Invite';
     }
 }
 
