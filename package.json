@@ -23,7 +23,9 @@
   "dependencies": {
     "@expo/vector-icons": "^10.0.2",
     "expo": "^33.0.0",
-    "expo-app-auth": "^3.0.0",
+    "expo-analytics": "^1.0.9",
+    "expo-analytics-segment": "^5.0.1",
+    "expo-app-auth": "^5.0.1",
     "expo-facebook": "^5.0.1",
     "expo-image-picker": "^5.0.2",
     "expo-linear-gradient": "^5.0.1",

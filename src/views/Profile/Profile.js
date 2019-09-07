@@ -25,12 +25,9 @@ import { validateNotEmpty } from "../../Utils/utils";
 import { Logout } from "../../redux/Login/login.actions";
 import { HeaderBackgroundColor, ScreenBackgroundColor } from "../../../Style/Constant";
 import Loader from "../../Components/Loader";
-import { ProfileImagePicker } from "./ProfileImagePicker";
+import {ProfileImagePicker} from "./ProfileImagePicker";
+import {PageHit, Event} from "expo-analytics";
 
-
-import * as Permissions from 'expo-permissions';
-import { Notifications } from "expo";
-import { StackActions, NavigationActions } from 'react-navigation';
 
 
 export class _Profile extends React.Component {
@@ -40,7 +37,9 @@ export class _Profile extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { pseudo: this.props.login.pseudo };
+        this.state = {pseudo: this.props.login.pseudo};
+        this.props.login.analytics.hit(new PageHit('Profile'));
+
         if (this.props.user === undefined || this.props.user.email === undefined || this.props.user.image === undefined)
             this.props.GetInfo(this.props.login.pseudo);
     }
@@ -101,6 +100,8 @@ export class _Profile extends React.Component {
                                 Alert.alert('Logout ?', '', [{
                                     text: 'Yes', onPress: () => {
                                         this.props.Logout();
+                                        this.props.login.analytics.event(new Event('Profile', 'Logout'));
+
                                     }
                                 }, {
                                     text: 'Cancel', onPress: () => {
@@ -112,6 +113,8 @@ export class _Profile extends React.Component {
                             ButtonsCallback.push(() => {
                                 Alert.alert('Delete account ?', 'Are you sure you want to delete your account ? This action is irreversible', [{
                                     text: 'Yes', onPress: () => {
+                                        this.props.login.analytics.event(new Event('Profile', 'DeleteAccount'));
+
                                         this.props.DeleteUser(this.props.user.pseudo);
                                     }
                                 }, {

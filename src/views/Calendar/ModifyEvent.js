@@ -9,8 +9,9 @@ import { CalendarActionType, RefreshCalendar, ModifyTheEvent, GetEventInfo } fro
 import DatePicker from "react-native-datepicker";
 import Loader from "../../Components/Loader";
 import moment from "moment";
-import { IconColor, ScreenBackgroundColor } from "../../../Style/Constant";
-import { ListUsers } from "./tools/ListUsers";
+import {IconColor, ScreenBackgroundColor} from "../../../Style/Constant";
+import {ListUsers} from "./tools/ListUsers";
+import {Event, PageHit} from "expo-analytics";
 import { ImagePicker } from 'expo';
 
 export class _ModifyEvent extends React.Component {
@@ -35,6 +36,7 @@ export class _ModifyEvent extends React.Component {
                 break;
             }
         }
+        this.props.login.analytics.hit(new PageHit('ModifyEvent'));
         const event = this.props.calendar.events[this.props.navigation.state.params.eventId];
         this.props.GetEventInfo(this.props.navigation.state.params.eventId)
         this.state = this.fillInfoEvent(event);
@@ -337,10 +339,12 @@ export class _ModifyEvent extends React.Component {
                             }} loadList={this.props.attendees} /> : null
                         }
                         <Button success disabled={this.validator()}
-                            rounded style={{ margin: 30, marginTop: 5 }}
-                            onPress={() => {
-                                this.checkAttendees()
-                            }}>
+                                rounded style={{margin: 30, marginTop: 5}}
+                                onPress={() => {
+                                    this.props.login.analytics.event(new Event('Events', 'Modification'));
+
+                                    this.checkAttendees()
+                                }}>
                             <Text>
                                 Modify event
                             </Text>

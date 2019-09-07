@@ -1,13 +1,16 @@
-import React, { Component } from 'react';
-import { Button } from 'native-base';
+import React, {Component} from 'react';
+import {Button} from 'native-base';
+import {withNavigation} from "react-navigation";
+import {connect} from "react-redux";
+import {LoginGoogle} from "../redux/Login/login.actions";
+import {Google} from "expo";
+// import * as GoogleSignIn from 'expo-google-sign-in';
+
+import {ShowErrorNotification, ShowSuccessNotification} from "../Utils/NotificationsModals";
+import {Network} from "../Network/Requests";
+import {Constants} from 'expo';
 import { Image, Text, ActivityIndicator } from 'react-native'
-import { withNavigation } from "react-navigation";
-import { connect } from "react-redux";
-import { LoginGoogle } from "../redux/Login/login.actions";
-import { Google } from "expo";
-import { ShowErrorNotification, ShowSuccessNotification } from "../Utils/NotificationsModals";
-import { Network } from "../Network/Requests";
-import { Constants } from 'expo';
+
 import { ProviderService } from "../Services/Providers/provider";
 
 
@@ -30,6 +33,10 @@ class _LoginWithGoogleButton extends Component {
                 androidStandaloneAppClientId: '778613646655-8v0a79v6cqhruuq76774c216mpib7076.apps.googleusercontent.com',
                 scopes: ['profile', 'email']
             });
+            // await GoogleSignIn.initAsync({ clientId: 'com.googleusercontent.apps.178887600868-af7nfev11jtka979htj5dogi9efh1ih0' });
+            // await GoogleSignIn.askForPlayServicesAsync();
+            // const { type, user } = await GoogleSignIn.signInAsync();
+
             if (res.type === 'success') {
                 const auth = await ProviderService.ConnectWithGoogleTokens(res.accessToken, res.refreshToken);
                 this.props.LoginGoogle(auth.user.email, auth.token, auth.user.pseudo);

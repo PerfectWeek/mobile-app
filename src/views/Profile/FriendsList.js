@@ -6,6 +6,7 @@ import {Dimensions, ScrollView, RefreshControl} from "react-native";
 import {AddFriends} from "./AddFriends";
 import {GetFriends} from "../../redux/Friends/friends.actions";
 import Loader from "../../Components/Loader";
+import {PageHit} from "expo-analytics";
 
 export class _FriendsList extends Component {
     // static navigationOptions = {
@@ -15,6 +16,8 @@ export class _FriendsList extends Component {
     constructor(props) {
         super(props);
         this.props.GetFriends();
+        this.props.login.analytics.hit(new PageHit('FriendsList'));
+
     }
 
     _onRefresh = () => {
@@ -96,6 +99,7 @@ const mapStateToProps = (state, ownProps) => {
         ...ownProps,
         loading: state.friends.loading,
         friends: state.friends.friends,
+        login: state.login
 
     }
 };

@@ -1,11 +1,10 @@
 import React from 'react';
-import {Dimensions, View, StyleSheet, ScrollView, Alert} from 'react-native';
+import {View, StyleSheet, ScrollView, Alert} from 'react-native';
 import connect from "react-redux/es/connect/connect";
-import {Button, Form, Icon, Input, Item, Text, Title, Container, Thumbnail} from "native-base";
-import RNPickerSelect from 'react-native-picker-select';
+import {Button, Form, Icon, Item, Text, Container, Thumbnail} from "native-base";
 
 
-import {CalendarActionType, RefreshCalendar, GetEventInfo, ModifyTheEvent} from "../../redux/Calendar/calendar.actions";
+import {CalendarActionType, GetEventInfo} from "../../redux/Calendar/calendar.actions";
 import DatePicker from "react-native-datepicker";
 import Loader from "../../Components/Loader";
 import {IconColor} from "../../../Style/Constant";
@@ -22,6 +21,7 @@ export class _ConsultEvent extends React.Component {
         super(props);
         // console.log('OOKKKKK')
         const event = this.props.calendar.events[this.props.navigation.state.params.eventId];
+        // this.props.login.analytics.hit(new PageHit('ConsultEvent'));
 
         this.props.GetEventInfo(this.props.navigation.state.params.eventId);
         // console.log('envent', event)

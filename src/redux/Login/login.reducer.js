@@ -1,8 +1,10 @@
 import {LoginActionsType} from "./login.actions";
 import {UserActionsType} from "../User/user.actions";
+import {Analytics} from "expo-analytics";
 
 export const LoginReducer = (state = {
-    status: 'NONE'
+    status: 'NONE',
+    analytics : new Analytics('UA-143530568-2')
 }, action) => {
     switch (action.type) {
         case LoginActionsType.Login:

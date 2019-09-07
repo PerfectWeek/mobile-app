@@ -12,6 +12,11 @@ import Loader from "../Components/Loader";
 import LoginWithGoogleButton from "../Components/LoginWithGoogleButton";
 import LoginWithFacebookButton from "../Components/LoginWithFacebookButton";
 
+import * as Segment from 'expo-analytics-segment';
+import {PageHit, Event } from 'expo-analytics';
+
+
+
 class _LoginScreen extends React.Component {
     static navigationOptions = {
         title: 'Login',
@@ -20,7 +25,18 @@ class _LoginScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { username: '', password: '' };
+
+        // Segment.initialize({
+        //     androidWriteKey: "iXyt7pB46pPNvdG2sKFZVHMNyt3Zy7Zr",
+        //     iosWriteKey: "f7OZ9Gbm3xlD1Bk5yzjP1AUcVAsiZU3G" });
+        // Segment.track({
+        //     "type": "track",
+        //     "event": "Login"
+        // });
+
+        // Segment.identify('tim');
+
+        this.state = {username: '', password: ''};
         this.props.CheckIfLogged();
         this.spinValue = new Animated.Value(0);
         if (this.props.login.status === LoginActionsType.Logout) {
@@ -30,6 +46,9 @@ class _LoginScreen extends React.Component {
 
     runAnimation() {
         this.spinValue.setValue(0);
+
+        this.props.login.analytics.hit(new PageHit('LoginPage'));
+
         Animated.timing(
             this.spinValue,
             {
@@ -79,14 +98,24 @@ class _LoginScreen extends React.Component {
                         error={!validatePassword(this.state.password)}
                         placeholder={'Password'}
                     />
-                    <CustomButton style={{ marginTop: 30 }}
-                        disabled={this.props.login.status === LoginActionsType.Login ||
-                            this.state.password === '' || this.state.username === '' ||
-                            !validatePassword(this.state.password) || !validateNotEmpty(this.state.username)}
-                        onPress={() => {
-                            this.props.Login(this.state.username, this.state.password);
-                        }}
-                        title={'Login'}
+                    <CustomButton style={{marginTop: 30}}
+                                  disabled={this.props.login.status === LoginActionsType.Login ||
+                                  this.state.password === '' || this.state.username === '' ||
+                                  !validatePassword(this.state.password) || !validateNotEmpty(this.state.username)}
+                                  onPress={() => {
+                                      // Segment.identify(this.state.username);
+                                      // Segment.track({
+                                      //     "type": "track",
+                                      //     "event": "Login",
+                                      //     "properties": {
+                                      //         "accountType" : "Email"
+                                      //     }
+                                      // });
+                                      this.props.login.analytics.event(new Event('Profile', 'login'));
+
+                                      this.props.Login(this.state.username, this.state.password);
+                                  }}
+                                  title={'Login'}
                     />
                     <TouchableHighlight style={{ marginTop: 10 }}
                         onPress={() => this.props.navigation.navigate('Register')}

@@ -9,6 +9,8 @@ import * as Permissions from 'expo-permissions';
 import { Notifications } from "expo";
 import { StackActions, NavigationActions } from 'react-navigation';
 
+import {PageHit, Event } from 'expo-analytics';
+
 export class _Home extends React.Component {
     constructor(props) {
         super(props);
@@ -142,7 +144,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        ...ownProps
+        ...ownProps,
+        login: state.login
     }
 };
 

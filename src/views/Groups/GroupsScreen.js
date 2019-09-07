@@ -21,6 +21,7 @@ import * as Animatable from 'react-native-animatable';
 import {HeaderBackgroundColor, ScreenBackgroundColor} from "../../../Style/Constant";
 import {NavigationActions} from "react-navigation";
 import Loader from "../../Components/Loader";
+import {PageHit} from "expo-analytics";
 
 export class _GroupsScreen extends React.Component {
     static navigationOptions = {
@@ -29,6 +30,7 @@ export class _GroupsScreen extends React.Component {
 
     constructor(props) {
         super(props);
+        this.props.login.analytics.hit(new PageHit('GroupsPage'));
         this.props.GetGroups(this.props.login.pseudo);
         
     }

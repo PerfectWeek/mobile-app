@@ -10,6 +10,7 @@ import {validateEmail, validateNotEmpty, validatePassword, comparePasswords} fro
 import CustomInput from '../Utils/CustomComponents/CustomInput'
 import CustomButton from '../Utils/CustomComponents/CustomButton'
 import {HeaderBackgroundColor, HeaderTintColor} from "../../Style/Constant";
+import {Event, PageHit} from "expo-analytics";
 
 class _RegisterScreen extends React.Component {
     static navigationOptions = {
@@ -31,6 +32,8 @@ class _RegisterScreen extends React.Component {
     }
 
     runAnimation() {
+        this.props.login.analytics.hit(new PageHit('Register'));
+
         this.spinValue.setValue(0);
         Animated.timing(
             this.spinValue,
@@ -43,6 +46,7 @@ class _RegisterScreen extends React.Component {
     }
 
     registerHandle() {
+        this.props.login.analytics.event(new Event('Registration', 'Registration','The Big Lebowski', 123));
         Keyboard.dismiss();
         this.props.Register(this.state.username, this.state.mail, this.state.password);
     }
@@ -146,7 +150,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
-        register: state.register
+        register: state.register,
+        login: state.login
     }
 };
 
