@@ -1,4 +1,5 @@
 import {Network} from "../../Network/Requests";
+import {UserService} from "../Users/users";
 
 export class CalendarService {
 
@@ -94,6 +95,7 @@ export class CalendarService {
             const resp = await Network.Get('/events/' + events[idx].id + '/attendees');
             if (resp.status === 200) {
                 events[idx].attendees = resp.data.attendees;
+                events[idx].attendees = await UserService.GetUsersImage(events[idx].attendees);
             } else {
                 let err;
                 if (resp.data !== undefined && resp.data.message !== undefined)
