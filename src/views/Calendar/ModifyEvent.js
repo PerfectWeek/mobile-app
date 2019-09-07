@@ -370,12 +370,14 @@ const mapStateToProps = (state, ownProps) => {
         return {
             ...ownProps,
             calendar: state.calendar,
-            attendees: state.calendar.event.attendees
+            attendees: state.calendar.event.attendees,
+            login: state.login
         };
     else
         return {
             ...ownProps,
             calendar: state.calendar,
+            login: state.login
         }
 };
 

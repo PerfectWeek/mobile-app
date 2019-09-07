@@ -20,7 +20,12 @@
       "bundleIdentifier": "com.perfectweek.perfectweek"
     },
     "android": {
-      "package": "com.perfectweek.perfectweek"
+      "package": "com.perfectweek.perfectweek",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDEYcLdDRFikjWXzkMCpL6jzeLPoWv0bwY"
+        }
+      }
     },
     "platforms": [
       "android",

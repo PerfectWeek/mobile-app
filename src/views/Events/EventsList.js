@@ -4,26 +4,45 @@ import {
     Header,
     Body,
     Title,
-    Text, Button
+    Text, Button, Right, Icon
 } from 'native-base';
 import connect from "react-redux/es/connect/connect";
 import { HeaderBackgroundColor, ScreenBackgroundColor } from "../../../Style/Constant";
 import Loader from "../../Components/Loader";
 import EventCard from "../../Components/EventCard";
-import {GetEventRecommendation} from "../../redux/Events/events.actions";
-import {PageHit} from "expo-analytics";
+import { GetEventRecommendation } from "../../redux/Events/events.actions";
+import { PageHit } from "expo-analytics";
 
 
 export class _EventsList extends React.Component {
+    static navigationOptions = {
+        header: null
+    };
+
     constructor(props) {
         super(props);
         this.props.login.analytics.hit(new PageHit('EventsPage'));
-        this.props.GetEventRecommendation("2019-05-10T12:12:12", "2019-06-10T12:12:12", 10);
+        var b = new Date();
+        b.setDate(b.getDate());
+        let beg = b.toISOString().split('.')[0]
+        var e = new Date();
+        e.setDate(e.getDate() + 20);
+        let end = e.toISOString().split('.')[0]
+        this.props.GetEventRecommendation(beg, end, 10);
 
     }
 
     _onRefresh = () => {
-        this.props.GetEventRecommendation("2019-05-10T12:12:12", "2019-06-10T12:12:12", 10);
+        var b = new Date();
+        b.setDate(b.getDate());
+        let beg = b.toISOString().split('.')[0]
+        var e = new Date();
+        e.setDate(e.getDate() + 20);
+        let end = e.toISOString().split('.')[0]
+        // this.props.GetEventRecommendation("2019-05-10T12:12:12", "2019-06-10T12:12:12", 10);
+        // console.log(beg, end);
+
+        this.props.GetEventRecommendation(beg, end, 10);
     };
 
     render() {
@@ -34,29 +53,48 @@ export class _EventsList extends React.Component {
                 </View>
             );
         return (
-            <ScrollView style={{ backgroundColor: 'white' }}
-                refreshControl={
-                    <RefreshControl
-                        refreshing={this.props.loading}
-                        onRefresh={this._onRefresh}
-                    />}
-                contentContainerStyle={{
-                    flexGrow: 1
-                }}>
-                {
-                    Object.values(this.props.events).length === 0 ?
-                        <View>
-                            <Text style={{ marginTop: 20, textAlign: 'center', fontSize: 22 }}>
-                                You have no suggestion at the moment
+            <View style={{
+                paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight,
+                backgroundColor: ScreenBackgroundColor
+            }}>
+                <Header androidStatusBarColor="#00AE93" style={{ backgroundColor: HeaderBackgroundColor }}>
+                    <Body>
+                        <Title style={{ color: 'black' }}>My groups</Title>
+                    </Body>
+                    <Right>
+                        <Button transparent onPress={() => {
+                            this.props.navigation.navigate({ routeName: 'Map' });
+                        }}>
+                            <Icon style={{ fontSize: 28, fontWeight: 'bold', color: '#064C96' }} type={"MaterialIcons"} name='location-on' />
+                        </Button>
+                    </Right>
+                </Header>
+                <ScrollView style={{ backgroundColor: 'white'}}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.props.loading}
+                            onRefresh={this._onRefresh}
+                        />}
+                    contentContainerStyle={{
+                        flexGrow: 1
+                    }}>
+                    {
+                        Object.values(this.props.events).length === 0 ?
+                            <View>
+                                <Text style={{ marginTop: 20, textAlign: 'center', fontSize: 22 }}>
+                                    You have no suggestion at the moment
                             </Text>
-                        </View>
-                        :
-                        Object.values(this.props.events).map((event, index) => {
-                            return <EventCard navigation={this.props.navigation} event={this.props.events[event.id]}
-                                key={event.id} />
-                        })
-                }
-            </ScrollView>
+                            </View>
+                            :
+                            Object.values(this.props.events).map((event, index) => {
+                                return <EventCard navigation={this.props.navigation} event={this.props.events[event.id]}
+                                    key={event.id} />
+                            })
+                    }
+                    <View style={{height:Expo.Constants.statusBarHeight + 50, backgroundColor: '#eae9ef'}}></View>
+                </ScrollView>
+            </View>
+
         )
     }
 }
