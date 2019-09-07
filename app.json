@@ -1,5 +1,14 @@
 {
   "expo": {
+    "notification": {
+      "icon": "Resources/Image/logo.png",
+      "color": "#149D93",
+      "androidMode": "default"
+    },
+    "splash": {
+      "image": "Resources/splash.png",
+      "resizeMode": "cover"
+    },
     "sdkVersion": "33.0.0",
     "name": "PerfectWeek",
     "description": "Plan a perfect week",
@@ -12,6 +21,10 @@
     },
     "android": {
       "package": "com.perfectweek.perfectweek"
-    }
+    },
+    "platforms": [
+      "android",
+      "ios"
+    ]
   }
 }

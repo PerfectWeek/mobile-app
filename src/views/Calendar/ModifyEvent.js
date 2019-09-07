@@ -1,17 +1,18 @@
 import React from 'react';
-import {Dimensions, View, StyleSheet, TouchableOpacity, ScrollView, Platform, KeyboardAvoidingView} from 'react-native';
+import { Dimensions, View, StyleSheet, TouchableOpacity, ScrollView, Platform, KeyboardAvoidingView } from 'react-native';
 import connect from "react-redux/es/connect/connect";
-import {Button, Form, Icon, Input, Item, Text, Title, Container, Thumbnail, Picker, Toast} from "native-base";
+import { Button, Form, Icon, Input, Item, Text, Title, Container, Thumbnail, Picker, Toast } from "native-base";
 import RNPickerSelect from 'react-native-picker-select';
 
 
-import {CalendarActionType, RefreshCalendar, ModifyTheEvent, GetEventInfo} from "../../redux/Calendar/calendar.actions";
+import { CalendarActionType, RefreshCalendar, ModifyTheEvent, GetEventInfo } from "../../redux/Calendar/calendar.actions";
 import DatePicker from "react-native-datepicker";
 import Loader from "../../Components/Loader";
 import moment from "moment";
 import {IconColor, ScreenBackgroundColor} from "../../../Style/Constant";
 import {ListUsers} from "./tools/ListUsers";
 import {Event, PageHit} from "expo-analytics";
+import { ImagePicker } from 'expo';
 
 export class _ModifyEvent extends React.Component {
     static navigationOptions = {
@@ -32,7 +33,7 @@ export class _ModifyEvent extends React.Component {
                     duration: 2000
                 });
                 this.props.navigation.goBack();
-                break ;
+                break;
             }
         }
         this.props.login.analytics.hit(new PageHit('ModifyEvent'));
@@ -155,8 +156,6 @@ export class _ModifyEvent extends React.Component {
     }
 
     render() {
-        // console.log('props', this.props)
-        // console.log('state', this.state)
         if (this.props.calendar && (this.props.calendar.status === CalendarActionType.ModifyEvent
             || this.props.calendar.status === CalendarActionType.GetEventInfo))
             return (
@@ -165,23 +164,23 @@ export class _ModifyEvent extends React.Component {
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}>
-                    <Loader/>
+                    <Loader />
                 </Container>
             );
 
         return (
 
             <ScrollView>
-                <View style={{flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                    <Thumbnail style={{marginTop: 10}} large source={{uri: this.state.display}}/>
+                <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                    <Thumbnail style={{ marginTop: 10 }} large source={{ uri: this.state.display }} />
                     <TouchableOpacity style={GreenButtonStyle}
-                                      onPress={async () => {
-                                          const res = await Expo.ImagePicker.launchImageLibraryAsync();
-                                          if (res.cancelled)
-                                              return;
-                                          this.setState({...this.state, image: res, display: res.uri, new_image: true});
-                                      }}>
-                        <Text style={{fontSize: 18}}>Select image</Text>
+                        onPress={async () => {
+                            const res = await ImagePicker.launchImageLibraryAsync();
+                            if (res.cancelled)
+                                return;
+                            this.setState({ ...this.state, image: res, display: res.uri, new_image: true });
+                        }}>
+                        <Text style={{ fontSize: 18 }}>Select image</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{
@@ -191,29 +190,29 @@ export class _ModifyEvent extends React.Component {
                         marginLeft: 10, marginRight: 30, flexGrow: 3
                     }}>
                         <Item>
-                            <Input style={{...textStyle, fontSize: 26}}
-                                   placeholder="Event name" value={this.state.EventTitle}
-                                   onChangeText={(text) => this.setState({EventTitle: text})}/>
+                            <Input style={{ ...textStyle, fontSize: 26 }}
+                                placeholder="Event name" value={this.state.EventTitle}
+                                onChangeText={(text) => this.setState({ EventTitle: text })} />
                         </Item>
                         <Item>
-                            <Icon style={IconStyle} type='SimpleLineIcons' active name='pencil'/>
+                            <Icon style={IconStyle} type='SimpleLineIcons' active name='pencil' />
                             <Input style={textStyle}
-                                   placeholder="Description" value={this.state.description}
-                                   onChangeText={(text) => this.setState({description: text})}/>
+                                placeholder="Description" value={this.state.description}
+                                onChangeText={(text) => this.setState({ description: text })} />
                         </Item>
                         <Item>
-                            <Icon style={IconStyle} type='SimpleLineIcons' active name='location-pin'/>
+                            <Icon style={IconStyle} type='SimpleLineIcons' active name='location-pin' />
                             <Input style={textStyle}
-                                   placeholder="Localisation" value={this.state.localisation}
-                                   onChangeText={(text) => this.setState({localisation: text})}/>
+                                placeholder="Localisation" value={this.state.localisation}
+                                onChangeText={(text) => this.setState({ localisation: text })} />
                         </Item>
 
                         <Item>
-                            <Icon style={{...IconStyle, alignSelf: 'flex-start', marginTop: 10}} type='SimpleLineIcons'
-                                  active
-                                  name='clock'/>
+                            <Icon style={{ ...IconStyle, alignSelf: 'flex-start', marginTop: 10 }} type='SimpleLineIcons'
+                                active
+                                name='clock' />
 
-                            <View style={{flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center'}}>
+                            <View style={{ flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}>
 
                                 <View style={{
                                     flexDirection: 'row',
@@ -222,7 +221,7 @@ export class _ModifyEvent extends React.Component {
                                     marginTop: 5
                                 }}>
                                     <DatePicker
-                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
+                                        customStyles={{ placeholderText: { color: 'black', fontFamily: 'Roboto_medium' } }}
                                         style={{
                                             width: 200, height: 40, justifyContent: 'center',
                                             alignItems: 'center'
@@ -236,12 +235,12 @@ export class _ModifyEvent extends React.Component {
                                         showIcon={false}
                                         onDateChange={(date) => {
                                             if (this.checkDateInPast(date))
-                                                this.setState({dateBeginEvent: date})
+                                                this.setState({ dateBeginEvent: date })
                                         }}
                                     />
                                     <DatePicker
-                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
-                                        style={{width: 80}}
+                                        customStyles={{ placeholderText: { color: 'black', fontFamily: 'Roboto_medium' } }}
+                                        style={{ width: 80 }}
                                         date={this.state.beginTime}
                                         placeholder="End Time"
                                         mode="time"
@@ -251,7 +250,7 @@ export class _ModifyEvent extends React.Component {
                                         minuteInterval={1}
                                         showIcon={false}
                                         onDateChange={(time) => {
-                                            this.setState({beginTime: time});
+                                            this.setState({ beginTime: time });
                                         }}
                                     />
                                 </View>
@@ -263,7 +262,7 @@ export class _ModifyEvent extends React.Component {
                                     marginTop: 5
                                 }}>
                                     <DatePicker
-                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
+                                        customStyles={{ placeholderText: { color: 'black', fontFamily: 'Roboto_medium' } }}
                                         style={{
                                             width: 200, height: 40, justifyContent: 'center',
                                             alignItems: 'center', borderLeftColor: 'white'
@@ -277,12 +276,12 @@ export class _ModifyEvent extends React.Component {
                                         showIcon={false}
                                         onDateChange={(date) => {
                                             if (this.checkDateInPast(date))
-                                                this.setState({dateEndEvent: date})
+                                                this.setState({ dateEndEvent: date })
                                         }}
                                     />
                                     <DatePicker
-                                        customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
-                                        style={{width: 80}}
+                                        customStyles={{ placeholderText: { color: 'black', fontFamily: 'Roboto_medium' } }}
+                                        style={{ width: 80 }}
                                         date={this.state.endTime}
                                         placeholder="End Time"
                                         mode="time"
@@ -292,52 +291,52 @@ export class _ModifyEvent extends React.Component {
                                         minuteInterval={1}
                                         showIcon={false}
                                         onDateChange={(time) => {
-                                            this.setState({endTime: time});
+                                            this.setState({ endTime: time });
                                         }}
                                     />
                                 </View>
                             </View>
                         </Item>
                         <Item>
-                            <Icon style={IconStyle} type='SimpleLineIcons' active name='flag'/>
+                            <Icon style={IconStyle} type='SimpleLineIcons' active name='flag' />
                             <Picker
                                 placeholder="Select a event type"
-                                placeholderStyle={{color: "#9EA0A4"}}
+                                placeholderStyle={{ color: "#9EA0A4" }}
                                 note
                                 selectedValue={this.state.type}
                                 mode="dropdown"
-                                style={{width: 120}}
+                                style={{ width: 120 }}
                                 onValueChange={(value) => {
-                                    this.setState({type: value});
+                                    this.setState({ type: value });
                                 }}>
-                                <Picker.Item label={"Select a event type"} value={-1} key={-1}/>
+                                <Picker.Item label={"Select a event type"} value={-1} key={-1} />
                                 {
                                     this.props.calendar.eventsType.map((type, index) => {
-                                        return <Picker.Item label={type} value={index} key={index}/>
+                                        return <Picker.Item label={type} value={index} key={index} />
                                     })
                                 }
                             </Picker>
                         </Item>
                         <Item last>
-                            <Icon style={IconStyle} type='SimpleLineIcons' active name='lock'/>
+                            <Icon style={IconStyle} type='SimpleLineIcons' active name='lock' />
                             <Picker
                                 placeholder="Select a visibility"
-                                placeholderStyle={{color: "#9EA0A4"}}
+                                placeholderStyle={{ color: "#9EA0A4" }}
                                 note
                                 mode="dropdown"
-                                style={{width: 120}}
+                                style={{ width: 120 }}
                                 selectedValue={this.state.visibility}
                                 onValueChange={(value) => {
-                                    this.setState({visibility: value});
+                                    this.setState({ visibility: value });
                                 }}>
-                                <Picker.Item label={'public'} value={'public'} key={0}/>
-                                <Picker.Item label={'private'} value={'private'} key={1}/>
+                                <Picker.Item label={'public'} value={'public'} key={0} />
+                                <Picker.Item label={'private'} value={'private'} key={1} />
                             </Picker>
                         </Item>
                         {(this.props.attendees !== undefined) ?
                             <ListUsers callAddUser={(userList) => {
-                                this.setState({attendees: userList})
-                            }} loadList={this.props.attendees}/> : null
+                                this.setState({ attendees: userList })
+                            }} loadList={this.props.attendees} /> : null
                         }
                         <Button success disabled={this.validator()}
                                 rounded style={{margin: 30, marginTop: 5}}
@@ -419,8 +418,8 @@ const GreenButtonStyle = {
     padding: 10,
     margin: 10
 };
-const IconStyle = {color: IconColor};
-const textStyle = {margin: 5, color: 'black', fontFamily: 'Roboto_medium', fontSize: 16};
+const IconStyle = { color: IconColor };
+const textStyle = { margin: 5, color: 'black', fontFamily: 'Roboto_medium', fontSize: 16 };
 
 
 export const ModifyEvent = connect(mapStateToProps, mapDispatchToProps)(_ModifyEvent);
