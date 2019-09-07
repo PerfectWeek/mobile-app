@@ -11,6 +11,7 @@ import {HeaderBackgroundColor, ScreenBackgroundColor} from "../../../Style/Const
 import Loader from "../../Components/Loader";
 import EventCard from "../../Components/EventCard";
 import {GetEventRecommendation} from "../../redux/Events/events.actions";
+import {PageHit} from "expo-analytics";
 
 export class _EventsList extends React.Component {
     static navigationOptions = {
@@ -19,6 +20,7 @@ export class _EventsList extends React.Component {
 
     constructor(props) {
         super(props);
+        this.props.login.analytics.hit(new PageHit('EventsPage'));
         this.props.GetEventRecommendation("2019-05-10T12:12:12", "2019-06-10T12:12:12", 10);
 
     }
@@ -83,7 +85,8 @@ const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
         loading: state.events.loading,
-        events: state.events.events
+        events: state.events.events,
+        login: state.login
 
     }
 };

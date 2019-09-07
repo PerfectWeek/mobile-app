@@ -8,6 +8,7 @@ import {CreateGroup, GetGroups, GroupsActionType} from "../../redux/Groups/group
 import {ScreenBackgroundColor} from "../../../Style/Constant";
 import Loader from "../../Components/Loader";
 import {ListUsers} from "../Calendar/tools/ListUsers";
+import {Event} from "expo-analytics";
 
 export class _CreateGroupScreen extends React.Component {
     static navigationOptions = {
@@ -111,6 +112,8 @@ export class _CreateGroupScreen extends React.Component {
                                 disabled={this.state.groupName === '' || this.props.groups.status === GroupsActionType.CreateGroup}
                                 rounded style={{margin: 30, marginTop: 5}}
                                 onPress={() => {
+                                    this.props.login.analytics.event(new Event('Groups', 'Creation'));
+
                                     this.props.CreateGroup({
                                         name: this.state.groupName,
                                         description: this.state.description,

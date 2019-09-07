@@ -16,6 +16,12 @@ export class _Dasboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
+        // this.props.login.analytics.hit(new PageHit('Dashboard'))
+    // .then(() => console.log("success"))
+    //         .catch(e => console.log(e.message));
+        //     .then(() => console.log("success"))
+        //     .catch(e => console.log(e.message));
+
     }
 
     render() {

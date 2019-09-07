@@ -16,6 +16,7 @@ import {CalendarFilter} from "./CalendarFilter";
 import moment from 'moment'
 import {dateDiffInDays, getRandomColor, timeToString} from "../../Utils/utils";
 import * as Animatable from 'react-native-animatable';
+import {Event, PageHit} from "expo-analytics";
 
 export class _CalendarDashboard extends Component {
     constructor(props) {
@@ -24,6 +25,8 @@ export class _CalendarDashboard extends Component {
             items: {},
             scrolledDay: this.currentDate()
         };
+        this.props.login.analytics.hit(new PageHit('DashBoard'));
+
         this.props.LoadCalendar(this.props.login.pseudo);
         // console.log(this.props)
     }
@@ -47,7 +50,9 @@ export class _CalendarDashboard extends Component {
             'Delete ' + event.name + ' ?',
             [
                 {text: 'Cancel', style: 'cancel'},
-                {text: 'Delete', onPress: () => this.props.DeleteEvent(event.id)},
+                {text: 'Delete', onPress: () => {
+                        this.props.login.analytics.event(new Event('Events', 'DeleteEvent'));
+                        this.props.DeleteEvent(event.id)}},
             ],
             {cancelable: true}
         )
@@ -199,11 +204,13 @@ export class _CalendarDashboard extends Component {
                         const ButtonsCallback = [];
                         BUTTONS.push("Create event");
                         ButtonsCallback.push(() => {
+                            this.props.login.analytics.event(new Event('Events', 'CreationEvent'));
                             this.props.navigation.navigate({routeName: 'CreateEvent'});
                         });
 
                         BUTTONS.push("Find best slot");
                         ButtonsCallback.push(() => {
+                            this.props.login.analytics.event(new Event('Events', 'BestSlotCreation'));
                             this.props.navigation.navigate('PrefSlots', {calendarId: this.props.selectedCalendar});
                         });
 

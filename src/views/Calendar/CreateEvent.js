@@ -14,6 +14,7 @@ import {validateNotEmpty} from "../../Utils/utils";
 import {GroupsActionType} from "../../redux/Groups/groups.actions";
 
 import {ListUsers} from "./tools/ListUsers";
+import {Event, PageHit} from "expo-analytics";
 
 export class _CreateEvent extends React.Component {
     static navigationOptions = {
@@ -38,6 +39,9 @@ export class _CreateEvent extends React.Component {
             // searchBar: '',
             usersToAdd: []
         }
+        this.props.login.analytics.hit(new PageHit('CreateEvents'));
+
+
     }
 
     validator() {
@@ -297,6 +301,7 @@ export class _CreateEvent extends React.Component {
                                 rounded style={{margin: 30, marginTop: 10}}
                                 onPress={() => {
                                     // console.log(this.state)
+                                    this.props.login.analytics.event(new Event('Events', 'Creation'));
                                     this.props.CreateNewEvent({
                                         ...this.state,
                                         type: this.props.calendar.eventsType[this.state.type]

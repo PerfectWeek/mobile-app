@@ -16,6 +16,10 @@ import {ShowErrorNotification} from "../Utils/NotificationsModals";
 import LoginWithGoogleButton from "../Components/LoginWithGoogleButton";
 import LoginWithFacebookButton from "../Components/LoginWithFacebookButton";
 
+import * as Segment from 'expo-analytics-segment';
+import {PageHit, Event } from 'expo-analytics';
+
+
 
 class _LoginScreen extends React.Component {
     static navigationOptions = {
@@ -25,6 +29,17 @@ class _LoginScreen extends React.Component {
 
     constructor(props) {
         super(props);
+
+        // Segment.initialize({
+        //     androidWriteKey: "iXyt7pB46pPNvdG2sKFZVHMNyt3Zy7Zr",
+        //     iosWriteKey: "f7OZ9Gbm3xlD1Bk5yzjP1AUcVAsiZU3G" });
+        // Segment.track({
+        //     "type": "track",
+        //     "event": "Login"
+        // });
+
+        // Segment.identify('tim');
+
         this.state = {username: '', password: ''};
         this.props.CheckIfLogged();
         this.spinValue = new Animated.Value(0);
@@ -39,6 +54,9 @@ class _LoginScreen extends React.Component {
 
     runAnimation() {
         this.spinValue.setValue(0);
+
+        this.props.login.analytics.hit(new PageHit('LoginPage'));
+
         Animated.timing(
             this.spinValue,
             {
@@ -97,6 +115,16 @@ class _LoginScreen extends React.Component {
                                   this.state.password === '' || this.state.username === '' ||
                                   !validatePassword(this.state.password) || !validateNotEmpty(this.state.username)}
                                   onPress={() => {
+                                      Segment.identify(this.state.username);
+                                      // Segment.track({
+                                      //     "type": "track",
+                                      //     "event": "Login",
+                                      //     "properties": {
+                                      //         "accountType" : "Email"
+                                      //     }
+                                      // });
+                                      this.props.login.analytics.event(new Event('Profile', 'login'));
+
                                       this.props.Login(this.state.username, this.state.password);
                                   }}
                                   title={'Login'}
@@ -113,7 +141,7 @@ class _LoginScreen extends React.Component {
                         justifyContent: 'center',
                     }}>
                         <LoginWithGoogleButton/>
-                        <LoginWithFacebookButton style={{marginTop: 20}}/>
+                        <LoginWithFacebookButton/>
                     </View>
 
                 </View>

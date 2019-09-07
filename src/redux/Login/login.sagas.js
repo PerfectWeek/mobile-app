@@ -4,6 +4,8 @@ import {Network} from "../../Network/Requests";
 import {NavigationActions} from 'react-navigation'
 import {Toast} from "native-base";
 
+// import * as Segment from "expo-analytics-segment";
+
 function _login(email, password) {
     return Network.Post("/auth/login", {
         email: email,
@@ -16,6 +18,14 @@ function* CheckIsLogged(action) {
         const savedToken = yield Network.CheckToken();
         if (savedToken !== null) {
             Network.access_token = savedToken.token;
+            // Segment.identify(savedToken.name);
+            // Segment.track({
+            //     "type": "track" ,
+            //     "event": "Registered",
+            //     "properties": {
+            //         "accountType" : "Email"
+            //     }
+            // });
             yield put(LoginSuccess(savedToken.token, savedToken.name, savedToken.email));
             yield put(NavigationActions.navigate({routeName: 'Home'}));
         }

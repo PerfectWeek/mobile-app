@@ -5,6 +5,10 @@ import Modal from "../../Components/Modal";
 import {ListUsers} from "../Calendar/tools/ListUsers";
 import {SendFriendRequest} from "../../redux/Friends/friends.actions";
 
+
+import {Event, PageHit} from 'expo-analytics';
+
+
 class _AddAddFriends extends Component {
     constructor(props) {
         super(props);
@@ -28,7 +32,13 @@ class _AddAddFriends extends Component {
             <Modal
                 canValidate={(this.state.usersToAdd.length > 0)}
                 onRef={ref => (this.modal = ref)} title='Add Friends'
-                actionButtonTitle='Add' validateCallback={() => {
+                actionButtonTitle='Add' validateCallback={async () => {
+                await this.props.login.analytics.hit(new PageHit('AddFriends'))
+                    // .then(() => console.log("success"))
+                    // .catch(e => console.log(e.message));
+
+                await this.props.login.analytics.event(new Event('Friends', 'SendFriendRequests'));
+
                 this.props.SendFriendRequest(this.state.usersToAdd);
                 // this.setState({usersToAdd: [], searchBar: ''});
             }}>
@@ -71,6 +81,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
+        login: state.login
         // GroupStore: state.group
     }
 };

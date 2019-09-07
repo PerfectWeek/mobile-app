@@ -5,6 +5,8 @@ import HomeNavigator from "./HomeNavigator";
 import {BackHandler, Platform} from "react-native";
 import {GetInvites} from "../redux/Invites/invites.actions";
 
+import {PageHit, Event } from 'expo-analytics';
+
 export class _Home extends React.Component {
     constructor(props) {
         super(props);
@@ -46,7 +48,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        ...ownProps
+        ...ownProps,
+        login: state.login
     }
 };
 
