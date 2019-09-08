@@ -12,9 +12,12 @@ import CustomButton from '../Utils/CustomComponents/CustomButton'
 import {HeaderBackgroundColor, HeaderTintColor} from "../../Style/Constant";
 import {Event, PageHit} from "expo-analytics";
 
+import * as Localization from 'expo-localization';
+import i18n from 'i18n-js';
+
 class _RegisterScreen extends React.Component {
     static navigationOptions = {
-        title: 'Register',
+        title: Localization.locale === 'en-FR' ? 'Register' : "S'enregistrer",
         headerStyle: {
             backgroundColor: HeaderBackgroundColor
         },
@@ -89,12 +92,12 @@ class _RegisterScreen extends React.Component {
                         <CustomInput iconName={'lock'} secureTextEntry={true} style={{marginTop: 30}}
                                      onChangeText={(text) => this.setState({password: text})}
                                      error={!comparePasswords(this.state.password, this.state.password2) || !validatePassword(this.state.password)}
-                                     placeholder={'Password'}
+                                     placeholder={i18n.t('register.pwd')}
                         />
                         <CustomInput iconName={'lock'} secureTextEntry={true} style={{marginTop: 30}}
                                      onChangeText={(text) => this.setState({password2: text})}
                                      error={!comparePasswords(this.state.password, this.state.password2) || !validatePassword(this.state.password2)}
-                                     placeholder={'Password again'}
+                                     placeholder={i18n.t('register.pwda')}
                         />
                         <CustomButton style={{marginTop: 30}}
                                       disabled={this.props.register.status === RegisterActionsType.Register ||
@@ -104,7 +107,7 @@ class _RegisterScreen extends React.Component {
                                       !validateNotEmpty(this.state.username)
                                       }
                                       onPress={() => this.registerHandle()}
-                                      title={'Register'}
+                                      title={i18n.t('register.register')}
                         />
                     </View>
                     <View style={{

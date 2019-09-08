@@ -12,6 +12,7 @@ import { Constants } from 'expo';
 
 import { ShowErrorNotification, ShowSuccessNotification } from "../Utils/NotificationsModals";
 import { ProviderService } from "../Services/Providers/provider";
+import i18n from "i18n-js";
 
 class _LoginWithFacebookButton extends Component {
     static propTypes = {
@@ -36,10 +37,10 @@ class _LoginWithFacebookButton extends Component {
             if (res.type === 'success') {
                 const auth = await ProviderService.ConnectWithFacebookTokens(res.token);
                 this.props.LoginGoogle(auth.user.email, auth.token, auth.user.pseudo);
-                await ShowSuccessNotification('Logged in ! ' + `Hi ${auth.user.pseudo}!`);
+                await ShowSuccessNotification(i18n.t('login.success') + ` ! Hi ${auth.user.pseudo}!`);
             }
         } catch ({ message }) {
-            await ShowErrorNotification("Couldn't connect with Facebook");
+            await ShowErrorNotification(i18n.t('login.cofail') + " Facebook");
         }
         this.setState({ loading: false });
     }
@@ -65,7 +66,7 @@ class _LoginWithFacebookButton extends Component {
                             fontSize: 14,
                             fontFamily: 'Roboto_medium',
                             fontWeight: 'bold',
-                        }}>Continue with Facebook</Text>
+                        }}>{i18n.t('login.facebook')}</Text>
                 }
             </Button>
         );

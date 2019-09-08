@@ -15,6 +15,7 @@ import LoginWithFacebookButton from "../Components/LoginWithFacebookButton";
 import * as Segment from 'expo-analytics-segment';
 import {PageHit, Event } from 'expo-analytics';
 
+import i18n from 'i18n-js';
 
 
 class _LoginScreen extends React.Component {
@@ -25,7 +26,7 @@ class _LoginScreen extends React.Component {
 
     constructor(props) {
         super(props);
-
+        // console.log('wsh', i18n.t('login'));
         // Segment.initialize({
         //     androidWriteKey: "iXyt7pB46pPNvdG2sKFZVHMNyt3Zy7Zr",
         //     iosWriteKey: "f7OZ9Gbm3xlD1Bk5yzjP1AUcVAsiZU3G" });
@@ -96,7 +97,7 @@ class _LoginScreen extends React.Component {
                     <CustomInput iconName={'lock'} secureTextEntry={true} style={{ marginTop: 30 }}
                         onChangeText={(text) => this.setState({ password: text })}
                         error={!validatePassword(this.state.password)}
-                        placeholder={'Password'}
+                        placeholder={i18n.t('login.pwd')}
                     />
                     <CustomButton style={{marginTop: 30}}
                                   disabled={this.props.login.status === LoginActionsType.Login ||
@@ -121,14 +122,14 @@ class _LoginScreen extends React.Component {
                         onPress={() => this.props.navigation.navigate('Register')}
                         underlayColor={'rgba(0, 0, 0, 0)'}
                     >
-                        <Text style={{ textDecorationLine: 'underline' }}> Register </Text>
+                        <Text style={{ textDecorationLine: 'underline' }}> {i18n.t('login.register')} </Text>
                     </TouchableHighlight>
                     <View style={{
                         flex: 1,
                         flexDirection: 'column',
                         justifyContent: 'center',
                     }}>
-                        <LoginWithGoogleButton />
+                        <LoginWithGoogleButton/>
                         <LoginWithFacebookButton style={{ marginTop: 20 }} />
                     </View>
 

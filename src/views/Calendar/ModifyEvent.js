@@ -13,6 +13,7 @@ import {IconColor, ScreenBackgroundColor} from "../../../Style/Constant";
 import {ListUsers} from "./tools/ListUsers";
 import {Event, PageHit} from "expo-analytics";
 import { ImagePicker } from 'expo';
+import i18n from "i18n-js";
 
 export class _ModifyEvent extends React.Component {
     static navigationOptions = {
@@ -145,7 +146,7 @@ export class _ModifyEvent extends React.Component {
         d2.setMinutes(0);
         if (d1.getTime() < d2.getTime()) {
             Toast.show({
-                text: 'You can\'t move events in the past',
+                text: i18n.t('dashboard.createvent.error.past'),
                 type: "danger",
                 buttonText: "Okay",
                 duration: 2000
@@ -180,7 +181,7 @@ export class _ModifyEvent extends React.Component {
                                 return;
                             this.setState({ ...this.state, image: res, display: res.uri, new_image: true });
                         }}>
-                        <Text style={{ fontSize: 18 }}>Select image</Text>
+                        <Text style={{ fontSize: 18 }}>{i18n.t('dashboard.createvent.selectimg')}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{
@@ -191,19 +192,19 @@ export class _ModifyEvent extends React.Component {
                     }}>
                         <Item>
                             <Input style={{ ...textStyle, fontSize: 26 }}
-                                placeholder="Event name" value={this.state.EventTitle}
+                                placeholder={i18n.t('dashboard.createvent.nameevent')} value={this.state.EventTitle}
                                 onChangeText={(text) => this.setState({ EventTitle: text })} />
                         </Item>
                         <Item>
                             <Icon style={IconStyle} type='SimpleLineIcons' active name='pencil' />
                             <Input style={textStyle}
-                                placeholder="Description" value={this.state.description}
+                                placeholder={i18n.t('dashboard.createvent.description')} value={this.state.description}
                                 onChangeText={(text) => this.setState({ description: text })} />
                         </Item>
                         <Item>
                             <Icon style={IconStyle} type='SimpleLineIcons' active name='location-pin' />
                             <Input style={textStyle}
-                                placeholder="Localisation" value={this.state.localisation}
+                                placeholder={i18n.t('dashboard.createvent.localisation')} value={this.state.localisation}
                                 onChangeText={(text) => this.setState({ localisation: text })} />
                         </Item>
 
@@ -226,12 +227,12 @@ export class _ModifyEvent extends React.Component {
                                             width: 200, height: 40, justifyContent: 'center',
                                             alignItems: 'center'
                                         }}
-                                        placeholder={this.state.dateBeginEvent === '' ? "Beginning" : this.state.dateBeginEvent}
+                                        placeholder={this.state.dateBeginEvent === '' ? i18n.t('dashboard.eventinfo.begin') : this.state.dateBeginEvent}
                                         format="YYYY-MM-DD"
                                         minDate="2018-01-01"
                                         maxDate={this.state.dateEndEvent === '' ? "2022-01-01" : this.state.dateEndEvent}
-                                        confirmBtnText="Confirm"
-                                        cancelBtnText="Cancel"
+                                        confirmBtnText={i18n.t('other.confirm')}
+                                        cancelBtnText={i18n.t('other.cancel')}
                                         showIcon={false}
                                         onDateChange={(date) => {
                                             if (this.checkDateInPast(date))
@@ -242,11 +243,11 @@ export class _ModifyEvent extends React.Component {
                                         customStyles={{ placeholderText: { color: 'black', fontFamily: 'Roboto_medium' } }}
                                         style={{ width: 80 }}
                                         date={this.state.beginTime}
-                                        placeholder="End Time"
+                                        placeholder={i18n.t('dashboard.eventinfo.endtime')}
                                         mode="time"
                                         format="HH:mm"
-                                        confirmBtnText="Confirm"
-                                        cancelBtnText="Cancel"
+                                        confirmBtnText={i18n.t('other.confirm')}
+                                        cancelBtnText={i18n.t('other.cancel')}
                                         minuteInterval={1}
                                         showIcon={false}
                                         onDateChange={(time) => {
@@ -267,12 +268,12 @@ export class _ModifyEvent extends React.Component {
                                             width: 200, height: 40, justifyContent: 'center',
                                             alignItems: 'center', borderLeftColor: 'white'
                                         }}
-                                        placeholder={this.state.dateEndEvent === '' ? "Ending" : this.state.dateEndEvent}
+                                        placeholder={this.state.dateEndEvent === '' ? i18n.t('dashboard.eventinfo.endtime') : this.state.dateEndEvent}
                                         format="YYYY-MM-DD"
                                         minDate={this.state.dateBeginEvent === '' ? "2018-01-01" : this.state.dateBeginEvent}
                                         maxDate="2022-01-01"
-                                        confirmBtnText="Confirm"
-                                        cancelBtnText="Cancel"
+                                        confirmBtnText={i18n.t('other.confirm')}
+                                        cancelBtnText={i18n.t('other.cancel')}
                                         showIcon={false}
                                         onDateChange={(date) => {
                                             if (this.checkDateInPast(date))
@@ -283,11 +284,11 @@ export class _ModifyEvent extends React.Component {
                                         customStyles={{ placeholderText: { color: 'black', fontFamily: 'Roboto_medium' } }}
                                         style={{ width: 80 }}
                                         date={this.state.endTime}
-                                        placeholder="End Time"
+                                        placeholder={i18n.t('dashboard.eventinfo.endtime')}
                                         mode="time"
                                         format="HH:mm"
-                                        confirmBtnText="Confirm"
-                                        cancelBtnText="Cancel"
+                                        confirmBtnText={i18n.t('other.confirm')}
+                                        cancelBtnText={i18n.t('other.cancel')}
                                         minuteInterval={1}
                                         showIcon={false}
                                         onDateChange={(time) => {
@@ -300,7 +301,7 @@ export class _ModifyEvent extends React.Component {
                         <Item>
                             <Icon style={IconStyle} type='SimpleLineIcons' active name='flag' />
                             <Picker
-                                placeholder="Select a event type"
+                                placeholder={i18n.t('dashboard.createvent.selectevent')}
                                 placeholderStyle={{ color: "#9EA0A4" }}
                                 note
                                 selectedValue={this.state.type}
@@ -309,7 +310,7 @@ export class _ModifyEvent extends React.Component {
                                 onValueChange={(value) => {
                                     this.setState({ type: value });
                                 }}>
-                                <Picker.Item label={"Select a event type"} value={-1} key={-1} />
+                                <Picker.Item label={i18n.t('dashboard.createvent.selectevent')} value={-1} key={-1} />
                                 {
                                     this.props.calendar.eventsType.map((type, index) => {
                                         return <Picker.Item label={type} value={index} key={index} />
@@ -320,7 +321,7 @@ export class _ModifyEvent extends React.Component {
                         <Item last>
                             <Icon style={IconStyle} type='SimpleLineIcons' active name='lock' />
                             <Picker
-                                placeholder="Select a visibility"
+                                placeholder={i18n.t('dashboard.createvent.selectvis')}
                                 placeholderStyle={{ color: "#9EA0A4" }}
                                 note
                                 mode="dropdown"
@@ -329,8 +330,8 @@ export class _ModifyEvent extends React.Component {
                                 onValueChange={(value) => {
                                     this.setState({ visibility: value });
                                 }}>
-                                <Picker.Item label={'public'} value={'public'} key={0} />
-                                <Picker.Item label={'private'} value={'private'} key={1} />
+                                <Picker.Item label={i18n.t('other.public')} value={'public'} key={0} />
+                                <Picker.Item label={i18n.t('other.private')} value={'private'} key={1} />
                             </Picker>
                         </Item>
                         {(this.props.attendees !== undefined) ?

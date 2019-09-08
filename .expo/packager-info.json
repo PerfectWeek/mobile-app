@@ -1,10 +1,10 @@
 {
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 44902,
   "expoServerNgrokUrl": "https://9z-pyx.tim92i.mobile-app.exp.direct",
   "packagerNgrokUrl": "https://packager.9z-pyx.tim92i.mobile-app.exp.direct",
-  "ngrokPid": 41953,
+  "ngrokPid": 44911,
   "devToolsPort": 19002,
   "webpackServerPort": null
 }

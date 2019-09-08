@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, Alert, TouchableHighlight, ScrollView, Platform } from 'react-native';
 import connect from "react-redux/es/connect/connect";
-import { Agenda } from 'react-native-calendars';
+import { Agenda , LocaleConfig } from 'react-native-calendars';
 import { Body, Button, Container, Header, Icon, Right, Title, Fab, Thumbnail, ActionSheet } from "native-base";
 import {
     GetAllUsersEvents,
@@ -18,6 +18,19 @@ import { dateDiffInDays, getRandomColor, timeToString } from "../../Utils/utils"
 import * as Animatable from 'react-native-animatable';
 import {Event, PageHit} from "expo-analytics";
 import NotificationsHandler from '../../NotificationsHandler';
+
+import i18n from 'i18n-js';
+import * as Localization from 'expo-localization';
+
+
+LocaleConfig.locales['fr'] = {
+    monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+    monthNamesShort: ['Janv.','Févr.','Mars','Avril','Mai','Juin','Juil.','Août','Sept.','Oct.','Nov.','Déc.'],
+    dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+    dayNamesShort: ['Dim.','Lun.','Mar.','Mer.','Jeu.','Ven.','Sam.'],
+    today: 'Aujourd\'hui'
+};
+// LocaleConfig.defaultLocale = 'fr';
 
 export class _CalendarDashboard extends Component {
     constructor(props) {
@@ -48,10 +61,10 @@ export class _CalendarDashboard extends Component {
     removeEvent(event) {
         Alert.alert(
             'Confimation',
-            'Delete ' + event.name + ' ?',
+            `${i18n.t('other.delete')} `+ event.name + ' ?',
             [
-                {text: 'Cancel', style: 'cancel'},
-                {text: 'Delete', onPress: () => {
+                {text: i18n.t('other.cancel'), style: 'cancel'},
+                {text: i18n.t('other.delete'), onPress: () => {
                         this.props.login.analytics.event(new Event('Events', 'DeleteEvent'));
                         this.props.DeleteEvent(event.id)}},
             ],
@@ -62,7 +75,7 @@ export class _CalendarDashboard extends Component {
     renderItem(item) {
         const swipeoutBtns = [
             {
-                text: 'Edit',
+                text: i18n.t('other.edit'),
                 color: 'white',
                 backgroundColor: 'green',
                 onPress: () => {
@@ -70,7 +83,7 @@ export class _CalendarDashboard extends Component {
                 }
             },
             {
-                text: 'Delete',
+                text: i18n.t('other.delete'),
                 color: 'white',
                 backgroundColor: 'red',
                 onPress: () => {
@@ -166,7 +179,7 @@ export class _CalendarDashboard extends Component {
                 <Container>
                     <Header androidStatusBarColor="#00AE93" style={{ backgroundColor: HeaderBackgroundColor }}>
                         <Body>
-                            <Title style={{ color: 'black' }}>Calendar</Title>
+                            <Title style={{ color: 'black' }}>{i18n.t('dashboard.calendar')}</Title>
                         </Body>
                         <Right>
                             <Button transparent onPress={() => {
@@ -203,19 +216,19 @@ export class _CalendarDashboard extends Component {
                     onPress={() => {
                         const BUTTONS = [];
                         const ButtonsCallback = [];
-                        BUTTONS.push("Create event");
+                        BUTTONS.push(i18n.t('dashboard.createvent.creat'));
                         ButtonsCallback.push(() => {
                             this.props.login.analytics.event(new Event('Events', 'CreationEvent'));
                             this.props.navigation.navigate({routeName: 'CreateEvent'});
                         });
 
-                        BUTTONS.push("Find best slot");
+                        BUTTONS.push(i18n.t('dashboard.bestslottitle'));
                         ButtonsCallback.push(() => {
                             this.props.login.analytics.event(new Event('Events', 'BestSlotCreation'));
                             this.props.navigation.navigate('PrefSlots', {calendarId: this.props.selectedCalendar});
                         });
 
-                        BUTTONS.push("Cancel");
+                        BUTTONS.push(i18n.t('other.cancel'));
                         ButtonsCallback.push(() => {
                         });
                         const CANCEL_INDEX = BUTTONS.length - 1;
@@ -291,27 +304,6 @@ const mapStateToProps = (state, ownProps) => {
                 start.setUTCMinutes(0);
             }
 
-            // if (strTimeStart > start && dateDiffInDays(end, strTimeStart) !== 0) {
-            //     end.setUTCHours(0);
-            //     end.setUTCMinutes(0);
-            // }
-            // if (strTimeStart > start) {
-            //     start.setUTCHours(0);
-            //     start.setUTCMinutes(0);
-            // }
-
-            // if (strTimeStart <= start && dateDiffInDays(end, start) !== 0) {
-            //     end.setUTCHours(0);
-            //     end.setUTCMinutes(0);
-            // }
-            // if (strTimeStart > start && dateDiffInDays(end, strTimeStart) !== 0) {
-            //     end.setUTCHours(0);
-            //     end.setUTCMinutes(0);
-            // }
-            // if (strTimeStart > start) {
-            //     start.setUTCHours(0);
-            //     start.setUTCMinutes(0);
-            // }
             items[isoDate].push({
                 id: event.id,
                 name: event.name,

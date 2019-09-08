@@ -11,6 +11,8 @@ import {
     SetFilters
 } from "../../redux/Calendar/calendar.actions";
 
+import i18n from 'i18n-js';
+
 class _CalendarFilter extends Component {
 
     constructor(props) {
@@ -34,8 +36,8 @@ class _CalendarFilter extends Component {
             var filters = [];
         return (
             <Modal
-                onRef={ref => (this.modal = ref)} title='Filter'
-                actionButtonTitle='Filter'
+                onRef={ref => (this.modal = ref)} title={i18n.t('dashboard.filter')}
+                actionButtonTitle={i18n.t('dashboard.filterButton')}
                 validateCallback={() => {
                     // console.log('ti')
                     // console.log(this.state.filters)

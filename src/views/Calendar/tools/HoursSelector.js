@@ -4,6 +4,8 @@ import {TouchableOpacity, View} from "react-native";
 import {Item, Text} from "native-base";
 import TimePicker from "react-native-24h-timepicker";
 
+import i18n from 'i18n-js';
+
 class HoursSelector extends Component {
     constructor(props) {
         super(props);
@@ -28,7 +30,7 @@ class HoursSelector extends Component {
                 <TouchableOpacity style={{height: 40, paddingTop: 10}} onPress={() => this.TimePicker.open()}>
                     <Text style={{color: "#9EA0A4", fontSize: 16, textAlign: 'center', paddingLeft: 16}}>
                         {this.props.time === '' || this.props.time === 0  || this.props.time === '0:00' ? this.props.placeholder :
-                            `${Math.trunc(parseInt(this.props.time)/60)} Hours ${parseInt(this.props.time)%60} Minutes`
+                            `${Math.trunc(parseInt(this.props.time)/60)} ${i18n.t('other.hours')} ${parseInt(this.props.time)%60} Minutes`
                         }
                     </Text>
                 </TouchableOpacity>
