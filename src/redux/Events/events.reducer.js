@@ -12,6 +12,11 @@ export const EventsReducer = (state = default_state, action) => {
                 ...state,
                 loading: action.loading
             };
+            case EventsActionType.SetLoadingJoining:
+            return {
+                ...state,
+                loading_joining: action.loading_joining
+            };
         case EventsActionType.SetEvents:
             return {
                 ...state,

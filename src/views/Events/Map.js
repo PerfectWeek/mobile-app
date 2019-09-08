@@ -78,10 +78,12 @@ export class _Map extends React.Component {
                                         source={{ uri: pin.image }} />
 
                                 </View>
-                                <Callout onPress={() => {
-                                    this.props.navigation.navigate('EventDetail', { event_id: pin.id });
-                                }}>
-                                    <Text style={{ fontWeight: 'bold' }}>{pin.name}</Text>
+                                <Callout style={{ paddingTop: 3, paddingBottom: 3, width: 100, height: 100 }}
+                                    onPress={() => {
+                                        this.props.navigation.navigate('EventDetail', { event_id: pin.id });
+                                    }}>
+                                    <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>{pin.name}</Text>
+                                    <Text style={{ marginTop: 5, textAlign: 'center', color: "rgba(0, 0, 0, 0.54)" }}>{pin.location}</Text>
                                 </Callout>
                             </MapView.Marker>
                         );

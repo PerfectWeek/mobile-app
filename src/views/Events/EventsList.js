@@ -59,7 +59,7 @@ export class _EventsList extends React.Component {
             }}>
                 <Header androidStatusBarColor="#00AE93" style={{ backgroundColor: HeaderBackgroundColor }}>
                     <Body>
-                        <Title style={{ color: 'black' }}>My groups</Title>
+                        <Title style={{ color: 'black' }}>Public events</Title>
                     </Body>
                     <Right>
                         <Button transparent onPress={() => {

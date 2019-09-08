@@ -3,6 +3,7 @@ import {arrayToObject} from "../../Utils/utils";
 export const EventsActionType = {
     Nothing: 'NOTHING',
     SetLoading: 'SET_LOADING',
+    SetLoadingJoining: 'SET_LOADING_joining',
     GetEventRecommendation: 'GET_EVENTS_RECOMMENDATION',
     SetEvents: 'SET_EVENTS',
     SetEvent: 'SET_EVENT',
@@ -15,6 +16,13 @@ export const SetLoading = (loading) => {
     return {
         type: EventsActionType.SetLoading,
         loading
+    }
+};
+
+export const SetLoadingJoining = (loading_joining) => {
+    return {
+        type: EventsActionType.SetLoadingJoining,
+        loading_joining
     }
 };
 

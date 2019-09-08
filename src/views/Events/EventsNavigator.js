@@ -19,12 +19,14 @@ export const EventsNavigator = createStackNavigator(
             })
         },
         Map: {
-            screen: Map
+            screen: Map,
+            navigationOptions: () => ({
+                title: 'Public Events Map',
+            })
         }
     },
     {
         initialRouteName: 'EventsList',
-        // initialRouteName: 'Map',
         navigationOptions: {
             headerStyle: {
                 backgroundColor: HeaderBackgroundColor,

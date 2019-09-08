@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     Dimensions, ScrollView,
-    View, TouchableOpacity
+    View, TouchableOpacity, ActivityIndicator
 } from 'react-native';
 import {
     Button,
@@ -11,9 +11,9 @@ import {
 import connect from "react-redux/es/connect/connect";
 import moment from "moment";
 import Modal from "../../Components/Modal";
-import {GroupsActionType} from "../../redux/Groups/groups.actions";
+import { GroupsActionType } from "../../redux/Groups/groups.actions";
 import UserList from "../../Components/UserList";
-import {ChangeEventStatus, JoinEvent} from "../../redux/Events/events.actions";
+import { ChangeEventStatus, JoinEvent } from "../../redux/Events/events.actions";
 
 const type_to_icon = {
     party: 'glass-cocktail',
@@ -38,11 +38,11 @@ export class _EventDetailScreen extends React.Component {
             going = true;
         return (
             <ScrollView>
-                <View style={{marginTop: 0, justifyContent: 'center'}}>
+                <View style={{ marginTop: 0, justifyContent: 'center' }}>
                     <Thumbnail large
-                               style={{width: Dimensions.get('window').width, height: 160, borderRadius: 0}}
+                        style={{ width: Dimensions.get('window').width, height: 160, borderRadius: 0 }}
 
-                               source={{uri: event.image}}/>
+                        source={{ uri: event.image }} />
                     <Text style={{
                         color: 'black',
                         textAlign: 'center',
@@ -55,24 +55,24 @@ export class _EventDetailScreen extends React.Component {
 
                     <View style={rowStyle}>
 
-                        <Icon style={{fontSize: 18}} active name='clock' type={"SimpleLineIcons"}/>
-                        <Text style={{fontSize: 18, marginLeft: 10}}>
+                        <Icon style={{ fontSize: 18 }} active name='clock' type={"SimpleLineIcons"} />
+                        <Text style={{ fontSize: 18, marginLeft: 10 }}>
                             {moment.utc(event.start_time).format('ddd., DD MMMM. HH:mm')} - {moment.utc(event.end_time).format('ddd., DD MMMM. HH:mm')}
                         </Text>
                     </View>
                     <View style={rowStyle}>
 
-                        <Icon style={{fontSize: 18}} active name='location-pin' type={"SimpleLineIcons"}/>
-                        <Text style={{fontSize: 18, marginLeft: 10}}>
+                        <Icon style={{ fontSize: 18 }} active name='location-pin' type={"SimpleLineIcons"} />
+                        <Text style={{ fontSize: 18, marginLeft: 10 }}>
                             {event.location}
                         </Text>
                     </View>
                     <View style={rowStyle}>
-                        <Icon style={{fontSize: 18}} active name='people' type={"SimpleLineIcons"}/>
-                        <Text style={{fontSize: 18, marginLeft: 10}}>
+                        <Icon style={{ fontSize: 18 }} active name='people' type={"SimpleLineIcons"} />
+                        <Text style={{ fontSize: 18, marginLeft: 10 }}>
                             {event.attendees.filter(a => a.status === 'going').length} people going
                         </Text>
-                        <TouchableOpacity onPress={() => {this.modal.toggle()}}>
+                        <TouchableOpacity onPress={() => { this.modal.toggle() }}>
                             <Text style={{
                                 marginLeft: 10,
                                 fontSize: 18,
@@ -82,9 +82,9 @@ export class _EventDetailScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
                     {event.type !== 'other' && <View style={rowStyle}>
-                        <Icon style={{fontSize: 18}} active name={type_to_icon[event.type]}
-                              type={"MaterialCommunityIcons"}/>
-                        <Text style={{fontSize: 18, marginLeft: 10}}>
+                        <Icon style={{ fontSize: 18 }} active name={type_to_icon[event.type]}
+                            type={"MaterialCommunityIcons"} />
+                        <Text style={{ fontSize: 18, marginLeft: 10 }}>
                             {event.type} event
                         </Text>
                     </View>
@@ -94,7 +94,7 @@ export class _EventDetailScreen extends React.Component {
 
                 <Modal
                     onRef={ref => (this.modal = ref)} title='Attendees'>
-                    <UserList users={event.attendees.filter(a => a.status === 'going')}/>
+                    <UserList users={event.attendees.filter(a => a.status === 'going')} />
                 </Modal>
 
                 <Text
@@ -108,8 +108,7 @@ export class _EventDetailScreen extends React.Component {
                     }}>
                     Description :
                 </Text>
-                <Text style={{fontSize: 18, textAlign: 'center', marginTop: 0}}>
-
+                <Text style={{ fontSize: 18, textAlign: 'center', marginTop: 0 }}>
                     {event.description}
                 </Text>
 
@@ -123,15 +122,17 @@ export class _EventDetailScreen extends React.Component {
                     <View style={{
                         flexDirection: 'column',
                     }}>
-                        <Button success={going} light={!going} onPress={() => {
+                        <Button disabled={this.props.loading_joining === true} style={{padding:this.props.loading_joining === true?10:0}} success={going} light={!going} onPress={() => {
                             if (!present)
                                 this.props.JoinEvent(event, 'going');
                             else
                                 this.props.ChangeEventStatus(event, going ? 'no' : 'going');
                         }}>
-                            <Icon active name='check' type={"FontAwesome"}/>
+                            {
+                                this.props.loading_joining === true ? <ActivityIndicator size="large" color="black" /> : <Icon active name='check' type={"FontAwesome"} />
+                            }
                         </Button>
-                        <Text style={{color: going ? '#5cb85c' : 'grey', textAlign: 'center'}}>Going</Text>
+                        <Text style={{ color: going ? '#5cb85c' : 'grey', textAlign: 'center' }}>Going</Text>
                     </View>
 
                 </View>
@@ -142,8 +143,8 @@ export class _EventDetailScreen extends React.Component {
 
 }
 
-const textStyle = {margin: 10, color: 'black', fontFamily: 'Roboto_medium', fontSize: 18, textAlign: 'center'};
-const rowStyle = {flexDirection: 'row', alignItems: 'center', marginLeft: 20, marginRight: 20, marginTop: 10};
+const textStyle = { margin: 10, color: 'black', fontFamily: 'Roboto_medium', fontSize: 18, textAlign: 'center' };
+const rowStyle = { flexDirection: 'row', alignItems: 'center', marginLeft: 20, marginRight: 20, marginTop: 10 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
@@ -156,8 +157,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
-        pseudo : state.login.pseudo,
-        event : state.events.events[ownProps.navigation.state.params.event_id]
+        pseudo: state.login.pseudo,
+        event: state.events.events[ownProps.navigation.state.params.event_id],
+        loading_joining: state.events.loading_joining
     }
 };
 
