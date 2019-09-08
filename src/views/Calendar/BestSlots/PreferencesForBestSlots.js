@@ -6,7 +6,8 @@ import moment from "moment";
 import {IconColor} from "../../../../Style/Constant";
 // import TimePicker from "react-native-24h-timepicker";
 import HoursSelector from '../tools/HoursSelector';
-
+import * as Localization from "expo-localization/build/Localization.types";
+import i18n from 'i18n-js';
 
 
 class _PreferencesForBestSlots extends Component {
@@ -23,7 +24,7 @@ class _PreferencesForBestSlots extends Component {
             calendarId: this.props.navigation.getParam('calendarId'),
             timeEvent: 0,
             type:'',
-            visibility: 'public',
+            visibility: i18n.t('other.public'),
         }
         //console.log(this.props.navigation.getParam('calendarId'), this.props)
     }
@@ -51,7 +52,7 @@ class _PreferencesForBestSlots extends Component {
         d2.setMinutes(0);
         if (d1.getTime() < d2.getTime()) {
             Toast.show({
-                text: 'You can\'t create events in the past',
+                text: i18n.t('dashboard.createvent.error.past'),
                 type: "danger",
                 buttonText: "Okay",
                 duration: 2000
@@ -72,7 +73,8 @@ class _PreferencesForBestSlots extends Component {
     // }
 
     render() {
-        const eventsDefinedTypes = ['party', 'work', 'workout', 'hobby'];
+        const eventsDefinedTypes = Localization.locale !== 'fr-FR' ? ['party', 'work', 'hobby', 'workout', 'other'] : ['Soirée', 'Travail', 'Musculation', 'Hobby', 'Autre'];
+
         return (
             <Container>
                 <View style={{
@@ -85,19 +87,19 @@ class _PreferencesForBestSlots extends Component {
                     }}>
                     <Item>
                         <Input style={{color: 'black', fontFamily: 'Roboto_medium', fontSize: 26}}
-                               placeholder="Event name" value={this.state.EventTitle}
+                               placeholder={i18n.t('dashboard.createvent.nameevent')} value={this.state.EventTitle}
                                onChangeText={(text) => this.setState({EventTitle: text})}/>
                     </Item>
                     <Item>
                         <Icon style={IconStyle} type='SimpleLineIcons' active name='pencil'/>
                         <Input style={{color: 'black', fontFamily: 'Roboto_medium', fontSize: 16}}
-                               placeholder="Description" value={this.state.description}
+                               placeholder={i18n.t('dashboard.createvent.description')} value={this.state.description}
                                onChangeText={(text) => this.setState({description: text})}/>
                     </Item>
                     <Item>
                         <Icon style={IconStyle} type='SimpleLineIcons' active name='location-pin'/>
                         <Input style={{color: 'black', fontFamily: 'Roboto_medium', fontSize: 16}}
-                               placeholder="Localisation" value={this.state.localisation}
+                               placeholder={i18n.t('dashboard.createvent.localisation')} value={this.state.localisation}
                                onChangeText={(text) => this.setState({localisation: text})}/>
                     </Item>
                         <Item>
@@ -117,12 +119,12 @@ class _PreferencesForBestSlots extends Component {
                                 width: 200, height: 50, justifyContent: 'center',
                                 alignItems: 'center'
                             }}
-                            placeholder={this.state.dateBeginEvent === '' ? "Beginning" : this.state.dateBeginEvent}
+                            placeholder={this.state.dateBeginEvent === '' ? i18n.t('dashboard.eventinfo.begin') : this.state.dateBeginEvent}
                             format="YYYY-MM-DD"
                             minDate="2018-01-01"
                             maxDate={this.state.dateEndEvent === '' ? "2022-01-01" : this.state.dateEndEvent}
-                            confirmBtnText="Confirm"
-                            cancelBtnText="Cancel"
+                            confirmBtnText={i18n.t('other.confirm')}
+                            cancelBtnText={i18n.t('other.cancel')}
                             showIcon={false}
                             onDateChange={(date) => {
                                 if (this.checkDateInPast(date))
@@ -133,11 +135,11 @@ class _PreferencesForBestSlots extends Component {
                             customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
                             style={{width: 80}}
                             date={this.state.beginTime}
-                            placeholder="End Time"
+                            placeholder={i18n.t('dashboard.eventinfo.endtime')}
                             mode="time"
                             format="HH:mm"
-                            confirmBtnText="Confirm"
-                            cancelBtnText="Cancel"
+                            confirmBtnText={i18n.t('other.confirm')}
+                            cancelBtnText={i18n.t('other.confirm')}
                             minuteInterval={1}
                             showIcon={false}
                             onDateChange={(time) => {
@@ -156,12 +158,12 @@ class _PreferencesForBestSlots extends Component {
                                 width: 200, height: 50, justifyContent: 'center',
                                 alignItems: 'center', borderLeftColor: 'white'
                             }}
-                            placeholder={this.state.dateEndEvent === '' ? "Ending" : this.state.dateEndEvent}
+                            placeholder={this.state.dateEndEvent === '' ? i18n.t('dashboard.eventinfo.endtime') : this.state.dateEndEvent}
                             format="YYYY-MM-DD"
                             minDate={this.state.dateBeginEvent === '' ? "2018-01-01" : this.state.dateBeginEvent}
                             maxDate="2022-01-01"
-                            confirmBtnText="Confirm"
-                            cancelBtnText="Cancel"
+                            confirmBtnText={i18n.t('other.confirm')}
+                            cancelBtnText={i18n.t('other.confirm')}
                             showIcon={false}
                             onDateChange={(date) => {
                                 if (this.checkDateInPast(date))
@@ -172,11 +174,11 @@ class _PreferencesForBestSlots extends Component {
                             customStyles={{placeholderText: {color: 'black', fontFamily: 'Roboto_medium'}}}
                             style={{width: 80}}
                             date={this.state.endTime}
-                            placeholder="End Time"
+                            placeholder={i18n.t('dashboard.eventinfo.endtime')}
                             mode="time"
                             format="HH:mm"
-                            confirmBtnText="Confirm"
-                            cancelBtnText="Cancel"
+                            confirmBtnText={i18n.t('other.confirm')}
+                            cancelBtnText={i18n.t('other.confirm')}
                             minuteInterval={1}
                             showIcon={false}
                             onDateChange={(time) => {
@@ -202,12 +204,12 @@ class _PreferencesForBestSlots extends Component {
                     {/*        onCancel={() => this.onCancel()}*/}
                     {/*        onConfirm={(hour, minute) => this.onConfirm(hour, minute)}*/}
                     {/*    />*/}
-                    <HoursSelector time={this.state.timeEvent} placeholder={'Event duration'} onConfirm={(hours, minutes) => this.setState({ timeEvent: hours*60+parseInt(minutes) })}/>
+                    <HoursSelector time={this.state.timeEvent} placeholder={i18n.t('dashboard.createvent.eventduration')} onConfirm={(hours, minutes) => this.setState({ timeEvent: hours*60+parseInt(minutes) })}/>
                     </Item>
                 <Item>
                     <Icon style={IconStyle} type='SimpleLineIcons' active name='flag'/>
                     <Picker
-                        placeholder="Type of event"
+                        placeholder={i18n.t('dashboard.createvent.typeevent')}
                         placeholderStyle={{color: "#9EA0A4"}}
                         note
                         selectedValue={this.state.type}
@@ -216,7 +218,7 @@ class _PreferencesForBestSlots extends Component {
                         onValueChange={(value) => {
                             this.setState({type: value});
                         }}>
-                        <Picker.Item label={"Type of event"} value={-1} key={-1}/>
+                        <Picker.Item label={i18n.t('dashboard.createvent.typeevent')} value={-1} key={-1}/>
                         {
                             eventsDefinedTypes.map((c, idx) => {
                                 return <Picker.Item label={c} value={c} key={idx}/>
@@ -227,7 +229,7 @@ class _PreferencesForBestSlots extends Component {
                 <Item last>
                     <Icon style={IconStyle} type='SimpleLineIcons' active name='lock'/>
                     <Picker
-                        placeholder="Select a visibility"
+                        placeholder={i18n.t('dashboard.createvent.selectvis')}
                         placeholderStyle={{color: "#9EA0A4"}}
                         note
                         // selectedValue={this.state.visibility}
@@ -237,8 +239,8 @@ class _PreferencesForBestSlots extends Component {
                         onValueChange={(value) => {
                             this.setState({visibility: value});
                         }}>
-                        <Picker.Item label={'public'} value={'public'} key={0}/>
-                        <Picker.Item label={'private'} value={'private'} key={1}/>
+                        <Picker.Item label={i18n.t('other.public')} value={'public'} key={0}/>
+                        <Picker.Item label={i18n.t('other.private')} value={'private'} key={1}/>
                     </Picker>
                 </Item>
                 <Button success disabled={this.validator()}

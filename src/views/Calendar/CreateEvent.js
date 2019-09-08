@@ -82,7 +82,6 @@ export class _CreateEvent extends React.Component {
     }
 
     render() {
-        const eventsDefinedTypes = ['party', 'work', 'workout', 'hobby'];
         let listcal = [];
         this.props.calendar.calendars.map((it) => {
             listcal.push({

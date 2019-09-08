@@ -16,6 +16,7 @@ import {Container, Thumbnail} from "native-base";
 import * as Animatable from 'react-native-animatable';
 import Loader from "../../../Components/Loader";
 
+import i18n from 'i18n-js';
 
 class _BestSlotCalendar extends Component {
     constructor(props) {
@@ -343,16 +344,16 @@ class _BestSlotCalendar extends Component {
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                     <Button onPress={() => {this.setState({refresh: !this.state.refresh});
                         this.prevSlot();
-                    }} title="Prev"/>
+                    }} title={i18n.t('other.prev')}/>
                     <Text style={{
                         fontSize: 16,
                         fontFamily: 'Lato_Medium'
                     }}>
-                        {'        Slot n°'+this.state.idxSlot+'/'+this.props.calendar.slots.length+'        '}
+                        {'        ' + i18n.t('other.slot') + ' n°'+this.state.idxSlot+'/'+this.props.calendar.slots.length+'        '}
                     </Text>
                     <Button onPress={() => {this.setState({refresh: !this.state.refresh});
                         this.nextSlot();
-                    }} title="Next"/>
+                    }} title={i18n.t('other.next')}/>
                 </View>
             </Container>
         )
