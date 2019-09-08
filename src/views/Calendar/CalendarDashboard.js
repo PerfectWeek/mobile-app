@@ -16,7 +16,7 @@ import { CalendarFilter } from "./CalendarFilter";
 import moment from 'moment'
 import { dateDiffInDays, getRandomColor, timeToString } from "../../Utils/utils";
 import * as Animatable from 'react-native-animatable';
-import {Event, PageHit} from "expo-analytics";
+import { Event, PageHit } from "expo-analytics";
 import NotificationsHandler from '../../NotificationsHandler';
 
 export class _CalendarDashboard extends Component {
@@ -50,10 +50,13 @@ export class _CalendarDashboard extends Component {
             'Confimation',
             'Delete ' + event.name + ' ?',
             [
-                {text: 'Cancel', style: 'cancel'},
-                {text: 'Delete', onPress: () => {
+                { text: 'Cancel', style: 'cancel' },
+                {
+                    text: 'Delete', onPress: () => {
                         this.props.login.analytics.event(new Event('Events', 'DeleteEvent'));
-                        this.props.DeleteEvent(event.id)}},
+                        this.props.DeleteEvent(event.id)
+                    }
+                },
             ],
             { cancelable: true }
         )
@@ -150,11 +153,31 @@ export class _CalendarDashboard extends Component {
     }
 
     render() {
+        let top_header = <Header androidStatusBarColor="#00AE93" style={{ backgroundColor: HeaderBackgroundColor }}>
+            <Body>
+                <Title style={{ color: 'black' }}>Calendar</Title>
+            </Body>
+            <Right>
+                <Button transparent onPress={() => {
+                    this.calendarFilter.openModal();
+                }}>
+                    <Icon style={{ fontSize: 28, fontWeight: 'bold', color: '#064C96' }}
+                        type={"FontAwesome"} name='filter' />
+                </Button>
+            </Right>
+        </Header>
         if (this.props.calendar.DashboardStatus !== CalendarActionType.LoadCalendarSuccess)
             return (
-                <Container style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                    <Loader />
-                </Container>
+                <View style={{
+                    paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight,
+                    backgroundColor: ScreenBackgroundColor,
+                    flex: 1
+                }}>
+                    {top_header}
+                    <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                        <Loader />
+                    </View>
+                </View>
             );
         // console.log(this.props)
         return (
@@ -164,19 +187,7 @@ export class _CalendarDashboard extends Component {
             }}>
                 <NotificationsHandler nav={this.props.navigation} />
                 <Container>
-                    <Header androidStatusBarColor="#00AE93" style={{ backgroundColor: HeaderBackgroundColor }}>
-                        <Body>
-                            <Title style={{ color: 'black' }}>Calendar</Title>
-                        </Body>
-                        <Right>
-                            <Button transparent onPress={() => {
-                                this.calendarFilter.openModal();
-                            }}>
-                                <Icon style={{ fontSize: 28, fontWeight: 'bold', color: '#064C96' }}
-                                    type={"FontAwesome"} name='filter' />
-                            </Button>
-                        </Right>
-                    </Header>
+                    {top_header}
                     <CalendarFilter onRef={ref => (this.calendarFilter = ref)} />
 
                     <Agenda
@@ -206,13 +217,13 @@ export class _CalendarDashboard extends Component {
                         BUTTONS.push("Create event");
                         ButtonsCallback.push(() => {
                             this.props.login.analytics.event(new Event('Events', 'CreationEvent'));
-                            this.props.navigation.navigate({routeName: 'CreateEvent'});
+                            this.props.navigation.navigate({ routeName: 'CreateEvent' });
                         });
 
                         BUTTONS.push("Find best slot");
                         ButtonsCallback.push(() => {
                             this.props.login.analytics.event(new Event('Events', 'BestSlotCreation'));
-                            this.props.navigation.navigate('PrefSlots', {calendarId: this.props.selectedCalendar});
+                            this.props.navigation.navigate('PrefSlots', { calendarId: this.props.selectedCalendar });
                         });
 
                         BUTTONS.push("Cancel");

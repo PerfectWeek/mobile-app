@@ -29,7 +29,6 @@ export class _EventsList extends React.Component {
         e.setDate(e.getDate() + 20);
         let end = e.toISOString().split('.')[0]
         this.props.GetEventRecommendation(beg, end, 10);
-
     }
 
     _onRefresh = () => {
@@ -46,10 +45,33 @@ export class _EventsList extends React.Component {
     };
 
     render() {
+        let top_header = <Header androidStatusBarColor="#00AE93" style={{ backgroundColor: HeaderBackgroundColor }}>
+            <Body>
+                <Title style={{ color: 'black' }}>Public events</Title>
+            </Body>
+            <Right>
+                <Button transparent onPress={() => {
+                    this.props.navigation.navigate({ routeName: 'Map' });
+                }}>
+                    <Text uppercase={false} style={{ fontSize: 18, fontWeight: 'bold', color: '#064C96' }}>
+                        Map view
+                 </Text>
+                    <Icon style={{ fontSize: 28, fontWeight: 'bold', color: '#064C96' }} type={"MaterialIcons"} name='location-on' />
+                </Button>
+            </Right>
+        </Header>
+
         if (this.props.events === undefined || this.props.loading !== false)
             return (
-                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                    <Loader />
+                <View style={{
+                    paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight,
+                    backgroundColor: ScreenBackgroundColor,
+                    flex: 1
+                }}>
+                    {top_header}
+                    <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                        <Loader />
+                    </View>
                 </View>
             );
         return (
@@ -57,19 +79,8 @@ export class _EventsList extends React.Component {
                 paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight,
                 backgroundColor: ScreenBackgroundColor
             }}>
-                <Header androidStatusBarColor="#00AE93" style={{ backgroundColor: HeaderBackgroundColor }}>
-                    <Body>
-                        <Title style={{ color: 'black' }}>Public events</Title>
-                    </Body>
-                    <Right>
-                        <Button transparent onPress={() => {
-                            this.props.navigation.navigate({ routeName: 'Map' });
-                        }}>
-                            <Icon style={{ fontSize: 28, fontWeight: 'bold', color: '#064C96' }} type={"MaterialIcons"} name='location-on' />
-                        </Button>
-                    </Right>
-                </Header>
-                <ScrollView style={{ backgroundColor: 'white'}}
+                {top_header}
+                <ScrollView style={{ backgroundColor: 'white' }}
                     refreshControl={
                         <RefreshControl
                             refreshing={this.props.loading}
@@ -91,7 +102,7 @@ export class _EventsList extends React.Component {
                                     key={event.id} />
                             })
                     }
-                    <View style={{height:Expo.Constants.statusBarHeight + 50, backgroundColor: '#eae9ef'}}></View>
+                    <View style={{ height: Expo.Constants.statusBarHeight + 50, backgroundColor: '#eae9ef' }}></View>
                 </ScrollView>
             </View>
 

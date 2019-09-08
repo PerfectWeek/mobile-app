@@ -58,7 +58,7 @@ export class _NotificationHandler extends React.Component {
         if (Platform.OS !== 'ios') {
             BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
         }
-        this.listener && Notifications.removeListener(this.listen);
+        this.listener && Notifications.removeListener && Notifications.removeListener(this.listen);
     }
 
     listen(store, navigation, event) {
