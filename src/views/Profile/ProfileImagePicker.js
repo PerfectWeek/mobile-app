@@ -12,6 +12,7 @@ import {UpdateUserImage, UserActionsType} from "../../redux/User/user.actions";
 import * as ImagePicker from 'expo-image-picker';
 import {Constants, Permissions} from 'expo';
 
+import i18n from 'i18n-js';
 
 export class _ProfileImagePicker extends React.Component {
 
@@ -32,8 +33,8 @@ export class _ProfileImagePicker extends React.Component {
         return (
             <Modal
                 canValidate={(this.state.new)}
-                onRef={ref => (this.modal = ref)} title='Edit Profile Picture'
-                actionButtonTitle='Update' validateCallback={() => {
+                onRef={ref => (this.modal = ref)} title={i18n.t('profile.edit.editimg')}
+                actionButtonTitle={i18n.t('other.update')} validateCallback={() => {
                 this.props.UpdateUserImage(this.props.login.pseudo, this.state.image);
             }}>
                 <View style={{
@@ -58,7 +59,7 @@ export class _ProfileImagePicker extends React.Component {
                             if (Constants.platform.ios) {
                                 const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
                                 if (status !== 'granted') {
-                                    alert('Sorry, we need camera roll permissions to make this work!');
+                                    alert(i18n.t('profile.edit.alertcamera'));
                                 }
                             }
                             const res = await ImagePicker.launchImageLibraryAsync();
@@ -66,7 +67,7 @@ export class _ProfileImagePicker extends React.Component {
                                 return;
                             this.setState({...this.state, image: res, display: res.uri, new: true});
                         }}>
-                        <Text style={{fontSize: 18}}>Select image</Text>
+                        <Text style={{fontSize: 18}}>{i18n.t('dashboard.createvent.selectimg')}</Text>
                     </TouchableOpacity>
                 </View>
                 {this.props.UserStore.status === UserActionsType.UpdateUserImage &&

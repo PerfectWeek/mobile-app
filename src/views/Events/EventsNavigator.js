@@ -4,12 +4,15 @@ import { EventsList } from "./EventsList";
 import { EventDetailScreen } from "./EventDetailScreen";
 import { Map } from "./Map";
 
+import * as Localization from 'expo-localization';
+
+
 export const EventsNavigator = createStackNavigator(
     {
         EventsList: {
             screen: EventsList,
             navigationOptions: () => ({
-                title: 'Public Events',
+                title: Localization.locale !== 'fr-FR' ? 'Public Events' : 'Evénements publiques',
             })
         },
         EventDetail: {

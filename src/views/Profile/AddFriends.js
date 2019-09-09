@@ -5,6 +5,7 @@ import Modal from "../../Components/Modal";
 import {ListUsers} from "../Calendar/tools/ListUsers";
 import {SendFriendRequest} from "../../redux/Friends/friends.actions";
 
+import i18n from 'i18n-js';
 
 import {Event, PageHit} from 'expo-analytics';
 
@@ -31,8 +32,8 @@ class _AddAddFriends extends Component {
         return (
             <Modal
                 canValidate={(this.state.usersToAdd.length > 0)}
-                onRef={ref => (this.modal = ref)} title='Add Friends'
-                actionButtonTitle='Add' validateCallback={async () => {
+                onRef={ref => (this.modal = ref)} title={i18n.t('other.addusers.addmembers')}
+                actionButtonTitle={i18n.t('other.add')} validateCallback={async () => {
                 await this.props.login.analytics.hit(new PageHit('AddFriends'))
                     // .then(() => console.log("success"))
                     // .catch(e => console.log(e.message));

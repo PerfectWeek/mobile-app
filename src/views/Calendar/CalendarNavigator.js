@@ -6,6 +6,8 @@ import {ModifyEvent} from "./ModifyEvent";
 import {ConsultEvent} from "./ConsultEvent";
 import {SlotNavigator} from "./BestSlots/SlotNavigator";
 
+import i18n from 'i18n-js';
+
 export const CalendarNavigator = createStackNavigator (
     {
         Master: {
@@ -23,7 +25,7 @@ export const CalendarNavigator = createStackNavigator (
         BestSlot: {
             screen: SlotNavigator,
             navigationOptions: () => ({
-                title: 'Define best slot',
+                title: i18n.t('dashboard.bestslottitle'),
             })
         }
     },

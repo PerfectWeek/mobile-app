@@ -13,6 +13,7 @@ import {Constants} from 'expo';
 import { Image, Text, ActivityIndicator } from 'react-native'
 
 import { ProviderService } from "../Services/Providers/provider";
+import i18n from "i18n-js";
 
 
 class _LoginWithGoogleButton extends Component {
@@ -51,10 +52,10 @@ class _LoginWithGoogleButton extends Component {
             if (res.type === 'success') {
                 const auth = await ProviderService.ConnectWithGoogleTokens(res.accessToken, res.refreshToken);
                 this.props.LoginGoogle(auth.user.email, auth.token, auth.user.pseudo);
-                await ShowSuccessNotification('Logged in ! ' + `Hi ${auth.user.pseudo}!`);
+                await ShowSuccessNotification( i18n.t('login.success') + ` ${auth.user.pseudo}!`);
             }
         } catch (e) {
-            await ShowErrorNotification("Couldn't connect with Google");
+            await ShowErrorNotification(i18n.t('login.cofail') + " Google");
             console.log(e);
         }
         this.setState({ loading: false });
@@ -81,7 +82,7 @@ class _LoginWithGoogleButton extends Component {
                             fontWeight: 'bold',
                             marginLeft: 24,
                             marginRight: 24
-                        }}>Sign in with Google</Text>
+                        }}>{i18n.t('login.google')}</Text>
                 }
             </Button>
         );

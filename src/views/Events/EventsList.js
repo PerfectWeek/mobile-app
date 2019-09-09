@@ -13,6 +13,8 @@ import EventCard from "../../Components/EventCard";
 import { GetEventRecommendation } from "../../redux/Events/events.actions";
 import { PageHit } from "expo-analytics";
 
+import i18n from 'i18n-js';
+
 
 export class _EventsList extends React.Component {
     static navigationOptions = {
@@ -93,8 +95,8 @@ export class _EventsList extends React.Component {
                         Object.values(this.props.events).length === 0 ?
                             <View>
                                 <Text style={{ marginTop: 20, textAlign: 'center', fontSize: 22 }}>
-                                    You have no suggestion at the moment
-                            </Text>
+                                    {i18n.t('events.nosugrestions')}
+                       </Text>
                             </View>
                             :
                             Object.values(this.props.events).map((event, index) => {

@@ -13,6 +13,7 @@ import connect from "react-redux/es/connect/connect";
 import {GetGroupInfo} from "../../redux/Groups/groups.actions";
 import Loader from "../../Components/Loader";
 
+import i18n from 'i18n-js';
 
 export class _GroupInviteDetailScreen extends React.Component {
 
@@ -59,7 +60,7 @@ export class _GroupInviteDetailScreen extends React.Component {
                 </View>
 
                 <Text style={{...textStyle, color: '#3ab7ff', marginBottom: 0, marginTop: 0}}>
-                    Victor invited you
+                    Victor {i18n.t('profile.invite.notif')}
                 </Text>
 
                 <Text
@@ -72,7 +73,7 @@ export class _GroupInviteDetailScreen extends React.Component {
                         fontSize: 20,
                         color: 'gray'
                     }}>
-                    Details :
+                    {i18n.t('other.details')} :
                 </Text>
                 <ScrollView style={{height: Dimensions.get('window').height / 6}}>
                     <Text style={{fontSize: 18, textAlign: 'center', marginTop: 0}}>
@@ -83,8 +84,7 @@ export class _GroupInviteDetailScreen extends React.Component {
                     </Text>
                 </ScrollView>
 
-                <Text style={{fontSize: 18, fontFamily: 'Lato_Bold', textAlign: 'center', marginTop: 10}}>Accept
-                    invitation ?</Text>
+                <Text style={{fontSize: 18, fontFamily: 'Lato_Bold', textAlign: 'center', marginTop: 10}}>{i18n.t('profile.invite.accept')} ?</Text>
 
 
                 <View style={{
@@ -99,7 +99,7 @@ export class _GroupInviteDetailScreen extends React.Component {
                         <Button success>
                             <Icon active name='check' type={"FontAwesome"}/>
                         </Button>
-                        <Text style={{color: 'grey', textAlign: 'center'}}>Yes</Text>
+                        <Text style={{color: 'grey', textAlign: 'center'}}>{i18n.t('other.yes')}</Text>
                     </View>
 
                     <View style={{
@@ -109,7 +109,7 @@ export class _GroupInviteDetailScreen extends React.Component {
                         <Button danger>
                             <Icon active name='times' type={"FontAwesome"}/>
                         </Button>
-                        <Text style={{color: 'grey', textAlign: 'center'}}>No</Text>
+                        <Text style={{color: 'grey', textAlign: 'center'}}>{i18n.t('other.no')}</Text>
                     </View>
                     <View style={{
                         flexDirection: 'column',
@@ -118,7 +118,7 @@ export class _GroupInviteDetailScreen extends React.Component {
                         <Button info>
                             <Icon active name='bell-slash' type={"FontAwesome"}/>
                         </Button>
-                        <Text style={{color: 'grey', textAlign: 'center'}}>Dismiss</Text>
+                        <Text style={{color: 'grey', textAlign: 'center'}}>{i18n.t('other.dimiss')}</Text>
                     </View>
                 </View>
             </View>

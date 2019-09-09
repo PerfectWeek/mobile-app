@@ -9,6 +9,7 @@ import {
     AutoCompletionType
 } from "../../../redux/AutoCompletion/autocompletion.actions";
 
+import i18n from 'i18n-js';
 
 export class _ListUsers extends React.Component {
     constructor(props) {
@@ -71,7 +72,7 @@ export class _ListUsers extends React.Component {
                             width: (this.props.newWidth === undefined) ? 300 : this.props.newWidth
                         }}>
                             <Icon active name='person'/>
-                            <Input placeholder="Add users by pseudo" value={this.state.query}
+                            <Input placeholder={i18n.t('other.addusers.title')} value={this.state.query}
                                    autoCapitalize='none'
                                    onChangeText={(text) => this.findPseudos(text)} clearButtonMode="always"/>
                         </Item>
@@ -79,7 +80,7 @@ export class _ListUsers extends React.Component {
                 </View>
                     :
                     <Text style={styles.itemText}>
-                        Attendees
+                        {i18n.t('other.addusers.attendees')}
                     </Text>
                 }
                 <Form style={{flexGrow: 3}}>
@@ -147,10 +148,10 @@ export class _ListUsers extends React.Component {
                                             selectedValue={user.role + "-" + index}
                                             onValueChange={this.onValueChange.bind(this)}
                                         >
-                                            <Picker.Item label="Admin" value={"admin-" + index}/>
-                                            <Picker.Item label="Actor" value={"actor-" + index}/>
-                                            <Picker.Item label="Spectator" value={"spectator-" + index}/>
-                                            <Picker.Item label="Outsider" value={"outsider-" + index}/>
+                                            <Picker.Item label={i18n.t('other.adduser.admin')} value={"admin-" + index}/>
+                                            <Picker.Item label={i18n.t('other.adduser.actor')} value={"actor-" + index}/>
+                                            <Picker.Item label={i18n.t('other.adduser.spectator')} value={"spectator-" + index}/>
+                                            <Picker.Item label={i18n.t('other.adduser.outsider')} value={"outsider-" + index}/>
                                         </Picker>
                                         <Button full key={index} small style={{backgroundColor: 'grey'}}
                                                 onPress={() => {

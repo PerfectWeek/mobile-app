@@ -11,6 +11,8 @@ import { StackActions, NavigationActions } from 'react-navigation';
 
 import {PageHit, Event } from 'expo-analytics';
 
+import i18n from 'i18n-js';
+
 export class _Home extends React.Component {
     constructor(props) {
         super(props);
@@ -56,7 +58,6 @@ export class _Home extends React.Component {
     }
 
     listen(store, navigation, event) {
-        console.log("Reset ça mèreeee");
         navigation.navigate(NavigationActions.navigate({
             routeName: 'Home',
             action: NavigationActions.navigate({

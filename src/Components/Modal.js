@@ -14,6 +14,8 @@ import {
 } from 'native-base';
 import {Button, Icon, Title} from "native-base";
 
+import i18n from 'i18n-js';
+
 class Modal extends Component {
     static propTypes = {
         title: PropTypes.string.isRequired,
@@ -114,7 +116,7 @@ class Modal extends Component {
                                                     this.toggle();
                                                 }}>
                                             <Text>
-                                                Close
+                                                {i18n.t('other.cancel')}
                                             </Text>
                                         </Button>
                                     </View>

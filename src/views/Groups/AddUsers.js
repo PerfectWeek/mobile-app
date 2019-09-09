@@ -9,6 +9,8 @@ import Loader from "../../Components/Loader";
 import {Dimensions, ScrollView} from "react-native";
 import {ListUsers} from "../Calendar/tools/ListUsers";
 
+import i18n from 'i18n-js';
+
 class _AddUsers extends Component {
     static propTypes = {
         groupId: PropTypes.number.isRequired
@@ -37,8 +39,8 @@ class _AddUsers extends Component {
             <Modal
                 canValidate={(this.state.usersToAdd.length > 0 && this.props.GroupStore.status !== GroupsActionType.AddGroupMembers)}
                 canClose={(this.props.GroupStore.status !== GroupsActionType.AddGroupMembers)}
-                onRef={ref => (this.modal = ref)} title='Add members'
-                actionButtonTitle='Add' validateCallback={() => {
+                onRef={ref => (this.modal = ref)} title={i18n.t('other.addusers.addmembers')}
+                actionButtonTitle={i18n.t('other.add')} validateCallback={() => {
                 this.props.AddGroupMembers(groupId, this.state.usersToAdd);
                 this.setState({usersToAdd: [], searchBar: ''});
             }}>

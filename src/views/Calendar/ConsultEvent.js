@@ -11,9 +11,13 @@ import {IconColor} from "../../../Style/Constant";
 import {ChangeCalendarEventStatus} from "../../redux/Calendar/calendar.actions";
 import {ListUsers} from "./tools/ListUsers";
 
+import i18n from 'i18n-js';
+import * as Localization from 'expo-localization';
+
+
 export class _ConsultEvent extends React.Component {
     static navigationOptions = {
-        title: 'Event infos'
+        title: Localization.locale !== 'fr-FR' ? 'Event infos' : "Evenement"
     };
 
 
@@ -115,12 +119,12 @@ export class _ConsultEvent extends React.Component {
                                         width: 200, height: 50, justifyContent: 'center',
                                         alignItems: 'center'
                                     }}
-                                    placeholder={this.state.dateBeginEvent === '' ? "Beginning" : this.state.dateBeginEvent}
+                                    placeholder={this.state.dateBeginEvent === '' ? i18n.t('dashboard.eventinfo.begin') : this.state.dateBeginEvent}
                                     format="YYYY-MM-DD"
                                     minDate="2018-01-01"
                                     maxDate={this.state.dateEndEvent === '' ? "2022-01-01" : this.state.dateEndEvent}
-                                    confirmBtnText="Confirm"
-                                    cancelBtnText="Cancel"
+                                    confirmBtnText={i18n.t('other.confirm')}
+                                    cancelBtnText={i18n.t('other.cancel')}
                                     showIcon={false}
                                     onDateChange={(date) => {
                                         this.setState({dateBeginEvent: date})
@@ -135,11 +139,11 @@ export class _ConsultEvent extends React.Component {
                                             }}
                                             style={{width: 80}}
                                             date={this.state.beginTime}
-                                            placeholder="End Time"
+                                            placeholder={i18n.t('dashboard.eventinfo.endtime')}
                                             mode="time"
                                             format="HH:mm"
-                                            confirmBtnText="Confirm"
-                                            cancelBtnText="Cancel"
+                                            confirmBtnText={i18n.t('other.confirm')}
+                                            cancelBtnText={i18n.t('other.cancel')}
                                             minuteInterval={1}
                                             showIcon={false}
                                             onDateChange={(time) => {
@@ -167,8 +171,8 @@ export class _ConsultEvent extends React.Component {
                                             format="YYYY-MM-DD"
                                             minDate={this.state.dateBeginEvent === '' ? "2018-01-01" : this.state.dateBeginEvent}
                                             maxDate="2022-01-01"
-                                            confirmBtnText="Confirm"
-                                            cancelBtnText="Cancel"
+                                            confirmBtnText={i18n.t('other.confirm')}
+                                            cancelBtnText={i18n.t('other.cancel')}
                                             showIcon={false}
                                             onDateChange={(date) => {
                                                 this.setState({dateEndEvent: date})
@@ -183,11 +187,11 @@ export class _ConsultEvent extends React.Component {
                                             }}
                                             style={{width: 80}}
                                             date={this.state.endTime}
-                                            placeholder="End Time"
+                                            placeholder={i18n.t('dashboard.eventinfo.endtime')}
                                             mode="time"
                                             format="HH:mm"
-                                            confirmBtnText="Confirm"
-                                            cancelBtnText="Cancel"
+                                            confirmBtnText={i18n.t('other.confirm')}
+                                            cancelBtnText={i18n.t('other.cancel')}
                                             minuteInterval={1}
                                             showIcon={false}
                                             onDateChange={(time) => {
@@ -207,7 +211,7 @@ export class _ConsultEvent extends React.Component {
                     <Item last>
                         <Icon style={IconStyle} type='SimpleLineIcons' active name='lock'/>
                         <Text style={textStyle}
-                              placeholder="Visibility">
+                              placeholder={i18n.t('dashboard.eventinfo.visibility')}>
                             {this.state.visibility}
                         </Text>
                     </Item>
@@ -216,18 +220,18 @@ export class _ConsultEvent extends React.Component {
                     }
                     <Button style={{backgroundColor: '#e94b61', margin: 10}} full onPress={() => {
 
-                        Alert.alert('Leave event ?', '', [{
-                            text: 'Yes', onPress: () => {
+                        Alert.alert(i18n.t('other.leave') + ' ?', '', [{
+                            text: i18n.t('other.yes'), onPress: () => {
                                 this.props.navigation.navigate('Master');
-                                this.props.ChangeCalendarEventStatus({id: this.state.id}, 'no')
+                                this.props.ChangeCalendarEventStatus({id: this.state.id}, i18n.t('other.no'))
                             }
                         }, {
-                            text: 'Cancel', onPress: () => {
+                            text: i18n.t('other.cancel'), onPress: () => {
                             }, style: 'cancel'
                         }], {cancelable: false})
 
 
-                    }}><Text>Leave Event</Text></Button>
+                    }}><Text>{i18n.t('other.leave')}</Text></Button>
                 </Form>
             </ScrollView>
         )

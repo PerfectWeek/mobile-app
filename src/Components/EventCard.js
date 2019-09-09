@@ -7,6 +7,8 @@ import {
 import {Dimensions, TouchableHighlight} from "react-native";
 import moment from "moment";
 
+import i18n from 'i18n-js';
+
 const type_to_theme = {
     party: 'nightlife',
     work: 'business',
@@ -52,7 +54,7 @@ export default class EventCard extends Component {
                             {event.location}
                         </Text>
                         <Text style={{color: '#606770'}}>
-                            {event.type} event - {event.attendees.filter(a => a.status === 'going').length} attendee
+                            {event.type} {i18n.t('dashboard.eventinfo.title')} - {event.attendees.filter(a => a.status === 'going').length} {i18n.t('other.addusers.attendees')}
                         </Text>
                     </View>
                 </View>
