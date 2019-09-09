@@ -49,7 +49,6 @@ export class _Map extends React.Component {
             pins: pins
         })
         this.mapRef.fitToElements(true);
-
     }
 
 

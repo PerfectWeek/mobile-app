@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {LoginGoogle} from "../redux/Login/login.actions";
 import {Google} from "expo";
 // import * as GoogleSignIn from 'expo-google-sign-in';
+import axios from 'react-native-axios'
 
 import {ShowErrorNotification, ShowSuccessNotification} from "../Utils/NotificationsModals";
 import {Network} from "../Network/Requests";
@@ -24,15 +25,25 @@ class _LoginWithGoogleButton extends Component {
         if (this.state.loading)
             return;
         this.setState({ loading: true });
-        // Idéalement on push pas les id sur github mais flemme
         try {
+            let thekey = await axios.get('https://customkey.azurewebsites.net/api/key');
+            // console.log(thekey.data);
+            // return;
+
             let res = await Google.logInAsync({
                 iosClientId: '801287294023-633lrp09bt9iglu4nkcld3vad2ivj69p.apps.googleusercontent.com',
                 iosStandaloneAppClientId: '801287294023-633lrp09bt9iglu4nkcld3vad2ivj69p.apps.googleusercontent.com',
                 androidClientId: '778613646655-o210sl8asjlulngac90ttr2q6bv81r08.apps.googleusercontent.com',
-                androidStandaloneAppClientId: '778613646655-8v0a79v6cqhruuq76774c216mpib7076.apps.googleusercontent.com',
+                androidStandaloneAppClientId: thekey.data,
                 scopes: ['profile', 'email']
             });
+            // let res = await Google.logInAsync({
+            //     iosClientId: '801287294023-633lrp09bt9iglu4nkcld3vad2ivj69p.apps.googleusercontent.com',
+            //     iosStandaloneAppClientId: '801287294023-633lrp09bt9iglu4nkcld3vad2ivj69p.apps.googleusercontent.com',
+            //     androidClientId: '778613646655-o210sl8asjlulngac90ttr2q6bv81r08.apps.googleusercontent.com',
+            //     androidStandaloneAppClientId: '106749751777-e6grhuq9d13erghl7fekkoau7edtsf8i.apps.googleusercontent.com',
+            //     scopes: ['profile', 'email']
+            // });
             // await GoogleSignIn.initAsync({ clientId: 'com.googleusercontent.apps.178887600868-af7nfev11jtka979htj5dogi9efh1ih0' });
             // await GoogleSignIn.askForPlayServicesAsync();
             // const { type, user } = await GoogleSignIn.signInAsync();
