@@ -10,9 +10,12 @@ import Loader from "../../Components/Loader";
 import {ListUsers} from "../Calendar/tools/ListUsers";
 import {Event} from "expo-analytics";
 
+import * as Localization from 'expo-localization';
+import i18n from 'i18n-js';
+
 export class _CreateGroupScreen extends React.Component {
     static navigationOptions = {
-        title: 'Create group'
+        title: Localization.locale !== 'fr-FR' ? 'Create group': 'Créer un groupe'
     };
 
 
@@ -52,13 +55,13 @@ export class _CreateGroupScreen extends React.Component {
                     }}>
                         <Item>
                             <Input style={{textAlign: 'center', color: 'black', fontFamily: 'Lato_Bold', fontSize: 26}}
-                                   placeholder="Group name" value={this.state.groupName}
+                                   placeholder={i18n.t('groups.groupname')} value={this.state.groupName}
                                    onChangeText={(text) => this.setState({groupName: text})}/>
                         </Item>
                         <Item>
                             <Input
                                 style={{textAlign: 'center', color: 'black', fontFamily: 'Lato_Medium', fontSize: 16}}
-                                placeholder="Description" value={this.state.description}
+                                placeholder={i18n.t('dashboard.createvent.description')} value={this.state.description}
                                 onChangeText={(text) => this.setState({description: text})}/>
                         </Item>
                     </Form>
@@ -122,7 +125,7 @@ export class _CreateGroupScreen extends React.Component {
                                     // this.props.navigation.pop();
                                 }}>
                             <Text>
-                                Create Group
+                                {i18n.t('groups.creatgroup')}
                             </Text>
                         </Button>
                 }

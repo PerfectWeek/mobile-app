@@ -28,7 +28,7 @@ import Loader from "../../Components/Loader";
 import {ProfileImagePicker} from "./ProfileImagePicker";
 import {PageHit, Event} from "expo-analytics";
 
-
+import i18n from 'i18n-js';
 
 export class _Profile extends React.Component {
     static navigationOptions = {
@@ -95,35 +95,35 @@ export class _Profile extends React.Component {
                             // ButtonsCallback.push(() => {
                             //     this.props.navigation.navigate('FriendsList')
                             // });
-                            BUTTONS.push("Logout");
+                            BUTTONS.push(i18n.t('profile.logout'));
                             ButtonsCallback.push(() => {
-                                Alert.alert('Logout ?', '', [{
-                                    text: 'Yes', onPress: () => {
+                                Alert.alert(`${i18n.t('profile.logout')} ?`, '', [{
+                                    text: i18n.t('other.yes'), onPress: () => {
                                         this.props.Logout();
                                         this.props.login.analytics.event(new Event('Profile', 'Logout'));
 
                                     }
                                 }, {
-                                    text: 'Cancel', onPress: () => {
+                                    text: i18n.t('other.cancel'), onPress: () => {
                                     }, style: 'cancel'
                                 }], { cancelable: false })
                             });
 
-                            BUTTONS.push("Delete account");
+                            BUTTONS.push(i18n.t('profile.deleteaccount'));
                             ButtonsCallback.push(() => {
-                                Alert.alert('Delete account ?', 'Are you sure you want to delete your account ? This action is irreversible', [{
-                                    text: 'Yes', onPress: () => {
+                                Alert.alert(`${i18n.t('profile.deleteaccount')} ?`, i18n.t('profile.alertdelete'), [{
+                                    text: i18n.t('other.yes'), onPress: () => {
                                         this.props.login.analytics.event(new Event('Profile', 'DeleteAccount'));
 
                                         this.props.DeleteUser(this.props.user.pseudo);
                                     }
                                 }, {
-                                    text: 'Cancel', onPress: () => {
+                                    text: i18n.t('other.cancel'), onPress: () => {
                                     }, style: 'cancel'
                                 }], { cancelable: false })
                             });
 
-                            BUTTONS.push("Cancel");
+                            BUTTONS.push(i18n.t('other.cancel'));
                             ButtonsCallback.push(() => {
                             });
                             const CANCEL_INDEX = BUTTONS.length - 1;
@@ -170,7 +170,7 @@ export class _Profile extends React.Component {
                                     marginTop: 30,
                                     marginLeft: 10
                                 }}>
-                                Information :
+                                Informations :
                             </Text>
 
                             <Form style={{ marginTop: 0 }}>
@@ -205,7 +205,7 @@ export class _Profile extends React.Component {
                                                 this.props.UpdateInfo(this.props.user.pseudo, this.state.pseudo);
                                         }}>
                                         <Icon name='refresh' />
-                                        <Text>Update information</Text>
+                                        <Text>{i18n.t('profile.updateinfo')}</Text>
                                     </Button>
                                 </View>
                             </Form>

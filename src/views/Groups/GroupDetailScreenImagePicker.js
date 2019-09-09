@@ -14,6 +14,8 @@ import {validateNotEmpty} from "../../Utils/utils";
 import Loader from "../../Components/Loader";
 import {Primary} from "../../../Style/Constant";
 
+import i18n from 'i18n-js';
+
 export class _GroupDetailScreenImagePicker extends React.Component {
     static propTypes = {
         group: PropTypes.object.isRequired
@@ -38,8 +40,8 @@ export class _GroupDetailScreenImagePicker extends React.Component {
         return (
             <Modal
                 canValidate={(this.state.new)}
-                onRef={ref => (this.modal = ref)} title='Edit Group Image'
-                actionButtonTitle='Update' validateCallback={() => {
+                onRef={ref => (this.modal = ref)} title={i18n.t('groups.edit.title')}
+                actionButtonTitle={i18n.t('other.update')} validateCallback={() => {
                 this.props.UpdateGroupImage(group.id, this.state.image);
             }}>
                 <View style={{
@@ -66,7 +68,7 @@ export class _GroupDetailScreenImagePicker extends React.Component {
                                 return;
                             this.setState({...this.state, image: res, display:res.uri, new: true});
                         }}>
-                        <Text style={{fontSize: 18}}>Select image</Text>
+                        <Text style={{fontSize: 18}}>{i18n.t('groups.edit.selectimage')}</Text>
                     </TouchableOpacity>
                 </View>
                 {this.props.groups.status === GroupsActionType.UpdateGroupImage &&

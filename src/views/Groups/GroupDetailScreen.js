@@ -29,6 +29,8 @@ import {GroupDetailScreenGroupName} from "./GroupDetailScreenGroupName";
 import Loader from "../../Components/Loader";
 import {GroupDetailScreenImagePicker} from "./GroupDetailScreenImagePicker";
 
+import i18n from 'i18n-js';
+
 export class _GroupDetailScreen extends React.Component {
 
     static navigationOptions = ({navigation}) => {
@@ -58,15 +60,15 @@ export class _GroupDetailScreen extends React.Component {
             <Button transparent onPress={() => {
                 const BUTTONS = [];
                 const ButtonsCallback = [];
-                BUTTONS.push("Edit group info");
+                BUTTONS.push(i18n.t('groups.edit.grpinfo'));
                 ButtonsCallback.push(() => {
                     this.groupName.openEditModal();
                 });
-                BUTTONS.push("Edit group image");
+                BUTTONS.push(i18n.t('groups.edit.title'));
                 ButtonsCallback.push(() => {
                     this.groupImage.openEditModal();
                 });
-                BUTTONS.push("Cancel");
+                BUTTONS.push(i18n.t('other.cancel'));
                 ButtonsCallback.push(() => {
                 });
                 const CANCEL_INDEX = BUTTONS.length - 1;
@@ -74,7 +76,7 @@ export class _GroupDetailScreen extends React.Component {
                     {
                         options: BUTTONS,
                         cancelButtonIndex: CANCEL_INDEX,
-                        title: "Edit group"
+                        title: i18n.t('groups.edit.grpinfo')
                     },
                     buttonIndex => {
                         ButtonsCallback[buttonIndex]();
@@ -116,7 +118,7 @@ export class _GroupDetailScreen extends React.Component {
                     marginTop: 20,
                     textAlign: 'left',
                     marginLeft: 5
-                }}>Description:</Title>
+                }}>{i18n.t('dashboard.createvent.description')} :</Title>
                 <Text style={{
                     color: 'black',
                     fontFamily: 'Lato_Medium',
@@ -133,7 +135,7 @@ export class _GroupDetailScreen extends React.Component {
                         marginTop: 20,
                         textAlign: 'left',
                         marginLeft: 5
-                    }}>Members:</Title>
+                    }}>{i18n.t('groups.members')} :</Title>
                     <List>
                         <ListItem onPress={() => {
                             this.addUsers.openModal();
@@ -145,7 +147,7 @@ export class _GroupDetailScreen extends React.Component {
                             <Icon style={{marginLeft: 10, color: Primary, fontSize: 32}}
                                   type='MaterialIcons'
                                   name='group-add'/>
-                            <Text style={{marginBottom: 0, marginLeft: 30}}>Add Members</Text>
+                            <Text style={{marginBottom: 0, marginLeft: 30}}>{i18n.t('other.addusers.addmembers')}</Text>
                             </Body>
                         </ListItem>
                         {Object.values(group.members).map((member, index) => {
@@ -169,7 +171,7 @@ export class _GroupDetailScreen extends React.Component {
                                             const ButtonsCallback = [];
                                             if (isAdmin) {
                                                 // BUTTONS.push((member.role === 'admin' ? "Remove as admin" : "Make admin"));
-                                                BUTTONS.push(this.props.login.pseudo === member.pseudo ? "Quit group" : "Remove from group");
+                                                BUTTONS.push(this.props.login.pseudo === member.pseudo ? i18n.t('groups.quit') : i18n.t('groups.remove'));
                                                 // ButtonsCallback.push(() => {
                                                 //     this.ChangeRoleClicked(group.id, member);
                                                 // });
@@ -177,12 +179,12 @@ export class _GroupDetailScreen extends React.Component {
                                                     this.props.RemoveGroupMember(group.id, member, this.props.login.pseudo);
                                                 });
                                             } else if (this.props.login.pseudo === member.pseudo) {
-                                                BUTTONS.push("Quit group");
+                                                BUTTONS.push(i18n.t('groups.quit'));
                                                 ButtonsCallback.push(() => {
                                                     this.props.RemoveGroupMember(group.id, member, this.props.login.pseudo);
                                                 });
                                             }
-                                            BUTTONS.push("Cancel");
+                                            BUTTONS.push(i18n.t('other.cancel'));
                                             ButtonsCallback.push(() => {
                                             });
                                             const CANCEL_INDEX = BUTTONS.length - 1;
@@ -190,7 +192,7 @@ export class _GroupDetailScreen extends React.Component {
                                                 {
                                                     options: BUTTONS,
                                                     cancelButtonIndex: CANCEL_INDEX,
-                                                    title: "Manage member"
+                                                    title: i18n.t('groups.managemem')
                                                 },
                                                 buttonIndex => {
                                                     ButtonsCallback[buttonIndex]();

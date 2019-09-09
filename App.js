@@ -50,8 +50,8 @@ import en from './src/i18n/en';
 
 i18n.fallbacks = true;
 i18n.translations = { fr, en };
-i18n.locale = 'fr-FR';
-// i18n.locale = Localization.locale;
+// i18n.locale = 'fr-FR';
+i18n.locale = Localization.locale;
 
 
 // const I18nContext = React.createContext();

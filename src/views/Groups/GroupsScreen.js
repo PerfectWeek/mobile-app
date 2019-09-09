@@ -23,6 +23,8 @@ import {NavigationActions} from "react-navigation";
 import Loader from "../../Components/Loader";
 import {PageHit} from "expo-analytics";
 
+import i18n from 'i18n-js';
+
 export class _GroupsScreen extends React.Component {
     static navigationOptions = {
         header: null
@@ -43,7 +45,7 @@ export class _GroupsScreen extends React.Component {
             }}>
                 <Header androidStatusBarColor="#00AE93" style={{backgroundColor: HeaderBackgroundColor}}>
                     <Body>
-                    <Title style={{color: 'black'}}>My groups</Title>
+                    <Title style={{color: 'black'}}>{i18n.t('groups.title')}</Title>
                     </Body>
                     <Right>
                         <Button transparent onPress={() => {
@@ -66,14 +68,14 @@ export class _GroupsScreen extends React.Component {
                         : (Object.values(this.props.groups).length === 0) ?
                             <View>
                                 <Text style={{marginTop: 20, textAlign: 'center', fontSize: 22}}>
-                                    You are not in any groups
+                                    {i18n.t('groups.nogroups')}
                                 </Text>
                                 <Button style={{alignSelf: 'center', margin: 30}} primary
                                         onPress={() => {
                                             this.props.navigation.navigate({routeName: 'CreateGroup'});
                                         }}>
                                     <Text>
-                                        Create a Group
+                                        {i18n.t('groups.creatgroup')}
                                     </Text>
                                 </Button>
                             </View>
@@ -91,20 +93,20 @@ export class _GroupsScreen extends React.Component {
                                                 </Left>
                                                 <Body>
                                                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>{group.name}</Text>
-                                                <Text>{group.members !== undefined ? Object.keys(group.members).length : group.nb_members} members</Text>
+                                                <Text>{group.members !== undefined ? Object.keys(group.members).length : group.nb_members} {i18n.t('groups.members')}</Text>
                                                 </Body>
                                                 <Right>
                                                     <Icon style={{marginTop:10, fontSize:28}} type='SimpleLineIcons' name='options-vertical'
                                                           onPress={() => {
-                                                              const BUTTONS = ["Delete Group", "Cancel"];
+                                                              const BUTTONS = [i18n.t('groups.delgroup'), i18n.t('other.cancel')];
                                                               const CANCEL_INDEX = BUTTONS.length - 1;
                                                               const ButtonsCallback = [() => {
-                                                                  Alert.alert('Delete group ?', '', [{
-                                                                      text: 'Yes', onPress: () => {
+                                                                  Alert.alert( `${i18n.t('groups.delgroup')} ?`, '', [{
+                                                                      text: i18n.t('other.yes'), onPress: () => {
                                                                           this.props.DeleteGroup(group.id);
                                                                       }
                                                                   }, {
-                                                                      text: 'Cancel', onPress: () => {
+                                                                      text: i18n.t('other.cancel'), onPress: () => {
                                                                       }, style: 'cancel'
                                                                   }], {cancelable: false})
                                                               }, () => {
@@ -113,7 +115,7 @@ export class _GroupsScreen extends React.Component {
                                                                   {
                                                                       options: BUTTONS,
                                                                       cancelButtonIndex: CANCEL_INDEX,
-                                                                      title: "Manage group"
+                                                                      title: i18n.t('groups.manage')
                                                                   },
                                                                   buttonIndex => {
                                                                       ButtonsCallback[buttonIndex]();

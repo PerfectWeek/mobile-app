@@ -6,6 +6,7 @@ import {FriendsList} from './FriendsList';
 import {FriendDetails} from "./FriendDetails";
 import {GroupInviteDetailScreen} from "./GroupInviteDetailScreen";
 import {HeaderBackgroundColor, HeaderTintColor} from "../../../Style/Constant";
+import * as Localization from 'expo-localization';
 
 export default createStackNavigator(
     {
@@ -27,7 +28,7 @@ export default createStackNavigator(
         FriendsList: {
             screen: FriendsList,
             navigationOptions: () => ({
-                title: 'Friends list'
+                title: Localization.locale !== 'fr-FR' ? 'Friends list' : 'List d\'amis'
             })
         },
         FriendDetails: {

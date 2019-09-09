@@ -15,6 +15,8 @@ import {GroupsActionType} from "../../redux/Groups/groups.actions";
 import UserList from "../../Components/UserList";
 import {ChangeEventStatus, JoinEvent} from "../../redux/Events/events.actions";
 
+import i18n from 'i18n-js';
+
 const type_to_icon = {
     party: 'glass-cocktail',
     work: 'briefcase-outline',
@@ -78,14 +80,14 @@ export class _EventDetailScreen extends React.Component {
                                 fontSize: 18,
                                 borderBottomColor: 'black',
                                 borderBottomWidth: 1
-                            }}>See all attendees</Text>
+                            }}>{i18n.t('other.addusers.seeattendees')}</Text>
                         </TouchableOpacity>
                     </View>
                     {event.type !== 'other' && <View style={rowStyle}>
                         <Icon style={{fontSize: 18}} active name={type_to_icon[event.type]}
                               type={"MaterialCommunityIcons"}/>
                         <Text style={{fontSize: 18, marginLeft: 10}}>
-                            {event.type} event
+                            {event.type} {i18n.t('dashboard.eventinfo.title')}
                         </Text>
                     </View>
                     }
@@ -93,7 +95,7 @@ export class _EventDetailScreen extends React.Component {
                 </View>
 
                 <Modal
-                    onRef={ref => (this.modal = ref)} title='Attendees'>
+                    onRef={ref => (this.modal = ref)} title={i18n.t('other.addusers.attendees')}>
                     <UserList users={event.attendees.filter(a => a.status === 'going')}/>
                 </Modal>
 
@@ -106,7 +108,7 @@ export class _EventDetailScreen extends React.Component {
                         fontSize: 20,
                         color: 'gray'
                     }}>
-                    Description :
+                    {i18n.t('dashboard.createvent.description')} :
                 </Text>
                 <Text style={{fontSize: 18, textAlign: 'center', marginTop: 0}}>
 
@@ -131,7 +133,7 @@ export class _EventDetailScreen extends React.Component {
                         }}>
                             <Icon active name='check' type={"FontAwesome"}/>
                         </Button>
-                        <Text style={{color: going ? '#5cb85c' : 'grey', textAlign: 'center'}}>Going</Text>
+                        <Text style={{color: going ? '#5cb85c' : 'grey', textAlign: 'center'}}>{i18n.t('events.going')}</Text>
                     </View>
 
                 </View>
