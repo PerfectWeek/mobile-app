@@ -1,9 +1,9 @@
 import axios from 'react-native-axios'
 import {AsyncStorage} from 'react-native';
 
-axios.defaults.baseURL = 'https://api.perfect-week.pw';
+// axios.defaults.baseURL = 'https://api.perfect-week.pw';
 // axios.defaults.baseURL = 'https://perfect-week-test.herokuapp.com';
-// axios.defaults.baseURL = 'https://api.kalastud.io';
+axios.defaults.baseURL = 'https://api.kalastud.io';
 
 
 

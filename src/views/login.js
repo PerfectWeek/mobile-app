@@ -125,11 +125,20 @@ class _LoginScreen extends React.Component {
                     </TouchableHighlight>
                     <View style={{
                         flex: 1,
-                        flexDirection: 'column',
                         justifyContent: 'center',
                     }}>
-                        <LoginWithGoogleButton />
-                        <LoginWithFacebookButton style={{ marginTop: 20 }} />
+                    <LoginWithFacebookButton style={{ marginTop: 10 }} />
+
+                        {/* <LoginWithGoogleButton /> */}
+                    </View>
+
+
+                    <View style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                    }}>
+
+                        {/* <LoginWithGoogleButton /> */}
                     </View>
 
                 </View>

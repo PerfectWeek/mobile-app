@@ -27,14 +27,14 @@ export default createBottomTabNavigator(
                     style={{ color: tintColor, marginTop: 5, fontSize: 22 }} />
             }
         },
-        Groups: {
-            screen: GroupsNavigator, navigationOptions: {
-                tabBarIcon: ({ focused, tintColor }) => <Icon
-                    name='users'
-                    type='FontAwesome'
-                    style={{ color: tintColor, marginTop: 5, fontSize: 22 }} />
-            }
-        },
+        // Groups: {
+        //     screen: GroupsNavigator, navigationOptions: {
+        //         tabBarIcon: ({ focused, tintColor }) => <Icon
+        //             name='users'
+        //             type='FontAwesome'
+        //             style={{ color: tintColor, marginTop: 5, fontSize: 22 }} />
+        //     }
+        // },
         Profile: {
             screen: ProfileNavigator,
             navigationOptions: {

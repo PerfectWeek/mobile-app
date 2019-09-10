@@ -1,13 +1,15 @@
 import React from 'react';
 import {
     Dimensions, ScrollView,
-    View, TouchableOpacity, ActivityIndicator
+    View, TouchableOpacity, ActivityIndicator, Platform
 } from 'react-native';
 import {
     Button,
     Icon,
-    Text, Thumbnail
+    Text, Thumbnail, Header, Body, Title, Right, Left
 } from 'native-base';
+import { HeaderBackgroundColor } from "../../../Style/Constant";
+
 import connect from "react-redux/es/connect/connect";
 import moment from "moment";
 import Modal from "../../Components/Modal";
@@ -23,6 +25,9 @@ const type_to_icon = {
 };
 
 export class _EventDetailScreen extends React.Component {
+    static navigationOptions = {
+        header: null
+    };
 
     constructor(props) {
         super(props);
@@ -30,6 +35,30 @@ export class _EventDetailScreen extends React.Component {
 
 
     render() {
+        let top_header = <Header androidStatusBarColor="#00AE93" style={{ backgroundColor: HeaderBackgroundColor }}>
+            <Left>
+                <Button transparent onPress={() => {
+                    this.props.navigation.goBack()
+                }}>
+                    <Icon type={"FontAwesome"} name='arrow-left' style={{ color: 'black', fontSize: 20 }} />
+                </Button>
+            </Left>
+            <Body>
+                <Title style={{ color: 'black' }}>Event details</Title>
+            </Body>
+
+            <Right>
+                <Button transparent onPress={() => {
+                    this.props.navigation.navigate('Map', { id: this.props.event.id });
+                }}>
+                    <Text uppercase={false} style={{ fontSize: 18, fontWeight: 'bold', color: '#064C96' }}>
+                        Map view
+             </Text>
+                    <Icon style={{ fontSize: 28, fontWeight: 'bold', color: '#064C96' }} type={"MaterialIcons"} name='location-on' />
+                </Button>
+            </Right>
+        </Header>
+
         let event = this.props.event;
         let going = false;
         let user = event.attendees.find(a => a.pseudo === this.props.pseudo);
@@ -37,7 +66,8 @@ export class _EventDetailScreen extends React.Component {
         if (present && user.status === 'going')
             going = true;
         return (
-            <ScrollView>
+            <ScrollView style={{ paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight }}>
+                {top_header}
                 <View style={{ marginTop: 0, justifyContent: 'center' }}>
                     <Thumbnail large
                         style={{ width: Dimensions.get('window').width, height: 160, borderRadius: 0 }}
@@ -122,7 +152,7 @@ export class _EventDetailScreen extends React.Component {
                     <View style={{
                         flexDirection: 'column',
                     }}>
-                        <Button disabled={this.props.loading_joining === true} style={{padding:this.props.loading_joining === true?10:0}} success={going} light={!going} onPress={() => {
+                        <Button disabled={this.props.loading_joining === true} style={{ padding: this.props.loading_joining === true ? 10 : 0 }} success={going} light={!going} onPress={() => {
                             if (!present)
                                 this.props.JoinEvent(event, 'going');
                             else

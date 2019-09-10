@@ -39,8 +39,11 @@ export class _Map extends React.Component {
         for (let i = 0; i < tmp_events.length; i++) {
             const event = tmp_events[i];
             try {
-                var res = await axios.get(`https://eu1.locationiq.com/v1/search.php?key=${geocofing_token}&q=${event.location}&format=json`)
-                pins.push({ ...event, latitude: res.data[0].lat, longitude: res.data[0].lon })
+                if (!(this.props.navigation.state.params !== undefined && this.props.navigation.state.params.id !== event.id)) {
+
+                    var res = await axios.get(`https://eu1.locationiq.com/v1/search.php?key=${geocofing_token}&q=${event.location}&format=json`)
+                    pins.push({ ...event, latitude: res.data[0].lat, longitude: res.data[0].lon })
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -53,6 +56,8 @@ export class _Map extends React.Component {
 
 
     mapClicked(coordinate) {
+        if (this.props.navigation.state.params && this.props.navigation.state.params.id)
+            return;
         this.setState({
             custom: this.state.custom === null ? { coordinate } : null
 
@@ -76,28 +81,28 @@ export class _Map extends React.Component {
                             longitude: parseFloat(pin.longitude),
                         };
 
-
-                        return (
-                            <MapView.Marker
-                                key={index}
-                                coordinate={coords}
-                                title={pin.title}
-                                description={pin.description}
-                            >
-                                {/* <View style={{ backgroundColor: "black", padding: 3, borderRadius: 100 }}>
+                        return <MapView.Marker
+                            key={index}
+                            coordinate={coords}
+                            title={pin.title}
+                            description={pin.description}
+                        >
+                            {/* <View style={{ backgroundColor: "black", padding: 3, borderRadius: 100 }}>
                                     <Thumbnail style={{ width: 40, height: 40, borderRadius: 100 }}
                                         source={{ uri: pin.image }} />
 
                                 </View> */}
-                                <Callout style={{ paddingTop: 3, paddingBottom: 3, width: 100, height: 100 }}
-                                    onPress={() => {
-                                        this.props.navigation.navigate('EventDetail', { event_id: pin.id });
-                                    }}>
-                                    <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>{pin.name}</Text>
-                                    <Text numberOfLines={3} style={{ marginTop: 5, textAlign: 'center', color: "rgba(0, 0, 0, 0.54)" }}>{pin.location}</Text>
-                                </Callout>
-                            </MapView.Marker>
-                        );
+                            <Callout style={{ paddingTop: 3, paddingBottom: 3, width: 100, height: 100 }}
+                                onPress={() => {
+                                    if (this.props.navigation.state.params && this.props.navigation.state.params.id)
+                                        return;
+                                    this.props.navigation.navigate('EventDetail', { event_id: pin.id });
+                                }}>
+                                <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>{pin.name}</Text>
+                                <Text numberOfLines={3} style={{ marginTop: 5, textAlign: 'center', color: "rgba(0, 0, 0, 0.54)" }}>{pin.location}</Text>
+                            </Callout>
+                        </MapView.Marker>
+
                     })
                 }
                 {
