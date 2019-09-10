@@ -8,6 +8,8 @@ import { CalendarNavigator } from "./Calendar/CalendarNavigator";
 import { EventsNavigator } from "./Events/EventsNavigator";
 import BadgeTabIcon from "../Components/BadgeTabIcon";
 
+import * as Localization from 'expo-localization';
+
 export default createBottomTabNavigator(
     {
         Dashboard: {
@@ -16,7 +18,8 @@ export default createBottomTabNavigator(
                 tabBarIcon: ({ tintColor }) => <Icon
                     name='calendar'
                     type='FontAwesome'
-                    style={{ color: tintColor, marginTop: 5, fontSize: 22 }} />
+                    style={{ color: tintColor, marginTop: 5, fontSize: 22 }} />,
+                    title: Localization.locale !== 'fr-FR' ? 'Calendar' : 'Calendrier',
             }
         },
         Events: {
@@ -24,7 +27,8 @@ export default createBottomTabNavigator(
                 tabBarIcon: ({ focused, tintColor }) => <Icon
                     name='calendar-plus'
                     type='MaterialCommunityIcons'
-                    style={{ color: tintColor, marginTop: 5, fontSize: 22 }} />
+                    style={{ color: tintColor, marginTop: 5, fontSize: 22 }} />,
+                    title: Localization.locale !== 'fr-FR' ? 'Events' : 'Evènements',
             }
         },
         // Groups: {
@@ -41,8 +45,8 @@ export default createBottomTabNavigator(
                 tabBarIcon: ({ focused, tintColor }) =>
                     <BadgeTabIcon
                         tintColor={tintColor}
-                    />
-
+                    />,
+                    title: Localization.locale !== 'fr-FR' ? 'Profile' : 'Profil',
             }
         }
     },

@@ -17,6 +17,8 @@ import { GroupsActionType } from "../../redux/Groups/groups.actions";
 import UserList from "../../Components/UserList";
 import { ChangeEventStatus, JoinEvent } from "../../redux/Events/events.actions";
 
+import i18n from 'i18n-js';
+
 const type_to_icon = {
     party: 'glass-cocktail',
     work: 'briefcase-outline',
@@ -44,7 +46,7 @@ export class _EventDetailScreen extends React.Component {
                 </Button>
             </Left>
             <Body>
-                <Title style={{ color: 'black' }}>Event details</Title>
+                <Title style={{ color: 'black' }}>{i18n.t('event.event_detail')} </Title>
             </Body>
 
             <Right>
@@ -52,7 +54,7 @@ export class _EventDetailScreen extends React.Component {
                     this.props.navigation.navigate('Map', { id: this.props.event.id });
                 }}>
                     <Text uppercase={false} style={{ fontSize: 18, fontWeight: 'bold', color: '#064C96' }}>
-                        Map view
+                    {i18n.t('event.map_view')} 
              </Text>
                     <Icon style={{ fontSize: 28, fontWeight: 'bold', color: '#064C96' }} type={"MaterialIcons"} name='location-on' />
                 </Button>
@@ -104,18 +106,18 @@ export class _EventDetailScreen extends React.Component {
                         </Text>
                         <TouchableOpacity onPress={() => { this.modal.toggle() }}>
                             <Text style={{
-                                marginLeft: 10,
-                                fontSize: 18,
+                                marginLeft: 5,
+                                fontSize: 16,
                                 borderBottomColor: 'black',
                                 borderBottomWidth: 1
-                            }}>See all attendees</Text>
+                            }}>{i18n.t('other.addusers.seeattendees')}</Text>
                         </TouchableOpacity>
                     </View>
                     {event.type !== 'other' && <View style={rowStyle}>
-                        <Icon style={{ fontSize: 18 }} active name={type_to_icon[event.type]}
-                            type={"MaterialCommunityIcons"} />
-                        <Text style={{ fontSize: 18, marginLeft: 10 }}>
-                            {event.type} event
+                        <Icon style={{fontSize: 18}} active name={type_to_icon[event.type]}
+                              type={"MaterialCommunityIcons"}/>
+                        <Text style={{fontSize: 18, marginLeft: 10}}>
+                            {event.type} {i18n.t('dashboard.eventinfo.title')}
                         </Text>
                     </View>
                     }
@@ -123,8 +125,8 @@ export class _EventDetailScreen extends React.Component {
                 </View>
 
                 <Modal
-                    onRef={ref => (this.modal = ref)} title='Attendees'>
-                    <UserList users={event.attendees.filter(a => a.status === 'going')} />
+                    onRef={ref => (this.modal = ref)} title={i18n.t('other.addusers.attendees')}>
+                    <UserList users={event.attendees.filter(a => a.status === 'going')}/>
                 </Modal>
 
                 <Text
@@ -136,7 +138,7 @@ export class _EventDetailScreen extends React.Component {
                         fontSize: 20,
                         color: 'gray'
                     }}>
-                    Description :
+                    {i18n.t('dashboard.createvent.description')} :
                 </Text>
                 <Text style={{ fontSize: 18, textAlign: 'center', marginTop: 0 }}>
                     {event.description}
@@ -162,7 +164,7 @@ export class _EventDetailScreen extends React.Component {
                                 this.props.loading_joining === true ? <ActivityIndicator size="large" color="black" /> : <Icon active name='check' type={"FontAwesome"} />
                             }
                         </Button>
-                        <Text style={{ color: going ? '#5cb85c' : 'grey', textAlign: 'center' }}>Going</Text>
+                        <Text style={{color: going ? '#5cb85c' : 'grey', textAlign: 'center'}}>{i18n.t('events.going')}</Text>
                     </View>
 
                 </View>

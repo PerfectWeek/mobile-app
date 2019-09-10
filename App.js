@@ -42,6 +42,20 @@ import { FontAwesome } from '@expo/vector-icons';
 import NotificationsHandler from './src/NotificationsHandler';
 import HomeNavigator from './src/views/HomeNavigator';
 
+// import I18nContext from './src/i18n/i18n';
+import * as Localization from 'expo-localization';
+import i18n from 'i18n-js';
+import fr from './src/i18n/fr';
+import en from './src/i18n/en';
+
+i18n.fallbacks = true;
+i18n.translations = { fr, en };
+// i18n.locale = 'fr-FR';
+i18n.locale = Localization.locale;
+
+
+// const I18nContext = React.createContext();
+
 const AppNavigator = createSwitchNavigator(
     {
         Login: {
@@ -59,6 +73,7 @@ const AppNavigator = createSwitchNavigator(
     {
         navReducerinitialRouteName: 'Login',
     });
+
 
 const navReducer = createNavigationReducer(AppNavigator);
 

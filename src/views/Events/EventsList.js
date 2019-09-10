@@ -13,6 +13,8 @@ import EventCard from "../../Components/EventCard";
 import { GetEventRecommendation } from "../../redux/Events/events.actions";
 import { PageHit } from "expo-analytics";
 
+import i18n from 'i18n-js';
+
 
 export class _EventsList extends React.Component {
     static navigationOptions = {
@@ -47,14 +49,15 @@ export class _EventsList extends React.Component {
     render() {
         let top_header = <Header androidStatusBarColor="#00AE93" style={{ backgroundColor: HeaderBackgroundColor }}>
             <Body>
-                <Title style={{ color: 'black' }}>Public events</Title>
+                <Title style={{ color: 'black', fontSize:16 }}>{i18n.t('event.public_event')}</Title>
             </Body>
             <Right>
                 <Button transparent onPress={() => {
                     this.props.navigation.navigate({ routeName: 'Map' });
                 }}>
                     <Text uppercase={false} style={{ fontSize: 18, fontWeight: 'bold', color: '#064C96' }}>
-                        Map view
+                        
+                        {i18n.t('event.map_view')}
                  </Text>
                     <Icon style={{ fontSize: 28, fontWeight: 'bold', color: '#064C96' }} type={"MaterialIcons"} name='location-on' />
                 </Button>
@@ -93,8 +96,8 @@ export class _EventsList extends React.Component {
                         Object.values(this.props.events).length === 0 ?
                             <View>
                                 <Text style={{ marginTop: 20, textAlign: 'center', fontSize: 22 }}>
-                                    You have no suggestion at the moment
-                            </Text>
+                                    {i18n.t('events.nosugrestions')}
+                       </Text>
                             </View>
                             :
                             Object.values(this.props.events).map((event, index) => {

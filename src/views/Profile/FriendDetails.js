@@ -18,6 +18,7 @@ import {
 } from "native-base";
 import {ScreenBackgroundColor} from "../../../Style/Constant";
 
+import i18n from 'i18n-js';
 
 export class _FriendDetails extends Component {
     constructor(props) {
@@ -31,8 +32,8 @@ export class _FriendDetails extends Component {
     render() {
 
         const IB = {
-            1: {id: 1, title: 'Party', type: 'event'},
-            2: {id: 2, title: 'The Bros', type: 'Group'},
+            1: {id: 1, title: i18n.t('profile.ib'), type: 'event'},
+            2: {id: 2, title: 'Rugby', type: 'Group'},
             3: {id: 3, title: 'Football', type: 'Event'},
             4: {id: 4, title: 'Football', type: 'Event'},
             5: {id: 5, title: 'Football', type: 'Event'},
@@ -65,10 +66,10 @@ export class _FriendDetails extends Component {
                         <Button transparent onPress={() => {
                             const BUTTONS = [];
                             const ButtonsCallback = [];
-                            BUTTONS.push("Unfriend");
+                            BUTTONS.push(i18n.t('other.unfriend'));
                             ButtonsCallback.push(() => {
                             });
-                            BUTTONS.push("Cancel");
+                            BUTTONS.push(i18n.t('other.cancel'));
                             ButtonsCallback.push(() => {
                             });
                             const CANCEL_INDEX = BUTTONS.length - 1;
@@ -104,7 +105,7 @@ export class _FriendDetails extends Component {
                     fontSize: 18,
                     fontWeight: "bold",
                     color: 'grey'
-                }}> Common events</Text>
+                }}> {i18n.t('profile.common')}</Text>
                 <ScrollView style={{
                     backgroundColor: ScreenBackgroundColor,
                     marginTop: 0,
@@ -122,7 +123,7 @@ export class _FriendDetails extends Component {
                                     </Left>
                                     <Body style={{height: 70}}>
                                     <Text style={{fontSize: 18, fontWeight: 'bold'}}>{invite.title}</Text>
-                                    <Text style={{fontSize: 16, fontWeight: 'bold'}}>From : 12/12 - To : 31/12</Text>
+                                    <Text style={{fontSize: 16, fontWeight: 'bold'}}>{i18n.t('other.from')} : 12/12 - {i18n.t('other.to')} : 31/12</Text>
                                     </Body>
                                 </ListItem>
 

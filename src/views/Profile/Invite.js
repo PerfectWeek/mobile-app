@@ -25,6 +25,7 @@ import Loader from "../../Components/Loader";
 import * as Animatable from "../Groups/GroupsScreen";
 import {GetInvites, ReplyEventInvite, ReplyFriendInvite, ReplyGroupInvite} from "../../redux/Invites/invites.actions";
 
+import i18n from 'i18n-js';
 
 export class _Invite extends React.Component {
     constructor(props) {
@@ -42,7 +43,7 @@ export class _Invite extends React.Component {
             return (
                 <View>
                     <Text style={{marginTop: 20, textAlign: 'center', fontSize: 22}}>
-                        You have no Invitations
+                        {i18n.t('profile.invite.noinvite')}
                     </Text>
                 </View>
             );
@@ -84,7 +85,7 @@ export class _Invite extends React.Component {
                                             <Icon style={{marginTop: 10, fontSize: 28}}
                                                   type='SimpleLineIcons' name='options-vertical'
                                                   onPress={() => {
-                                                      const BUTTONS = ["Yes", "No", "Cancel"];
+                                                      const BUTTONS = [i18n.t('other.yes'), i18n.t('other.no'), i18n.t('other.cancel')];
                                                       const CANCEL_INDEX = BUTTONS.length - 1;
                                                       const ButtonsCallback = [() => {
                                                           this.handleYes(invite)
@@ -96,7 +97,7 @@ export class _Invite extends React.Component {
                                                           {
                                                               options: BUTTONS,
                                                               cancelButtonIndex: CANCEL_INDEX,
-                                                              title: "Response"
+                                                              title: i18n.t('other.response')
                                                           },
                                                           buttonIndex => {
                                                               ButtonsCallback[buttonIndex]();

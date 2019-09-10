@@ -8,6 +8,8 @@ import {GetFriends} from "../../redux/Friends/friends.actions";
 import Loader from "../../Components/Loader";
 import {PageHit} from "expo-analytics";
 
+import i18n from 'i18n-js';
+
 export class _FriendsList extends Component {
     // static navigationOptions = {
     //     header: null
@@ -55,7 +57,7 @@ export class _FriendsList extends Component {
                             <Icon style={{marginLeft: 10, color: Primary, fontSize: 32}}
                                   type='MaterialIcons'
                                   name='group-add'/>
-                            <Text style={{marginBottom: 0, marginLeft: 30}}>Add friends</Text>
+                            <Text style={{marginBottom: 0, marginLeft: 30}}>{i18n.t('profile.addfriends')}</Text>
                             </Body>
                         </ListItem>
                         {

@@ -1,7 +1,9 @@
 import {CalendarActionType} from "./calendar.actions";
 import {LoginActionsType} from "../Login/login.actions";
+import * as Localization from 'expo-localization';
 
 const eventsType = ['party', 'work', 'hobby', 'workout', 'other'];
+// const eventsType = Localization.locale !== 'fr-FR' ? ['party', 'work', 'hobby', 'workout', 'other'] : ['Soirée', 'Travail', 'Sport', 'Hobby'];
 const default_state = {status: 'NONE', DashboardStatus: 'NONE', eventsType: eventsType, events: {}, calendars: []};
 
 export const CalendarReducer = (state = default_state, action) => {

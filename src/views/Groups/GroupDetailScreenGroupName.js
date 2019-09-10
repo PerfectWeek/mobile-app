@@ -14,6 +14,8 @@ import {validateNotEmpty} from "../../Utils/utils";
 import Loader from "../../Components/Loader";
 import {Primary} from "../../../Style/Constant";
 
+import i18n from 'i18n-js';
+
 export class _GroupDetailScreenGroupName extends React.Component {
     static propTypes = {
         group: PropTypes.object.isRequired
@@ -50,8 +52,8 @@ export class _GroupDetailScreenGroupName extends React.Component {
                 <Modal
                     canValidate={(this.state.groupName !== '' && this.props.groups.status !== GroupsActionType.EditGroupInfo)}
                     canClose={(this.props.groups.status !== GroupsActionType.EditGroupInfo)}
-                    onRef={ref => (this.modal = ref)} title='Edit group info'
-                    actionButtonTitle='Update' validateCallback={() => {
+                    onRef={ref => (this.modal = ref)} title={i18n.t('groups.edit.grpinfo')}
+                    actionButtonTitle={i18n.t('other.update')} validateCallback={() => {
                     this.props.EditGroupInfo({
                         id: group.id,
                         name: this.state.groupName,
@@ -65,11 +67,11 @@ export class _GroupDetailScreenGroupName extends React.Component {
                             marginLeft: 10, marginRight: 30, flexGrow: 3
                         }}>
                             <Item style={{marginTop: 0}}>
-                                <Input placeholder="Group name" value={this.state.groupName}
+                                <Input placeholder={i18n.t('groups.groupname')} value={this.state.groupName}
                                        onChangeText={(text) => this.setState({groupName: text})}/>
                             </Item>
                             <Item style={{marginTop: 0}}>
-                                <Input placeholder="Group description" value={this.state.groupDescription}
+                                <Input placeholder={i18n.t('groups.groupdescription')} value={this.state.groupDescription}
                                        onChangeText={(text) => this.setState({groupDescription: text})}/>
                             </Item>
                         </Form>

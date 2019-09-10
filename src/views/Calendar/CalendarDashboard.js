@@ -18,6 +18,7 @@ import { dateDiffInDays, getRandomColor, timeToString } from "../../Utils/utils"
 import * as Animatable from 'react-native-animatable';
 import { Event, PageHit } from "expo-analytics";
 import NotificationsHandler from '../../NotificationsHandler';
+import i18n from 'i18n-js';
 
 export class _CalendarDashboard extends Component {
     constructor(props) {
@@ -155,7 +156,7 @@ export class _CalendarDashboard extends Component {
     render() {
         let top_header = <Header androidStatusBarColor="#00AE93" style={{ backgroundColor: HeaderBackgroundColor }}>
             <Body>
-                <Title style={{ color: 'black' }}>Calendar</Title>
+                <Title style={{ color: 'black' }}>{i18n.t('calendar.calendar')}</Title>
             </Body>
             <Right>
                 <Button transparent onPress={() => {
@@ -214,19 +215,17 @@ export class _CalendarDashboard extends Component {
                     onPress={() => {
                         const BUTTONS = [];
                         const ButtonsCallback = [];
-                        BUTTONS.push("Create event");
+                        BUTTONS.push(i18n.t('calendar.create_event'));
                         ButtonsCallback.push(() => {
                             this.props.login.analytics.event(new Event('Events', 'CreationEvent'));
                             this.props.navigation.navigate({ routeName: 'CreateEvent' });
                         });
-
-                        BUTTONS.push("Find best slot");
+                        BUTTONS.push(i18n.t('calendar.find_best_slot'));
                         ButtonsCallback.push(() => {
                             this.props.login.analytics.event(new Event('Events', 'BestSlotCreation'));
                             this.props.navigation.navigate('PrefSlots', { calendarId: this.props.selectedCalendar });
                         });
-
-                        BUTTONS.push("Cancel");
+                        BUTTONS.push(i18n.t('other.cancel'));
                         ButtonsCallback.push(() => {
                         });
                         const CANCEL_INDEX = BUTTONS.length - 1;

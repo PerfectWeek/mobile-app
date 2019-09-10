@@ -10,6 +10,7 @@ import MapView from 'react-native-maps'
 import axios from 'react-native-axios'
 import { Callout } from 'react-native-maps'
 import { IconColor } from '../../../Style/Constant';
+import i18n from 'i18n-js';
 
 
 export class _Map extends React.Component {
@@ -120,7 +121,7 @@ export class _Map extends React.Component {
                             }}
                                 tooltip={true}>
                                 <Button rounded style={{ backgroundColor: '#3471eb', marginBottom: 10 }}>
-                                    <Text style={{ fontWeight: 'bold', textAlign: 'center', color: 'white' }}>Create an event here</Text>
+                                    <Text style={{ fontWeight: 'bold', textAlign: 'center', color: 'white' }}>{i18n.t('map.create')}</Text>
                                 </Button>
                             </Callout>
                         </MapView.Marker>
