@@ -25,6 +25,8 @@ class _LoginWithFacebookButton extends Component {
     }
 
     async loginFacebook() {
+        console.log("YO");
+        
         if (this.state.loading)
             return;
         this.setState({ loading: true });
@@ -32,15 +34,18 @@ class _LoginWithFacebookButton extends Component {
             // '850667108631602'
             // '826928231016562'
             // 1309203999244829
-            const res = await Facebook.logInWithReadPermissionsAsync('826928231016562', {
+
+            const res = await Facebook.logInWithReadPermissionsAsync('850667108631602', {
                 permissions: ['public_profile', 'email'],
             });
+            
             if (res.type === 'success') {
                 const auth = await ProviderService.ConnectWithFacebookTokens(res.token);
                 this.props.LoginGoogle(auth.user.email, auth.token, auth.user.pseudo);
                 await ShowSuccessNotification(i18n.t('login.success') + ` ! Hi ${auth.user.pseudo}!`);
             }
         } catch ({ message }) {
+            
             await ShowErrorNotification(i18n.t('login.cofail') + " Facebook");
         }
         this.setState({ loading: false });

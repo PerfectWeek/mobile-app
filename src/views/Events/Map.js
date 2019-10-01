@@ -21,7 +21,7 @@ export class _Map extends React.Component {
             pins: [],
             custom: null,
             region: {
-                latitude: 46.227638,
+                latitude: 46.227637,
                 longitude: 2.213749,
                 latitudeDelta: 8.5922,
                 longitudeDelta: 8.5421,

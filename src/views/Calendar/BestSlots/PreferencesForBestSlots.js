@@ -6,9 +6,21 @@ import moment from "moment";
 import {IconColor} from "../../../../Style/Constant";
 // import TimePicker from "react-native-24h-timepicker";
 import HoursSelector from '../tools/HoursSelector';
-import * as Localization from "expo-localization/build/Localization.types";
+import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
 
+const fr_to_en = {
+    Soirée: 'party',
+    Travail: 'work',
+    Sport: 'workout',
+    Hobby: 'hobby'
+};
+const en_to_fr = {
+    party: 'Soirée',
+    work: 'Travail',
+    hobby: 'Hobby',
+    workout: 'Sport'
+};
 
 class _PreferencesForBestSlots extends Component {
     constructor(props) {
@@ -73,8 +85,8 @@ class _PreferencesForBestSlots extends Component {
     // }
 
     render() {
-        const eventsDefinedTypes = ['party', 'work', 'hobby', 'workout', 'other'];
-        // const eventsDefinedTypes = Localization.locale !== 'fr-FR' ? ['party', 'work', 'hobby', 'workout', 'other'] : ['Soirée', 'Travail', 'Sport', 'Hobby', 'Autre'];
+        // const eventsDefinedTypes = ['party', 'work', 'hobby', 'workout'];
+        const eventsDefinedTypes = ((Localization.locale !== 'fr-FR') ? ['party', 'work', 'hobby', 'workout'] : ['Soirée', 'Travail', 'Sport', 'Hobby']);
 
         return (
             <Container>
@@ -247,6 +259,12 @@ class _PreferencesForBestSlots extends Component {
                 <Button success disabled={this.validator()}
                         rounded style={{margin: 30, marginTop: 10}}
                         onPress={() => {
+                            // console.log("BRUH");
+                            if (Localization.locale === 'fr-FR') {
+
+                                this.state.type = fr_to_en[this.state.type]
+                            }
+                    
                             this.props.navigation.navigate('MasterSlot', {dataSlot: this.state})
                         }}>
                     <Text>

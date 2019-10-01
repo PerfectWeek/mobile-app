@@ -13,7 +13,12 @@ import {ListUsers} from "./tools/ListUsers";
 
 import i18n from 'i18n-js';
 import * as Localization from 'expo-localization';
-
+const en_to_fr = {
+    party: 'Soirée',
+    work: 'Travail',
+    hobby: 'Hobby',
+    workout: 'Sport'
+};
 
 export class _ConsultEvent extends React.Component {
     static navigationOptions = {
@@ -27,6 +32,7 @@ export class _ConsultEvent extends React.Component {
         const event = this.props.calendar.events[this.props.navigation.state.params.eventId];
         // this.props.login.analytics.hit(new PageHit('ConsultEvent'));
 
+
         this.props.GetEventInfo(this.props.navigation.state.params.eventId);
         // console.log('envent', event)
         this.state = this.fillInfoEvent(event);
@@ -36,12 +42,13 @@ export class _ConsultEvent extends React.Component {
         const beginTimeEvent = event.start_time.split('T');
 
         const endTimeEvent = event.end_time.split('T');
+    
         return {
             id: event.id,
             EventTitle: event.name,
             description: event.description,
             localisation: event.location,
-            type: event.type,
+            type: Localization.locale === 'fr-FR' ?en_to_fr[event.type] : event.type,
             dateBeginEvent: beginTimeEvent[0],
             beginTime: beginTimeEvent[1].substring(0, 5),
             dateEndEvent: endTimeEvent[0],

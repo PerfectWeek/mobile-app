@@ -346,7 +346,10 @@ export class _CreateEvent extends React.Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        CreateNewEvent: (event) => dispatch(CreateNewEvent(event)),
+        CreateNewEvent: (event) => { 
+            
+            dispatch(CreateNewEvent(event))
+        },
         RefreshCalendar: () => dispatch(RefreshCalendar())
     }
 };

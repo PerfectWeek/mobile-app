@@ -14,6 +14,16 @@ import {ListUsers} from "./tools/ListUsers";
 import {Event, PageHit} from "expo-analytics";
 import { ImagePicker } from 'expo';
 import i18n from "i18n-js";
+import * as Localization from 'expo-localization';
+
+
+const en_to_fr = {
+    party: 'Soirée',
+    work: 'Travail',
+    hobby: 'Hobby',
+    workout: 'Sport'
+};
+
 
 export class _ModifyEvent extends React.Component {
     static navigationOptions = {
@@ -39,8 +49,19 @@ export class _ModifyEvent extends React.Component {
         }
         this.props.login.analytics.hit(new PageHit('ModifyEvent'));
         const event = this.props.calendar.events[this.props.navigation.state.params.eventId];
+
+        
+        let type_befor = event.type;
         this.props.GetEventInfo(this.props.navigation.state.params.eventId)
         this.state = this.fillInfoEvent(event);
+        console.log("t : ", event.type);
+        
+        if (Localization.locale === 'fr-FR') {
+            event.type = en_to_fr[type_befor]
+            console.log("t after : ", event.type);            
+        }
+        let t = this.props.calendar.eventsType.findIndex(e => e === event.type);
+        this.state.type = t;
     }
 
     validator() {
@@ -55,12 +76,14 @@ export class _ModifyEvent extends React.Component {
     fillInfoEvent(event) {
         const beginTimeEvent = event.start_time.split('T');
         const endTimeEvent = event.end_time.split('T');
+        // Localization.locale === 'fr-FR'
+
         return {
             id: event.id,
             EventTitle: event.name,
             description: event.description,
             localisation: event.location,
-            type: this.props.calendar.eventsType.findIndex(e => e === event.type),
+            type: event.type,
             dateBeginEvent: beginTimeEvent[0],
             beginTime: beginTimeEvent[1].substring(0, 5),
             dateEndEvent: endTimeEvent[0],

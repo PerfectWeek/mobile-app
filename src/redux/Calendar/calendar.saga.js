@@ -14,18 +14,19 @@ import {
     GetBestSlotsSuccess,
     SetEvent as SetCalendarEvent
 } from "../Calendar/calendar.actions";
-import {takeEvery, put, select} from "redux-saga/effects";
-import {Network} from "../../Network/Requests";
+import { takeEvery, put, select } from "redux-saga/effects";
+import { Network } from "../../Network/Requests";
 import {
     CreateNewEventFail, GetCalendarsFail,
     GetCalendarsSuccess, GetEventsSuccess,
     GetUsersEventsFilteredFail,
     GetUsersEventsFilteredSuccess, LoadCalendarFail, LoadCalendarSuccess
 } from "./calendar.actions";
-import {ShowErrorNotification, ShowSuccessNotification} from "../../Utils/NotificationsModals";
-import {arrayToObject} from "../../Utils/utils";
-import {CalendarService} from "../../Services/Calendar/calendar";
-import {GetEventRecommendation, SetEvent} from "../Events/events.actions";
+import { ShowErrorNotification, ShowSuccessNotification } from "../../Utils/NotificationsModals";
+import { arrayToObject } from "../../Utils/utils";
+import { CalendarService } from "../../Services/Calendar/calendar";
+import { GetEventRecommendation, SetEvent } from "../Events/events.actions";
+import * as Localization from 'expo-localization';
 
 
 function* GetTheEventInfo(action) {
@@ -46,10 +47,25 @@ function* GetTheEventInfo(action) {
     for (let i = 0; i < respons2.data.attendees.length; i++) {
         listAttendees.push(respons2.data.attendees[i]['pseudo'])
     }
-    yield put(GetEventInfoSuccess({...response.data.event, 'attendees': listAttendees}));
+    yield put(GetEventInfoSuccess({ ...response.data.event, 'attendees': listAttendees }));
 }
 
+const fr_to_en = {
+    Soirée: 'party',
+    Travail: 'work',
+    Sport: 'workout',
+    Hobby: 'hobby'
+};
+
+
 function* ModifyEvent(action) {
+    
+    if (Localization.locale === 'fr-FR') {
+          
+        action.event.type = fr_to_en[action.event.type]
+    }
+    
+
     for (let i = 0; i < action.event.attendeesToDel.length; i++) {
         const res = yield Network.Delete('/events/' + action.event.id + '/attendees/' + action.event.attendeesToDel[i]);
     }
@@ -123,8 +139,13 @@ function* DeleteEvent(action) {
     yield put(RefreshCalendar());
 }
 
+
 function* CreatNewEvent(action) {
-    // console.log('action', action)
+    console.log(action.event.type);
+    if (Localization.locale === 'fr-FR'  && Object.keys(fr_to_en).find(t => t === action.event.type) !== undefined) {
+        action.event.type = fr_to_en[action.event.type]
+    }
+    console.log(action.event.type);
     try {
         const response = yield Network.Post('/calendars/' + action.event.calendarId + '/events', {
             name: action.event.EventTitle,
@@ -169,7 +190,7 @@ function* GetCalendars(action) {
         if (resp.status !== 200)
             throw resp.data;
         const calendars = resp.data.calendars.map(c => {
-            return {...c.calendar, show: true}
+            return { ...c.calendar, show: true }
         });
         yield put(GetCalendarsSuccess(calendars));
     } catch (e) {
@@ -246,7 +267,7 @@ function* GetBestSlots(action) {
         // name: action.event.EventTitle,
         // description: action.event.description,
         if (slots.length === 0)
-            throw {message: 'No slots found'};
+            throw { message: 'No slots found' };
         yield put(GetBestSlotsSuccess(slots));
     } catch (e) {
         // console.log(e)
@@ -260,7 +281,7 @@ function* GetBestSlots(action) {
     }
 }
 
-function* ChangeCalendarEventStatus({event, status}) {
+function* ChangeCalendarEventStatus({ event, status }) {
     try {
         // yield put(SetLoading(true));
         yield CalendarService.ChangeEventStatus(event.id, status);
