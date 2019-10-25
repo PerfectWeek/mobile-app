@@ -91,6 +91,10 @@ export default {
         "event_detail": "Details",
         "public_event": "Evènements publiques",
         "people_going": "participants",  
+        "share" :{
+            "going_to" : "Je vais à",
+            "join_me" : "rejoins moi sur PerfectWeek"
+        }
     },
     "map": {
         "create": "Créer un événement ici"

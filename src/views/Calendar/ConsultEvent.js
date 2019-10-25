@@ -1,5 +1,12 @@
 import React from "react";
-import { Platform, View, StyleSheet, ScrollView, Alert } from "react-native";
+import {
+  Platform,
+  View,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  Share
+} from "react-native";
 import connect from "react-redux/es/connect/connect";
 import {
   Button,
@@ -100,7 +107,10 @@ export class _ConsultEvent extends React.Component {
           <Button
             transparent
             onPress={() => {
-              this.props.navigation.navigate("Map", { id: this.state.id, event_alone: this.state });
+              this.props.navigation.navigate("Map", {
+                id: this.state.id,
+                event_alone: this.state
+              });
             }}
           >
             <Text
@@ -113,6 +123,28 @@ export class _ConsultEvent extends React.Component {
               style={{ fontSize: 28, fontWeight: "bold", color: "#064C96" }}
               type={"MaterialIcons"}
               name="location-on"
+            />
+          </Button>
+          <Button
+            transparent
+            onPress={() => {
+              Share.share({
+                dialogTitle: "Share with your friends",
+                title: "Share with your friends",
+                message: `${i18n.t("event.share.going_to")} ${
+                  this.state.EventTitle
+                } ${i18n.t("event.share.join_me")} : http://perfect-week.pw/`
+              });
+            }}
+          >
+            <Text
+              uppercase={false}
+              style={{ fontSize: 18, fontWeight: "bold", color: "#064C96" }}
+            ></Text>
+            <Icon
+              style={{ fontSize: 28, fontWeight: "bold", color: "#064C96" }}
+              type={"MaterialIcons"}
+              name="share"
             />
           </Button>
         </Right>
