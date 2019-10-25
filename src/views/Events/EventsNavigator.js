@@ -25,6 +25,7 @@ export const EventsNavigator = createStackNavigator(
             screen: Map,
             navigationOptions: () => ({
                 title: Localization.locale !== 'fr-FR' ? 'Map' : 'Carte',
+                header: null
             })
         }
     },

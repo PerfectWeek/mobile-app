@@ -21,29 +21,29 @@ export class _NotificationHandler extends React.Component {
     async StartNotifications() {
 
 
-        const { status } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-        console.log(status);
-        if (status !== 'granted') {
-            const { status, permissions } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-            if (status !== 'granted') {
-                console.log("Not granted");
-                alert('You need to enable notifications in settings')
-                return;
-            }
+        // const { status } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+        // console.log(status);
+        // if (status !== 'granted') {
+        //     const { status, permissions } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        //     if (status !== 'granted') {
+        //         console.log("Not granted");
+        //         alert('You need to enable notifications in settings')
+        //         return;
+        //     }
 
-        }
-        else {
-            console.log("Je demande le token");
-            let token = await Notifications.getExpoPushTokenAsync();
-            console.log(token);
-            this.listener = Notifications.addListener((event) => { this.listen(this.props.store, this.props.nav, event); });
-            Notifications.createChannelAndroidAsync('yeet1', {
-                name: 'Reminders',
-                priority: 'max',
-                vibrate: [250, 250, 250, 250],
-                sound: true,
-            });
-        }
+        // }
+        // else {
+        //     console.log("Je demande le token");
+        //     let token = await Notifications.getExpoPushTokenAsync();
+        //     console.log(token);
+        //     this.listener = Notifications.addListener((event) => { this.listen(this.props.store, this.props.nav, event); });
+        //     Notifications.createChannelAndroidAsync('yeet1', {
+        //         name: 'Reminders',
+        //         priority: 'max',
+        //         vibrate: [250, 250, 250, 250],
+        //         sound: true,
+        //     });
+        // }
 
 
     }

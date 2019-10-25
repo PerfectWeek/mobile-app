@@ -1,10 +1,10 @@
 {
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 16556,
+  "expoServerNgrokUrl": "https://sp-c7t.anonymous.mobile-app.exp.direct",
+  "packagerNgrokUrl": "https://packager.sp-c7t.anonymous.mobile-app.exp.direct",
+  "ngrokPid": 17612,
   "devToolsPort": 19002,
   "webpackServerPort": null
 }

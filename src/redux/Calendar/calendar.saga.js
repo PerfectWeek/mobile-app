@@ -286,9 +286,16 @@ function* ChangeCalendarEventStatus({ event, status }) {
         // yield put(SetLoading(true));
         yield CalendarService.ChangeEventStatus(event.id, status);
         // yield put(LoadCalendar());
-        yield put(GetEventRecommendation("2019-05-10T12:12:12", "2019-06-10T12:12:12", 10));
+
+        var b = new Date();
+        b.setDate(b.getDate());
+        let beg = b.toISOString().split('.')[0]
+        var e = new Date();
+        e.setDate(e.getDate() + 20);
+        let end = e.toISOString().split('.')[0]
+
+        yield put(GetEventRecommendation(beg, end, 10));
         yield LoadCalendar();
-        // yield put(SetLoading(false));
     } catch (err) {
         yield ShowErrorNotification(err);
     }
