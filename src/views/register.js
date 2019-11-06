@@ -26,7 +26,7 @@ class _RegisterScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {username: '', mail: '', password: '', password2: ''};
+        this.state = {username: ' ', mail: '', password: '', password2: ''};
         this.spinValue = new Animated.Value(0);
     }
 

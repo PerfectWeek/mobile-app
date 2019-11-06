@@ -113,12 +113,12 @@ export class _ConsultEvent extends React.Component {
               });
             }}
           >
-            <Text
+            {Platform.OS !== "ios" ? <Text
               uppercase={false}
               style={{ fontSize: 18, fontWeight: "bold", color: "#064C96" }}
             >
               {i18n.t("event.map_view")}
-            </Text>
+            </Text> : null}
             <Icon
               style={{ fontSize: 28, fontWeight: "bold", color: "#064C96" }}
               type={"MaterialIcons"}
@@ -396,6 +396,24 @@ export class _ConsultEvent extends React.Component {
                 editMode={false}
               />
             ) : null}
+            <Button
+            onPress={() => {
+              // console.log('puto',this.props )
+
+              this.props.navigation.goBack();
+              // this.props.navigation.navigate('ConsultEvent')
+              this.props.navigation.navigate('ModifyEvent', {
+                eventId: this.props.navigation.state.params.eventId,
+                calendarId: this.props.navigation.state.params.eventId.selectedCalendar
+              });
+
+              // this.props.navigation.navigate('ConsultEvent', { eventId: this.props.navigation.state.params.eventId })
+            }}
+            style={{ backgroundColor: "#0069e9", margin: 10 }}
+            full
+            >
+              <Text>{i18n.t("other.edit")}</Text>
+            </Button>
             <Button
               style={{ backgroundColor: "#e94b61", margin: 10 }}
               full

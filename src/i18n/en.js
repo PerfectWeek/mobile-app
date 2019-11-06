@@ -108,6 +108,7 @@ export default {
         "delete": "Delete",
         "cancel": "Close",
         "edit": "Edit",
+        "stopEdit": "Quit edition",
         "response": "Response",
         "add": "add",
         "update": "Update",

@@ -37,7 +37,7 @@ export class _Profile extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {pseudo: this.props.login.pseudo};
+        this.state = {pseudo: this.props.login.pseudo, edit: false};
         this.props.login.analytics.hit(new PageHit('Profile'));
 
         if (this.props.user === undefined || this.props.user.email === undefined || this.props.user.image === undefined)
@@ -56,7 +56,7 @@ export class _Profile extends React.Component {
                     style={{ backgroundColor: "#FFF" }}
                 >
                     <Body>
-                        <Title style={{ color: '#000000', textAlign: 'center' }}>{i18n.t('profile.profile')}</Title>
+                        <Title style={{ color: '#000000', textAlign: 'center' }}>{this.state.edit ? i18n.t('other.edit') : null} {i18n.t('profile.profile')}</Title>
                     </Body>
                     <Right>
                         <Button transparent onPress={() => {
@@ -91,11 +91,12 @@ export class _Profile extends React.Component {
                         <Button transparent onPress={() => {
                             const BUTTONS = [];
                             const ButtonsCallback = [];
-                            // BUTTONS.push("Friends list");
-                            // ButtonsCallback.push(() => {
-                            //     this.props.navigation.navigate('FriendsList')
-                            // });
-                            BUTTONS.push(i18n.t('profile.logout'));
+                            BUTTONS.push({text: this.state.edit ? i18n.t('other.stopEdit') : i18n.t('other.edit'), iconColor: "#2c8ef4"});
+                            ButtonsCallback.push(() => {
+                                this.setState({edit: !this.state.edit})
+                            });
+
+                            BUTTONS.push({text: i18n.t('profile.logout'), iconColor: "#2c8ef4"});
                             ButtonsCallback.push(() => {
                                 Alert.alert(`${i18n.t('profile.logout')} ?`, '', [{
                                     text: i18n.t('other.yes'), onPress: () => {
@@ -109,7 +110,7 @@ export class _Profile extends React.Component {
                                 }], { cancelable: false })
                             });
 
-                            BUTTONS.push(i18n.t('profile.deleteaccount'));
+                            BUTTONS.push({text: i18n.t('profile.deleteaccount'), iconColor: "red"});
                             ButtonsCallback.push(() => {
                                 Alert.alert(`${i18n.t('profile.deleteaccount')} ?`, i18n.t('profile.alertdelete'), [{
                                     text: i18n.t('other.yes'), onPress: () => {
@@ -123,7 +124,7 @@ export class _Profile extends React.Component {
                                 }], { cancelable: false })
                             });
 
-                            BUTTONS.push(i18n.t('other.cancel'));
+                            BUTTONS.push({text: i18n.t('other.cancel'), iconColor: "#2c8ef4"});
                             ButtonsCallback.push(() => {
                             });
                             const CANCEL_INDEX = BUTTONS.length - 1;
@@ -150,12 +151,16 @@ export class _Profile extends React.Component {
                                 <Thumbnail style={{ width: 160, height: 160, borderRadius: 100 }}
                                     source={{ uri: this.props.user.image }} />
 
-                                <TouchableOpacity style={PhotoButtonStyle}
-                                    onPress={() => {
-                                        this.ProfilePictureModal.openEditModal();
-                                    }}>
-                                    <Icon active name='camera' style={{ fontSize: 16 }} type={"FontAwesome"} />
-                                </TouchableOpacity>
+                                {
+                                    this.state.edit ?
+                                        <TouchableOpacity style={PhotoButtonStyle}
+                                                          onPress={() => {
+                                                              this.ProfilePictureModal.openEditModal();
+                                                          }}>
+                                            <Icon active name='camera' style={{ fontSize: 16 }} type={"FontAwesome"} />
+                                        </TouchableOpacity>
+                                        : null
+                                }
                                 <Title style={{ color: 'black', fontFamily: 'Lato_Bold', fontSize: 36, margin: 5 }}>
                                     {this.props.user.pseudo}
                                 </Title>
@@ -170,18 +175,21 @@ export class _Profile extends React.Component {
                                     marginTop: 30,
                                     marginLeft: 10
                                 }}>
-                                Informations :
+                                {this.state.edit ? i18n.t('other.edit') : null} Informations :
                             </Text>
 
                             <Form style={{ marginTop: 0 }}>
                                 <Item error={!validateNotEmpty(this.state.pseudo)}>
                                     <Icon active name='person' />
                                     <Input label="Username" value={this.state.pseudo}
+                                           disabled={!this.state.edit}
                                         onChangeText={(text) => this.setState({ pseudo: text })} />
                                 </Item>
                                 <Item disabled>
                                     <Icon disabled name='mail' />
-                                    <Input disabled label="Email" value={this.props.user.email} />
+                                    <Input disabled label="Email" value={this.props.user.email}
+                                           disabled={!this.state.edit}
+                                    />
                                 </Item>
 
                                 <View style={{
