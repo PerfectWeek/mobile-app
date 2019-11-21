@@ -95,7 +95,7 @@ export class _CalendarDashboard extends Component {
                     borderRadius: 5
                 }}>
                 <TouchableHighlight
-                    onPress={() => this.props.navigation.navigate('ConsultEvent', { eventId: item.id })}
+                    onPress={() => this.props.navigation.navigate('ConsultEvent', { eventId: item.id, calendarId: this.props.selectedCalendar })}
                     underlayColor="rgba(52, 52, 52, 0.5)">
 
                     <View style={{

@@ -6,7 +6,7 @@ export default {
         "success": "Connecté",
         "facebook": "Connection Facebook",
         "register": "S'enregistrer",
-        "login": "S'enregistrer"
+        "login": "Se connecter"
     },
     "register": {
         "pwd": "Mot de passe",
@@ -21,7 +21,7 @@ export default {
         "bestslottitle": "Le meilleur creneau",
         "eventinfo": {
             "title": "Evénement",
-            "begin": "Debut",
+            "begin": "Début",
             "endtime": "Fin",
             "visibility": "Visibilité",
         },
@@ -89,8 +89,8 @@ export default {
     "event": {
         "map_view" : "Carte",
         "event_detail": "Details",
-        "public_event": "Evènements publiques",
-        "people_going": "participants",  
+        "public_event": "Evènements publics",
+        "people_going": "participants",
         "share" :{
             "going_to" : "Je vais à",
             "join_me" : "rejoins moi sur PerfectWeek"
@@ -108,6 +108,7 @@ export default {
         "delete": "Effacer",
         "cancel": "Fermer",
         "edit": "Modifier",
+        "stopEdit": "Quitter l'édition",
         "response": "Reponse",
         "add": "Ajouter",
         "update": "Mettre à jour",
