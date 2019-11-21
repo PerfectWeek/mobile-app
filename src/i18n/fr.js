@@ -6,7 +6,7 @@ export default {
         "success": "Connecté",
         "facebook": "Connection Facebook",
         "register": "S'enregistrer",
-        "login": "S'enregistrer"
+        "login": "S'identifier"
     },
     "register": {
         "pwd": "Mot de passe",
