@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, View, StyleSheet, ScrollView, Platform } from 'react-native';
+import { Dimensions, View, StyleSheet, ScrollView, Platform, KeyboardAvoidingView } from 'react-native';
 
 import connect from "react-redux/es/connect/connect";
 import { Button, Form, Icon, Input, Picker, Item, Text, CheckBox, Container, Toast } from "native-base";
@@ -42,7 +42,8 @@ export class _CreateEvent extends React.Component {
             calendarId: -1,
             typeEvent: '',
             // searchBar: '',
-            usersToAdd: []
+            usersToAdd: [],
+            toggle: false
         }
         this.props.login.analytics.hit(new PageHit('CreateEvents'));
 
@@ -124,6 +125,7 @@ export class _CreateEvent extends React.Component {
             );
 
         return (
+            <KeyboardAvoidingView behavior="position" enabled={this.state.toggle}>
             <View style={{
                 flexDirection: 'row', justifyContent: 'space-between', marginTop: 20
             }}>
@@ -321,7 +323,7 @@ export class _CreateEvent extends React.Component {
 
                         <ListUsers callAddUser={(userList) => {
                             this.setState({ usersToAdd: userList })
-                        }} />
+                        }} enableToggle={() => {this.setState({toggle: !this.state.toggle})}}/>
                         <Button success disabled={this.validator()}
                             rounded style={{ margin: 30, marginTop: 10 }}
                             onPress={() => {
@@ -339,6 +341,7 @@ export class _CreateEvent extends React.Component {
                     </Form>
                 </ScrollView>
             </View>
+            </KeyboardAvoidingView>
         )
     }
 }
@@ -346,8 +349,8 @@ export class _CreateEvent extends React.Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        CreateNewEvent: (event) => { 
-            
+        CreateNewEvent: (event) => {
+
             dispatch(CreateNewEvent(event))
         },
         RefreshCalendar: () => dispatch(RefreshCalendar())

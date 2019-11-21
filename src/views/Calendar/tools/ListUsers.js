@@ -1,5 +1,5 @@
 import {Dimensions, ScrollView, View, TouchableOpacity, StyleSheet} from 'react-native'
-import React from 'react';
+import React, {useRef} from 'react';
 import {Form, Icon, Input, Item, Container, Button, Text, Picker} from "native-base";
 import {validateNotEmpty} from "../../../Utils/utils";
 import connect from "react-redux/es/connect/connect";
@@ -19,7 +19,8 @@ export class _ListUsers extends React.Component {
             isLoading: false,
             usersToAdd: (this.props.loadList !== undefined) ? this.props.loadList : [],
             listPseudo: []
-        }
+
+    }
     }
 
     findPseudos(query) {
@@ -58,6 +59,7 @@ export class _ListUsers extends React.Component {
 
 
     render() {
+
         return (
             <View>
                 {this.props.editMode === undefined || this.props.editMode === true ?
@@ -74,7 +76,11 @@ export class _ListUsers extends React.Component {
                             <Icon active name='person'/>
                             <Input placeholder={i18n.t('other.addusers.title')} value={this.state.query}
                                    autoCapitalize='none'
-                                   onChangeText={(text) => this.findPseudos(text)} clearButtonMode="always"/>
+                                   onChangeText={(text) => this.findPseudos(text)}
+                                   clearButtonMode="always"
+                                   onFocus={() => {this.props.enableToggle()}}
+                                   onBlur={() => {this.props.enableToggle()}}
+                            />
                         </Item>
                     </Form>
                 </View>
