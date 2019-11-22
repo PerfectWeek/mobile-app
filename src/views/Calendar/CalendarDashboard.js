@@ -56,7 +56,7 @@ export class _CalendarDashboard extends Component {
     super(props);
     this.state = {
       items: {},
-      scrolledDay: this.currentDate(),
+      scrolledDay: this.currentDate()
     };
     this.props.login.analytics.hit(new PageHit("DashBoard"));
 
@@ -214,6 +214,7 @@ export class _CalendarDashboard extends Component {
   }
 
   render() {
+
     let top_header = (
       <Header
         androidStatusBarColor="#00AE93"
@@ -228,9 +229,12 @@ export class _CalendarDashboard extends Component {
           <Button
             transparent
             onPress={() => {
-              console.log("ahahah");
-
-              this.calendarFilter.openModal();
+              if (
+                this.calendarFilter &&
+                this.props.calendar.DashboardStatus ===
+                  CalendarActionType.LoadCalendarSuccess
+              )
+                this.calendarFilter.openModal();
             }}
           >
             <Icon
@@ -425,7 +429,7 @@ const mapStateToProps = (state, ownProps) => {
         calendar_name: event.calendar_name,
         start_time: new Date(start),
         end_time: end,
-        color: color,
+        color: event.color,
         image: event.image
       });
       items[isoDate] = items[isoDate].sort((a, b) => {

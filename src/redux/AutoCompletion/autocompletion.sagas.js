@@ -12,11 +12,7 @@ function* AskCompletionPseudo(action) {
         if (response.status !== 200)
             throw response;
         let list = [];
-        for (let i = 0; i < response.data.users.length; i++) {
-            list.push(response.data.users[i].pseudo)
-        }
-
-        yield put(AskCompletionSuccess(list))
+        yield put(AskCompletionSuccess(response.data.users))
     }
     catch (e) {
         let err;

@@ -4,7 +4,7 @@ import {UserService} from "../Users/users";
 export class CalendarService {
 
     static async GetBestSlots(infos) {
-        const resp = await Network.Get(encodeURI('/calendars/' + infos.calendarId + '/assistant/find-best-slots' +
+        const resp = await Network.Get(encodeURI('/assistant/find-best-slots/' + infos.calendarId  +
             '?duration='+infos.duration+
             '&location='+infos.location+
             '&max_time='+infos.max_time+
@@ -42,7 +42,15 @@ export class CalendarService {
     static async GetEventsForCalendars(calendars) {
         let events = [];        
         // for (let idx = 0; idx < calendars.length; idx++) {
-        const resp = await Network.Get('/events/');
+            if (calendars.length === 0) {
+
+                var resp = await Network.Get('/events/');
+            }
+            else {
+                var resp = await Network.Get('/events/', {
+                    'only_calendar_ids[]' : calendars.map(c => c.id)
+                });
+            }
         // const resp = await Network.Get('/calendars/' + calendars[idx].id + '/events');
         if (resp.status === 200) {
             events.push(...resp.data.events);

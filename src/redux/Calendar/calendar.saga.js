@@ -74,6 +74,8 @@ function* ModifyEvent(action) {
         });
     }
     
+    console.log("MODIFY : ", action.event);
+    
     const response = yield Network.Put('/events/' + action.event.id, {
         name: action.event.EventTitle,
         description: action.event.description,
@@ -82,7 +84,7 @@ function* ModifyEvent(action) {
         location: action.event.localisation,
         type: action.event.type,
         visibility: action.event.visibility,
-        color: "red"
+        color: action.event.color
     });
 
     if (response.status === 200) {
@@ -154,10 +156,11 @@ function* CreatNewEvent(action) {
             location: action.event.localisation,
             type: action.event.type,
             visibility: action.event.visibility,
-            color: "red"
+            color: action.event.color
         }
         if (action.event.calendarId !== -1)
             data.calendar_id = action.event.calendarId;
+            
         const response = yield Network.Post('/events', data);
         if (response.status !== 201)
             throw response;
@@ -165,10 +168,11 @@ function* CreatNewEvent(action) {
         
         const events_w_image = yield CalendarService.GetEventsImage([events[0]]);
         if (action.event.usersToAdd !== undefined && action.event.usersToAdd.length !== 0) {
-            const responseAddUsers = yield Network.Post('/events/' + events[0].id + '/invite-users', {
-                'users': action.event.usersToAdd
+            const responseAddUsers = yield Network.Post('/events/' + events[0].id + '/attendees', {
+                'attendees': action.event.usersToAdd.map(u => { return { ...u, role: 'actor'}})
             });
-            if (responseAddUsers.status !== 201) {
+            
+            if (responseAddUsers.status !== 200) {
                 yield Network.Delete('/events/' + events[0].id);
                 throw responseAddUsers
             }
@@ -195,7 +199,7 @@ function* GetCalendars(action) {
             throw resp.data;
             
         const calendars = resp.data.calendars.map(c => {
-            return { ...c, show: true }
+            return { ...c, show: false }
         });
         yield put(GetCalendarsSuccess(calendars));
     } catch (e) {
@@ -231,7 +235,9 @@ function* LoadCalendar(action) {
         let calendars = yield select((state) => {
             return state.calendar.calendars
         });
-        let events_array = yield CalendarService.GetEventsForCalendars(calendars);
+        const filtered_calendars = calendars.filter(c => c.show);
+
+        let events_array = yield CalendarService.GetEventsForCalendars(filtered_calendars);
 
         events_array = yield CalendarService.GetEventsInfo(events_array);
         let events = arrayToObject(events_array, 'id');

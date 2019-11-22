@@ -104,7 +104,7 @@ export class _ListUsers extends React.Component {
                                               style={styles.touch}
                             >
                                 <Text style={styles.itemText}>
-                                    {item}
+                                    {item.name}
                                 </Text>
                             </TouchableOpacity>
                         </Item>

@@ -57,9 +57,11 @@ export class _ModifyEvent extends React.Component {
         console.log("t : ", event.type);
         
         if (Localization.locale === 'fr-FR') {
-            event.type = en_to_fr[type_befor]
+            event.type = en_to_fr[type_befor] !== undefined ? en_to_fr[type_befor] : event.type
             console.log("t after : ", event.type);            
         }
+        console.log("EVENT_TYPE : ", event.type);
+        
         let t = this.props.calendar.eventsType.findIndex(e => e === event.type);
         this.state.type = t;
     }
@@ -93,6 +95,7 @@ export class _ModifyEvent extends React.Component {
             display: event.image,
             new_image: false,
             visibility: event.visibility,
+            color: event.color
             // attendees: event.attendees
         };
     }

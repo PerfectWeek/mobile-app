@@ -66,9 +66,7 @@ class _BestSlotCalendar extends Component {
             slt = this.state.slt;
         let events = [];
         if (this.props.calendar.events) {
-            events = Object.values(this.props.calendar.events).map(e => {
-                return { ...e, calendar_name: this.props.calendar.calendars.find(c => c.id === e.calendar_id).name }
-            });
+            events = Object.values(this.props.calendar.events);
             events = events.concat(slt[iter]);
         }
         let items = {};
@@ -180,6 +178,7 @@ class _BestSlotCalendar extends Component {
         item.calendarId = this.state.slotData.calendarId;
         item.type = this.state.slotData.type;
         item.visibility = this.state.slotData.visibility;
+        item.color = this.state.slotData.color;
 
         this.props.CreateNewEvent(item)
     }

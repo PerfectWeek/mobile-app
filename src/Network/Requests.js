@@ -22,6 +22,10 @@ export class Network {
         }
     }
 
+    static getToken() {
+        return this.access_token;
+    }
+    
     static async SaveToken(email, name, id) {
         try {
             const jData = {
