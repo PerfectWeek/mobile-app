@@ -78,8 +78,8 @@ export class _ListUsers extends React.Component {
                                    autoCapitalize='none'
                                    onChangeText={(text) => this.findPseudos(text)}
                                    clearButtonMode="always"
-                                   onFocus={() => {this.props.enableToggle()}}
-                                   onBlur={() => {this.props.enableToggle()}}
+                                   onFocus={() => {this.props.enableToggle ? this.props.enableToggle() : () => {}}}
+                                   onBlur={() => {this.props.enableToggle ? this.props.enableToggle() : () => {}}}
                             />
                         </Item>
                     </Form>
@@ -125,7 +125,7 @@ export class _ListUsers extends React.Component {
                                                     });
                                                 }
                                             }}>
-                                        <Text>{user}</Text>
+                                        <Text>{user.name}</Text>
                                         {this.props.editMode === undefined || this.props.editMode === true ?
                                             <Icon type='FontAwesome' name='remove'/> : null}
                                     </Button>

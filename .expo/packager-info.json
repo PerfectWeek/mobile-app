@@ -1,10 +1,10 @@
 {
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": "https://sp-c7t.tim92i.mobile-app.exp.direct",
-  "packagerNgrokUrl": "https://packager.sp-c7t.tim92i.mobile-app.exp.direct",
-  "ngrokPid": 23214,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 3908,
+  "expoServerNgrokUrl": "https://zc-2ai.anonymous.mobile-app.exp.direct",
+  "packagerNgrokUrl": "https://packager.zc-2ai.anonymous.mobile-app.exp.direct",
+  "ngrokPid": 9124,
   "devToolsPort": 19002,
   "webpackServerPort": null
 }

@@ -19,8 +19,11 @@ import {ShowErrorNotification, ShowSuccessNotification} from "../../Utils/Notifi
 
 function* GetUserInfo(action) {
     try {
-        const user = yield UserService.GetUserInfo(action.pseudo);
-        user.image = yield UserService.GetUserImage(action.pseudo);
+        const user = yield UserService.GetMyInfo();
+        // const user = yield UserService.GetUserInfo(action.pseudo);
+        
+        user.image = yield UserService.GetUserImage(user.id);
+        
         yield put(GetUserInfoSuccess(user));
     } catch (err) {
         yield ShowErrorNotification(err);
@@ -58,7 +61,7 @@ function* _GetUserImage(action) {
 
 function* UpdateUserInfo(action) {
     try {
-        const user = yield UserService.UpdateUserInfo(action.pseudo, action.new_pseudo);
+        const user = yield UserService.UpdateUserInfo(action.email, action.new_pseudo);
         yield put(UpdateUserInfoSuccess(user));
         yield ShowSuccessNotification();
         yield put(Logout());
@@ -69,7 +72,7 @@ function* UpdateUserInfo(action) {
 }
 
 function* DeleteUser(action) {
-    const response = yield Network.Delete('/users/' + action.pseudo);
+    const response = yield Network.Delete('/users/me');
     if (response.status === 200) {
         yield put(DeleteUserSuccess(response.data.user));
         yield put(NavigationActions.navigate({routeName: 'Login'}));

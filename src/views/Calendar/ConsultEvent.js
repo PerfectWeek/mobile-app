@@ -49,15 +49,15 @@ export class _ConsultEvent extends React.Component {
 
   constructor(props) {
     super(props);
-    // console.log('OOKKKKK')
     const event = this.props.calendar.events[
       this.props.navigation.state.params.eventId
     ];
+    // console.log("OOKKKKK : ", event);
     // this.props.login.analytics.hit(new PageHit('ConsultEvent'));
 
     this.props.GetEventInfo(this.props.navigation.state.params.eventId);
-    // console.log('envent', event)
     this.state = this.fillInfoEvent(event);
+
   }
 
   fillInfoEvent(event) {
@@ -77,7 +77,8 @@ export class _ConsultEvent extends React.Component {
       dateEndEvent: endTimeEvent[0],
       endTime: endTimeEvent[1].substring(0, 5),
       image: event.image,
-      visibility: event.visibility
+      visibility: event.visibility,
+      attendees: event.attendees
     };
   }
 
@@ -113,12 +114,14 @@ export class _ConsultEvent extends React.Component {
               });
             }}
           >
-            {Platform.OS !== "ios" ? <Text
-              uppercase={false}
-              style={{ fontSize: 18, fontWeight: "bold", color: "#064C96" }}
-            >
-              {i18n.t("event.map_view")}
-            </Text> : null}
+            {Platform.OS !== "ios" ? (
+              <Text
+                uppercase={false}
+                style={{ fontSize: 18, fontWeight: "bold", color: "#064C96" }}
+              >
+                {i18n.t("event.map_view")}
+              </Text>
+            ) : null}
             <Icon
               style={{ fontSize: 28, fontWeight: "bold", color: "#064C96" }}
               type={"MaterialIcons"}
@@ -389,28 +392,29 @@ export class _ConsultEvent extends React.Component {
                 {this.state.visibility}
               </Text>
             </Item>
-            {this.props.attendees !== undefined ? (
+            {this.state.attendees !== undefined ? (
               <ListUsers
                 callAddUser={() => {}}
-                loadList={this.props.attendees}
+                loadList={this.state.attendees}
                 editMode={false}
               />
             ) : null}
             <Button
-            onPress={() => {
-              // console.log('puto',this.props )
+              onPress={() => {
+                // console.log('puto',this.props )
 
-              this.props.navigation.goBack();
-              // this.props.navigation.navigate('ConsultEvent')
-              this.props.navigation.navigate('ModifyEvent', {
-                eventId: this.props.navigation.state.params.eventId,
-                calendarId: this.props.navigation.state.params.eventId.selectedCalendar
-              });
+                this.props.navigation.goBack();
+                // this.props.navigation.navigate('ConsultEvent')
+                this.props.navigation.navigate("ModifyEvent", {
+                  eventId: this.props.navigation.state.params.eventId,
+                  calendarId: this.props.navigation.state.params.eventId
+                    .selectedCalendar
+                });
 
-              // this.props.navigation.navigate('ConsultEvent', { eventId: this.props.navigation.state.params.eventId })
-            }}
-            style={{ backgroundColor: "#0069e9", margin: 10 }}
-            full
+                // this.props.navigation.navigate('ConsultEvent', { eventId: this.props.navigation.state.params.eventId })
+              }}
+              style={{ backgroundColor: "#0069e9", margin: 10 }}
+              full
             >
               <Text>{i18n.t("other.edit")}</Text>
             </Button>

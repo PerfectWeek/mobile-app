@@ -95,7 +95,7 @@ const mapStateToProps = (state, ownProps) => {
         ...ownProps,
         login: state.login,
         UserStore: state.user,
-        user: state.user.users[state.login.pseudo]
+        user: state.user.users[state.login.id]
     }
 };
 

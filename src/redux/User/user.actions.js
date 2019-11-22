@@ -76,10 +76,10 @@ export const GetUserImageFail = (error_message) => {
 };
 
 
-export const UpdateUserInfo = (pseudo, new_pseudo) => {
+export const UpdateUserInfo = (email, new_pseudo) => {
     return {
         type: UserActionsType.UpdateUserInfo,
-        pseudo,
+        email,
         new_pseudo
     }
 };

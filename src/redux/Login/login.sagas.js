@@ -7,7 +7,7 @@ import {Toast} from "native-base";
 // import * as Segment from "expo-analytics-segment";
 
 function _login(email, password) {
-    return Network.Post("/auth/login", {
+    return Network.Post("/auth/local/login", {
         email: email,
         password: password
     });
@@ -26,7 +26,7 @@ function* CheckIsLogged(action) {
             //         "accountType" : "Email"
             //     }
             // });
-            yield put(LoginSuccess(savedToken.token, savedToken.name, savedToken.email));
+            yield put(LoginSuccess(savedToken.token, savedToken.name, savedToken.email, savedToken.id));
             yield put(NavigationActions.navigate({routeName: 'Home'}));
         }
     }
@@ -35,9 +35,9 @@ function* CheckIsLogged(action) {
 function* Login(action) {
     const response = yield _login(action.email, action.password);
     if (response.status === 200) {
-        yield put(LoginSuccess(response.data.access_token, response.data.user.pseudo, response.data.user.email));
-        Network.access_token = response.data.access_token;
-        yield Network.SaveToken(response.data.user.email, response.data.user.pseudo);
+        yield put(LoginSuccess(response.data.token, response.data.user.name, response.data.user.email, response.data.user.id));
+        Network.access_token = response.data.token;
+        yield Network.SaveToken(response.data.user.email, response.data.user.name, response.data.user.id);
         yield put(NavigationActions.navigate({routeName: 'Home'}));
 
     } else {
@@ -57,17 +57,17 @@ function* Login(action) {
 }
 
 function* SetLogged(action) {
-    yield put(LoginSuccess(action.access_token, action.pseudo, action.email));
+    yield put(LoginSuccess(action.access_token, action.pseudo, action.email, action.id));
     Network.access_token = action.access_token;
-    yield Network.SaveToken(action.email, action.pseudo);
+    yield Network.SaveToken(action.email, action.pseudo, action.id);
     yield put(NavigationActions.navigate({routeName: 'Home'}));
 }
 
 
 function* LoginGoogle(action) {
-    yield put(LoginSuccess(action.accessToken, action.pseudo, action.email));
+    yield put(LoginSuccess(action.accessToken, action.pseudo, action.email, action.id));
     Network.access_token = action.accessToken;
-    yield Network.SaveToken(action.email, action.pseudo);
+    yield Network.SaveToken(action.email, action.pseudo, action.id);
     yield put(NavigationActions.navigate({routeName: 'Home'}));
 }
 

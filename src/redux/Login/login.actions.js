@@ -18,30 +18,33 @@ export const Login = (email, password) => {
     }
 };
 
-export const SetLogged = (access_token, email, pseudo) => {
+export const SetLogged = (access_token, email, pseudo, id) => {
     return {
         type: LoginActionsType.SetLogged,
         access_token,
         email,
+        id,
         pseudo
     }
 };
 
-export const LoginGoogle = (email, accessToken, name) => {
+export const LoginGoogle = (email, accessToken, name, id) => {
     return {
         type: LoginActionsType.LoginGoogle,
         pseudo : name,
         email,
-        accessToken
+        accessToken,
+        id
     }
 };
 
-export const LoginSuccess = (access_token, pseudo, email) => {
+export const LoginSuccess = (access_token, pseudo, email, id) => {
     return {
         type: LoginActionsType.LoginSuccess,
         access_token,
         pseudo,
         email,
+        id,
         error_message: null
     }
 };

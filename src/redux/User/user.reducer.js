@@ -20,14 +20,14 @@ export const UserReducer = (state = default_state, action) => {
         case UserActionsType.SetUserInfo:
             return {
                 ...state,
-                users: deepmerge(state.users, {[action.user.pseudo]: action.user})
+                users: deepmerge(state.users, {[action.user.id]: action.user})
             };
         case UserActionsType.GetUserInfoSuccess:
             return {
                 ...state,
                 status: UserActionsType.GetUserInfoSuccess,
                 error_message: action.error_message,
-                users: deepmerge(state.users, {[action.user.pseudo]: action.user})
+                users: deepmerge(state.users, {[action.user.id]: action.user})
             };
         case UserActionsType.GetUserInfoFail:
             return {
@@ -41,7 +41,7 @@ export const UserReducer = (state = default_state, action) => {
                 status: UserActionsType.GetUserImage
             };
         case UserActionsType.GetUserImageSuccess:
-            state.users[action.pseudo].image = action.image;
+            state.users[action.id].image = action.image;
             return {
                 ...state,
                 status: UserActionsType.GetUserImageSuccess,
@@ -66,7 +66,7 @@ export const UserReducer = (state = default_state, action) => {
                 ...state,
                 status: UserActionsType.UpdateUserInfoSuccess,
                 error_message: action.error_message,
-                users: {[action.user.pseudo]: action.user}
+                users: {[action.user.id]: action.user}
             };
         case UserActionsType.UpdateUserInfoFail:
             return {
@@ -77,7 +77,7 @@ export const UserReducer = (state = default_state, action) => {
         case UserActionsType.DeleteUser:
             return {
                 ...state,
-                pseudo: action.pseudo,
+                id: action.id,
                 status: UserActionsType.DeleteUser
             };
         case UserActionsType.DeleteUserSuccess:
@@ -102,7 +102,7 @@ export const UserReducer = (state = default_state, action) => {
                 ...state,
                 status: UserActionsType.UpdateUserImageSuccess,
                 error_message: action.error_message,
-                users: deepmerge(state.users, {[action.pseudo]: {image: action.image}})
+                users: deepmerge(state.users, {[action.id]: {image: action.image}})
             };
         }
         case UserActionsType.UpdateUserImageFail:

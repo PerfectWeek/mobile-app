@@ -29,6 +29,8 @@ class _CalendarFilter extends Component {
     }
 
     render() {
+        // console.log("this.props.calendar : ", this.props.calendar.calendars);
+        
         if (this.props.calendar.calendars) {
             var filters = this.props.calendar.calendars.map(f => f);
         }

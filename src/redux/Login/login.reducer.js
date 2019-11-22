@@ -19,6 +19,7 @@ export const LoginReducer = (state = {
                 access_token: action.access_token,
                 pseudo: action.pseudo,
                 email: action.email,
+                id: action.id,
                 error_message: action.error_message
             };
         case LoginActionsType.LoginFail:
@@ -39,6 +40,7 @@ export const LoginReducer = (state = {
                 access_token: null,
                 pseudo: null,
                 email: null,
+                id: null,
                 error_message: null
             };
         case LoginActionsType.CheckIfLogged:

@@ -65,8 +65,8 @@ export class _ModifyEvent extends React.Component {
     }
 
     validator() {
-        return (this.state.EventTitle === '' || this.state.description === ''
-            || this.state.localisation === '' || this.state.dateBeginEvent === ''
+        return (this.state.EventTitle === ''
+            || this.state.dateBeginEvent === ''
             || this.state.dateEndEvent === '' || this.state.beginTime === '' || this.state.type === -1
             || this.state.endTime === ''
             || this.state.dateBeginEvent === this.state.dateEndEvent && moment(this.state.endTime, "HH:mm") < moment(this.state.beginTime, "HH:mm")

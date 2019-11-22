@@ -22,12 +22,13 @@ export class Network {
         }
     }
 
-    static async SaveToken(email, name) {
+    static async SaveToken(email, name, id) {
         try {
             const jData = {
                 token: this.access_token,
                 email: email,
-                name: name
+                name: name,
+                id
             };
             return await AsyncStorage.setItem(this.storedTokenName, JSON.stringify(jData));
         } catch (e) {
@@ -84,6 +85,22 @@ export class Network {
                 });
             else
                 return await axios.post(route, body);
+        } catch (e) {
+            return e.response;
+        }
+    }
+
+    static async PutMultiPart(route, body) {
+        try {
+            if (this.access_token !== null)
+                return await axios.put(route, body, {
+                    headers: {
+                        'Authorization': 'Bearer ' + this.access_token,
+                        'content-type': 'multipart/form-data'
+                    }
+                });
+            else
+                return await axios.put(route, body);
         } catch (e) {
             return e.response;
         }

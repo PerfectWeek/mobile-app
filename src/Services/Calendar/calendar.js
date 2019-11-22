@@ -14,7 +14,7 @@ export class CalendarService {
     }
 
     static async GetCalendarsForUser(pseudo) {
-        const resp = await Network.Get('/users/' + pseudo + '/calendars');
+        const resp = await Network.Get('/calendars');
         if (resp.status === 200)
             return resp.data.calendars;
         let err;
@@ -25,11 +25,12 @@ export class CalendarService {
         throw err;
     }
 
-    static async GetEventsSuggestion(calendarId, min_time, max_time, limit) {
-        const resp = await Network.Get(`/calendars/${calendarId}/assistant/get-event-suggestions`,
+    static async GetEventsSuggestion(min_time, max_time, limit) {
+        const resp = await Network.Get(`/assistant/event-suggestions`,
             {min_time, max_time, limit});
         if (resp.status === 200)
             return resp.data.suggestions.map(s => s.event);
+            
         let err;
         if (resp.data !== undefined && resp.data.message !== undefined)
             err = resp.data.message;
@@ -39,20 +40,21 @@ export class CalendarService {
     }
 
     static async GetEventsForCalendars(calendars) {
-        let events = [];
-        for (let idx = 0; idx < calendars.length; idx++) {
-            const resp = await Network.Get('/calendars/' + calendars[idx].id + '/events');
-            if (resp.status === 200) {
-                events.push(...resp.data.events);
-            } else {
-                let err;
-                if (resp.data !== undefined && resp.data.message !== undefined)
-                    err = resp.data.message;
-                else
-                    err = "Connection error";
-                throw err
-            }
+        let events = [];        
+        // for (let idx = 0; idx < calendars.length; idx++) {
+        const resp = await Network.Get('/events/');
+        // const resp = await Network.Get('/calendars/' + calendars[idx].id + '/events');
+        if (resp.status === 200) {
+            events.push(...resp.data.events);
+        } else {
+            let err;
+            if (resp.data !== undefined && resp.data.message !== undefined)
+                err = resp.data.message;
+            else
+                err = "Connection error";
+            throw err
         }
+        // }
         return events
     }
 
@@ -75,9 +77,10 @@ export class CalendarService {
 
     static async GetEventsImage(events) {
         for (let idx = 0; idx < events.length; idx++) {
-            const resp = await Network.Get('/events/' + events[idx].id + '/image');
+            const resp = await Network.Get(`/events/${events[idx].id}/images/icon`);
             if (resp.status === 200) {
-                events[idx].image = resp.data.image;
+                events[idx].image = resp.data;
+                
             } else {
                 let err;
                 if (resp.data !== undefined && resp.data.message !== undefined)
@@ -92,36 +95,39 @@ export class CalendarService {
 
     static async GetEventsAttendees(events) {
         for (let idx = 0; idx < events.length; idx++) {
-            const resp = await Network.Get('/events/' + events[idx].id + '/attendees');
+            const resp = await Network.Get(`/events/${events[idx].id}`);
             if (resp.status === 200) {
-                events[idx].attendees = resp.data.attendees;
+                events[idx].attendees = resp.data.event.attendees;
+                
                 events[idx].attendees = await UserService.GetUsersImage(events[idx].attendees);
-            } else {
-                let err;
-                if (resp.data !== undefined && resp.data.message !== undefined)
-                    err = resp.data.message;
-                else
-                    err = "Connection error";
-                throw err
             }
         }
+            //  else {
+            //     let err;
+            //     if (resp.data !== undefined && resp.data.message !== undefined)
+            //         err = resp.data.message;
+            //     else
+            //         err = "Connection error";
+            //     throw err
+            // }
+        // }
         return events
     }
 
-    static async JoinEvent(event_id, status) {
-        const resp = await Network.Post(`/events/${event_id}/join`, {status});
+    static async JoinEvent(event_id, status) { // TODO
+        const resp = await Network.Put(`/events/${event_id}/attendees/me/status`, {status});
         if (resp.status === 200)
             return "ok";
         let err;
         if (resp.data !== undefined && resp.data.message !== undefined)
             err = resp.data.message;
         else
-            err = "Connection error";
+            err = "Connection error: Join event";
         throw err;
     }
 
-    static async ChangeEventStatus(event_id, status) {
-        const resp = await Network.Put(`/events/${event_id}/status`, {status});
+    static async ChangeEventStatus(event_id, status) { // TODO
+        const resp = await Network.Put(`/events/${event_id}/attendees/me/status`, {status});
         if (resp.status === 200)
             return "ok";
         let err;

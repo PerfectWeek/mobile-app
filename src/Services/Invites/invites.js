@@ -2,9 +2,10 @@ import {Network} from "../../Network/Requests";
 
 export class InvitesService {
     static async GetGroupInvites() {
-        const resp = await Network.Get('/group-invites/');
+        const resp = await Network.Get('/calendars?invitation_status=pending');
         if (resp.status === 200)
-            return resp.data.pending_invites;
+        
+            return resp.data.calendars;
         let err;
         if (resp.data !== undefined && resp.data.message !== undefined)
             err = resp.data.message;
@@ -14,9 +15,9 @@ export class InvitesService {
     }
 
     static async GetEventInvites() {
-        const resp = await Network.Get('/event-invites/');
+        const resp = await Network.Get('/events?invitation_status=pending/');
         if (resp.status === 200)
-            return resp.data.pending_invites;
+            return resp.data.events;
         let err;
         if (resp.data !== undefined && resp.data.message !== undefined)
             err = resp.data.message;
@@ -26,9 +27,9 @@ export class InvitesService {
     }
 
     static async GetFriendInvites() {
-        const resp = await Network.Get('/friend-invites/');
+        const resp = await Network.Get('/friends?invitation_status=pending/');
         if (resp.status === 200)
-            return resp.data.friend_requests;
+            return resp.data.received;
         let err;
         if (resp.data !== undefined && resp.data.message !== undefined)
             err = resp.data.message;

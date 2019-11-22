@@ -4,8 +4,8 @@ import {Network} from "../../Network/Requests";
 import {Toast} from "native-base";
 
 function _register(username, email, password) {
-    return Network.Post("/users", {
-        pseudo: username,
+    return Network.Post("/auth/local/register", {
+        name: username,
         email: email,
         password: password
     });

@@ -17,28 +17,11 @@ import {Network} from "../../Network/Requests";
 function* GetEventRecommendation({min_time, max_time, limit}) {
     try {
         yield put(SetLoading(true));
-        let calendars = yield select((state) => {
-            return state.calendar.calendars
-        });
-        if (calendars === undefined || calendars.length === 0) {
 
-            const pseudo = yield select((state) => {
-                return state.login.pseudo
-            });
-            const resp = yield Network.Get(`/users/${pseudo}/calendars`);
-            if (resp.status !== 200)
-                throw resp.data;
-            calendars = resp.data.calendars.map(c => {
-                return {...c.calendar, show: true}
-            });
-            yield put(GetCalendarsSuccess(calendars));
-
-        }
-        const mainCalendar = calendars.find(c => {
-            return c.name === 'Main calendar' || c.name === 'Main Calendar'
-        });
-        let events = yield CalendarService.GetEventsSuggestion(mainCalendar.id, min_time, max_time, limit);
+        let events = yield CalendarService.GetEventsSuggestion(min_time, max_time, limit);
+        
         events = yield CalendarService.GetEventsImage(events);
+
         events = yield CalendarService.GetEventsAttendees(events);
 
         yield put(SetEvents(events));
@@ -56,7 +39,7 @@ function* JoinEvent({event, status}) {
         const pseudo = yield select((state) => {
             return state.login.pseudo
         });
-        event.attendees.push({pseudo, status: 'going'});
+        event.attendees.push({name : pseudo, status: 'going'});
         yield put(SetEvent(event));
         yield put(SetCalendarEvent({...event, status: status}));
         yield put(SetLoadingJoining(false));

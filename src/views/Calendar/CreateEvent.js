@@ -58,8 +58,6 @@ export class _CreateEvent extends React.Component {
 
                 var res = await axios.get(`https://eu1.locationiq.com/v1/reverse.php?key=${geocofing_token}&lat=${lat}&lon=${lon}&format=json`)
 
-                console.log(res);
-
                 this.setState({ localisation: res.data.display_name })
 
             } catch (error) {
@@ -72,15 +70,16 @@ export class _CreateEvent extends React.Component {
 
 
     validator() {
-        return (this.state.EventTitle === '' || this.state.description === ''
-            || this.state.localisation === '' || this.state.dateBeginEvent === '' || this.state.type === -1
+        return (this.state.EventTitle === ''
+            || this.state.dateBeginEvent === '' || this.state.type === -1
             || this.state.dateEndEvent === '' || this.state.beginTime === '' || this.state.visibility === ''
-            || this.state.endTime === '' || this.state.calendarId === -1
+            || this.state.endTime === ''
             || this.state.dateBeginEvent === this.state.dateEndEvent && moment(this.state.endTime, "HH:mm") < moment(this.state.beginTime, "HH:mm")
         )
     }
 
     componentDidUpdate() {
+        
         if (this.props.calendar && this.props.calendar.status === CalendarActionType.CreateNewEventSuccess) {
             this.props.navigation.goBack();
             this.props.RefreshCalendar();

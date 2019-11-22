@@ -30,11 +30,10 @@ import * as Localization from 'expo-localization';
 
 
 function* GetTheEventInfo(action) {
-    // console.log(action)
     let listAttendees = [];
     const response = yield Network.Get('/events/' + action.event);
-    const respons2 = yield Network.Get('/events/' + action.event + '/attendees');
-    if (response.status !== 200 || respons2.status !== 200) {
+    // const respons2 = yield Network.Get('/events/' + action.event + '/attendees');
+    if (response.status !== 200) {
         let err;
         if (response.status !== 500 && response.data !== undefined && response.data.message !== undefined)
             err = response.data.message;
@@ -44,10 +43,10 @@ function* GetTheEventInfo(action) {
         yield put(GetEventInfoFail());
     }
     // console.log('resp', response.data)
-    for (let i = 0; i < respons2.data.attendees.length; i++) {
-        listAttendees.push(respons2.data.attendees[i]['pseudo'])
-    }
-    yield put(GetEventInfoSuccess({ ...response.data.event, 'attendees': listAttendees }));
+    // for (let i = 0; i < respons2.data.attendees.length; i++) {
+        // listAttendees.push(respons2.data.attendees[i]['pseudo'])
+    // }
+    yield put(GetEventInfoSuccess(response.data.event));
 }
 
 const fr_to_en = {
@@ -74,6 +73,7 @@ function* ModifyEvent(action) {
             'users': action.event.attendeesToAdd
         });
     }
+    
     const response = yield Network.Put('/events/' + action.event.id, {
         name: action.event.EventTitle,
         description: action.event.description,
@@ -81,7 +81,8 @@ function* ModifyEvent(action) {
         end_time: action.event.dateEndEvent + "T" + action.event.endTime,
         location: action.event.localisation,
         type: action.event.type,
-        visibility: action.event.visibility
+        visibility: action.event.visibility,
+        color: "red"
     });
 
     if (response.status === 200) {
@@ -105,7 +106,7 @@ function* ModifyEvent(action) {
             type: 'image/jpeg', // or photo.type
             name: 'EventPicture'
         });
-        const resp = yield Network.PostMultiPart('/events/' + action.event.id + '/upload-image', data);
+        const resp = yield Network.PutMultiPart('/events/' + action.event.id + '/images/icon', data);
         if (resp.status === 200) {
             modified_event.image = action.event.image.uri;
             yield put(ModifyEventSuccess(modified_event));
@@ -141,24 +142,27 @@ function* DeleteEvent(action) {
 
 
 function* CreatNewEvent(action) {
-    console.log(action.event.type);
     if (Localization.locale === 'fr-FR'  && Object.keys(fr_to_en).find(t => t === action.event.type) !== undefined) {
         action.event.type = fr_to_en[action.event.type]
     }
-    console.log(action.event.type);
     try {
-        const response = yield Network.Post('/calendars/' + action.event.calendarId + '/events', {
+        let data = {
             name: action.event.EventTitle,
             description: action.event.description,
             start_time: action.event.dateBeginEvent + "T" + action.event.beginTime,
             end_time: action.event.dateEndEvent + "T" + action.event.endTime,
             location: action.event.localisation,
             type: action.event.type,
-            visibility: action.event.visibility
-        });
+            visibility: action.event.visibility,
+            color: "red"
+        }
+        if (action.event.calendarId !== -1)
+            data.calendar_id = action.event.calendarId;
+        const response = yield Network.Post('/events', data);
         if (response.status !== 201)
             throw response;
         const events = yield CalendarService.GetEventsInfo([response.data.event]);
+        
         const events_w_image = yield CalendarService.GetEventsImage([events[0]]);
         if (action.event.usersToAdd !== undefined && action.event.usersToAdd.length !== 0) {
             const responseAddUsers = yield Network.Post('/events/' + events[0].id + '/invite-users', {
@@ -186,11 +190,12 @@ function* GetCalendars(action) {
         const pseudo = yield select((state) => {
             return state.login.pseudo
         });
-        const resp = yield Network.Get(`/users/${pseudo}/calendars`);
+        const resp = yield Network.Get(`/calendars`);
         if (resp.status !== 200)
             throw resp.data;
+            
         const calendars = resp.data.calendars.map(c => {
-            return { ...c.calendar, show: true }
+            return { ...c, show: true }
         });
         yield put(GetCalendarsSuccess(calendars));
     } catch (e) {
