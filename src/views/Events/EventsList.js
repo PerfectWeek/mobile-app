@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, Platform, View, ScrollView, RefreshControl } from 'react-native';
+import { Platform, View, ScrollView, RefreshControl } from 'react-native';
 import {
     Header,
     Body,
@@ -40,8 +40,6 @@ export class _EventsList extends React.Component {
         var e = new Date();
         e.setDate(e.getDate() + 20);
         let end = e.toISOString().split('.')[0]
-        // this.props.GetEventRecommendation("2019-05-10T12:12:12", "2019-06-10T12:12:12", 10);
-        // console.log(beg, end);
 
         this.props.GetEventRecommendation(beg, end, 10);
     };
@@ -56,7 +54,7 @@ export class _EventsList extends React.Component {
                     this.props.navigation.navigate({ routeName: 'Map' });
                 }}>
                     <Text uppercase={false} style={{ fontSize: 18, fontWeight: 'bold', color: '#064C96' }}>
-                        
+
                         {i18n.t('event.map_view')}
                  </Text>
                     <Icon style={{ fontSize: 28, fontWeight: 'bold', color: '#064C96' }} type={"MaterialIcons"} name='location-on' />

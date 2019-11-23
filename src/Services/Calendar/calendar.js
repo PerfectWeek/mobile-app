@@ -31,7 +31,7 @@ export class CalendarService {
             {min_time, max_time, limit});
         if (resp.status === 200)
             return resp.data.suggestions.map(s => s.event);
-            
+
         let err;
         if (resp.data !== undefined && resp.data.message !== undefined)
             err = resp.data.message;
@@ -41,7 +41,7 @@ export class CalendarService {
     }
 
     static async GetEventsForCalendars(calendars) {
-        let events = [];        
+        let events = [];
         // for (let idx = 0; idx < calendars.length; idx++) {
             if (calendars.length === 0) {
 
@@ -126,7 +126,7 @@ export class CalendarService {
             const resp = await Network.Get(`/events/${events[idx].id}`);
             if (resp.status === 200) {
                 events[idx].attendees = resp.data.event.attendees;
-                
+
                 events[idx].attendees = await UserService.GetUsersImage(events[idx].attendees);
             }
         }

@@ -50,18 +50,18 @@ export class _ModifyEvent extends React.Component {
         this.props.login.analytics.hit(new PageHit('ModifyEvent'));
         const event = this.props.calendar.events[this.props.navigation.state.params.eventId];
 
-        
+
         let type_befor = event.type;
         this.props.GetEventInfo(this.props.navigation.state.params.eventId)
         this.state = this.fillInfoEvent(event);
         console.log("t : ", event.type);
-        
+
         if (Localization.locale === 'fr-FR') {
             event.type = en_to_fr[type_befor] !== undefined ? en_to_fr[type_befor] : event.type
-            console.log("t after : ", event.type);            
+            console.log("t after : ", event.type);
         }
         console.log("EVENT_TYPE : ", event.type);
-        
+
         let t = this.props.calendar.eventsType.findIndex(e => e === event.type);
         this.state.type = t;
     }
@@ -95,7 +95,8 @@ export class _ModifyEvent extends React.Component {
             display: event.image,
             new_image: false,
             visibility: event.visibility,
-            color: event.color
+            color: event.color,
+            toggle: false
             // attendees: event.attendees
         };
     }
@@ -196,189 +197,193 @@ export class _ModifyEvent extends React.Component {
             );
 
         return (
-
-            <ScrollView>
-                <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                    <Thumbnail style={{ marginTop: 10 }} large source={{ uri: this.state.display }} />
-                    <TouchableOpacity style={GreenButtonStyle}
-                        onPress={async () => {
-                            const res = await ImagePicker.launchImageLibraryAsync();
-                            if (res.cancelled)
-                                return;
-                            this.setState({ ...this.state, image: res, display: res.uri, new_image: true });
-                        }}>
-                        <Text style={{ fontSize: 18 }}>{i18n.t('dashboard.createvent.selectimg')}</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={{
-                    flexDirection: 'row', justifyContent: 'space-between'
-                }}>
-                    <Form style={{
-                        marginLeft: 10, marginRight: 30, flexGrow: 3
+            <KeyboardAvoidingView behavior="position" enabled={this.state.toggle}>
+                <ScrollView>
+                    <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                        <Thumbnail style={{ marginTop: 10 }} large source={{ uri: this.state.display }} />
+                        <TouchableOpacity style={GreenButtonStyle}
+                            onPress={async () => {
+                                const res = await ImagePicker.launchImageLibraryAsync();
+                                if (res.cancelled)
+                                    return;
+                                this.setState({ ...this.state, image: res, display: res.uri, new_image: true });
+                            }}>
+                            <Text style={{ fontSize: 18 }}>{i18n.t('dashboard.createvent.selectimg')}</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{
+                        flexDirection: 'row', justifyContent: 'space-between'
                     }}>
-                        <Item>
-                            <Input style={{ ...textStyle, fontSize: 26 }}
-                                placeholder={i18n.t('dashboard.createvent.nameevent')} value={this.state.EventTitle}
-                                onChangeText={(text) => this.setState({ EventTitle: text })} />
-                        </Item>
-                        <Item>
-                            <Icon style={IconStyle} type='SimpleLineIcons' active name='pencil' />
-                            <Input style={textStyle}
-                                placeholder={i18n.t('dashboard.createvent.description')} value={this.state.description}
-                                onChangeText={(text) => this.setState({ description: text })} />
-                        </Item>
-                        <Item>
-                            <Icon style={IconStyle} type='SimpleLineIcons' active name='location-pin' />
-                            <Input style={textStyle}
-                                placeholder={i18n.t('dashboard.createvent.localisation')} value={this.state.localisation}
-                                onChangeText={(text) => this.setState({ localisation: text })} />
-                        </Item>
+                        <Form style={{
+                            marginLeft: 10, marginRight: 30, flexGrow: 3
+                        }}>
+                            <Item>
+                                <Input style={{ ...textStyle, fontSize: 26 }}
+                                    placeholder={i18n.t('dashboard.createvent.nameevent')} value={this.state.EventTitle}
+                                    onChangeText={(text) => this.setState({ EventTitle: text })} />
+                            </Item>
+                            <Item>
+                                <Icon style={IconStyle} type='SimpleLineIcons' active name='pencil' />
+                                <Input style={textStyle}
+                                    placeholder={i18n.t('dashboard.createvent.description')} value={this.state.description}
+                                    onChangeText={(text) => this.setState({ description: text })} />
+                            </Item>
+                            <Item>
+                                <Icon style={IconStyle} type='SimpleLineIcons' active name='location-pin' />
+                                <Input style={textStyle}
+                                    placeholder={i18n.t('dashboard.createvent.localisation')} value={this.state.localisation}
+                                    onChangeText={(text) => this.setState({ localisation: text })} />
+                            </Item>
 
-                        <Item>
-                            <Icon style={{ ...IconStyle, alignSelf: 'flex-start', marginTop: 10 }} type='SimpleLineIcons'
-                                active
-                                name='clock' />
+                            <Item>
+                                <Icon style={{ ...IconStyle, alignSelf: 'flex-start', marginTop: 10 }} type='SimpleLineIcons'
+                                    active
+                                    name='clock' />
 
-                            <View style={{ flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}>
+                                <View style={{ flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}>
 
-                                <View style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'flex-start',
-                                    alignItems: 'center',
-                                    marginTop: 5
-                                }}>
-                                    <DatePicker
-                                        customStyles={{ placeholderText: { color: 'black', fontFamily: 'Roboto_medium' } }}
-                                        style={{
-                                            width: 200, height: 40, justifyContent: 'center',
-                                            alignItems: 'center'
-                                        }}
-                                        placeholder={this.state.dateBeginEvent === '' ? i18n.t('dashboard.eventinfo.begin') : this.state.dateBeginEvent}
-                                        format="YYYY-MM-DD"
-                                        minDate="2018-01-01"
-                                        maxDate={this.state.dateEndEvent === '' ? "2022-01-01" : this.state.dateEndEvent}
-                                        confirmBtnText={i18n.t('other.confirm')}
-                                        cancelBtnText={i18n.t('other.cancel')}
-                                        showIcon={false}
-                                        onDateChange={(date) => {
-                                            if (this.checkDateInPast(date))
-                                                this.setState({ dateBeginEvent: date })
-                                        }}
-                                    />
-                                    <DatePicker
-                                        customStyles={{ placeholderText: { color: 'black', fontFamily: 'Roboto_medium' } }}
-                                        style={{ width: 80 }}
-                                        date={this.state.beginTime}
-                                        placeholder={i18n.t('dashboard.eventinfo.endtime')}
-                                        mode="time"
-                                        format="HH:mm"
-                                        confirmBtnText={i18n.t('other.confirm')}
-                                        cancelBtnText={i18n.t('other.cancel')}
-                                        minuteInterval={1}
-                                        showIcon={false}
-                                        onDateChange={(time) => {
-                                            this.setState({ beginTime: time });
-                                        }}
-                                    />
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        justifyContent: 'flex-start',
+                                        alignItems: 'center',
+                                        marginTop: 5
+                                    }}>
+                                        <DatePicker
+                                            customStyles={{ placeholderText: { color: 'black', fontFamily: 'Roboto_medium' } }}
+                                            style={{
+                                                width: 200, height: 40, justifyContent: 'center',
+                                                alignItems: 'center'
+                                            }}
+                                            placeholder={this.state.dateBeginEvent === '' ? i18n.t('dashboard.eventinfo.begin') : this.state.dateBeginEvent}
+                                            format="YYYY-MM-DD"
+                                            minDate="2018-01-01"
+                                            maxDate={this.state.dateEndEvent === '' ? "2022-01-01" : this.state.dateEndEvent}
+                                            confirmBtnText={i18n.t('other.confirm')}
+                                            cancelBtnText={i18n.t('other.cancel')}
+                                            showIcon={false}
+                                            onDateChange={(date) => {
+                                                if (this.checkDateInPast(date))
+                                                    this.setState({ dateBeginEvent: date })
+                                            }}
+                                        />
+                                        <DatePicker
+                                            customStyles={{ placeholderText: { color: 'black', fontFamily: 'Roboto_medium' } }}
+                                            style={{ width: 80 }}
+                                            date={this.state.beginTime}
+                                            placeholder={i18n.t('dashboard.eventinfo.endtime')}
+                                            mode="time"
+                                            format="HH:mm"
+                                            confirmBtnText={i18n.t('other.confirm')}
+                                            cancelBtnText={i18n.t('other.cancel')}
+                                            minuteInterval={1}
+                                            showIcon={false}
+                                            onDateChange={(time) => {
+                                                this.setState({ beginTime: time });
+                                            }}
+                                        />
+                                    </View>
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        justifyContent: 'flex-start',
+                                        alignItems: 'center',
+                                        marginBottom: 5,
+                                        marginTop: 5
+                                    }}>
+                                        <DatePicker
+                                            customStyles={{ placeholderText: { color: 'black', fontFamily: 'Roboto_medium' } }}
+                                            style={{
+                                                width: 200, height: 40, justifyContent: 'center',
+                                                alignItems: 'center', borderLeftColor: 'white'
+                                            }}
+                                            placeholder={this.state.dateEndEvent === '' ? i18n.t('dashboard.eventinfo.endtime') : this.state.dateEndEvent}
+                                            format="YYYY-MM-DD"
+                                            minDate={this.state.dateBeginEvent === '' ? "2018-01-01" : this.state.dateBeginEvent}
+                                            maxDate="2022-01-01"
+                                            confirmBtnText={i18n.t('other.confirm')}
+                                            cancelBtnText={i18n.t('other.cancel')}
+                                            showIcon={false}
+                                            onDateChange={(date) => {
+                                                if (this.checkDateInPast(date))
+                                                    this.setState({ dateEndEvent: date })
+                                            }}
+                                        />
+                                        <DatePicker
+                                            customStyles={{ placeholderText: { color: 'black', fontFamily: 'Roboto_medium' } }}
+                                            style={{ width: 80 }}
+                                            date={this.state.endTime}
+                                            placeholder={i18n.t('dashboard.eventinfo.endtime')}
+                                            mode="time"
+                                            format="HH:mm"
+                                            confirmBtnText={i18n.t('other.confirm')}
+                                            cancelBtnText={i18n.t('other.cancel')}
+                                            minuteInterval={1}
+                                            showIcon={false}
+                                            onDateChange={(time) => {
+                                                this.setState({ endTime: time });
+                                            }}
+                                        />
+                                    </View>
                                 </View>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'flex-start',
-                                    alignItems: 'center',
-                                    marginBottom: 5,
-                                    marginTop: 5
-                                }}>
-                                    <DatePicker
-                                        customStyles={{ placeholderText: { color: 'black', fontFamily: 'Roboto_medium' } }}
-                                        style={{
-                                            width: 200, height: 40, justifyContent: 'center',
-                                            alignItems: 'center', borderLeftColor: 'white'
-                                        }}
-                                        placeholder={this.state.dateEndEvent === '' ? i18n.t('dashboard.eventinfo.endtime') : this.state.dateEndEvent}
-                                        format="YYYY-MM-DD"
-                                        minDate={this.state.dateBeginEvent === '' ? "2018-01-01" : this.state.dateBeginEvent}
-                                        maxDate="2022-01-01"
-                                        confirmBtnText={i18n.t('other.confirm')}
-                                        cancelBtnText={i18n.t('other.cancel')}
-                                        showIcon={false}
-                                        onDateChange={(date) => {
-                                            if (this.checkDateInPast(date))
-                                                this.setState({ dateEndEvent: date })
-                                        }}
-                                    />
-                                    <DatePicker
-                                        customStyles={{ placeholderText: { color: 'black', fontFamily: 'Roboto_medium' } }}
-                                        style={{ width: 80 }}
-                                        date={this.state.endTime}
-                                        placeholder={i18n.t('dashboard.eventinfo.endtime')}
-                                        mode="time"
-                                        format="HH:mm"
-                                        confirmBtnText={i18n.t('other.confirm')}
-                                        cancelBtnText={i18n.t('other.cancel')}
-                                        minuteInterval={1}
-                                        showIcon={false}
-                                        onDateChange={(time) => {
-                                            this.setState({ endTime: time });
-                                        }}
-                                    />
-                                </View>
-                            </View>
-                        </Item>
-                        <Item>
-                            <Icon style={IconStyle} type='SimpleLineIcons' active name='flag' />
-                            <Picker
-                                placeholder={i18n.t('dashboard.createvent.selectevent')}
-                                placeholderStyle={{ color: "#9EA0A4" }}
-                                note
-                                selectedValue={this.state.type}
-                                mode="dropdown"
-                                style={{ width: 120 }}
-                                onValueChange={(value) => {
-                                    this.setState({ type: value });
-                                }}>
-                                <Picker.Item label={i18n.t('dashboard.createvent.selectevent')} value={-1} key={-1} />
-                                {
-                                    this.props.calendar.eventsType.map((type, index) => {
-                                        return <Picker.Item label={type} value={index} key={index} />
-                                    })
-                                }
-                            </Picker>
-                        </Item>
-                        <Item last>
-                            <Icon style={IconStyle} type='SimpleLineIcons' active name='lock' />
-                            <Picker
-                                placeholder={i18n.t('dashboard.createvent.selectvis')}
-                                placeholderStyle={{ color: "#9EA0A4" }}
-                                note
-                                mode="dropdown"
-                                style={{ width: 120 }}
-                                selectedValue={this.state.visibility}
-                                onValueChange={(value) => {
-                                    this.setState({ visibility: value });
-                                }}>
-                                <Picker.Item label={i18n.t('other.public')} value={'public'} key={0} />
-                                <Picker.Item label={i18n.t('other.private')} value={'private'} key={1} />
-                            </Picker>
-                        </Item>
-                        {(this.props.attendees !== undefined) ?
-                            <ListUsers callAddUser={(userList) => {
-                                this.setState({ attendees: userList })
-                            }} loadList={this.props.attendees} /> : null
-                        }
-                        <Button success disabled={this.validator()}
-                                rounded style={{margin: 30, marginTop: 5}}
-                                onPress={() => {
-                                    this.props.login.analytics.event(new Event('Events', 'Modification'));
+                            </Item>
+                            <Item>
+                                <Icon style={IconStyle} type='SimpleLineIcons' active name='flag' />
+                                <Picker
+                                    placeholder={i18n.t('dashboard.createvent.selectevent')}
+                                    placeholderStyle={{ color: "#9EA0A4" }}
+                                    note
+                                    selectedValue={this.state.type}
+                                    mode="dropdown"
+                                    style={{ width: 120 }}
+                                    onValueChange={(value) => {
+                                        this.setState({ type: value });
+                                    }}>
+                                    <Picker.Item label={i18n.t('dashboard.createvent.selectevent')} value={-1} key={-1} />
+                                    {
+                                        this.props.calendar.eventsType.map((type, index) => {
+                                            return <Picker.Item label={type} value={index} key={index} />
+                                        })
+                                    }
+                                </Picker>
+                            </Item>
+                            <Item last>
+                                <Icon style={IconStyle} type='SimpleLineIcons' active name='lock' />
+                                <Picker
+                                    placeholder={i18n.t('dashboard.createvent.selectvis')}
+                                    placeholderStyle={{ color: "#9EA0A4" }}
+                                    note
+                                    mode="dropdown"
+                                    style={{ width: 120 }}
+                                    selectedValue={this.state.visibility}
+                                    onValueChange={(value) => {
+                                        this.setState({ visibility: value });
+                                    }}>
+                                    <Picker.Item label={i18n.t('other.public')} value={'public'} key={0} />
+                                    <Picker.Item label={i18n.t('other.private')} value={'private'} key={1} />
+                                </Picker>
+                            </Item>
+                            {(this.props.attendees !== undefined) ?
+                                <ListUsers callAddUser={(userList) => {
+                                    this.setState({ attendees: userList })
+                                }} loadList={this.props.attendees}
+                                           enableToggle={() => {
+                                               this.setState({ toggle: !this.state.toggle });
+                                           }}/> : null
+                            }
+                            <Button success disabled={this.validator()}
+                                    rounded style={{margin: 30, marginTop: 5}}
+                                    onPress={() => {
+                                        this.props.login.analytics.event(new Event('Events', 'Modification'));
 
-                                    this.checkAttendees()
-                                }}>
-                            <Text>
-                                Modify event
-                            </Text>
-                        </Button>
-                    </Form>
-                </View>
-            </ScrollView>
+                                        this.checkAttendees()
+                                    }}>
+                                <Text>
+                                    Modify event
+                                </Text>
+                            </Button>
+                        </Form>
+                    </View>
+                </ScrollView>
+            </KeyboardAvoidingView>
         )
     }
 }

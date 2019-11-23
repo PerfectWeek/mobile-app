@@ -59,7 +59,6 @@ export class _ListUsers extends React.Component {
 
 
     render() {
-
         return (
             <View>
                 {this.props.editMode === undefined || this.props.editMode === true ?
@@ -115,9 +114,9 @@ export class _ListUsers extends React.Component {
                         {
                             this.state.usersToAdd.map((user, index) => {
                                 return (
-                                    <Button rounded key={index} small style={{margin: 5, backgroundColor: 'grey'}}
+                                    <Button rounded key={index} small style={{margin: 5, backgroundColor: user.status === 'going' ? 'green' : 'grey'}}
                                             onPress={() => {
-                                                if (this.props.editMode === undefined || this.props.editMode === true) {
+                                                if ((this.props.editMode === undefined || this.props.editMode === true) && !user.status) {
                                                     this.state.usersToAdd.splice(index, 1);
                                                     this.setState({
                                                         usersToAdd: this.state.usersToAdd,
@@ -126,7 +125,7 @@ export class _ListUsers extends React.Component {
                                                 }
                                             }}>
                                         <Text>{user.name}</Text>
-                                        {this.props.editMode === undefined || this.props.editMode === true ?
+                                        {(this.props.editMode === undefined || this.props.editMode === true) && !user.status ?
                                             <Icon type='FontAwesome' name='remove'/> : null}
                                     </Button>
                                 );

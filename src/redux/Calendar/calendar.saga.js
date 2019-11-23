@@ -58,24 +58,26 @@ const fr_to_en = {
 
 
 function* ModifyEvent(action) {
-    
+
     if (Localization.locale === 'fr-FR') {
-          
+
         action.event.type = fr_to_en[action.event.type]
     }
-    
 
-    for (let i = 0; i < action.event.attendeesToDel.length; i++) {
-        const res = yield Network.Delete('/events/' + action.event.id + '/attendees/' + action.event.attendeesToDel[i]);
-    }
     if (action.event.attendeesToAdd.length !== 0) {
-        const responseAddUsers = yield Network.Post('/events/' + action.event.id + '/invite-users', {
-            'users': action.event.attendeesToAdd
+        let users = [];
+        action.event.attendeesToAdd.forEach((user) => {
+            users.push( {
+                id: user.id,
+                role: "actor"
+            })
+        });
+            yield Network.Post('/events/' + action.event.id + '/attendees', {
+                attendees: users
         });
     }
-    
-    console.log("MODIFY : ", action.event);
-    
+
+
     const response = yield Network.Put('/events/' + action.event.id, {
         name: action.event.EventTitle,
         description: action.event.description,
@@ -160,18 +162,18 @@ function* CreatNewEvent(action) {
         }
         if (action.event.calendarId !== -1)
             data.calendar_id = action.event.calendarId;
-            
+
         const response = yield Network.Post('/events', data);
         if (response.status !== 201)
             throw response;
         const events = yield CalendarService.GetEventsInfo([response.data.event]);
-        
+
         const events_w_image = yield CalendarService.GetEventsImage([events[0]]);
         if (action.event.usersToAdd !== undefined && action.event.usersToAdd.length !== 0) {
             const responseAddUsers = yield Network.Post('/events/' + events[0].id + '/attendees', {
                 'attendees': action.event.usersToAdd.map(u => { return { ...u, role: 'actor'}})
             });
-            
+
             if (responseAddUsers.status !== 200) {
                 yield Network.Delete('/events/' + events[0].id);
                 throw responseAddUsers
@@ -197,7 +199,7 @@ function* GetCalendars(action) {
         const resp = yield Network.Get(`/calendars`);
         if (resp.status !== 200)
             throw resp.data;
-            
+
         const calendars = resp.data.calendars.map(c => {
             return { ...c, show: false }
         });
