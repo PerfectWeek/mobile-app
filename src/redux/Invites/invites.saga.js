@@ -19,7 +19,7 @@ function* GetInvites() {
         }));
         let friend_invites = yield InvitesService.GetFriendInvites();
         invites.push(...friend_invites.map(i => {
-            return {type: 'friend', name: i.from_user.pseudo, item: i}
+            return {type: 'friend', name: i.user.name, item: i}
         }));
         yield put(SetInvites(invites));
         yield put(SetLoading(false));
