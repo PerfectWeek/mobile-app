@@ -4,7 +4,7 @@ export class InvitesService {
     static async GetGroupInvites() {
         const resp = await Network.Get('/calendars?invitation_status=pending');
         if (resp.status === 200)
-        
+
             return resp.data.calendars;
         let err;
         if (resp.data !== undefined && resp.data.message !== undefined)
@@ -15,7 +15,7 @@ export class InvitesService {
     }
 
     static async GetEventInvites() {
-        const resp = await Network.Get('/events?invitation_status=pending/');
+        const resp = await Network.Get('/events?only_statuses[]=invited');
         if (resp.status === 200)
             return resp.data.events;
         let err;
@@ -63,7 +63,7 @@ export class InvitesService {
     }
 
     static async ReplyEventInvite(group_id, response) {
-        const resp = await Network.Put(`/events/${group_id}/status`, {status: response ? 'going' : 'no'});
+        const resp = await Network.Put(`/events/${group_id}/attendees/me/status`, {status: response ? 'going' : 'no'});
         if (resp.status === 200)
             return "ok";
         let err;

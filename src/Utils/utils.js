@@ -15,8 +15,8 @@ export function validateNotEmpty(str) {
 export function validatePassword(psw) {
     if (psw === '')
         return true;
-    const re = /^[a-zA-Z0-9_-]{2,31}$/;
-    return re.test(String(psw).toLowerCase());
+    const rere = /[a-zA-Z0-9_-]{2,31}[!@#$%^&*(),.?"':;/\\{}|<>\-_+=~`\[\]]/;
+    return rere.test(String(psw).toLowerCase());
 }
 
 export function comparePasswords(pwd1, pwd2) {
