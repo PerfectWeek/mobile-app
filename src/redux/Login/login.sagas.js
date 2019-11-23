@@ -3,6 +3,7 @@ import {LoginActionsType, LoginFail, LoginSuccess, ResetStores} from "./login.ac
 import {Network} from "../../Network/Requests";
 import {NavigationActions} from 'react-navigation'
 import {Toast} from "native-base";
+import axios from 'react-native-axios'
 
 // import * as Segment from "expo-analytics-segment";
 
@@ -18,6 +19,8 @@ function* CheckIsLogged(action) {
         const savedToken = yield Network.CheckToken();
         if (savedToken !== null) {
             Network.access_token = savedToken.token;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${savedToken.token}`;
+
             // Segment.identify(savedToken.name);
             // Segment.track({
             //     "type": "track" ,
@@ -37,6 +40,7 @@ function* Login(action) {
     if (response.status === 200) {
         yield put(LoginSuccess(response.data.token, response.data.user.name, response.data.user.email, response.data.user.id));
         Network.access_token = response.data.token;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
         yield Network.SaveToken(response.data.user.email, response.data.user.name, response.data.user.id);
         yield put(NavigationActions.navigate({routeName: 'Home'}));
 
@@ -59,6 +63,7 @@ function* Login(action) {
 function* SetLogged(action) {
     yield put(LoginSuccess(action.access_token, action.pseudo, action.email, action.id));
     Network.access_token = action.access_token;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${action.access_token}`;
     yield Network.SaveToken(action.email, action.pseudo, action.id);
     yield put(NavigationActions.navigate({routeName: 'Home'}));
 }
@@ -67,6 +72,7 @@ function* SetLogged(action) {
 function* LoginGoogle(action) {
     yield put(LoginSuccess(action.accessToken, action.pseudo, action.email, action.id));
     Network.access_token = action.accessToken;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${action.accessToken}`;
     yield Network.SaveToken(action.email, action.pseudo, action.id);
     yield put(NavigationActions.navigate({routeName: 'Home'}));
 }

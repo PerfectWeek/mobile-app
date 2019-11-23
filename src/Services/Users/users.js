@@ -11,6 +11,7 @@ import {
 import { Toast } from "native-base";
 import { UpdateUserInfo } from "../../redux/Login/login.actions";
 import { put } from "redux-saga/effects";
+import axios from 'react-native-axios'
 
 export class UserService {
   // static async GetGroupsForUserPseudo(pseudo) {
@@ -27,31 +28,38 @@ export class UserService {
 
   static async GetUserImage(id) {
 
-    const resp = await Network.Get(`/users/${id}/images/profile`);
-    
-    if (resp.status === 200) return resp.data;
-    let err;
-    if (resp.data !== undefined && resp.data.message !== undefined)
-      err = resp.data.message;
-    else err = "Connection error";
-    throw err;
+    return `${axios.defaults.baseURL}/users/${id}/images/profile`
+    // const resp = await Network.Get(`/users/${id}/images/profile`);
+    // if (resp.status === 200) return resp.data;
+    // let err;
+    // if (resp.data !== undefined && resp.data.message !== undefined)
+    //   err = resp.data.message;
+    // else err = "Connection error";
+    // throw err;
   }
 
   static async GetUsersImage(users) {
     for (let idx = 0; idx < users.length; idx++) {
-      const resp = await Network.Get(`/users/${users[idx].id}/images/profile`);
-      if (resp.status === 200) {
-        users[idx].image = resp.data.image;
-      } else {
-        let err;
-        if (resp.data !== undefined && resp.data.message !== undefined)
-          err = resp.data.message;
-        else err = "Connection error";
-        throw err;
-      }
+        users[idx].image = `${axios.defaults.baseURL}/users/${users[idx].id}/images/profile`;
     }
     return users;
   }
+
+  // static async GetUsersImage(users) {
+  //   for (let idx = 0; idx < users.length; idx++) {
+  //     const resp = await Network.Get(`/users/${users[idx].id}/images/profile`);
+  //     if (resp.status === 200) {
+  //       users[idx].image = resp.data.image;
+  //     } else {
+  //       let err;
+  //       if (resp.data !== undefined && resp.data.message !== undefined)
+  //         err = resp.data.message;
+  //       else err = "Connection error";
+  //       throw err;
+  //     }
+  //   }
+  //   return users;
+  // }
 
   static async GetMyInfo() {
     const resp = await Network.Get(`/users/me`);

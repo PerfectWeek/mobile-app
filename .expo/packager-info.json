@@ -1,10 +1,10 @@
 {
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 2228,
-  "expoServerNgrokUrl": "https://vr-wvt.anonymous.mobile-app.exp.direct",
-  "packagerNgrokUrl": "https://packager.vr-wvt.anonymous.mobile-app.exp.direct",
-  "ngrokPid": 25000,
+  "packagerPid": 4756,
+  "expoServerNgrokUrl": "https://vr-wvt.pierresaid.mobile-app.exp.direct",
+  "packagerNgrokUrl": "https://packager.vr-wvt.pierresaid.mobile-app.exp.direct",
+  "ngrokPid": 18352,
   "devToolsPort": 19002,
   "webpackServerPort": null
 }

@@ -1,5 +1,6 @@
 import {Network} from "../../Network/Requests";
 import {UserService} from "../Users/users";
+import axios from 'react-native-axios'
 
 export class CalendarService {
 
@@ -85,21 +86,40 @@ export class CalendarService {
 
     static async GetEventsImage(events) {
         for (let idx = 0; idx < events.length; idx++) {
-            const resp = await Network.Get(`/events/${events[idx].id}/images/icon`);
-            if (resp.status === 200) {
-                events[idx].image = resp.data;
+            events[idx].image = `${axios.defaults.baseURL}/events/${events[idx].id}/images/icon`;
+            // const resp = await Network.Get(`/events/${events[idx].id}/images/icon`);
+            // if (resp.status === 200) {
+            //     events[idx].image = resp.data;
                 
-            } else {
-                let err;
-                if (resp.data !== undefined && resp.data.message !== undefined)
-                    err = resp.data.message;
-                else
-                    err = "Connection error";
-                throw err
-            }
+            // } else {
+            //     let err;
+            //     if (resp.data !== undefined && resp.data.message !== undefined)
+            //         err = resp.data.message;
+            //     else
+            //         err = "Connection error";
+            //     throw err
+            // }
         }
         return events
     }
+
+    // static async GetEventsImage(events) {
+    //     for (let idx = 0; idx < events.length; idx++) {
+    //         const resp = await Network.Get(`/events/${events[idx].id}/images/icon`);
+    //         if (resp.status === 200) {
+    //             events[idx].image = resp.data;
+                
+    //         } else {
+    //             let err;
+    //             if (resp.data !== undefined && resp.data.message !== undefined)
+    //                 err = resp.data.message;
+    //             else
+    //                 err = "Connection error";
+    //             throw err
+    //         }
+    //     }
+    //     return events
+    // }
 
     static async GetEventsAttendees(events) {
         for (let idx = 0; idx < events.length; idx++) {
