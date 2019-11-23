@@ -27,6 +27,8 @@ export class _FriendsList extends Component {
     };
 
     render() {
+
+        console.log('this.props.friends', this.props.friends)
         if (this.props.friends === undefined)
             return (<Loader/>);
         return (
@@ -73,7 +75,7 @@ export class _FriendsList extends Component {
                                                 source={{uri: friend.image}}/>
                                         </Left>
                                         <Body style={{height: 60}}>
-                                        <Text style={{fontSize: 18, fontWeight: 'bold'}}>{friend.pseudo}</Text>
+                                        <Text style={{fontSize: 18, fontWeight: 'bold'}}>{friend.user.name}</Text>
                                         </Body>
                                     </ListItem>
 

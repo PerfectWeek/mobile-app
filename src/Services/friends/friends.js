@@ -15,7 +15,7 @@ export class FriendsService {
     }
 
     static async SendFriendRequest(pseudo) {
-        const resp = await Network.Post(`/friends/${pseudo}`);
+        const resp = await Network.Post(`/friends/${pseudo.id}`);
         if (resp.status === 200)
             return 'ok';
         let err;
