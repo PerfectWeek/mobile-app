@@ -114,7 +114,7 @@ export class _ListUsers extends React.Component {
                         {
                             this.state.usersToAdd.map((user, index) => {
                                 return (
-                                    <Button rounded key={index} small style={{margin: 5, backgroundColor: user.status === 'going' ? 'green' : 'grey'}}
+                                    <Button rounded key={index} small style={{margin: 5, backgroundColor: user.status === 'going' ? '#5cb85c' : 'grey'}}
                                             onPress={() => {
                                                 if ((this.props.editMode === undefined || this.props.editMode === true) && !user.status) {
                                                     this.state.usersToAdd.splice(index, 1);
