@@ -43,9 +43,9 @@ function* ReplyGroupInvite({group_id, response}) {
     }
 }
 
-function* ReplyFriendInvite({user_pseudo, response}) {
+function* ReplyFriendInvite({user_id, response}) {
     try {
-        yield InvitesService.ReplyFriendInvite(user_pseudo, response);
+        yield InvitesService.ReplyFriendInvite(user_id, response);
         // const pseudo = yield select((state) => {
         //     return state.login.pseudo
         // });

@@ -59,6 +59,8 @@ export class _ListUsers extends React.Component {
 
 
     render() {
+        console.log("arabe: ", this.state.usersToAdd);
+        
         return (
             <View>
                 {this.props.editMode === undefined || this.props.editMode === true ?
@@ -112,7 +114,7 @@ export class _ListUsers extends React.Component {
                 {this.props.displaySelection === undefined || this.props.displaySelection === true ?
                     <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
                         {
-                            this.state.usersToAdd.map((user, index) => {
+                            this.state.usersToAdd.filter(u => u.status !== 'no').map((user, index) => {
                                 return (
                                     <Button rounded key={index} small style={{margin: 5, backgroundColor: user.status === 'going' ? '#5cb85c' : 'grey'}}
                                             onPress={() => {
@@ -135,7 +137,7 @@ export class _ListUsers extends React.Component {
                     :
                     <View style={{flexDirection: 'column'}}>
                         {
-                            this.state.usersToAdd.map((user, index) => {
+                            this.state.usersToAdd.filter(u => u.status !== 'no').map((user, index) => {
                                 return (
                                     <View key={index} style={{
                                         flexDirection: 'column',

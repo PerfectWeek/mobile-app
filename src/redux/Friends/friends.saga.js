@@ -10,9 +10,9 @@ function* GetFriends({}) {
         const friends = yield FriendsService.GetFriends();
         yield put(SetFriends(friends));
         yield put(SetLoading(false));
-        for (let i = 0; i < friends.length; i++) {
-            friends[i].image = yield UserService.GetUserImage(friends[i].pseudo);
-        }
+        // for (let i = 0; i < friends.length; i++) {
+        //     friends[i].image = yield UserService.GetUserImage(friends[i].pseudo);
+        // }
         yield put(SetFriends(friends));
     } catch (err) {
         yield put(SetLoading(false));

@@ -1,5 +1,6 @@
 import axios from 'react-native-axios'
 import {AsyncStorage} from 'react-native';
+import { Notifications } from "expo";
 
 axios.defaults.baseURL = 'https://perfect-week-api.herokuapp.com';
 // axios.defaults.baseURL = 'http://api.perfect-week.pw';
@@ -19,6 +20,19 @@ export class Network {
             return JSON.parse(savedData);
         } catch (e) {
             return null;
+        }
+    }
+
+    static async setToken(access_token) {
+        this.access_token = access_token;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
+        console.log("Je demande le token");
+        let expoToken = await Notifications.getExpoPushTokenAsync();
+        console.log(expoToken);
+        if (expoToken) {
+            let res = await axios.post("/expo/token", {token : expoToken});
+            console.log(res);
+            
         }
     }
 

@@ -54,13 +54,10 @@ export class _ModifyEvent extends React.Component {
         let type_befor = event.type;
         this.props.GetEventInfo(this.props.navigation.state.params.eventId)
         this.state = this.fillInfoEvent(event);
-        console.log("t : ", event.type);
 
         if (Localization.locale === 'fr-FR') {
             event.type = en_to_fr[type_befor] !== undefined ? en_to_fr[type_befor] : event.type
-            console.log("t after : ", event.type);
         }
-        console.log("EVENT_TYPE : ", event.type);
 
         let t = this.props.calendar.eventsType.findIndex(e => e === event.type);
         this.state.type = t;

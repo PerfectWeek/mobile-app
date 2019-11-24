@@ -76,7 +76,7 @@ export class _Invite extends React.Component {
                                     }} avatar>
                                         <Left>
                                             <Thumbnail
-                                                source={{uri: 'https://picsum.photos/200/300?image=' + Math.floor((Math.random() * 1000) % 200)}}/>
+                                                source={{uri: invite.item.image}}/>
                                         </Left>
                                         <Body style={{height: 70}}>
                                         <Text style={{fontSize: 18, fontWeight: 'bold'}}>{invite.name}</Text>
@@ -124,16 +124,18 @@ export class _Invite extends React.Component {
             this.props.ReplyGroupInvite(invite.item.id, true);
         else if (invite.type === 'event')
             this.props.ReplyEventInvite(invite.item.id, true);
-        else if (invite.type === 'friend')
-            this.props.ReplyFriendInvite(invite.name, true);
+        else if (invite.type === 'friend') {
+            this.props.ReplyFriendInvite(invite.item.user.id, true);
+        }
     }
     handleNo(invite) {
         if (invite.type === 'group')
             this.props.ReplyGroupInvite(invite.item.id, false);
         else if (invite.type === 'event')
             this.props.ReplyEventInvite(invite.item.id, false);
-        else if (invite.type === 'friend')
-            this.props.ReplyFriendInvite(invite.name, false);
+        else if (invite.type === 'friend') {
+            this.props.ReplyFriendInvite(invite.item.user.id, false);
+        }
     }
 }
 
@@ -142,7 +144,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         ...ownProps,
         ReplyGroupInvite: (group_id, response) => dispatch(ReplyGroupInvite(group_id, response)),
         ReplyEventInvite: (event_id, response) => dispatch(ReplyEventInvite(event_id, response)),
-        ReplyFriendInvite: (user_pseudo, response) => dispatch(ReplyFriendInvite(user_pseudo, response)),
+        ReplyFriendInvite: (user_id, response) => dispatch(ReplyFriendInvite(user_id, response)),
 
         GetInvites: () => dispatch(GetInvites())
 

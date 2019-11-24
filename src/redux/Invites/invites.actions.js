@@ -47,10 +47,10 @@ export const ReplyEventInvite = (event_id, response) => {
     }
 };
 
-export const ReplyFriendInvite = (user_pseudo, response) => {
+export const ReplyFriendInvite = (user_id, response) => {
     return {
         type: InvitesActionType.ReplyFriendInvite,
-        user_pseudo,
+        user_id,
         response
     }
 };
