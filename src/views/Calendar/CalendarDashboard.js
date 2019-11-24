@@ -108,16 +108,20 @@ export class _CalendarDashboard extends Component {
             calendarId: this.props.selectedCalendar
           });
         }
-      },
-      {
+      }
+    ];
+    
+    let realItem = this.props.calendar.events[item.id];
+    if (realItem && realItem.role === "admin") {
+      swipeoutBtns.push({
         text: "Delete",
         color: "white",
         backgroundColor: "red",
         onPress: () => {
           this.removeEvent(item);
         }
-      }
-    ];
+      });
+    }
     const start = new Date(item.start_time);
     const start_string =
       ("0" + start.getUTCHours()).slice(-2) +
@@ -214,7 +218,6 @@ export class _CalendarDashboard extends Component {
   }
 
   render() {
-
     let top_header = (
       <Header
         androidStatusBarColor="#00AE93"

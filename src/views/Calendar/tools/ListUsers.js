@@ -59,8 +59,6 @@ export class _ListUsers extends React.Component {
 
 
     render() {
-        console.log("arabe: ", this.state.usersToAdd);
-        
         return (
             <View>
                 {this.props.editMode === undefined || this.props.editMode === true ?
