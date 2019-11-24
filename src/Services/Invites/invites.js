@@ -1,5 +1,6 @@
 import { Network } from "../../Network/Requests";
 import axios from 'react-native-axios'
+const uuidv4 = require('uuid/v4');
 
 export class InvitesService {
   static async GetGroupInvites() {
@@ -30,7 +31,7 @@ export class InvitesService {
         .map(i => {
           return {
             ...i,
-            image: `${axios.defaults.baseURL}/users/${i.user.id}/images/profile`
+            image: `${axios.defaults.baseURL}/users/${i.user.id}/images/profile?rand=${uuidv4()}`
           };
         });
     let err;

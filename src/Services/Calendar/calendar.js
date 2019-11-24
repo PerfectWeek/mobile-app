@@ -1,6 +1,7 @@
 import {Network} from "../../Network/Requests";
 import {UserService} from "../Users/users";
 import axios from 'react-native-axios'
+const uuidv4 = require('uuid/v4');
 
 export class CalendarService {
 
@@ -86,7 +87,7 @@ export class CalendarService {
 
     static async GetEventsImage(events) {
         for (let idx = 0; idx < events.length; idx++) {
-            events[idx].image = `${axios.defaults.baseURL}/events/${events[idx].id}/images/icon`;
+            events[idx].image = `${axios.defaults.baseURL}/events/${events[idx].id}/images/icon?rand=${uuidv4()}`;
             // const resp = await Network.Get(`/events/${events[idx].id}/images/icon`);
             // if (resp.status === 200) {
             //     events[idx].image = resp.data;

@@ -1,5 +1,6 @@
 import { Network } from "../../Network/Requests";
 import axios from 'react-native-axios'
+const uuidv4 = require('uuid/v4');
 
 export class FriendsService {
   static async GetFriends() {
@@ -11,7 +12,7 @@ export class FriendsService {
           .map(i => {
             return {
               ...i,
-              image: `${axios.defaults.baseURL}/users/${i.user.id}/images/profile`
+              image: `${axios.defaults.baseURL}/users/${i.user.id}/images/profile?rand=${uuidv4()}`
             };
           }),
         ...resp.data.received
@@ -19,7 +20,7 @@ export class FriendsService {
           .map(i => {
             return {
               ...i,
-              image: `${axios.defaults.baseURL}/users/${i.user.id}/images/profile`
+              image: `${axios.defaults.baseURL}/users/${i.user.id}/images/profile?rand=${uuidv4()}`
             };
           })
       ];

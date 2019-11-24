@@ -12,7 +12,8 @@ import moment from "moment";
 import {IconColor, ScreenBackgroundColor} from "../../../Style/Constant";
 import {ListUsers} from "./tools/ListUsers";
 import {Event, PageHit} from "expo-analytics";
-import { ImagePicker } from 'expo';
+// import { ImagePicker } from 'expo';
+import * as ImagePicker from 'expo-image-picker';
 import i18n from "i18n-js";
 import * as Localization from 'expo-localization';
 
