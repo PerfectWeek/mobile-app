@@ -4,6 +4,7 @@ import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
 import {LoginGoogle} from "../redux/Login/login.actions";
 import {Google} from "expo";
+// import * as Google from 'expo-google-app-auth';
 // import * as GoogleSignIn from 'expo-google-sign-in';
 import axios from 'react-native-axios'
 
@@ -27,16 +28,22 @@ class _LoginWithGoogleButton extends Component {
             return;
         this.setState({ loading: true });
         try {
-            let thekey = await axios.get('https://customkey.azurewebsites.net/api/key');
+            // let thekey = await axios.get('https://customkey.azurewebsites.net/api/key');
             // console.log(thekey.data);
             // return;
 
+        console.log("BEFORE");
+        
             let res = await Google.logInAsync({
-                iosClientId: '801287294023-633lrp09bt9iglu4nkcld3vad2ivj69p.apps.googleusercontent.com',
-                iosStandaloneAppClientId: '801287294023-633lrp09bt9iglu4nkcld3vad2ivj69p.apps.googleusercontent.com',
-                androidClientId: '778613646655-o210sl8asjlulngac90ttr2q6bv81r08.apps.googleusercontent.com',
-                androidStandaloneAppClientId: thekey.data,
-                scopes: ['profile', 'email']
+                // iosClientId: '801287294023-633lrp09bt9iglu4nkcld3vad2ivj69p.apps.googleusercontent.com',
+                // iosStandaloneAppClientId: '801287294023-633lrp09bt9iglu4nkcld3vad2ivj69p.apps.googleusercontent.com',
+                androidClientId: '802613708270-m496pmo592dflj044c4hconf4deo56rh.apps.googleusercontent.com',
+                // androidStandaloneAppClientId: thekey.data,
+                scopes: [
+                    "https://www.googleapis.com/auth/userinfo.email",
+                    "https://www.googleapis.com/auth/userinfo.profile",
+                    "https://www.googleapis.com/auth/calendar.readonly",
+                  ]
             });
             // let res = await Google.logInAsync({
             //     iosClientId: '801287294023-633lrp09bt9iglu4nkcld3vad2ivj69p.apps.googleusercontent.com',
@@ -48,11 +55,14 @@ class _LoginWithGoogleButton extends Component {
             // await GoogleSignIn.initAsync({ clientId: 'com.googleusercontent.apps.178887600868-af7nfev11jtka979htj5dogi9efh1ih0' });
             // await GoogleSignIn.askForPlayServicesAsync();
             // const { type, user } = await GoogleSignIn.signInAsync();
-
+            console.log("res : ", res);
+            
             if (res.type === 'success') {
                 const auth = await ProviderService.ConnectWithGoogleTokens(res.accessToken, res.refreshToken);
-                this.props.LoginGoogle(auth.user.email, auth.token, auth.user.pseudo);
-                await ShowSuccessNotification( i18n.t('login.success') + ` ${auth.user.pseudo}!`);
+                console.log("AUTH : ", auth);
+                
+                this.props.LoginGoogle(auth.user.email, auth.token, auth.user.name, auth.user.id);
+                await ShowSuccessNotification( i18n.t('login.success') + ` ${auth.user.name}!`);
             }
         } catch (e) {
             await ShowErrorNotification(i18n.t('login.cofail') + " Google");
@@ -92,7 +102,7 @@ class _LoginWithGoogleButton extends Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        LoginGoogle: (email, accessToken, name) => dispatch(LoginGoogle(email, accessToken, name)),
+        LoginGoogle: (email, accessToken, name, id) => dispatch(LoginGoogle(email, accessToken, name, id)),
     }
 };
 

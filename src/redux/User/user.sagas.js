@@ -17,13 +17,16 @@ import {UserService} from "../../Services/Users/users";
 import {Logout} from "../Login/login.actions";
 import {ShowErrorNotification, ShowSuccessNotification} from "../../Utils/NotificationsModals";
 
+
+
+
 function* GetUserInfo(action) {
     try {
         const user = yield UserService.GetMyInfo();
         // const user = yield UserService.GetUserInfo(action.pseudo);
-
+        
         user.image = yield UserService.GetUserImage(user.id);
-
+        
         yield put(GetUserInfoSuccess(user));
     } catch (err) {
         yield ShowErrorNotification(err);

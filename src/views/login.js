@@ -132,7 +132,7 @@ class _LoginScreen extends React.Component {
                     }}>
                     <LoginWithFacebookButton style={{ marginTop: 10 }} />
 
-                        {/* <LoginWithGoogleButton /> */}
+                        <LoginWithGoogleButton />
                     </View>
 
 

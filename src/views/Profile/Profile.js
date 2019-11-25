@@ -36,8 +36,12 @@ import {
 import Loader from "../../Components/Loader";
 import { ProfileImagePicker } from "./ProfileImagePicker";
 import { PageHit, Event } from "expo-analytics";
+import axios from 'react-native-axios'
 
 import i18n from "i18n-js";
+
+
+import * as FileSystem from 'expo-file-system';
 
 export class _Profile extends React.Component {
   static navigationOptions = {
@@ -54,7 +58,21 @@ export class _Profile extends React.Component {
       this.props.user.email === undefined ||
       this.props.user.image === undefined
     )
-      this.props.GetInfo(this.props.login.pseudo);
+    
+    this.props.GetInfo(this.props.login.pseudo);
+  }
+
+  async bruh() {
+    console.log("bruh");
+    
+    const getBase64 = (url) => {
+      return axios
+        .get(url, {
+          responseType: 'arraybuffer'
+        })
+        .then(response => Buffer.from(response.data, 'binary').toString('base64')); }
+
+        getBase64("https://lh6.googleusercontent.com/-JvT5dfO9rCs/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rccWOngylw5hK-RdHrPFdXGGDv86A/photo.jpg").then(res => console.log(res));
   }
 
   render() {
@@ -80,6 +98,7 @@ export class _Profile extends React.Component {
             <Button
               transparent
               onPress={() => {
+                // this.bruh()
                 this.props.navigation.navigate("FriendsList");
               }}
             >

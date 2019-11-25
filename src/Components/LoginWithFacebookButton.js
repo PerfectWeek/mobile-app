@@ -41,7 +41,7 @@ class _LoginWithFacebookButton extends Component {
             
             if (res.type === 'success') {
                 const auth = await ProviderService.ConnectWithFacebookTokens(res.token);
-                this.props.LoginGoogle(auth.user.email, auth.token, auth.user.pseudo);
+                this.props.LoginGoogle(auth.user.email, auth.token, auth.user.name);
                 await ShowSuccessNotification(i18n.t('login.success') + ` ! Hi ${auth.user.pseudo}!`);
             }
         } catch ({ message }) {
