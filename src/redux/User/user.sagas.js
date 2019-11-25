@@ -87,7 +87,7 @@ function* DeleteUser(action) {
 function* UpdateUserImage(action) {
     try {
         yield UserService.UpdateUserImage(action.image.uri, action.pseudo);
-        yield put(UpdateUserImageSuccess(action.image.uri, action.pseudo));
+        yield put(UpdateUserImageSuccess(action.image.uri, action.id));
         yield ShowSuccessNotification();
     } catch (err) {
         yield ShowErrorNotification(err);

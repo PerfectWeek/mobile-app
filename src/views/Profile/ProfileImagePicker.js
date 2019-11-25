@@ -35,7 +35,7 @@ export class _ProfileImagePicker extends React.Component {
                 canValidate={(this.state.new)}
                 onRef={ref => (this.modal = ref)} title={i18n.t('profile.edit.editimg')}
                 actionButtonTitle={i18n.t('other.update')} validateCallback={() => {
-                this.props.UpdateUserImage(this.props.login.pseudo, this.state.image);
+                this.props.UpdateUserImage(this.props.login.id, this.state.image);
             }}>
                 <View style={{
                     flexDirection: 'column',
@@ -86,7 +86,7 @@ export class _ProfileImagePicker extends React.Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        UpdateUserImage: (pseudo, image) => dispatch(UpdateUserImage(pseudo, image))
+        UpdateUserImage: (id, image) => dispatch(UpdateUserImage(id, image))
     }
 };
 

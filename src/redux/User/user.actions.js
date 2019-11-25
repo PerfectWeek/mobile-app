@@ -121,20 +121,20 @@ export const DeleteUserFail = (error_message) => {
 };
 
 
-export const UpdateUserImage = (pseudo, image) => {
+export const UpdateUserImage = (id, image) => {
     return {
         type: UserActionsType.UpdateUserImage,
-        pseudo,
+        id,
         image
     }
 };
 
-export const UpdateUserImageSuccess = (image, pseudo) => {
+export const UpdateUserImageSuccess = (image, id) => {
     return {
         type: UserActionsType.UpdateUserImageSuccess,
         error_message: null,
         image,
-        pseudo
+        id
     }
 };
 

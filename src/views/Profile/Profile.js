@@ -62,19 +62,6 @@ export class _Profile extends React.Component {
     this.props.GetInfo(this.props.login.pseudo);
   }
 
-  async bruh() {
-    console.log("bruh");
-    
-    const getBase64 = (url) => {
-      return axios
-        .get(url, {
-          responseType: 'arraybuffer'
-        })
-        .then(response => Buffer.from(response.data, 'binary').toString('base64')); }
-
-        getBase64("https://lh6.googleusercontent.com/-JvT5dfO9rCs/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rccWOngylw5hK-RdHrPFdXGGDv86A/photo.jpg").then(res => console.log(res));
-  }
-
   render() {
     return (
       <Container
@@ -98,7 +85,6 @@ export class _Profile extends React.Component {
             <Button
               transparent
               onPress={() => {
-                // this.bruh()
                 this.props.navigation.navigate("FriendsList");
               }}
             >
