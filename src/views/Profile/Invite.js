@@ -22,7 +22,7 @@ import {Alert, Dimensions, Platform, ScrollView, RefreshControl} from "react-nat
 import {Logout} from "../../redux/Login/login.actions";
 import {HeaderBackgroundColor, ScreenBackgroundColor} from "../../../Style/Constant";
 import Loader from "../../Components/Loader";
-import * as Animatable from "../Groups/GroupsScreen";
+// import * as Animatable from "../Groups/GroupsScreen";
 import {GetInvites, ReplyEventInvite, ReplyFriendInvite, ReplyGroupInvite} from "../../redux/Invites/invites.actions";
 
 import i18n from 'i18n-js';

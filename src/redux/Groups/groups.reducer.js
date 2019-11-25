@@ -176,6 +176,7 @@ export const GroupReducer = (state = default_state, action) => {
                 status: GroupsActionType.CreateGroup
             };
         case GroupsActionType.CreateGroupSuccess: {
+            console.log("EHHHH", action.group, state.groups)
             state.groups[action.group.id] = action.group;
             return {
                 ...state,

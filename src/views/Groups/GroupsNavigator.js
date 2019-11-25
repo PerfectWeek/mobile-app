@@ -1,15 +1,15 @@
 import React from 'react';
 import {createStackNavigator} from "react-navigation";
 import {HeaderBackgroundColor, HeaderTintColor} from "../../../Style/Constant";
-import {GroupsScreen} from "./GroupsScreen";
+import {CalScreen} from "./CalScreen";
 import {GroupDetailScreen} from "./GroupDetailScreen";
 import {CreateGroupScreen} from "./CreateGroupScreen";
 import {CreateGroupNavigator} from "./CreateGroupNavigator";
 
-export const GroupsNavigator = createStackNavigator(
+export const CalNavigator = createStackNavigator(
     {
         Master: {
-            screen: GroupsScreen
+            screen: CalScreen
         },
         CreateGroup: {
             screen: CreateGroupNavigator,

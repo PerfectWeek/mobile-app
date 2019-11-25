@@ -4,13 +4,9 @@ import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
 import {LoginGoogle} from "../redux/Login/login.actions";
 import {Google} from "expo";
-// import * as Google from 'expo-google-app-auth';
-// import * as GoogleSignIn from 'expo-google-sign-in';
-import axios from 'react-native-axios'
 
 import {ShowErrorNotification, ShowSuccessNotification} from "../Utils/NotificationsModals";
-import {Network} from "../Network/Requests";
-import {Constants} from 'expo';
+
 import { Image, Text, ActivityIndicator } from 'react-native'
 
 import { ProviderService } from "../Services/Providers/provider";
@@ -33,34 +29,22 @@ class _LoginWithGoogleButton extends Component {
             // return;
 
         console.log("BEFORE");
-        
+
             let res = await Google.logInAsync({
-                // iosClientId: '801287294023-633lrp09bt9iglu4nkcld3vad2ivj69p.apps.googleusercontent.com',
-                // iosStandaloneAppClientId: '801287294023-633lrp09bt9iglu4nkcld3vad2ivj69p.apps.googleusercontent.com',
-                androidClientId: '802613708270-m496pmo592dflj044c4hconf4deo56rh.apps.googleusercontent.com',
-                // androidStandaloneAppClientId: thekey.data,
+                iosClientId: '801287294023-nh4ob74qou8ecjhhehmt8pc2dunfhu80.apps.googleusercontent.com',
+                androidClientId: '801287294023-dqlohhv3q7q530fvggudih5l8vdm7kna.apps.googleusercontent.com',
                 scopes: [
                     "https://www.googleapis.com/auth/userinfo.email",
                     "https://www.googleapis.com/auth/userinfo.profile",
                     "https://www.googleapis.com/auth/calendar.readonly",
                   ]
             });
-            // let res = await Google.logInAsync({
-            //     iosClientId: '801287294023-633lrp09bt9iglu4nkcld3vad2ivj69p.apps.googleusercontent.com',
-            //     iosStandaloneAppClientId: '801287294023-633lrp09bt9iglu4nkcld3vad2ivj69p.apps.googleusercontent.com',
-            //     androidClientId: '778613646655-o210sl8asjlulngac90ttr2q6bv81r08.apps.googleusercontent.com',
-            //     androidStandaloneAppClientId: '106749751777-e6grhuq9d13erghl7fekkoau7edtsf8i.apps.googleusercontent.com',
-            //     scopes: ['profile', 'email']
-            // });
-            // await GoogleSignIn.initAsync({ clientId: 'com.googleusercontent.apps.178887600868-af7nfev11jtka979htj5dogi9efh1ih0' });
-            // await GoogleSignIn.askForPlayServicesAsync();
-            // const { type, user } = await GoogleSignIn.signInAsync();
             console.log("res : ", res);
-            
+
             if (res.type === 'success') {
                 const auth = await ProviderService.ConnectWithGoogleTokens(res.accessToken, res.refreshToken);
                 console.log("AUTH : ", auth);
-                
+
                 this.props.LoginGoogle(auth.user.email, auth.token, auth.user.name, auth.user.id);
                 await ShowSuccessNotification( i18n.t('login.success') + ` ${auth.user.name}!`);
             }

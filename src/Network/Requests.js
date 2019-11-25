@@ -27,19 +27,19 @@ export class Network {
         this.access_token = access_token;
         axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
         // console.log("Je demande le token");
-        let expoToken = await Notifications.getExpoPushTokenAsync();
+        // let expoToken = await Notifications.getExpoPushTokenAsync();
         // console.log(expoToken);
-        if (expoToken) {
-            let res = await axios.post("/expo/token", {token : expoToken});
+        // if (expoToken) {
+        //     let res = await axios.post("/expo/token", {token : expoToken});
             // console.log(res);
-            
-        }
+
+        // }
     }
 
     static getToken() {
         return this.access_token;
     }
-    
+
     static async SaveToken(email, name, id) {
         try {
             const jData = {

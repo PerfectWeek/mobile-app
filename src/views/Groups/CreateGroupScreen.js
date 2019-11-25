@@ -2,8 +2,7 @@ import React from 'react';
 import {Dimensions, ScrollView, View} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 import {Button, Form, Icon, Input, Item, Text, Picker, Container} from "native-base";
-import Modal from "../../Components/Modal";
-import {validateNotEmpty} from "../../Utils/utils";
+import { ColorPicker } from 'react-native-color-picker'
 import {CreateGroup, GetGroups, GroupsActionType} from "../../redux/Groups/groups.actions";
 import {ScreenBackgroundColor} from "../../../Style/Constant";
 import Loader from "../../Components/Loader";
@@ -23,7 +22,7 @@ export class _CreateGroupScreen extends React.Component {
         super(props);
         this.state = {
             groupName: '',
-            description: '',
+            color: '',
             searchBar: '',
             usersToAdd: []
         }
@@ -58,57 +57,20 @@ export class _CreateGroupScreen extends React.Component {
                                    placeholder={i18n.t('groups.groupname')} value={this.state.groupName}
                                    onChangeText={(text) => this.setState({groupName: text})}/>
                         </Item>
-                        <Item>
-                            <Input
-                                style={{textAlign: 'center', color: 'black', fontFamily: 'Lato_Medium', fontSize: 16}}
-                                placeholder={i18n.t('dashboard.createvent.description')} value={this.state.description}
-                                onChangeText={(text) => this.setState({description: text})}/>
-                        </Item>
                     </Form>
                 </View>
-                <View style={{margin: 15}}>
-                <ListUsers callAddUser={(userList) => {
-                    this.setState({usersToAdd: userList})
-                }}
-                           displaySelection={false}
-                           formatAdd={(item) => {return ({name: item, role: 'actor'})}}
+                <ColorPicker
+                    onColorSelected={color => this.setState({color})}
+                    style={{flex: 1}}
                 />
+                <View style={{margin: 15}}>
+                {/*<ListUsers callAddUser={(userList) => {*/}
+                {/*    this.setState({usersToAdd: userList})*/}
+                {/*}}*/}
+                {/*           displaySelection={false}*/}
+                {/*           formatAdd={(item) => {return ({name: item, role: 'actor'})}}*/}
+                {/*/>*/}
                 </View>
-                {/*  DISPLAY LIST USERS */}
-                {/*<View style={{margin: 20, flexDirection: 'column'}}>*/}
-                {/*    {*/}
-                {/*        this.state.usersToAdd.map((user, index) => {*/}
-                {/*            return (*/}
-                {/*                <View key={index} style={{flexDirection: 'row', flexWrap: 'wrap'}}>*/}
-                {/*                <Text style={{marginTop: 8}}>{user.name}</Text>*/}
-                {/*                    <Picker*/}
-                {/*                        note*/}
-                {/*                        mode="dropdown"*/}
-                {/*                        style={{ width: 90}}*/}
-                {/*                        selectedValue={user.role+"-"+index}*/}
-                {/*                        onValueChange={this.onValueChange.bind(this)}*/}
-                {/*                    >*/}
-                {/*                        <Picker.Item label="Admin" value={"admin-"+index} />*/}
-                {/*                        <Picker.Item label="Actor" value={"actor-"+index} />*/}
-                {/*                        <Picker.Item label="Spectator" value={"spectator-"+index} />*/}
-                {/*                        <Picker.Item label="Outsider" value={"outsider-"+index} />*/}
-                {/*                    </Picker>*/}
-
-                {/*                <Button rounded key={index} small style={{backgroundColor: 'grey'}}*/}
-                {/*                        onPress={() => {*/}
-                {/*                            this.state.usersToAdd.splice(index, 1);*/}
-                {/*                            this.setState({*/}
-                {/*                                usersToAdd: this.state.usersToAdd,*/}
-                {/*                                listPseudo: []*/}
-                {/*                            });*/}
-                {/*                        }}>*/}
-                {/*                    <Icon type='FontAwesome' name='remove'/>*/}
-                {/*                </Button>*/}
-                {/*                </View>*/}
-                {/*            );*/}
-                {/*        })*/}
-                {/*    }*/}
-                {/*</View>*/}
                 {
                     this.props.groups.status === GroupsActionType.CreateGroup ? <Loader/> :
                         <Button success
@@ -119,10 +81,10 @@ export class _CreateGroupScreen extends React.Component {
 
                                     this.props.CreateGroup({
                                         name: this.state.groupName,
-                                        description: this.state.description,
-                                        members: this.state.usersToAdd
+                                        color: this.state.color,
+                                        // members: this.state.usersToAdd
                                     }, this.props.login.pseudo)
-                                    // this.props.navigation.pop();
+                                    this.props.navigation.pop();
                                 }}>
                             <Text>
                                 {i18n.t('groups.creatgroup')}

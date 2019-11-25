@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import {
   View,
-  StyleSheet,
   Text,
   Alert,
   TouchableHighlight,
-  ScrollView,
   Platform
 } from "react-native";
 import connect from "react-redux/es/connect/connect";
@@ -23,12 +21,8 @@ import {
   ActionSheet
 } from "native-base";
 import {
-  GetAllUsersEvents,
   CalendarActionType,
   DeleteEvent,
-  GetUsersEventsFiltered,
-  GetEvents,
-  GetCalendars,
   ResetStatus,
   LoadCalendar,
   ReloadEvents
@@ -40,7 +34,6 @@ import {
 } from "../../../Style/Constant";
 import Swipeout from "react-native-swipeout";
 import { CalendarFilter } from "./CalendarFilter";
-import moment from "moment";
 import {
   dateDiffInDays,
   getRandomColor,
@@ -61,7 +54,6 @@ export class _CalendarDashboard extends Component {
     this.props.login.analytics.hit(new PageHit("DashBoard"));
 
     this.props.LoadCalendar(this.props.login.pseudo);
-    // console.log(this.props)
   }
 
   static navigationOptions = {
@@ -110,7 +102,7 @@ export class _CalendarDashboard extends Component {
         }
       }
     ];
-    
+
     let realItem = this.props.calendar.events[item.id];
     if (realItem && realItem.role === "admin") {
       swipeoutBtns.push({
