@@ -46,15 +46,18 @@ export class CalendarService {
         // for (let idx = 0; idx < calendars.length; idx++) {
             if (calendars.length === 0) {
 
-                var resp = await Network.Get('/events/');
+                var resp = await Network.Get('/events/', 
+                    {'only_statuses[]' : 'going'}
+                );
             }
             else {
                 var resp = await Network.Get('/events/', {
-                    'only_calendar_ids[]' : calendars.map(c => c.id)
+                    'only_calendar_ids[]' : calendars.map(c => c.id),
+                    'only_statuses[]' : 'going'
                 });
             }
-        // const resp = await Network.Get('/calendars/' + calendars[idx].id + '/events');
-        if (resp.status === 200) {
+
+            if (resp.status === 200) {
             events.push(...resp.data.events);
         } else {
             let err;
