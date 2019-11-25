@@ -357,10 +357,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const mapStateToProps = (state, ownProps) => {
   let events = [];
   if (state.calendar.events && state.calendar.calendars.length > 0) {
-    const filtered_events = Object.values(state.calendar.events).filter(e => {
-      return e.status === "going";
-    });
-    events = filtered_events.map(e => {
+    events = Object.values(state.calendar.events).map(e => {
       const calendar = state.calendar.calendars.find(
         c => c.id === e.calendar_id
       );
