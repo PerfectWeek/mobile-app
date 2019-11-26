@@ -15,7 +15,8 @@ export class InvitesService {
 
   static async GetEventInvites() {
     const resp = await Network.Get("/events?only_statuses[]=invited");
-    if (resp.status === 200) return resp.data.events;
+    
+    if (resp.status === 200) return resp.data.events.map(e => {return {...e, image: `${axios.defaults.baseURL}/events/${e.id}/images/icon?rand=${uuidv4()}`}});
     let err;
     if (resp.data !== undefined && resp.data.message !== undefined)
       err = resp.data.message;

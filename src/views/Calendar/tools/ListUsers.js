@@ -33,8 +33,8 @@ export class _ListUsers extends React.Component {
     }
 
     componentWillUpdate() {
-        if (this.props.pseudoMatched !== undefined && this.props.status === AutoCompletionType.AskCompletionSuccess) {
-            this.setState({listPseudo: this.props.pseudoMatched});
+        if (this.props.pseudoMatched !== undefined && this.props.status === AutoCompletionType.AskCompletionSuccess) {            
+            this.setState({listPseudo: this.props.pseudoMatched.filter(p => p.id !== this.props.myId)});
             this.props.AskCompletionNone()
         }
     }
@@ -193,6 +193,7 @@ const mapStateToProps = (state, ownProps) => {
         ...ownProps,
         pseudoMatched: state.autocompletion.pseudoMatched,
         status: state.autocompletion.status,
+        myId: state.login.id
     }
 };
 

@@ -17,7 +17,7 @@ export class ProviderService {
     }
 
     static async ConnectWithFacebookTokens(access_token) {
-        const resp = await Network.Get('/auth/providers/facebook/callback', {access_token});
+        const resp = await Network.Post('/auth/facebook/callback', {access_token});
         if (resp.status === 200)
             return resp.data;
         let err;

@@ -57,7 +57,6 @@ export class _ConsultEvent extends React.Component {
 
     this.props.GetEventInfo(this.props.navigation.state.params.eventId);
     this.state = this.fillInfoEvent(event);
-
   }
 
   fillInfoEvent(event) {
@@ -71,14 +70,15 @@ export class _ConsultEvent extends React.Component {
       description: event.description,
       localisation: event.location,
       location: event.location,
-      type: Localization.locale === "fr-FR" ? en_to_fr[event.type] : event.type,
+      type: (Localization.locale === "fr-FR" && en_to_fr[event.type] !== undefined) ? en_to_fr[event.type] : event.type,
       dateBeginEvent: beginTimeEvent[0],
       beginTime: beginTimeEvent[1].substring(0, 5),
       dateEndEvent: endTimeEvent[0],
       endTime: endTimeEvent[1].substring(0, 5),
       image: event.image,
       visibility: event.visibility,
-      attendees: event.attendees
+      attendees: event.attendees,
+      role: event.role
     };
   }
 
@@ -399,25 +399,27 @@ export class _ConsultEvent extends React.Component {
                 editMode={false}
               />
             ) : null}
-            <Button
-              onPress={() => {
-                // console.log('puto',this.props )
+            {(this.state.role === "admin" || this.state.role === "actor") && (
+              <Button
+                onPress={() => {
+                  // console.log('puto',this.props )
 
-                this.props.navigation.goBack();
-                // this.props.navigation.navigate('ConsultEvent')
-                this.props.navigation.navigate("ModifyEvent", {
-                  eventId: this.props.navigation.state.params.eventId,
-                  calendarId: this.props.navigation.state.params.eventId
-                    .selectedCalendar
-                });
+                  this.props.navigation.goBack();
+                  // this.props.navigation.navigate('ConsultEvent')
+                  this.props.navigation.navigate("ModifyEvent", {
+                    eventId: this.props.navigation.state.params.eventId,
+                    calendarId: this.props.navigation.state.params.eventId
+                      .selectedCalendar
+                  });
 
-                // this.props.navigation.navigate('ConsultEvent', { eventId: this.props.navigation.state.params.eventId })
-              }}
-              style={{ backgroundColor: "#0069e9", margin: 10 }}
-              full
-            >
-              <Text>{i18n.t("other.edit")}</Text>
-            </Button>
+                  // this.props.navigation.navigate('ConsultEvent', { eventId: this.props.navigation.state.params.eventId })
+                }}
+                style={{ backgroundColor: "#0069e9", margin: 10 }}
+                full
+              >
+                <Text>{i18n.t("other.edit")}</Text>
+              </Button>
+            )}
             <Button
               style={{ backgroundColor: "#e94b61", margin: 10 }}
               full

@@ -8,7 +8,7 @@ import { withNavigation } from "react-navigation";
 import { connect } from "react-redux";
 import { CheckIfLogged, LoginGoogle } from "../redux/Login/login.actions";
 import * as Facebook from 'expo-facebook';
-import { Constants } from 'expo';
+
 
 import { ShowErrorNotification, ShowSuccessNotification } from "../Utils/NotificationsModals";
 import { ProviderService } from "../Services/Providers/provider";
@@ -38,11 +38,14 @@ class _LoginWithFacebookButton extends Component {
             const res = await Facebook.logInWithReadPermissionsAsync('850667108631602', {
                 permissions: ['public_profile', 'email'],
             });
+            console.log("RES FACEBOOK : ", res);
             
             if (res.type === 'success') {
                 const auth = await ProviderService.ConnectWithFacebookTokens(res.token);
-                this.props.LoginGoogle(auth.user.email, auth.token, auth.user.name);
-                await ShowSuccessNotification(i18n.t('login.success') + ` ! Hi ${auth.user.pseudo}!`);
+                console.log("auth FACEBOOK : ", auth);
+                
+                this.props.LoginGoogle(auth.user.email, auth.token, auth.user.name, auth.user.id);
+                // await ShowSuccessNotification(i18n.t('login.success') + ` ! Hi ${auth.user.name}!`);
             }
         } catch ({ message }) {
             
@@ -82,7 +85,7 @@ class _LoginWithFacebookButton extends Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        LoginGoogle: (email, accessToken, name) => dispatch(LoginGoogle(email, accessToken, name)),
+        LoginGoogle: (email, accessToken, name, id) => dispatch(LoginGoogle(email, accessToken, name, id)),
     }
 };
 

@@ -2,7 +2,7 @@ import {takeEvery, put, select} from "redux-saga/effects";
 import {ShowErrorNotification} from "../../Utils/NotificationsModals";
 import {arrayToObject} from "../../Utils/utils";
 import {EventsActionType, SetEvent, SetEvents, SetLoading, SetLoadingJoining} from "./events.actions";
-import {SetEvent as SetCalendarEvent} from "../Calendar/calendar.actions";
+import {SetEvent as SetCalendarEvent, DeleteEventSuccess, RefreshCalendar} from "../Calendar/calendar.actions";
 import {CalendarService} from "../../Services/Calendar/calendar";
 import {
     CalendarActionType,
@@ -12,6 +12,8 @@ import {
     GetEventsSuccess
 } from "../Calendar/calendar.actions";
 import {Network} from "../../Network/Requests";
+import axios from 'react-native-axios'
+const uuidv4 = require('uuid/v4');
 
 
 function* GetEventRecommendation({min_time, max_time, limit}) {
@@ -39,7 +41,10 @@ function* JoinEvent({event, status}) {
         const pseudo = yield select((state) => {
             return state.login.pseudo
         });
-        event.attendees.push({name : pseudo, status: 'going'});
+        const id = yield select((state) => {
+            return state.login.id
+        });
+        event.attendees.push({name : pseudo, status: 'going', id, image: `${axios.defaults.baseURL}/users/${id}/images/profile?rand=${uuidv4()}`});
         yield put(SetEvent(event));
         yield put(SetCalendarEvent({...event, status: status}));
         yield put(SetLoadingJoining(false));
@@ -52,12 +57,18 @@ function* ChangeEventStatus({event, status}) {
     try {
         yield put(SetLoadingJoining(true));
         yield CalendarService.ChangeEventStatus(event.id, status);
-        const pseudo = yield select((state) => {
-            return state.login.pseudo
+        const id = yield select((state) => {
+            return state.login.id
         });
-        event.attendees.find(a => a.pseudo === pseudo).status = status;
+        event.attendees.find(a => a.id === id).status = status;
         yield put(SetEvent(event));
-        yield put(SetCalendarEvent({...event, status: status}));
+        if (status === "no") {
+            yield put(DeleteEventSuccess(event.id));
+            yield put(RefreshCalendar());
+        }
+        else {
+            yield put(SetCalendarEvent({...event, status: status}));
+        }
         yield put(SetLoadingJoining(false));
     } catch (err) {
         yield ShowErrorNotification(err);

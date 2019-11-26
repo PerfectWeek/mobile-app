@@ -63,8 +63,12 @@ export class _EventDetailScreen extends React.Component {
 
         let event = this.props.event;
         let going = false;
-        let user = event.attendees.find(a => a.pseudo === this.props.pseudo);
+        let user = event.attendees.find(a => a.id === this.props.login.id);
         let present = user !== undefined;
+        // console.log("this.props.login : ", this.props.login);
+        // console.log("event.attendees : ", event.attendees);
+        
+        
         if (present && user.status === 'going')
             going = true;
         return (
@@ -102,7 +106,7 @@ export class _EventDetailScreen extends React.Component {
                     <View style={rowStyle}>
                         <Icon style={{ fontSize: 18 }} active name='people' type={"SimpleLineIcons"} />
                         <Text style={{ fontSize: 18, marginLeft: 10 }}>
-                            {event.attendees.filter(a => a.status === 'going').length} people going
+                            {event.attendees.filter(a => a.status === 'going').length} {i18n.t('event.people_going')}
                         </Text>
                         <TouchableOpacity onPress={() => { this.modal.toggle() }}>
                             <Text style={{
@@ -189,7 +193,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
-        pseudo: state.login.pseudo,
+        login: state.login,
         event: state.events.events[ownProps.navigation.state.params.event_id],
         loading_joining: state.events.loading_joining
     }

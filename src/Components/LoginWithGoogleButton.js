@@ -62,7 +62,6 @@ class _LoginWithGoogleButton extends Component {
           `&scope=${encodeURIComponent('profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar.readonly')}`
       });
 
-      AuthSession.dismiss();
         const google_res = await axios.post("https://www.googleapis.com/oauth2/v4/token", {
             code: res.params.code,
             client_id: googleWebAppId,
@@ -91,7 +90,7 @@ class _LoginWithGoogleButton extends Component {
           console.log("AUTH : ", auth);
 
           this.props.LoginGoogle(auth.user.email, auth.token, auth.user.name, auth.user.id);
-          await ShowSuccessNotification( i18n.t('login.success') + ` ${auth.user.name}!`);
+          // await ShowSuccessNotification( i18n.t('login.success') + ` ${auth.user.name}!`);
       }
     } catch (e) {
       await ShowErrorNotification(i18n.t("login.cofail") + " Google");

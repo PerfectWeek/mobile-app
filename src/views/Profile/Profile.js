@@ -41,7 +41,6 @@ import axios from 'react-native-axios'
 import i18n from "i18n-js";
 
 
-import * as FileSystem from 'expo-file-system';
 
 export class _Profile extends React.Component {
   static navigationOptions = {

@@ -97,8 +97,11 @@ export class _CalendarDashboard extends Component {
   }
 
   renderItem(item) {
-    const swipeoutBtns = [
-      {
+    const swipeoutBtns = [];
+
+    let realItem = this.props.calendar.events[item.id];
+    if ((realItem && realItem.role === "admin") || realItem.role === "actor") {
+      swipeoutBtns.push({
         text: "Edit",
         color: "white",
         backgroundColor: "green",
@@ -108,10 +111,8 @@ export class _CalendarDashboard extends Component {
             calendarId: this.props.selectedCalendar
           });
         }
-      }
-    ];
-    
-    let realItem = this.props.calendar.events[item.id];
+      });
+    }
     if (realItem && realItem.role === "admin") {
       swipeoutBtns.push({
         text: "Delete",
@@ -356,7 +357,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const mapStateToProps = (state, ownProps) => {
   let events = [];
-  if (state.calendar.events && state.calendar.calendars.length > 0) {
+  // console.log("state.calendar.events : ", state.calendar.events);
+
+  if (state.calendar.events) {
     events = Object.values(state.calendar.events).map(e => {
       const calendar = state.calendar.calendars.find(
         c => c.id === e.calendar_id
@@ -367,6 +370,7 @@ const mapStateToProps = (state, ownProps) => {
       };
     });
   }
+  // console.log("events : ", events);
 
   let items = {};
   for (let i = -150; i < 185; i++) {

@@ -9,12 +9,13 @@
       "image": "Resources/splash.png",
       "resizeMode": "cover"
     },
-    "sdkVersion": "33.0.0",
+    "sdkVersion": "35.0.0",
     "name": "PerfectWeek",
     "description": "Plan a perfect week",
     "icon": "Resources/Image/logo.png",
     "version": "0.5",
     "slug": "perfectweek",
+    "scheme": "perfectweek",
     "orientation": "portrait",
     "ios": {
       "bundleIdentifier": "com.perfectweek.perfectweek"
@@ -25,9 +26,9 @@
         "googleMaps": {
           "apiKey": "AIzaSyDEYcLdDRFikjWXzkMCpL6jzeLPoWv0bwY"
         },
-        "googleSignIn" :{
-          "apiKey" : "AIzaSyC_K-Z4KShB1f2sS547Q-BQBN--p59_5aQ",
-          "certificateHash" : "79AA35B9033D7F877B3F884FDA73C1313731BBF1"
+        "googleSignIn": {
+          "apiKey": "AIzaSyC_K-Z4KShB1f2sS547Q-BQBN--p59_5aQ",
+          "certificateHash": "79AA35B9033D7F877B3F884FDA73C1313731BBF1"
         }
       }
     },

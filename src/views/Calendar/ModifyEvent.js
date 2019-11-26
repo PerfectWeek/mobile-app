@@ -323,7 +323,7 @@ export class _ModifyEvent extends React.Component {
                                     </View>
                                 </View>
                             </Item>
-                            <Item>
+                            <Item last>
                                 <Icon style={IconStyle} type='SimpleLineIcons' active name='flag' />
                                 <Picker
                                     placeholder={i18n.t('dashboard.createvent.selectevent')}
@@ -343,7 +343,7 @@ export class _ModifyEvent extends React.Component {
                                     }
                                 </Picker>
                             </Item>
-                            <Item last>
+                            {/* <Item last>
                                 <Icon style={IconStyle} type='SimpleLineIcons' active name='lock' />
                                 <Picker
                                     placeholder={i18n.t('dashboard.createvent.selectvis')}
@@ -358,7 +358,7 @@ export class _ModifyEvent extends React.Component {
                                     <Picker.Item label={i18n.t('other.public')} value={'public'} key={0} />
                                     <Picker.Item label={i18n.t('other.private')} value={'private'} key={1} />
                                 </Picker>
-                            </Item>
+                            </Item> */}
                             {(this.props.attendees !== undefined) ?
                                 <ListUsers callAddUser={(userList) => {
                                     this.setState({ attendees: userList })

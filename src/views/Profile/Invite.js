@@ -47,7 +47,7 @@ export class _Invite extends React.Component {
                     </Text>
                 </View>
             );
-        console.log('ooo', this.props.invites)
+        // console.log('ooo', this.props.invites)
         return (
             <Container style={{
                 backgroundColor: ScreenBackgroundColor

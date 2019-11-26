@@ -10,7 +10,8 @@ import Modal from "../../Components/Modal";
 import Loader from "../../Components/Loader";
 import {UpdateUserImage, UserActionsType} from "../../redux/User/user.actions";
 import * as ImagePicker from 'expo-image-picker';
-import {Constants, Permissions} from 'expo';
+import {Permissions} from 'expo';
+import Constants from 'expo-constants';
 
 import i18n from 'i18n-js';
 
