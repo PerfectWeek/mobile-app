@@ -50,7 +50,7 @@ class _LoginWithGoogleButton extends Component {
         "802613708270-0oi0ub3g8qpvjq15ai92orhj6qk4o12m.apps.googleusercontent.com";
       const redirectUrl = AuthSession.getRedirectUrl();
       console.log("redirectUrl : ", redirectUrl);
-      alert(redirectUrl);
+      // alert(redirectUrl);
 
       let res = await AuthSession.startAsync({
         authUrl:
