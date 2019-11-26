@@ -56,10 +56,10 @@ function* GetGroups(action) {
 function* GetGroupInfo(action) {
     try {
         const group = yield CalService.GetGroupDetail(action.id);
-        let members = yield CalService.GetGroupMembers(action.id);
-        members = yield UserService.GetUsersImage(members);
-        members = arrayToObject(members, "pseudo");
-        yield put(GetGroupMembersSuccess(action.id, members));
+        // let members = yield CalService.GetGroupMembers(action.id);
+        // members = yield UserService.GetUsersImage(members);
+        // members = arrayToObject(members, "pseudo");
+        // yield put(GetGroupMembersSuccess(action.id, members));
         yield put(GetGroupInfoSuccess(group))
     } catch (err) {
         yield ShowErrorNotification(err);
@@ -99,7 +99,7 @@ function* UpdateMemberRole(action) {
 
 function* AddGroupMembers(action) {
     try {
-        // console.log('QWQWQWQWQ', action)
+        console.log('QWQWQWQWQ', action)
         const members = yield CalService.AddGroupMembers(action.groupId, action.members);
         let users2 = yield select((state) => {
             return state.user.users
@@ -110,7 +110,7 @@ function* AddGroupMembers(action) {
             return state.user.users
         });
         // console.log('USER2', users)
-        yield put(AddGroupMembersSuccess(action.groupId, arrayToObject(members, "pseudo")));
+        yield put(AddGroupMembersSuccess(action.groupId, arrayToObject(members, "name")));
         yield ShowSuccessNotification();
     } catch (err) {
         yield ShowErrorNotification(err);
@@ -119,12 +119,12 @@ function* AddGroupMembers(action) {
 }
 
 function* EditGroupInfo(action) {
-    const resp = yield Network.Put('/groups/' + action.group.id, {
+    const resp = yield Network.Put('/calendars/' + action.group.id, {
         name: action.group.name,
-        description: action.group.description
+        color: action.group.color
     });
     if (resp.status === 200) {
-        yield put(EditGroupInfoSuccess(resp.data.group));
+        yield put(EditGroupInfoSuccess(resp.data.calendar));
         yield ShowSuccessNotification();
     } else {
         let err;
@@ -162,7 +162,7 @@ function* CreateGroup(action) {
 }
 
 function* DeleteGroup(action) {
-    const resp = yield Network.Delete('/groups/' + action.groupId);
+    const resp = yield Network.Delete('/calendars/' + action.groupId);
     if (resp.status === 200) {
         yield put(DeleteGroupSuccess(action.groupId));
         yield ShowSuccessNotification();

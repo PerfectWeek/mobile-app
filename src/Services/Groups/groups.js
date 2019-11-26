@@ -43,10 +43,10 @@ export class CalService {
 
 
     static async AddGroupMembers(groupId, members) {
-        const resp = await Network.Post('/groups/' + groupId + '/add-members', {users: members});
+        const resp = await Network.Post('/calendars/' + groupId + '/members', {members: members});
         // console.log('add', resp)
         if (resp.status === 200)
-            return resp.data.group.members;
+            return resp.data.calendar.members;
         let err;
         if (resp.data !== undefined && resp.data.message !== undefined)
             err = resp.data.message;
@@ -57,9 +57,9 @@ export class CalService {
 
 
     static async GetGroupDetail(id) {
-        const resp = await Network.Get('/groups/' + id);
+        const resp = await Network.Get('/calendars/' + id);
         if (resp.status === 200)
-            return resp.data.group;
+            return resp.data.calendar;
         let err;
         if (resp.data !== undefined && resp.data.message !== undefined)
             err = resp.data.message;
@@ -81,7 +81,7 @@ export class CalService {
     }
 
     static async RemoveGroupMember(groupId, member_pseudo) {
-        const resp = await Network.Delete('/groups/' + groupId + '/members/' + member_pseudo);
+        const resp = await Network.Delete('/calendar/' + groupId + '/members/' + member_pseudo);
         if (resp.status === 200)
             return resp.data.group.members;
         else {

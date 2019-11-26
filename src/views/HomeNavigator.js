@@ -31,7 +31,7 @@ export default createBottomTabNavigator(
                     title: Localization.locale !== 'fr-FR' ? 'Events' : 'Evènements',
             }
         },
-        Groups: {
+        Calendars: {
             screen: CalNavigator,
             navigationOptions: {
                 tabBarIcon: ({ focused, tintColor }) => <Icon
