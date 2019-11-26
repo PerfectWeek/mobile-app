@@ -50,7 +50,7 @@ class _AddAddFriends extends Component {
                         marginLeft: 10, marginRight: 30, flexGrow: 3
                     }}>
 
-                        <ListUsers callAddUser={(userList) => {
+                        <ListUsers filterList={this.props.filterList.map(u => u.user)} callAddUser={(userList) => {
                             this.setState({usersToAdd: userList})
                         }}
                                    displaySelection={true}

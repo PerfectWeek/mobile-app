@@ -27,15 +27,13 @@ export class _FriendsList extends Component {
     };
 
     render() {
-
-        console.log('this.props.friends', this.props.friends)
         if (this.props.friends === undefined)
             return (<Loader/>);
         return (
             <Container style={{
                 backgroundColor: ScreenBackgroundColor
             }}>
-                <AddFriends onRef={ref => (this.addUsers = ref)}/>
+                <AddFriends filterList={this.props.friends} onRef={ref => (this.addUsers = ref)}/>
                 <ScrollView style={{
                     backgroundColor: ScreenBackgroundColor,
                     marginLeft: 10,

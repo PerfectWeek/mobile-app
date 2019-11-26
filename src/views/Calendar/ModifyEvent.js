@@ -363,6 +363,7 @@ export class _ModifyEvent extends React.Component {
                                 <ListUsers callAddUser={(userList) => {
                                     this.setState({ attendees: userList })
                                 }} loadList={this.props.attendees}
+                                filterList={this.props.attendees}
                                            enableToggle={() => {
                                                this.setState({ toggle: !this.state.toggle });
                                            }}/> : null

@@ -34,7 +34,15 @@ export class _ListUsers extends React.Component {
 
     componentWillUpdate() {
         if (this.props.pseudoMatched !== undefined && this.props.status === AutoCompletionType.AskCompletionSuccess) {            
-            this.setState({listPseudo: this.props.pseudoMatched.filter(p => p.id !== this.props.myId)});
+            let listPseudo = this.props.pseudoMatched.filter(p => p.id !== this.props.myId);
+            if (this.props.filterList) {
+                listPseudo = listPseudo.filter(p => this.props.filterList.findIndex(f => f.id === p.id) === -1);
+            }
+            if (this.state.usersToAdd) {
+                listPseudo = listPseudo.filter(p => this.state.usersToAdd.findIndex(f => f.id === p.id) === -1);
+                
+            }
+            this.setState({listPseudo : listPseudo});
             this.props.AskCompletionNone()
         }
     }
