@@ -220,7 +220,7 @@ function* ReloadEvents(action) {
     try {
         const filtered_calendars = action.calendars.filter(c => c.show);
         let events_array = yield CalendarService.GetEventsForCalendars(filtered_calendars);
-        events_array = yield CalendarService.GetEventsInfo(events_array);
+        // events_array = yield CalendarService.GetEventsInfo(events_array);
         let events = arrayToObject(events_array, 'id');
         yield put(GetEventsSuccess(events));
         yield put(LoadCalendarSuccess());
