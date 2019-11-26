@@ -30,6 +30,8 @@ import Loader from "../../Components/Loader";
 import {GroupDetailScreenImagePicker} from "./GroupDetailScreenImagePicker";
 
 import i18n from 'i18n-js';
+import axios from "react-native-axios";
+const uuidv4 = require('uuid/v4');
 
 export class _GroupDetailScreen extends React.Component {
 
@@ -45,6 +47,7 @@ export class _GroupDetailScreen extends React.Component {
         super(props);
         if (this.props.navigation.state.params.group.members === undefined) {
             // this.props.GetGroupDetail(this.props.navigation.state.params.group.id);
+            console.log(this.props.navigation.state.params)
             this.props.GetGroupInfo(this.props.navigation.state.params.group.id);
             // this.props.GetGroupMembers(this.props.navigation.state.params.group.id);
         }
@@ -89,8 +92,10 @@ export class _GroupDetailScreen extends React.Component {
     }
 
     render() {
+        // console.log("DEL", this.props.groups, this.props.navigation.state.params.group.id)
         const group = this.props.groups.groups[this.props.navigation.state.params.group.id];
-        if (group === undefined || group.members === undefined || group.description === undefined)
+        // console.log('DL', group)
+        if (group === undefined || group.members === undefined)
             return (
                 <Container style={{
                     flexDirection: 'row',
@@ -100,8 +105,13 @@ export class _GroupDetailScreen extends React.Component {
                     <Loader/>
                 </Container>
             );
-        let isAdmin = group.members[this.props.login.pseudo].role === 'admin';
-        // console.log('img', this.props.users);
+
+
+        let isAdmin = false;
+        group.members.forEach((mem) => {
+            if (mem.id === this.props.login.id && mem.role === 'admin')
+                isAdmin = true;
+        })
         return (
             <ScrollView style={{
                 paddingLeft: 10,
@@ -111,22 +121,6 @@ export class _GroupDetailScreen extends React.Component {
             }}>
                 <GroupDetailScreenGroupName group={group} onRef={ref => (this.groupName = ref)}/>
                 <GroupDetailScreenImagePicker group={group} onRef={ref => (this.groupImage = ref)}/>
-                <Title style={{
-                    fontSize: 18,
-                    color: 'grey',
-                    fontFamily: 'Lato_Medium',
-                    marginTop: 20,
-                    textAlign: 'left',
-                    marginLeft: 5
-                }}>{i18n.t('dashboard.createvent.description')} :</Title>
-                <Text style={{
-                    color: 'black',
-                    fontFamily: 'Lato_Medium',
-                    fontSize: 18,
-                    marginTop: 20,
-                    textAlign: 'left',
-                    marginLeft: 5
-                }}>{group.description}</Text>
                 <View>
                     <Title style={{
                         fontSize: 18,
@@ -151,55 +145,18 @@ export class _GroupDetailScreen extends React.Component {
                             </Body>
                         </ListItem>
                         {Object.values(group.members).map((member, index) => {
-                            if (this.props.users[member.pseudo] === undefined)
-                                return (null);
+                            console.log('mm', member)
                             return (
                                 <ListItem key={index} avatar>
                                     <Left>
                                         <Thumbnail
-                                            source={{uri: this.props.users[member.pseudo] === undefined ? null : this.props.users[member.pseudo].image}}/>
+                                            source={{uri: `${axios.defaults.baseURL}/users/${member.id}/images/profile?rand=${uuidv4()}`}}/>
                                     </Left>
                                     <Body>
-                                    <Text>{member.pseudo}</Text>
+                                    <Text>{member.name}</Text>
                                     <Text style={{color: 'gray'}}
                                           note>{member.role}</Text>
                                     </Body>
-                                    <Right>
-                                        <Icon style={{marginTop: 10, fontSize: 28}} type='SimpleLineIcons'
-                                              name='options-vertical' onPress={() => {
-                                            const BUTTONS = [];
-                                            const ButtonsCallback = [];
-                                            if (isAdmin) {
-                                                // BUTTONS.push((member.role === 'admin' ? "Remove as admin" : "Make admin"));
-                                                BUTTONS.push(this.props.login.pseudo === member.pseudo ? i18n.t('groups.quit') : i18n.t('groups.remove'));
-                                                // ButtonsCallback.push(() => {
-                                                //     this.ChangeRoleClicked(group.id, member);
-                                                // });
-                                                ButtonsCallback.push(() => {
-                                                    this.props.RemoveGroupMember(group.id, member, this.props.login.pseudo);
-                                                });
-                                            } else if (this.props.login.pseudo === member.pseudo) {
-                                                BUTTONS.push(i18n.t('groups.quit'));
-                                                ButtonsCallback.push(() => {
-                                                    this.props.RemoveGroupMember(group.id, member, this.props.login.pseudo);
-                                                });
-                                            }
-                                            BUTTONS.push(i18n.t('other.cancel'));
-                                            ButtonsCallback.push(() => {
-                                            });
-                                            const CANCEL_INDEX = BUTTONS.length - 1;
-                                            ActionSheet.show(
-                                                {
-                                                    options: BUTTONS,
-                                                    cancelButtonIndex: CANCEL_INDEX,
-                                                    title: i18n.t('groups.managemem')
-                                                },
-                                                buttonIndex => {
-                                                    ButtonsCallback[buttonIndex]();
-                                                })
-
-                                        }}/>
-                                    </Right>
                                 </ListItem>
                             );
                         })}

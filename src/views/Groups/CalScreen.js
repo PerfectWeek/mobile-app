@@ -25,19 +25,20 @@ import {PageHit} from "expo-analytics";
 
 import i18n from 'i18n-js';
 
-export class _GroupsScreen extends React.Component {
+export class _CalScreen extends React.Component {
     static navigationOptions = {
         header: null
     };
 
     constructor(props) {
         super(props);
-        this.props.login.analytics.hit(new PageHit('GroupsPage'));
+        this.props.login.analytics.hit(new PageHit('CalPage'));
         this.props.GetGroups(this.props.login.pseudo);
-        
+
     }
 
     render() {
+        // console.log('logSCREEN', this.props)
         return (
             <View style={{
                 paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight,
@@ -89,7 +90,7 @@ export class _GroupsScreen extends React.Component {
                                             }} avatar>
                                                 <Left>
                                                     <Thumbnail
-                                                        source={{uri: group.image !== undefined ? group.image : null}}/>
+                                                        source={{uri: (group.image !== undefined) ? group.image : null}}/>
                                                 </Left>
                                                 <Body>
                                                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>{group.name}</Text>
@@ -152,4 +153,4 @@ const mapStateToProps = (state, ownProps) => {
     }
 };
 
-export const GroupsScreen = connect(mapStateToProps, mapDispatchToProps)(_GroupsScreen);
+export const CalScreen = connect(mapStateToProps, mapDispatchToProps)(_CalScreen);

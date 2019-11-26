@@ -34,7 +34,7 @@ class _AddUsers extends Component {
 
     render() {
         const {groupId} = this.props;
-
+        console.log('pp', groupId)
         return (
             <Modal
                 canValidate={(this.state.usersToAdd.length > 0 && this.props.GroupStore.status !== GroupsActionType.AddGroupMembers)}
@@ -55,7 +55,7 @@ class _AddUsers extends Component {
                             this.setState({usersToAdd: userList})
                         }}
                                    displaySelection={false}
-                                   formatAdd={(item) => {return ({name: item, role: 'actor'})}}
+                                   formatAdd={(item) => {return ({id: item.id, name: item.name, role: 'actor'})}}
                                    newWidth={200}
                         />
                     </Form>

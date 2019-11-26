@@ -15,6 +15,9 @@ import Loader from "../../Components/Loader";
 import {Primary} from "../../../Style/Constant";
 
 import i18n from 'i18n-js';
+import Constants from "expo-constants";
+import * as Permissions from 'expo-permissions';
+import * as ImagePicker from "expo-image-picker";
 
 export class _GroupDetailScreenImagePicker extends React.Component {
     static propTypes = {
@@ -62,11 +65,24 @@ export class _GroupDetailScreenImagePicker extends React.Component {
                             padding: 10,
                             margin: 10
                         }}
+                        // onPress={async () => {
+                        //     console.log('ij')
+                        //     const res = await Expo.ImagePicker.launchImageLibraryAsync();
+                        //     if (res.cancelled)
+                        //         return;
+                        //     this.setState({...this.state, image: res, display:res.uri, new: true});
+                        // }}
                         onPress={async () => {
-                            const res = await Expo.ImagePicker.launchImageLibraryAsync();
+                            if (Constants.platform.ios) {
+                                const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+                                if (status !== 'granted') {
+                                    alert(i18n.t('profile.edit.alertcamera'));
+                                }
+                            }
+                            const res = await ImagePicker.launchImageLibraryAsync();
                             if (res.cancelled)
                                 return;
-                            this.setState({...this.state, image: res, display:res.uri, new: true});
+                            this.setState({...this.state, image: res, display: res.uri, new: true});
                         }}>
                         <Text style={{fontSize: 18}}>{i18n.t('groups.edit.selectimage')}</Text>
                     </TouchableOpacity>

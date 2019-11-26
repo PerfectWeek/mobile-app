@@ -24,8 +24,8 @@ export class _Home extends React.Component {
     }
 
     async StartNotifications() {
-        let token = await Notifications.getExpoPushTokenAsync();
-        console.log(token);
+        // let token = await Notifications.getExpoPushTokenAsync();
+        // console.log(token);
 
         const { status } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
         if (status !== 'granted') {

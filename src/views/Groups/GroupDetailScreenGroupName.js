@@ -24,7 +24,7 @@ export class _GroupDetailScreenGroupName extends React.Component {
     constructor(props) {
         super(props);
         const {group} = this.props;
-        this.state = {groupName: group.name, groupDescription: group.description};
+        this.state = {groupName: group.name};
     }
 
     componentDidMount() {
@@ -57,7 +57,7 @@ export class _GroupDetailScreenGroupName extends React.Component {
                     this.props.EditGroupInfo({
                         id: group.id,
                         name: this.state.groupName,
-                        description: this.state.groupDescription
+                        color: group.color
                     })
                 }}>
                     <View style={{
@@ -69,10 +69,6 @@ export class _GroupDetailScreenGroupName extends React.Component {
                             <Item style={{marginTop: 0}}>
                                 <Input placeholder={i18n.t('groups.groupname')} value={this.state.groupName}
                                        onChangeText={(text) => this.setState({groupName: text})}/>
-                            </Item>
-                            <Item style={{marginTop: 0}}>
-                                <Input placeholder={i18n.t('groups.groupdescription')} value={this.state.groupDescription}
-                                       onChangeText={(text) => this.setState({groupDescription: text})}/>
                             </Item>
                         </Form>
                     </View>

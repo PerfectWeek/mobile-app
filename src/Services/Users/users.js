@@ -15,7 +15,7 @@ import axios from 'react-native-axios'
 const uuidv4 = require('uuid/v4');
 
 export class UserService {
-  // static async GetGroupsForUserPseudo(pseudo) {
+  // static async GetCalForUserPseudo(pseudo) {
   //     const resp = await Network.Get('/users/' + pseudo + '/groups');
   //     if (resp.status === 200)
   //         return resp.data.groups;

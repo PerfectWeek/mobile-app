@@ -34,7 +34,7 @@ import {
   ScreenBackgroundColor
 } from "../../../Style/Constant";
 import Loader from "../../Components/Loader";
-import * as Animatable from "../Groups/GroupsScreen";
+// import * as Animatable from "../Groups/GroupsScreen";
 import {
   GetInvites,
   ReplyEventInvite,

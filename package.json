@@ -26,10 +26,12 @@
     "expo-analytics": "^1.0.9",
     "expo-analytics-segment": "~7.0.0",
     "expo-app-auth": "~7.0.0",
+    "expo-constants": "~7.0.0",
     "expo-facebook": "~7.0.0",
     "expo-image-picker": "~7.0.0",
     "expo-linear-gradient": "~7.0.0",
     "expo-localization": "~7.0.0",
+    "expo-permissions": "^7.0.0",
     "i18n-js": "^3.3.0",
     "lottie-react-native": "~2.6.1",
     "metro-react-native-babel-preset": "^0.45.0",
@@ -43,6 +45,7 @@
     "react-native-axios": "^0.17.1",
     "react-native-calendars": "^1.21.0",
     "react-native-cli": "^2.0.1",
+    "react-native-color-picker": "^0.4.2",
     "react-native-datepicker": "^1.7.2",
     "react-native-ionicons": "^4.4.6",
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
@@ -58,7 +61,6 @@
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
     "redux-saga": "^0.16.0",
-    "uuid": "^3.3.3",
-    "expo-constants": "~7.0.0"
+    "uuid": "^3.3.3"
   }
 }

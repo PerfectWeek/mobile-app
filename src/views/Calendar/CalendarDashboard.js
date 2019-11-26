@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import {
   View,
-  StyleSheet,
   Text,
   Alert,
   TouchableHighlight,
-  ScrollView,
   Platform
 } from "react-native";
 import connect from "react-redux/es/connect/connect";
@@ -23,12 +21,8 @@ import {
   ActionSheet
 } from "native-base";
 import {
-  GetAllUsersEvents,
   CalendarActionType,
   DeleteEvent,
-  GetUsersEventsFiltered,
-  GetEvents,
-  GetCalendars,
   ResetStatus,
   LoadCalendar,
   ReloadEvents
@@ -40,7 +34,6 @@ import {
 } from "../../../Style/Constant";
 import Swipeout from "react-native-swipeout";
 import { CalendarFilter } from "./CalendarFilter";
-import moment from "moment";
 import {
   dateDiffInDays,
   getRandomColor,
@@ -61,7 +54,6 @@ export class _CalendarDashboard extends Component {
     this.props.login.analytics.hit(new PageHit("DashBoard"));
 
     this.props.LoadCalendar(this.props.login.pseudo);
-    // console.log(this.props)
   }
 
   static navigationOptions = {
@@ -357,9 +349,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const mapStateToProps = (state, ownProps) => {
   let events = [];
-  // console.log("state.calendar.events : ", state.calendar.events);
-
-  if (state.calendar.events) {
+  if (state.calendar.events && state.calendar.calendars.length > 0) {
     events = Object.values(state.calendar.events).map(e => {
       const calendar = state.calendar.calendars.find(
         c => c.id === e.calendar_id

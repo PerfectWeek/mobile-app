@@ -24,7 +24,7 @@ import {
 } from "./groups.actions";
 import {Network} from "../../Network/Requests";
 import {NavigationActions} from "react-navigation";
-import {GroupService} from "../../Services/Groups/groups";
+import {CalService} from "../../Services/Groups/groups";
 import {UserService} from "../../Services/Users/users";
 import {arrayToObject} from "../../Utils/utils";
 import {GetUsersInfo} from "../User/user.actions";
@@ -35,16 +35,17 @@ import {GetCalendars} from "../Calendar/calendar.actions";
 function* GetGroups(action) {
     yield put(SetLoading(true));
     try {
-        const groups = yield GroupService.GetGroupsForUserPseudo(action.pseudo);
-        const groupMap = yield groups.reduce(function (map, obj) {
+        const cals = yield CalService.GetCalForUserPseudo(action.pseudo);
+        const calsMap = yield cals.reduce(function (map, obj) {
             map[obj.id] = obj;
             return map;
         }, {});
 
-        let groupsArray = Object.values(groups);
-        let res = yield GroupService.GetGroupsImage(groupsArray);
+
+        let groupsArray = Object.values(cals);
+        let res = yield CalService.GetGroupsImage(groupsArray);
         yield put(GetGroupsImageSuccess(res));
-        yield put(GetGroupSuccess(groupMap));
+        yield put(GetGroupSuccess(calsMap));
     } catch (err) {
         yield ShowErrorNotification(err);
         yield put(GetGroupFail(err));
@@ -54,11 +55,11 @@ function* GetGroups(action) {
 
 function* GetGroupInfo(action) {
     try {
-        const group = yield GroupService.GetGroupDetail(action.id);
-        let members = yield GroupService.GetGroupMembers(action.id);
-        members = yield UserService.GetUsersImage(members);
-        members = arrayToObject(members, "pseudo");
-        yield put(GetGroupMembersSuccess(action.id, members));
+        const group = yield CalService.GetGroupDetail(action.id);
+        // let members = yield CalService.GetGroupMembers(action.id);
+        // members = yield UserService.GetUsersImage(members);
+        // members = arrayToObject(members, "pseudo");
+        // yield put(GetGroupMembersSuccess(action.id, members));
         yield put(GetGroupInfoSuccess(group))
     } catch (err) {
         yield ShowErrorNotification(err);
@@ -68,7 +69,7 @@ function* GetGroupInfo(action) {
 
 function* RemoveGroupMember(action) {
     try {
-        const members = yield GroupService.RemoveGroupMember(action.groupId, action.member.pseudo);
+        const members = yield CalService.RemoveGroupMember(action.groupId, action.member.pseudo);
         const selfKick = action.Selfpseudo === action.member.pseudo;
         yield put(RemoveGroupMemberSuccess(action.groupId, arrayToObject(members, "pseudo"), selfKick));
         if (selfKick)
@@ -98,8 +99,8 @@ function* UpdateMemberRole(action) {
 
 function* AddGroupMembers(action) {
     try {
-        // console.log('QWQWQWQWQ', action)
-        const members = yield GroupService.AddGroupMembers(action.groupId, action.members);
+        console.log('QWQWQWQWQ', action)
+        const members = yield CalService.AddGroupMembers(action.groupId, action.members);
         let users2 = yield select((state) => {
             return state.user.users
         });
@@ -109,7 +110,7 @@ function* AddGroupMembers(action) {
             return state.user.users
         });
         // console.log('USER2', users)
-        yield put(AddGroupMembersSuccess(action.groupId, arrayToObject(members, "pseudo")));
+        yield put(AddGroupMembersSuccess(action.groupId, arrayToObject(members, "name")));
         yield ShowSuccessNotification();
     } catch (err) {
         yield ShowErrorNotification(err);
@@ -118,12 +119,12 @@ function* AddGroupMembers(action) {
 }
 
 function* EditGroupInfo(action) {
-    const resp = yield Network.Put('/groups/' + action.group.id, {
+    const resp = yield Network.Put('/calendars/' + action.group.id, {
         name: action.group.name,
-        description: action.group.description
+        color: action.group.color
     });
     if (resp.status === 200) {
-        yield put(EditGroupInfoSuccess(resp.data.group));
+        yield put(EditGroupInfoSuccess(resp.data.calendar));
         yield ShowSuccessNotification();
     } else {
         let err;
@@ -138,16 +139,16 @@ function* EditGroupInfo(action) {
 
 function* CreateGroup(action) {
     // console.log('action', action)
-    const resp = yield Network.Post('/groups', {
+    const resp = yield Network.Post('/calendars', {
         name: action.group.name,
-        members: action.group.members,
-        description: action.group.description
+        color: action.group.color,
     });
+    // console.log('po', resp)
     if (resp.status === 201) {
-        let res = yield GroupService.GetGroupsImage([resp.data.group]);
-        resp.data.group.image = res[0].image;
+        const img = yield CalService.GetGroupsImage([resp.data.calendar]);
+        // console.log('pimo', img)
         yield put(GetCalendars({pseudo: action.pseudo}));
-        yield put(CreateGroupSuccess(resp.data.group));
+        yield put(CreateGroupSuccess({...resp.data.calendar, image: img[0].image}));
         yield ShowSuccessNotification("Creation successful");
     } else {
         let err;
@@ -161,7 +162,7 @@ function* CreateGroup(action) {
 }
 
 function* DeleteGroup(action) {
-    const resp = yield Network.Delete('/groups/' + action.groupId);
+    const resp = yield Network.Delete('/calendars/' + action.groupId);
     if (resp.status === 200) {
         yield put(DeleteGroupSuccess(action.groupId));
         yield ShowSuccessNotification();
@@ -183,7 +184,8 @@ function* UpdateGroupImage(action) {
         type: 'image/jpeg', // or photo.type
         name: 'GroupProfilePicture'
     });
-    const resp = yield Network.PostMultiPart('/groups/' + action.groupId + '/upload-image', data);
+    const resp = yield Network.PutMultiPart('/calendars/' + action.groupId + '/images/icon', data);
+    // console.log('action', action, resp)
     if (resp.status === 200) {
         yield put(UpdateGroupImageSuccess(action.groupId, action.image.uri));
         yield ShowSuccessNotification();

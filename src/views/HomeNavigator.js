@@ -3,7 +3,7 @@ import { Icon, Text, View, Button } from 'native-base';
 import ProfileNavigator from './Profile/ProfileNavigator';
 import { createBottomTabNavigator } from "react-navigation";
 import { HeaderBackgroundColor } from "../../Style/Constant";
-import { GroupsNavigator } from "./Groups/GroupsNavigator";
+import { CalNavigator } from "./Groups/GroupsNavigator";
 import { CalendarNavigator } from "./Calendar/CalendarNavigator";
 import { EventsNavigator } from "./Events/EventsNavigator";
 import BadgeTabIcon from "../Components/BadgeTabIcon";
@@ -31,14 +31,15 @@ export default createBottomTabNavigator(
                     title: Localization.locale !== 'fr-FR' ? 'Events' : 'Evènements',
             }
         },
-        // Groups: {
-        //     screen: GroupsNavigator, navigationOptions: {
-        //         tabBarIcon: ({ focused, tintColor }) => <Icon
-        //             name='users'
-        //             type='FontAwesome'
-        //             style={{ color: tintColor, marginTop: 5, fontSize: 22 }} />
-        //     }
-        // },
+        Calendars: {
+            screen: CalNavigator,
+            navigationOptions: {
+                tabBarIcon: ({ focused, tintColor }) => <Icon
+                    name='users'
+                    type='FontAwesome'
+                    style={{ color: tintColor, marginTop: 5, fontSize: 22 }} />
+            }
+        },
         Profile: {
             screen: ProfileNavigator,
             navigationOptions: {
