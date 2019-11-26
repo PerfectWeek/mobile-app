@@ -49,8 +49,6 @@ export class _CreateEvent extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log("Shoyorama : ", this.props.calendar.calendars);
-
     this.state = {
       EventTitle: "",
       description: "",

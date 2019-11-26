@@ -59,7 +59,8 @@ export class _Map extends React.Component {
           !(
             this.props.navigation.state.params !== undefined &&
             this.props.navigation.state.params.id !== event.id
-          )
+            ) &&
+            event.location.length > 0
         ) {
           var res = await axios.get(
             `https://eu1.locationiq.com/v1/search.php?key=${geocofing_token}&q=${event.location}&format=json`

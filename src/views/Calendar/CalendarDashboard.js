@@ -370,6 +370,8 @@ const mapStateToProps = (state, ownProps) => {
       };
     });
   }
+  // console.log(events);
+  events = events.sort((a, b) => { return new Date(a.start_time).getTime() - new Date(b.start_time).getTime() });
   // console.log("events : ", events);
 
   let items = {};
