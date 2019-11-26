@@ -179,6 +179,7 @@ function* CreatNewEvent(action) {
                 throw responseAddUsers
             }
         }
+        events_w_image[0].role = 'admin';
         yield put(CreateNewEventSuccess(events_w_image[0]));
         yield ShowSuccessNotification("Event Created");
     } catch (err) {

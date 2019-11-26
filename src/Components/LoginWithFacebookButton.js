@@ -36,7 +36,7 @@ class _LoginWithFacebookButton extends Component {
             // 1309203999244829
 
             const res = await Facebook.logInWithReadPermissionsAsync('850667108631602', {
-                permissions: ['public_profile', 'email'],
+                permissions: ['public_profile', 'email', 'user_friends'],
             });
             console.log("RES FACEBOOK : ", res);
             
@@ -48,6 +48,7 @@ class _LoginWithFacebookButton extends Component {
                 // await ShowSuccessNotification(i18n.t('login.success') + ` ! Hi ${auth.user.name}!`);
             }
         } catch ({ message }) {
+            console.log(message);
             
             await ShowErrorNotification(i18n.t('login.cofail') + " Facebook");
         }
