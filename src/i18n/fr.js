@@ -102,6 +102,7 @@ export default {
     },
     "calendar": {
         "calendar" : "Calendrier",
+        "modify_event" : "Modifier l'Evènement",
         "create_event" : "Créer un Evènement",
         "find_best_slot" : "Trouver le meilleur créneau",
     },

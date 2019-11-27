@@ -37,7 +37,8 @@ export default createBottomTabNavigator(
                 tabBarIcon: ({ focused, tintColor }) => <Icon
                     name='users'
                     type='FontAwesome'
-                    style={{ color: tintColor, marginTop: 5, fontSize: 22 }} />
+                    style={{ color: tintColor, marginTop: 5, fontSize: 22 }} />,
+                    title: Localization.locale !== 'fr-FR' ? 'Calendars' : 'Calendriers',
             }
         },
         Profile: {

@@ -206,7 +206,7 @@ export class _ModifyEvent extends React.Component {
                                     return;
                                 this.setState({ ...this.state, image: res, display: res.uri, new_image: true });
                             }}>
-                            <Text style={{ fontSize: 18 }}>{i18n.t('dashboard.createvent.selectimg')}</Text>
+                            <Text style={{ fontSize: 18, textAlign: 'center' }}>{i18n.t('dashboard.createvent.selectimg')}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{
@@ -376,7 +376,7 @@ export class _ModifyEvent extends React.Component {
                                         this.checkAttendees()
                                     }}>
                                 <Text>
-                                    Modify event
+                                {i18n.t('calendar.modify_event')}
                                 </Text>
                             </Button>
                         </Form>
@@ -441,9 +441,10 @@ const pickerSelectStyles = StyleSheet.create({
 
 const GreenButtonStyle = {
     width: 150,
-    height: 40,
+    height: 60,
     borderWidth: 2,
     borderColor: '#5CB85C',
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',

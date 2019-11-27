@@ -17,7 +17,10 @@ export const CalendarNavigator = createStackNavigator (
             screen : CreateEvent
         },
         ModifyEvent: {
-            screen: ModifyEvent
+            screen: ModifyEvent,
+            navigationOptions: () => ({
+                title: i18n.t('calendar.modify_event'),
+            })
         },
         ConsultEvent: {
             screen: ConsultEvent

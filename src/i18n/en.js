@@ -103,6 +103,7 @@ export default {
     "calendar": {
         "calendar" : "Calendar",
         "create_event" : "Create event",
+        "modify_event" : "Modify event",
         "find_best_slot" : "Find best slot",
     },
     "other": {
