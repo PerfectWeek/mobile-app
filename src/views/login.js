@@ -98,13 +98,13 @@ class _LoginScreen extends React.Component {
                     
                     <CustomInput iconName={'lock'} secureTextEntry={true} style={{ marginTop: 30 }}
                         onChangeText={(text) => this.setState({ password: text })}
-                        error={!validatePassword(this.state.password)}
+                        // error={!validatePassword(this.state.password)}
                         placeholder={i18n.t('login.pwd')}
                     />
                     <CustomButton style={{marginTop: 30}}
                                   disabled={this.props.login.status === LoginActionsType.Login ||
                                   this.state.password === '' || this.state.username === '' ||
-                                  !validatePassword(this.state.password) || !validateNotEmpty(this.state.username)}
+                                  !validateNotEmpty(this.state.username)}
                                   onPress={() => {
                                       // Segment.identify(this.state.username);
                                       // Segment.track({

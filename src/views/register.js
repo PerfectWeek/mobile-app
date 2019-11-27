@@ -1,6 +1,6 @@
 import React from 'react';
 import {Animated, Dimensions, Easing, Platform, StyleSheet, Keyboard} from "react-native";
-import {View, Container} from 'native-base';
+import {View, Container, Text} from 'native-base';
 import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
 import {Register, RegisterActionsType} from "../redux/Register/register.actions";
@@ -94,11 +94,17 @@ class _RegisterScreen extends React.Component {
                                      error={!comparePasswords(this.state.password, this.state.password2) || !validatePassword(this.state.password)}
                                      placeholder={i18n.t('register.pwd')}
                         />
+                        {!validatePassword(this.state.password) && <Text style={{color: "red", textAlign: 'center', margin: 5, backgroundColor: 'white'}}>
+                        {i18n.t('login.invalid_password')}
+                        </Text>}
                         <CustomInput iconName={'lock'} secureTextEntry={true} style={{marginTop: 30}}
                                      onChangeText={(text) => this.setState({password2: text})}
                                      error={!comparePasswords(this.state.password, this.state.password2) || !validatePassword(this.state.password2)}
                                      placeholder={i18n.t('register.pwda')}
                         />
+                        {!validatePassword(this.state.password2) && <Text style={{color: "red", textAlign: 'center', margin: 5, backgroundColor: 'white'}}>
+                        {i18n.t('login.invalid_password')}
+                        </Text>}
                         <CustomButton style={{marginTop: 30}}
                                       disabled={this.props.register.status === RegisterActionsType.Register ||
                                       !comparePasswords(this.state.password, this.state.password2) ||

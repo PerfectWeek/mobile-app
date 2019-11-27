@@ -57,8 +57,10 @@ export class _ConsultEvent extends React.Component {
     // this.props.login.analytics.hit(new PageHit('ConsultEvent'));
 
     // this.props.GetEventInfo(this.props.navigation.state.params.eventId);
-    const response = Network.Get('/events/' + event.id).then(res => {
+    Network.Get('/events/' + event.id).then(res => {
+      
       event.attendees = res.data.event.attendees;
+      // console.log("event.attendees : ", event.attendees);
       this.setState(this.fillInfoEvent(event));
     })
     

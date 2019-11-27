@@ -6,7 +6,8 @@ export default {
         "success": "Connected",
         "facebook": "Sign in with Facebook",
         "register": "Register",
-        "login": "Login"
+        "login": "Login",
+        "invalid_password" : "Password must be at least 8 characters long and contain lowercase letters, uppercase letters, digits and symbols"
     },
     "register": {
         "pwd": "Password",

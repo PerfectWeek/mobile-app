@@ -6,7 +6,8 @@ export default {
         "success": "Connecté",
         "facebook": "Connection Facebook",
         "register": "S'enregistrer",
-        "login": "Se connecter"
+        "login": "Se connecter",
+        "invalid_password" : "Le mot de passe doit comporter au moins 8 caractères et contenir des lettres minuscules, des lettres majuscules, des chiffres et des symboles."
     },
     "register": {
         "pwd": "Mot de passe",
