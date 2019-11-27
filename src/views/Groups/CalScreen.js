@@ -1,5 +1,12 @@
 import React from "react";
-import { Dimensions, Platform, View, ScrollView, Alert } from "react-native";
+import {
+  Dimensions,
+  Platform,
+  View,
+  ScrollView,
+  Alert,
+  RefreshControl
+} from "react-native";
 import {
   Text,
   Header,
@@ -46,163 +53,201 @@ export class _CalScreen extends React.Component {
     this.props.GetGroups(this.props.login.pseudo);
   }
 
-  render() {
-    // console.log("GROUPS : ", this.props.groups);
+  _onRefresh = () => {
+    this.props.GetGroups(this.props.login.pseudo);
+  };
 
-    // console.log('logSCREEN', this.props)
-    return (
-      <View
-        style={{
-          paddingTop:
-            Platform.OS === "ios" ? 0 : Expo.Constants.statusBarHeight,
-          backgroundColor: ScreenBackgroundColor
-        }}
+  render() {
+    const header = (
+      <Header
+        androidStatusBarColor="#00AE93"
+        style={{ backgroundColor: HeaderBackgroundColor }}
       >
-        <Header
-          androidStatusBarColor="#00AE93"
-          style={{ backgroundColor: HeaderBackgroundColor }}
+        <Body>
+          <Title style={{ color: "black" }}>{i18n.t("groups.title")}</Title>
+        </Body>
+        <Right>
+          <Button
+            transparent
+            onPress={() => {
+              this.props.navigation.navigate({ routeName: "CreateGroup" });
+            }}
+          >
+            <Icon
+              style={{ fontSize: 28, fontWeight: "bold", color: "#064C96" }}
+              type={"MaterialIcons"}
+              name="add"
+            />
+          </Button>
+        </Right>
+      </Header>
+    );
+
+    if (this.props.GroupStore.loading === true)
+      return (
+        <View
+          style={{
+            backgroundColor: ScreenBackgroundColor,
+            paddingTop:
+              Platform.OS === "ios" ? 0 : Expo.Constants.statusBarHeight
+          }}
         >
-          <Body>
-            <Title style={{ color: "black" }}>{i18n.t("groups.title")}</Title>
-          </Body>
-          <Right>
+          <Header
+            androidStatusBarColor="#00AE93"
+            style={{ backgroundColor: HeaderBackgroundColor }}
+          >
+            <Body>
+              <Title style={{ color: "black" }}>{i18n.t("groups.title")}</Title>
+            </Body>
+          </Header>
+          <Loader />
+        </View>
+      );
+    if (Object.values(this.props.groups).length === 0)
+      return (
+        <View
+          style={{
+            backgroundColor: ScreenBackgroundColor,
+            paddingTop:
+              Platform.OS === "ios" ? 0 : Expo.Constants.statusBarHeight
+          }}
+        >
+          {header}
+
+          <ScrollView
+            style={{
+              backgroundColor: ScreenBackgroundColor,
+              marginLeft: 10,
+              marginRight: 10,
+              height: Dimensions.get("window").height
+            }}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.props.GroupStore.loading === true}
+                onRefresh={this._onRefresh}
+              />
+            }
+          >
+            <Text style={{ marginTop: 20, textAlign: "center", fontSize: 22 }}>
+              {i18n.t("groups.nogroups")}
+            </Text>
             <Button
-              transparent
+              style={{ alignSelf: "center", margin: 30 }}
+              primary
               onPress={() => {
                 this.props.navigation.navigate({ routeName: "CreateGroup" });
               }}
             >
-              <Icon
-                style={{ fontSize: 28, fontWeight: "bold", color: "#064C96" }}
-                type={"MaterialIcons"}
-                name="add"
-              />
+              <Text>{i18n.t("groups.creatgroup")}</Text>
             </Button>
-          </Right>
-        </Header>
+          </ScrollView>
+        </View>
+      );
+    return (
+      <Container
+        style={{
+          backgroundColor: ScreenBackgroundColor,
+          paddingTop: Platform.OS === "ios" ? 0 : Expo.Constants.statusBarHeight
+        }}
+      >
+        {header}
         <ScrollView
           style={{
-            paddingLeft: 10,
-            paddingRight: 10,
+            backgroundColor: ScreenBackgroundColor,
+            marginLeft: 10,
+            marginRight: 10,
             height: Dimensions.get("window").height
           }}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.props.GroupStore.loading === true}
+              onRefresh={this._onRefresh}
+            />
+          }
         >
-          {this.props.GroupStore.loading === true ? (
-            <Container
-              style={{
-                backgroundColor: ScreenBackgroundColor,
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center"
-              }}
-            >
-              <Loader />
-            </Container>
-          ) : Object.values(this.props.groups).length === 0 ? (
-            <View>
-              <Text
-                style={{ marginTop: 20, textAlign: "center", fontSize: 22 }}
-              >
-                {i18n.t("groups.nogroups")}
-              </Text>
-              <Button
-                style={{ alignSelf: "center", margin: 30 }}
-                primary
+          {Object.values(this.props.groups).map((group, index) => {
+            return (
+              <ListItem
+                key={index}
                 onPress={() => {
-                  this.props.navigation.navigate({ routeName: "CreateGroup" });
+                  this.props.navigation.navigate("Detail", {
+                    group: group
+                  });
                 }}
+                avatar
               >
-                <Text>{i18n.t("groups.creatgroup")}</Text>
-              </Button>
-            </View>
-          ) : (
-            Object.values(this.props.groups).map(group => {
-              return (
-                <Animatable.View key={group.id} animation="fadeInUp">
-                  <List>
-                    <ListItem
+                <Left>
+                  <Thumbnail
+                    source={{
+                      uri: group.image !== undefined ? group.image : null
+                    }}
+                  />
+                </Left>
+                <Body>
+                  <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    {group.name}
+                  </Text>
+                  <Text>
+                    {group.members !== undefined
+                      ? Object.keys(group.members).length
+                      : group.nb_members}{" "}
+                    {i18n.t("groups.members")}
+                  </Text>
+                </Body>
+                {group.role === "admin" && (
+                  <Right>
+                    <Icon
+                      style={{ marginTop: 10, fontSize: 28 }}
+                      type="SimpleLineIcons"
+                      name="options-vertical"
                       onPress={() => {
-                        this.props.navigation.navigate("Detail", {
-                          group: group
-                        });
-                      }}
-                      avatar
-                    >
-                      <Left>
-                        <Thumbnail
-                          source={{
-                            uri: group.image !== undefined ? group.image : null
-                          }}
-                        />
-                      </Left>
-                      <Body>
-                        <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-                          {group.name}
-                        </Text>
-                        <Text>
-                          {group.members !== undefined
-                            ? Object.keys(group.members).length
-                            : group.nb_members}{" "}
-                          {i18n.t("groups.members")}
-                        </Text>
-                      </Body>
-                      {group.role === "admin" && (
-                        <Right>
-                          <Icon
-                            style={{ marginTop: 10, fontSize: 28 }}
-                            type="SimpleLineIcons"
-                            name="options-vertical"
-                            onPress={() => {
-                              const BUTTONS = [
-                                i18n.t("groups.delgroup"),
-                                i18n.t("other.cancel")
-                              ];
-                              const CANCEL_INDEX = BUTTONS.length - 1;
-                              const ButtonsCallback = [
-                                () => {
-                                  Alert.alert(
-                                    `${i18n.t("groups.delgroup")} ?`,
-                                    "",
-                                    [
-                                      {
-                                        text: i18n.t("other.yes"),
-                                        onPress: () => {
-                                          this.props.DeleteGroup(group.id);
-                                        }
-                                      },
-                                      {
-                                        text: i18n.t("other.cancel"),
-                                        onPress: () => {},
-                                        style: "cancel"
-                                      }
-                                    ],
-                                    { cancelable: false }
-                                  );
-                                },
-                                () => {}
-                              ];
-                              ActionSheet.show(
+                        const BUTTONS = [
+                          i18n.t("groups.delgroup"),
+                          i18n.t("other.cancel")
+                        ];
+                        const CANCEL_INDEX = BUTTONS.length - 1;
+                        const ButtonsCallback = [
+                          () => {
+                            Alert.alert(
+                              `${i18n.t("groups.delgroup")} ?`,
+                              "",
+                              [
                                 {
-                                  options: BUTTONS,
-                                  cancelButtonIndex: CANCEL_INDEX,
-                                  title: i18n.t("groups.manage")
+                                  text: i18n.t("other.yes"),
+                                  onPress: () => {
+                                    this.props.DeleteGroup(group.id);
+                                  }
                                 },
-                                buttonIndex => {
-                                  ButtonsCallback[buttonIndex]();
+                                {
+                                  text: i18n.t("other.cancel"),
+                                  onPress: () => {},
+                                  style: "cancel"
                                 }
-                              );
-                            }}
-                          />
-                        </Right>
-                      )}
-                    </ListItem>
-                  </List>
-                </Animatable.View>
-              );
-            })
-          )}
+                              ],
+                              { cancelable: false }
+                            );
+                          },
+                          () => {}
+                        ];
+                        ActionSheet.show(
+                          {
+                            options: BUTTONS,
+                            cancelButtonIndex: CANCEL_INDEX,
+                            title: i18n.t("groups.manage")
+                          },
+                          buttonIndex => {
+                            ButtonsCallback[buttonIndex]();
+                          }
+                        );
+                      }}
+                    />
+                  </Right>
+                )}
+              </ListItem>
+            );
+          })}
         </ScrollView>
-      </View>
+      </Container>
     );
   }
 }

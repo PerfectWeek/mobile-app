@@ -130,7 +130,7 @@ class _LoginScreen extends React.Component {
                         flex: 1,
                         justifyContent: 'center',
                     }}>
-                    <LoginWithFacebookButton style={{ marginTop: 10 }} />
+                    <LoginWithFacebookButton style={{ marginTop: 20, marginBottom:10 }} />
 
                         <LoginWithGoogleButton />
                     </View>

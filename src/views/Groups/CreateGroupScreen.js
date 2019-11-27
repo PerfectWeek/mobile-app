@@ -22,7 +22,7 @@ export class _CreateGroupScreen extends React.Component {
         super(props);
         this.state = {
             groupName: '',
-            color: '',
+            color: '#0000FF',
             searchBar: '',
             usersToAdd: []
         }
@@ -60,6 +60,8 @@ export class _CreateGroupScreen extends React.Component {
                     </Form>
                 </View>
                 <ColorPicker
+                    defaultColor="blue"
+                    hideSliders={true}
                     onColorSelected={color => this.setState({color})}
                     style={{flex: 1}}
                 />
