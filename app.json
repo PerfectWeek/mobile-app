@@ -18,7 +18,12 @@
     "scheme": "perfectweek",
     "orientation": "portrait",
     "ios": {
-      "bundleIdentifier": "com.perfectweek.perfectweek"
+      "bundleIdentifier": "com.perfectweek.perfectweek",
+      "config" : {
+        "googleSignIn" : {
+          "reservedClientId" : "802613708270-kat25t9kln35o64cf8b031jjuekmi0of.apps.googleusercontent.com"
+        }
+      }
     },
     "android": {
       "package": "com.perfectweek.perfectweek",
