@@ -35,6 +35,7 @@ import { ListUsers } from "./tools/ListUsers";
 
 import i18n from "i18n-js";
 import * as Localization from "expo-localization";
+import { Network } from "../../Network/Requests";
 const en_to_fr = {
   party: "Soirée",
   work: "Travail",
@@ -55,7 +56,12 @@ export class _ConsultEvent extends React.Component {
     // console.log("OOKKKKK : ", event);
     // this.props.login.analytics.hit(new PageHit('ConsultEvent'));
 
-    this.props.GetEventInfo(this.props.navigation.state.params.eventId);
+    // this.props.GetEventInfo(this.props.navigation.state.params.eventId);
+    const response = Network.Get('/events/' + event.id).then(res => {
+      event.attendees = res.data.event.attendees;
+      this.setState(this.fillInfoEvent(event));
+    })
+    
     this.state = this.fillInfoEvent(event);
   }
 
@@ -467,26 +473,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  // return {
-  //     ...ownProps,
-  //     calendar: state.calendar,
-  //     // attendees: state.calendar.event.attendees
-  //     // login: state.login
-  // }
-  if (
-    state.calendar.event !== undefined &&
-    state.calendar.event.attendees !== undefined
-  ) {
-    // console.log('state.calendar.event.attendees', state.calendar.event.attendees)
     return {
       ...ownProps,
       calendar: state.calendar,
-      attendees: state.calendar.event.attendees
-    };
-  } else
-    return {
-      ...ownProps,
-      calendar: state.calendar
+      event: state.calendar.event
     };
 };
 

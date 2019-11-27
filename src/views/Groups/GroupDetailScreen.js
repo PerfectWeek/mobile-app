@@ -185,7 +185,6 @@ export class _GroupDetailScreen extends React.Component {
               </ListItem>
             )}
             {Object.values(group.members).map((member, index) => {
-              console.log("mm", member);
               return (
                 <ListItem key={index} avatar>
                   <Left>
@@ -200,7 +199,9 @@ export class _GroupDetailScreen extends React.Component {
                   <Body>
                     <Text>{member.name}</Text>
                     <Text style={{ color: "gray" }} note>
-                      {member.role}
+                      {member.role === 'actor' ? i18n.t('other.addusers.types.actor') :
+                       (member.role === 'spectator' ? i18n.t('other.addusers.types.spectator') : 
+                       (member.role === 'admin' ? i18n.t('other.addusers.types.admin') : ""))}
                       {!member.invitation_confirmed &&
                         ` - ${i18n.t("groups.pending_invite")}`}
                     </Text>

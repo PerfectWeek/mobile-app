@@ -27,13 +27,18 @@ export class Network {
         this.access_token = access_token;
         axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
         // console.log("Je demande le token");
-        // let expoToken = await Notifications.getExpoPushTokenAsync();
-        // console.log(expoToken);
-        // if (expoToken) {
-        //     let res = await axios.post("/expo/token", {token : expoToken});
-            // console.log(res);
-
-        // }
+        try {
+            let expoToken = await Notifications.getExpoPushTokenAsync();
+            console.log(expoToken);
+            if (expoToken) {
+                let res = await axios.post("/expo/token", {token : expoToken});
+                console.log(res);
+            }    
+        } catch (error) {
+            // console.log(erro);
+            
+        }
+        
     }
 
     static getToken() {

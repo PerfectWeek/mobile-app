@@ -34,7 +34,6 @@ class _AddUsers extends Component {
 
     render() {
         const {groupId} = this.props;
-        console.log('pp', groupId)
         return (
             <Modal
                 canValidate={(this.state.usersToAdd.length > 0 && this.props.GroupStore.status !== GroupsActionType.AddGroupMembers)}

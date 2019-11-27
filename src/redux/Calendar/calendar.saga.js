@@ -32,6 +32,8 @@ import * as Localization from 'expo-localization';
 function* GetTheEventInfo(action) {
     let listAttendees = [];
     const response = yield Network.Get('/events/' + action.event);
+    // console.log("response : ", response);
+    
     // const respons2 = yield Network.Get('/events/' + action.event + '/attendees');
     if (response.status !== 200) {
         let err;
