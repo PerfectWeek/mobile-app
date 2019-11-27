@@ -1,6 +1,6 @@
 import {Dimensions, ScrollView, View, TouchableOpacity, StyleSheet} from 'react-native'
 import React, {useRef} from 'react';
-import {Form, Icon, Input, Item, Container, Button, Text, Picker} from "native-base";
+import {Form, Icon, Input, Item, Container, Button, Text, Picker, ListItem} from "native-base";
 import {validateNotEmpty} from "../../../Utils/utils";
 import connect from "react-redux/es/connect/connect";
 import {
@@ -96,27 +96,24 @@ export class _ListUsers extends React.Component {
                         {i18n.t('other.addusers.attendees')}
                     </Text>
                 }
-                <Form style={{flexGrow: 3}}>
-                    {this.state.listPseudo.map((item, idx) =>
-                        <Item key={idx}
-                              style={{width: (this.props.newWidth === undefined) ? 300 : this.props.newWidth}}>
-                            <TouchableOpacity onPress={() => {
-                                this.setState({
-                                    usersToAdd: [...this.state.usersToAdd, (this.props.formatAdd === undefined) ? item : this.props.formatAdd(item)],
-                                    query: '',
-                                    listPseudo: []
-                                });
-                                (this.props.formatAdd === undefined) ? this.props.callAddUser([...this.state.usersToAdd, item]) : this.props.callAddUser([...this.state.usersToAdd, this.props.formatAdd(item)])
-                            }}
-                                              style={styles.touch}
-                            >
-                                <Text style={styles.itemText}>
-                                    {item.name}
-                                </Text>
-                            </TouchableOpacity>
-                        </Item>
+                <ScrollView nestedScrollEnabled = {true} style={{flexGrow: 3, maxHeight: Dimensions.get("window").height / 3}}>
+                    {[...this.state.listPseudo, ...this.state.listPseudo, ...this.state.listPseudo, ...this.state.listPseudo].map((item, idx) =>                        
+                        <ListItem key={idx} onPress={() => {
+                            this.setState({
+                                usersToAdd: [...this.state.usersToAdd, (this.props.formatAdd === undefined) ? item : this.props.formatAdd(item)],
+                                query: '',
+                                listPseudo: []
+                            });
+                            (this.props.formatAdd === undefined) ? this.props.callAddUser([...this.state.usersToAdd, item]) : this.props.callAddUser([...this.state.usersToAdd, this.props.formatAdd(item)])
+                        }}
+                                            style={styles.touch}
+                        >
+                            <Text style={styles.itemText}>
+                                {item.name}
+                            </Text>
+                        </ListItem>
                     )}
-                </Form>
+                </ScrollView>
                 {this.props.displaySelection === undefined || this.props.displaySelection === true ?
                     <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
                         {

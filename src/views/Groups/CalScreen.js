@@ -151,7 +151,7 @@ export class _CalScreen extends React.Component {
         }}
       >
         {header}
-        <ScrollView
+        <ScrollView nestedScrollEnabled = {true}
           style={{
             backgroundColor: ScreenBackgroundColor,
             marginLeft: 10,

@@ -25,7 +25,7 @@ function* GetInvites() {
         yield put(SetLoading(false));
     } catch (err) {
         yield put(SetLoading(false));
-        yield ShowErrorNotification(err);
+        // yield ShowErrorNotification(err);
     }
 }
 
