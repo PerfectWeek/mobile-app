@@ -36,7 +36,7 @@ export class _NotificationHandler extends React.Component {
             // console.log("Je demande le token");
             // let token = await Notifications.getExpoPushTokenAsync();
             // console.log(token);
-            this.listener = Notifications.addListener((event) => { this.listen(this.props.store, this.props.nav, event); });
+            this.listener = Notifications.addListener((event) => { this.listen(this.props.GetInvites, this.props.nav, event); });
             Notifications.createChannelAndroidAsync('yeet1', {
                 name: 'Reminders',
                 priority: 'max',
@@ -61,8 +61,8 @@ export class _NotificationHandler extends React.Component {
         this.listener && Notifications.removeListener && Notifications.removeListener(this.listen);
     }
 
-    listen(store, navigation, event) {
-        
+    listen(GetInvites, navigation, event) {
+        GetInvites();        
         if (event.origin === 'selected') {
             // console.log(event);
             // console.log("JE NAVIGATE");
@@ -80,8 +80,6 @@ export class _NotificationHandler extends React.Component {
             //     })
             // }))
         }
-
-        console.log("---------------listen end---------------");
     }
     onBackPress = () => {
         return true;
