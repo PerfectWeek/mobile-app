@@ -5,7 +5,7 @@ const uuidv4 = require('uuid/v4');
 export class InvitesService {
   static async GetGroupInvites() {
     const resp = await Network.Get("/calendars?invitation_status=pending");
-    if (resp.status === 200) return resp.data.calendars;
+    if (resp.status === 200) return resp.data.calendars.map(e => {return {...e, image: `${axios.defaults.baseURL}/calendars/${e.id}/images/icon?rand=${uuidv4()}`}});
     let err;
     if (resp.data !== undefined && resp.data.message !== undefined)
       err = resp.data.message;
@@ -44,8 +44,8 @@ export class InvitesService {
 
   static async ReplyGroupInvite(group_id, response) {
     const resp = await Network.Post(
-      `/group-invites/${group_id}/${
-        response ? "accept-invite" : "decline-invite"
+      `/calendars/${group_id}/member-invite/${
+        response ? "accept" : "decline"
       }`
     );
     if (resp.status === 200) return "ok";

@@ -174,7 +174,7 @@ export class _CalendarDashboard extends Component {
                   fontFamily: "Lato_Medium"
                 }}
               >
-                {start_string} - {end_string} ·
+                {start_string} - {end_string}{item.calendar_name ? " · " : ""}
                 <Text style={{ color: "#e94b61" }}> {item.calendar_name}</Text>
               </Text>
             </View>
@@ -360,10 +360,8 @@ const mapStateToProps = (state, ownProps) => {
       };
     });
   }
-  // console.log(events);
   events = events.sort((a, b) => { return new Date(a.start_time).getTime() - new Date(b.start_time).getTime() });
-  // console.log("events : ", events);
-
+  
   let items = {};
   for (let i = -150; i < 185; i++) {
     const time = new Date().getTime() + i * 24 * 60 * 60 * 1000;
@@ -422,7 +420,7 @@ const mapStateToProps = (state, ownProps) => {
       items[isoDate].push({
         id: event.id,
         name: event.name,
-        calendar_name: event.calendar_name,
+        calendar_name: event.owning_calendars && event.owning_calendars.length > 0 ? event.owning_calendars[0].name : null,
         start_time: new Date(start),
         end_time: end,
         color: event.color,

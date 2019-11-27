@@ -29,23 +29,28 @@ import {UserService} from "../../Services/Users/users";
 import {arrayToObject} from "../../Utils/utils";
 import {GetUsersInfo} from "../User/user.actions";
 import {ShowErrorNotification, ShowSuccessNotification} from "../../Utils/NotificationsModals";
-import {GetCalendars} from "../Calendar/calendar.actions";
+import {GetCalendars, LoadCalendar} from "../Calendar/calendar.actions";
 
 
 function* GetGroups(action) {
     yield put(SetLoading(true));
     try {
         const cals = yield CalService.GetCalForUserPseudo(action.pseudo);
-        const calsMap = yield cals.reduce(function (map, obj) {
+        let groupsArray = yield CalService.GetGroupsImage(cals);
+        // yield put(GetGroupsImageSuccess(res));
+        const calsMap = yield groupsArray.reduce(function (map, obj) {
             map[obj.id] = obj;
             return map;
         }, {});
-
-
-        let groupsArray = Object.values(cals);
-        let res = yield CalService.GetGroupsImage(groupsArray);
-        yield put(GetGroupsImageSuccess(res));
         yield put(GetGroupSuccess(calsMap));
+
+
+        for (let i = 0; i < groupsArray.length; i++) {
+            const element = groupsArray[i];
+            const group = yield CalService.GetGroupDetail(element.id);
+            yield put(GetGroupInfoSuccess(group))
+        }
+
     } catch (err) {
         yield ShowErrorNotification(err);
         yield put(GetGroupFail(err));
@@ -101,16 +106,22 @@ function* AddGroupMembers(action) {
     try {
         console.log('QWQWQWQWQ', action)
         const members = yield CalService.AddGroupMembers(action.groupId, action.members);
-        let users2 = yield select((state) => {
-            return state.user.users
-        });
+        // console.log("members : " ,members);
+        
+        const group = yield CalService.GetGroupDetail(action.groupId);
+
+        yield put(GetGroupInfoSuccess(group))
+
+        // let users2 = yield select((state) => {
+        //     return state.user.users
+        // });
         // console.log('USER', users2)
-        yield put(GetUsersInfo(members));
-        let users = yield select((state) => {
-            return state.user.users
-        });
+        // yield put(GetUsersInfo(members));
+        // let users = yield select((state) => {
+        //     return state.user.users
+        // });
         // console.log('USER2', users)
-        yield put(AddGroupMembersSuccess(action.groupId, arrayToObject(members, "name")));
+        // yield put(AddGroupMembersSuccess(action.groupId, arrayToObject(members, "name")));
         yield ShowSuccessNotification();
     } catch (err) {
         yield ShowErrorNotification(err);
@@ -125,6 +136,7 @@ function* EditGroupInfo(action) {
     });
     if (resp.status === 200) {
         yield put(EditGroupInfoSuccess(resp.data.calendar));
+        yield put(LoadCalendar({pseudo: ""}));
         yield ShowSuccessNotification();
     } else {
         let err;
@@ -147,7 +159,7 @@ function* CreateGroup(action) {
     if (resp.status === 201) {
         const img = yield CalService.GetGroupsImage([resp.data.calendar]);
         // console.log('pimo', img)
-        yield put(GetCalendars({pseudo: action.pseudo}));
+        yield put(LoadCalendar({pseudo: ""}));
         yield put(CreateGroupSuccess({...resp.data.calendar, image: img[0].image}));
         yield ShowSuccessNotification("Creation successful");
     } else {
@@ -164,6 +176,7 @@ function* CreateGroup(action) {
 function* DeleteGroup(action) {
     const resp = yield Network.Delete('/calendars/' + action.groupId);
     if (resp.status === 200) {
+        yield put(LoadCalendar({pseudo: ""}));
         yield put(DeleteGroupSuccess(action.groupId));
         yield ShowSuccessNotification();
     } else {

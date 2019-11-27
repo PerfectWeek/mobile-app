@@ -164,7 +164,7 @@ export class _ListUsers extends React.Component {
                                             <Picker.Item label={i18n.t('other.addusers.types.admin')} value={"admin-" + index}/>
                                             <Picker.Item label={i18n.t('other.addusers.types.actor')} value={"actor-" + index}/>
                                             <Picker.Item label={i18n.t('other.addusers.types.spectator')} value={"spectator-" + index}/>
-                                            <Picker.Item label={i18n.t('other.addusers.types.outsider')} value={"outsider-" + index}/>
+                                            {/* <Picker.Item label={i18n.t('other.addusers.types.outsider')} value={"outsider-" + index}/> */}
                                         </Picker>
                                         <Button full key={index} small style={{backgroundColor: 'grey'}}
                                                 onPress={() => {

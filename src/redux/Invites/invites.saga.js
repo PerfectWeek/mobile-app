@@ -11,7 +11,7 @@ function* GetInvites() {
         let invites = [];
         const group_invites = yield InvitesService.GetGroupInvites();
         invites.push(...group_invites.map(i => {
-            return {type: 'group', name: i.name, item: i}
+            return {type: 'calendar', name: i.name, item: i}
         }));
         const event_invites = yield InvitesService.GetEventInvites();
         invites.push(...event_invites.map(i => {

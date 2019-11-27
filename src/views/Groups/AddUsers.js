@@ -51,7 +51,7 @@ class _AddUsers extends Component {
                         marginLeft: 10, marginRight: 30, flexGrow: 3
                     }}>
 
-                        <ListUsers callAddUser={(userList) => {
+                        <ListUsers filterList={this.props.filterList} callAddUser={(userList) => {
                             this.setState({usersToAdd: userList})
                         }}
                                    displaySelection={false}

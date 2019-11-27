@@ -154,7 +154,7 @@ export class _Invite extends React.Component {
   }
 
   handleYes(invite) {
-    if (invite.type === "group")
+    if (invite.type === "calendar")
       this.props.ReplyGroupInvite(invite.item.id, true);
     else if (invite.type === "event")
       this.props.ReplyEventInvite(invite.item.id, true);
@@ -163,7 +163,7 @@ export class _Invite extends React.Component {
     }
   }
   handleNo(invite) {
-    if (invite.type === "group")
+    if (invite.type === "calendar")
       this.props.ReplyGroupInvite(invite.item.id, false);
     else if (invite.type === "event")
       this.props.ReplyEventInvite(invite.item.id, false);

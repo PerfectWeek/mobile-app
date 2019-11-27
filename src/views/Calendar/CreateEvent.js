@@ -422,7 +422,7 @@ export class _CreateEvent extends React.Component {
                     value={-1}
                     key={-1}
                   />
-                  {this.props.calendar.calendars.map(c => {
+                  {this.props.calendar.calendars.filter(c => c.role === "admin" || c.role === "actor").map(c => {
                     return (
                       <Picker.Item label={c.name} value={c.id} key={c.id} />
                     );

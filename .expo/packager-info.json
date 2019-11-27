@@ -1,10 +1,9 @@
 {
+  "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 11828,
-  "expoServerNgrokUrl": "https://di-xfk.tim92i.mobile-app.exp.direct",
-  "packagerNgrokUrl": "https://packager.di-xfk.tim92i.mobile-app.exp.direct",
-  "ngrokPid": 11845,
-  "devToolsPort": 19002,
-  "webpackServerPort": null
+  "packagerPid": 26112,
+  "expoServerNgrokUrl": "https://6j-3ws.pierresaid.mobile-app.exp.direct",
+  "packagerNgrokUrl": "https://packager.6j-3ws.pierresaid.mobile-app.exp.direct",
+  "ngrokPid": 17928
 }

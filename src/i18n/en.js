@@ -47,6 +47,7 @@ export default {
         "going": "Going"
     },
     "groups": {
+        "pending_invite": "Pending invite",
         "title": "My calendar",
         "nogroups": "No calendars",
         "creatgroup": "Create a calendar",

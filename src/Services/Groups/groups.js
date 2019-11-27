@@ -23,7 +23,7 @@ export class CalService {
 
     static async GetGroupsImage(groups) {
         for (let idx = 0; idx < groups.length; idx++) {
-            groups[idx].image = `${axios.defaults.baseURL}/users/${groups[idx].id}/images/profile?rand=${uuidv4()}`
+            groups[idx].image = `${axios.defaults.baseURL}/calendars/${groups[idx].id}/images/icon?rand=${uuidv4()}`
 
             // const resp = await Network.Get('/calendars/' + groups[idx].id + '/images/icon');
             // console.log('re', resp)
@@ -44,9 +44,8 @@ export class CalService {
 
     static async AddGroupMembers(groupId, members) {
         const resp = await Network.Post('/calendars/' + groupId + '/members', {members: members});
-        // console.log('add', resp)
         if (resp.status === 200)
-            return resp.data.calendar.members;
+            return resp.data.members;
         let err;
         if (resp.data !== undefined && resp.data.message !== undefined)
             err = resp.data.message;

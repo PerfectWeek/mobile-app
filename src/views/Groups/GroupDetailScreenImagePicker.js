@@ -82,6 +82,7 @@ export class _GroupDetailScreenImagePicker extends React.Component {
                             const res = await ImagePicker.launchImageLibraryAsync();
                             if (res.cancelled)
                                 return;
+                                
                             this.setState({...this.state, image: res, display: res.uri, new: true});
                         }}>
                         <Text style={{fontSize: 18}}>{i18n.t('groups.edit.selectimage')}</Text>
