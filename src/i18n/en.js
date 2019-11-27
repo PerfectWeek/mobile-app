@@ -46,6 +46,11 @@ export default {
         "nosugrestions": "No suggestions",
         "going": "Going"
     },
+    "invite" : {
+        "calendar" : "Calendar invitation",
+        "event" : "Event invitation",
+        "friend" : "Friend request"
+    },
     "groups": {
         "pending_invite": "Pending invite",
         "title": "My calendar",

@@ -69,7 +69,7 @@ export default class EventCard extends Component {
             }
             <Text style={{ color: "#606770" }}>
               {event.type}{/*i18n.t("dashboard.eventinfo.title")*/} .{" "}
-              {event.attendees.filter(a => a.status === "going").length}{" "}
+              {event.attendees && event.attendees.filter(a => a.status === "going").length}{" "}
               {i18n.t("other.addusers.attendees")}
             </Text>
           </View>

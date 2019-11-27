@@ -106,6 +106,11 @@ export default {
         "create_event" : "Créer un Evènement",
         "find_best_slot" : "Trouver le meilleur créneau",
     },
+    "invite" : {
+        "calendar" : "Invitation Calendrier",
+        "event" : "Invitation d'événement",
+        "friend" : "Demande d'ami"
+    },
     "other": {
         "delete": "Effacer",
         "cancel": "Fermer",

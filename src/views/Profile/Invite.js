@@ -108,7 +108,11 @@ export class _Invite extends React.Component {
                     <Text style={{ fontSize: 18, fontWeight: "bold" }}>
                       {invite.name}
                     </Text>
-                    <Text>{invite.type} invitation</Text>
+                    <Text>
+                      {invite.type === "calendar" ? i18n.t("invite.calendar") :
+                       (invite.type === "event" ? i18n.t("invite.event") :
+                        (invite.type === "friend" ? i18n.t("invite.friend") : ""))}
+                    </Text>
                   </Body>
                   <Right>
                     <Icon
