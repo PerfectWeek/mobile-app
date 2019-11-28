@@ -12,8 +12,8 @@ export default {
     "register": {
         "pwd": "Password",
         "pwda": "Confirm password",
-        "register": "Register"
-
+        "register": "Register",
+        "email_sent" : "User created. We sent you an email for confirmation."
     },
     "dashboard" : {
         "calendar": "Calendar",

@@ -97,7 +97,7 @@ export class _ListUsers extends React.Component {
                     </Text>
                 }
                 <ScrollView nestedScrollEnabled = {true} style={{flexGrow: 3, maxHeight: Dimensions.get("window").height / 3}}>
-                    {[...this.state.listPseudo, ...this.state.listPseudo, ...this.state.listPseudo, ...this.state.listPseudo].map((item, idx) =>                        
+                    {this.state.listPseudo.map((item, idx) =>                        
                         <ListItem key={idx} onPress={() => {
                             this.setState({
                                 usersToAdd: [...this.state.usersToAdd, (this.props.formatAdd === undefined) ? item : this.props.formatAdd(item)],

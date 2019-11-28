@@ -1,6 +1,7 @@
 export const RegisterActionsType = {
     Register: 'REGISTERING',
     RegisterSuccess: 'REGISTER_SUCCESS',
+    RegisterOk: 'REGISTER_OK',
     RegisterFail: 'REGISTER_FAIL'
 };
 
@@ -10,6 +11,12 @@ export const Register = (username, email, password) => {
         username: username,
         email: email,
         password: password
+    }
+};
+
+export const RegisterOk = () => {
+    return {
+        type: RegisterActionsType.RegisterOk,
     }
 };
 

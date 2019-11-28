@@ -6,8 +6,7 @@ export default {
         "success": "Connecté",
         "facebook": "Connection Facebook",
         "register": "S'enregistrer",
-        "login": "Se connecter",
-        "invalid_password" : "Le mot de passe doit comporter au moins 8 caractères et contenir des lettres minuscules, des lettres majuscules, des chiffres et des symboles."
+        "login": "Se connecter"
     },
     "register": {
         "pwd": "Mot de passe",
@@ -19,7 +18,7 @@ export default {
         "calendar": "Calendrier",
         "filter": "Filtre",
         "filterButton": "Filtrer",
-        "bestslottitle": "Le meilleur creneau",
+        "bestslottitle": "Le meilleur créneau",
         "eventinfo": {
             "title": "Evénement",
             "begin": "Début",
@@ -29,16 +28,16 @@ export default {
         "get_slots" : "Obtenir des créneaux",
         "createvent": {
             "error": {
-                "past": "Impossiblité de créer un événement dans le passé"
+                "past": "Impossibilité de créer un événement dans le passé"
             },
             "nameevent": "Nom de l'événement",
             "description": "Description",
             "localisation": "Localisation",
-            "selectevent": "Selectionner le type d'événement",
-            "selectcalendar": "Selectionner le calendrier",
-            "selectvis": "Selectionner le type de visibilité",
+            "selectevent": "Sélectionner le type d'événement",
+            "selectcalendar": "Sélectionner le calendrier",
+            "selectvis": "Sélectionner le type de visibilité",
             "creat": "Créer l'événement",
-            "selectimg": "Selectionner une image",
+            "selectimg": "Sélectionner une image",
             "eventduration": "Durée de l'événement",
             "typeevent": "Type d'événement"
         }
@@ -62,7 +61,7 @@ export default {
         "remove": "Retirer du calendrier",
         "edit": {
             "title": "Modifier l'image du calendrier",
-            "selectimage": "Selectionner une image",
+            "selectimage": "Sélectionner une image",
             "grpinfo": "Modifier les informations",
         }
     },
@@ -71,7 +70,7 @@ export default {
         "addfriends": "Ajouter un ami",
         "edit": {
             "editimg": "Modifier l'image du profile",
-            "alertcamera": "Désolé, nous avons besoin de la permission pour acceder à la camera"
+            "alertcamera": "Désolé, nous avons besoin de la permission pour accéder à la camera"
         },
         "ib": "Soirée",
         "invite": {
@@ -80,7 +79,7 @@ export default {
             "accept": "Accepter l'invitation"
         },
         "common": "Evénements communs",
-        "logout": "Se deconnecter",
+        "logout": "Se déconnecter",
         "deleteaccount": "Effacer le compte",
         "alertdelete": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible",
         "updateinfo": "Mettre à jour les informations"
@@ -91,7 +90,7 @@ export default {
     "event": {
         "map_view" : "Carte",
         "event_detail": "Details",
-        "public_event": "Evènements publics",
+        "public_event": "Événements publics",
         "people_going": "participants",
         "share" :{
             "going_to" : "Je vais à",
@@ -103,8 +102,8 @@ export default {
     },
     "calendar": {
         "calendar" : "Calendrier",
-        "modify_event" : "Modifier l'Evènement",
-        "create_event" : "Créer un Evènement",
+        "modify_event" : "Modifier l'événement",
+        "create_event" : "Créer un Évènement",
         "find_best_slot" : "Trouver le meilleur créneau",
     },
     "invite" : {
@@ -117,12 +116,12 @@ export default {
         "cancel": "Fermer",
         "edit": "Modifier",
         "stopEdit": "Quitter l'édition",
-        "response": "Reponse",
+        "response": "Réponse",
         "add": "Ajouter",
         "update": "Mettre à jour",
         "confirm": "Confirmer",
         "dismiss": "Rejeter",
-        "details": "Detailles",
+        "details": "Détails",
         "leave": "Quitter l'événement",
         "yes": "Oui",
         "unfriend": "Supprimer l'ami",
@@ -146,6 +145,6 @@ export default {
         },
         "next": "Prochain",
         "prev": "Précédent",
-        "slot": "Creneau"
+        "slot": "Créneau"
     }
 };

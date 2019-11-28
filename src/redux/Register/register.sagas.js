@@ -2,6 +2,7 @@ import {put, takeEvery} from "redux-saga/effects";
 import {RegisterActionsType, RegisterFail, RegisterSuccess} from "./register.actions";
 import {Network} from "../../Network/Requests";
 import {Toast} from "native-base";
+import i18n from "i18n-js";
 
 function _register(username, email, password) {
     return Network.Post("/auth/local/register", {
@@ -15,7 +16,7 @@ function* Register(action) {
     const response = yield _register(action.username, action.email, action.password);
     if (response.status === 201) {
         yield Toast.show({
-            text: "User created. We sent you an email for confirmation.",
+            text: i18n.t('register.email_sent'),
             type: "success",
             buttonText: "Okay",
             duration: 10000

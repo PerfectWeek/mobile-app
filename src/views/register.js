@@ -3,7 +3,7 @@ import {Animated, Dimensions, Easing, Platform, StyleSheet, Keyboard} from "reac
 import {View, Container, Text} from 'native-base';
 import {withNavigation} from "react-navigation";
 import {connect} from "react-redux";
-import {Register, RegisterActionsType} from "../redux/Register/register.actions";
+import {Register, RegisterActionsType, RegisterOk} from "../redux/Register/register.actions";
 import LottieView from "lottie-react-native";
 import {validateEmail, validateNotEmpty, validatePassword, comparePasswords} from "../Utils/utils";
 
@@ -55,8 +55,10 @@ class _RegisterScreen extends React.Component {
     }
 
     render() {
-        if (this.props.register.status === RegisterActionsType.RegisterSuccess)
+        if (this.props.register.status === RegisterActionsType.RegisterSuccess) {
             this.props.navigation.goBack();
+            this.props.registerOk();
+        }
         const spin = this.spinValue.interpolate({
             inputRange: [0, 1],
             outputRange: ['360deg', '0deg']
@@ -151,7 +153,8 @@ const cstyles = StyleSheet.create({
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...ownProps,
-        Register: (username, email, password) => dispatch(Register(username, email, password))
+        Register: (username, email, password) => dispatch(Register(username, email, password)),
+        registerOk : () => dispatch(RegisterOk())
     }
 };
 
